@@ -1,0 +1,14 @@
+{
+	"Targets": [
+		{
+			"Name": "DreamingIsland",
+			"Path": "..\\Source\\DreamingIsland.Target.cs",
+			"Type": "Game"
+		},
+		{
+			"Name": "DreamingIslandEditor",
+			"Path": "..\\Source\\DreamingIslandEditor.Target.cs",
+			"Type": "Editor"
+		}
+	]
+}
