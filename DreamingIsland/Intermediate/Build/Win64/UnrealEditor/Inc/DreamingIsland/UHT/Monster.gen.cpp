@@ -10,9 +10,11 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 void EmptyLinkFunctionForGeneratedCodeMonster() {}
 
 // Begin Cross Module References
+COREUOBJECT_API UClass* Z_Construct_UClass_UClass();
 COREUOBJECT_API UScriptStruct* Z_Construct_UScriptStruct_FTransform();
 DREAMINGISLAND_API UClass* Z_Construct_UClass_AMonster();
 DREAMINGISLAND_API UClass* Z_Construct_UClass_AMonster_NoRegister();
+DREAMINGISLAND_API UClass* Z_Construct_UClass_UMonsterAnimInstance_NoRegister();
 DREAMINGISLAND_API UClass* Z_Construct_UClass_UMonsterDataAsset();
 DREAMINGISLAND_API UClass* Z_Construct_UClass_UMonsterDataAsset_NoRegister();
 ENGINE_API UClass* Z_Construct_UClass_AActor();
@@ -41,18 +43,17 @@ struct Z_Construct_UClass_UMonsterDataAsset_Statics
 		{ "Category", "SkeletalMeshComponent" },
 		{ "ModuleRelativePath", "Actors/Monster.h" },
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_AnimClass_MetaData[] = {
+		{ "Category", "SkeletalMeshComponent" },
+		{ "ModuleRelativePath", "Actors/Monster.h" },
+	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_SkeletalMeshTransform_MetaData[] = {
 		{ "Category", "SkeletalMeshComponent" },
-#if !UE_BUILD_SHIPPING
-		{ "Comment", "//UPROPERTY(EditAnywhere, Category = \"SkeletalMeshComponent\")\n//TSubclassOf<UBaisicCharacterAnimInstance> AnimClass = UBaisicCharacterAnimInstance::StaticClass();\n" },
-#endif
 		{ "ModuleRelativePath", "Actors/Monster.h" },
-#if !UE_BUILD_SHIPPING
-		{ "ToolTip", "UPROPERTY(EditAnywhere, Category = \"SkeletalMeshComponent\")\nTSubclassOf<UBaisicCharacterAnimInstance> AnimClass = UBaisicCharacterAnimInstance::StaticClass();" },
-#endif
 	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_SkeletalMesh;
+	static const UECodeGen_Private::FClassPropertyParams NewProp_AnimClass;
 	static const UECodeGen_Private::FStructPropertyParams NewProp_SkeletalMeshTransform;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
@@ -62,9 +63,11 @@ struct Z_Construct_UClass_UMonsterDataAsset_Statics
 	static const UECodeGen_Private::FClassParams ClassParams;
 };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UMonsterDataAsset_Statics::NewProp_SkeletalMesh = { "SkeletalMesh", nullptr, (EPropertyFlags)0x0010000000000001, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UMonsterDataAsset, SkeletalMesh), Z_Construct_UClass_USkeletalMesh_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_SkeletalMesh_MetaData), NewProp_SkeletalMesh_MetaData) };
+const UECodeGen_Private::FClassPropertyParams Z_Construct_UClass_UMonsterDataAsset_Statics::NewProp_AnimClass = { "AnimClass", nullptr, (EPropertyFlags)0x0014000000000001, UECodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UMonsterDataAsset, AnimClass), Z_Construct_UClass_UClass, Z_Construct_UClass_UMonsterAnimInstance_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_AnimClass_MetaData), NewProp_AnimClass_MetaData) };
 const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UMonsterDataAsset_Statics::NewProp_SkeletalMeshTransform = { "SkeletalMeshTransform", nullptr, (EPropertyFlags)0x0010000000000001, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UMonsterDataAsset, SkeletalMeshTransform), Z_Construct_UScriptStruct_FTransform, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_SkeletalMeshTransform_MetaData), NewProp_SkeletalMeshTransform_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UMonsterDataAsset_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UMonsterDataAsset_Statics::NewProp_SkeletalMesh,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UMonsterDataAsset_Statics::NewProp_AnimClass,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UMonsterDataAsset_Statics::NewProp_SkeletalMeshTransform,
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_UMonsterDataAsset_Statics::PropPointers) < 2048);
@@ -178,11 +181,11 @@ AMonster::~AMonster() {}
 struct Z_CompiledInDeferFile_FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Actors_Monster_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UMonsterDataAsset, UMonsterDataAsset::StaticClass, TEXT("UMonsterDataAsset"), &Z_Registration_Info_UClass_UMonsterDataAsset, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UMonsterDataAsset), 112374547U) },
+		{ Z_Construct_UClass_UMonsterDataAsset, UMonsterDataAsset::StaticClass, TEXT("UMonsterDataAsset"), &Z_Registration_Info_UClass_UMonsterDataAsset, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UMonsterDataAsset), 323215599U) },
 		{ Z_Construct_UClass_AMonster, AMonster::StaticClass, TEXT("AMonster"), &Z_Registration_Info_UClass_AMonster, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AMonster), 1511812794U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Actors_Monster_h_3891734248(TEXT("/Script/DreamingIsland"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Actors_Monster_h_1533553136(TEXT("/Script/DreamingIsland"),
 	Z_CompiledInDeferFile_FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Actors_Monster_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Actors_Monster_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

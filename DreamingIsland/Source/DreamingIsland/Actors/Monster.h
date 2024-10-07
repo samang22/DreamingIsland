@@ -6,6 +6,9 @@
 #include "GameFramework/Actor.h"
 #include "Monster.generated.h"
 
+
+class UMonsterAnimInstance;
+
 UCLASS()
 class UMonsterDataAsset : public UDataAsset
 {
@@ -15,9 +18,8 @@ public:
 	UPROPERTY(EditAnywhere, Category = "SkeletalMeshComponent")
 	USkeletalMesh* SkeletalMesh = nullptr;
 
-	//UPROPERTY(EditAnywhere, Category = "SkeletalMeshComponent")
-	//TSubclassOf<UBaisicCharacterAnimInstance> AnimClass = UBaisicCharacterAnimInstance::StaticClass();
-
+	UPROPERTY(EditAnywhere, Category = "SkeletalMeshComponent")
+	TSubclassOf<UMonsterAnimInstance> AnimClass;
 	UPROPERTY(EditAnywhere, Category = "SkeletalMeshComponent")
 	FTransform SkeletalMeshTransform;
 

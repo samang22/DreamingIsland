@@ -48,5 +48,11 @@
     <ClInclude Include="..\..\Source\DreamingIsland\Actors\Monster.h">
       <Filter>Source\DreamingIsland\Actors</Filter>
     </ClInclude>
+    <ClCompile Include="..\..\Source\DreamingIsland\Actors\MonsterAnimInstance.cpp">
+      <Filter>Source\DreamingIsland\Actors</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\DreamingIsland\Actors\MonsterAnimInstance.h">
+      <Filter>Source\DreamingIsland\Actors</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -2,8 +2,11 @@
 
 
 #include "Monster.h"
+#include "MonsterAnimInstance.h"
 
 UMonsterDataAsset::UMonsterDataAsset()
+	: AnimClass(UMonsterAnimInstance::StaticClass())
+
 {
 }
 
@@ -11,11 +14,7 @@ UMonsterDataAsset::UMonsterDataAsset()
 // Sets default values
 AMonster::AMonster()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	//static ConstructorHelpers::FObjectFinder<USkeletalMesh> ObjectFinder(TEXT("/Script/Engine.SkeletalMesh'/Game/Resources/ControlRig/Characters/Mannequins/Meshes/SKM_Manny.SKM_Manny'"));
-	//check(ObjectFinder.Object);
-	//SkeletalMesh = ObjectFinder.Object;
 }
 
 // Called when the game starts or when spawned
