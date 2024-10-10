@@ -3,10 +3,3 @@
 
 #include "Data/PawnTableRow.h"
 
-FPawnTableRow::FPawnTableRow()
-{
-}
-
-FPawnTableRow::~FPawnTableRow()
-{
-}
