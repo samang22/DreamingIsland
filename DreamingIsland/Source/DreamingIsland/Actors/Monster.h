@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "GameFramework/Pawn.h"
 #include "Monster.generated.h"
 
 
@@ -28,27 +29,56 @@ public:
 
 };
 
-
-
+class UFloatingPawnMovement;
+class UStatusComponent;
+//class FDataTableRowHandle;
 UCLASS()
-class DREAMINGISLAND_API AMonster : public AActor
+class DREAMINGISLAND_API AMonster : public APawn
 {
 	GENERATED_BODY()
 	
-public:	
-	// Sets default values for this actor's properties
-	AMonster();
+public:
+	// Sets default values for this pawn's properties
+	AMonster(const FObjectInitializer& ObjectInitializer);
+	//virtual void SetData(const FDataTableRowHandle& InDataTableRowHandle);
 
 protected:
+	virtual void PostLoad() override;
+	virtual void PostLoadSubobjects(FObjectInstancingGraph* OuterInstanceGraph) override;
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	virtual void OnConstruction(const FTransform& Transform);
 
-public:	
+protected:
+	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+
+protected:
+	UFUNCTION()
+	virtual void OnDie();
+
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+protected: // 옵션에 따라 생성되고 Root로 지정 됩니다.
+	UPROPERTY()
+	TObjectPtr<UShapeComponent> CollisionComponent;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USkeletalMeshComponent> SkeletalMeshComponent;
 
 protected:
-	UPROPERTY(EditAnywhere)
-	UMonsterDataAsset* MonsterDataAsset;
+	UPROPERTY(VisibleAnywhere)
+	UFloatingPawnMovement* MovementComponent;
+
+	//UPROPERTY(VisibleAnywhere)
+	//UStatusComponent* StatusComponent;
+
+protected:
+	//UPROPERTY(EditAnywhere)
+	//FDataTableRowHandle DataTableRowHandle;
+
+	//FPawnTableRow* EnemyData;
+
+	UAnimMontage* CurrentDieMontage;
 };

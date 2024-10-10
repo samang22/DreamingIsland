@@ -48,11 +48,14 @@
     <ClInclude Include="..\..\Source\DreamingIsland\Actors\Monster.h">
       <Filter>Source\DreamingIsland\Actors</Filter>
     </ClInclude>
-    <ClCompile Include="..\..\Source\DreamingIsland\Actors\MonsterAnimInstance.cpp">
-      <Filter>Source\DreamingIsland\Actors</Filter>
+    <Filter Include="Source\DreamingIsland\Animation">
+      <UniqueIdentifier>{8EB68A1D-EF46-333E-9E38-1713588341BD}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\DreamingIsland\Animation\MonsterAnimInstance.cpp">
+      <Filter>Source\DreamingIsland\Animation</Filter>
     </ClCompile>
-    <ClInclude Include="..\..\Source\DreamingIsland\Actors\MonsterAnimInstance.h">
-      <Filter>Source\DreamingIsland\Actors</Filter>
+    <ClInclude Include="..\..\Source\DreamingIsland\Animation\MonsterAnimInstance.h">
+      <Filter>Source\DreamingIsland\Animation</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -14,7 +14,7 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 #endif
 #define DREAMINGISLAND_Monster_generated_h
 
-#define FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Actors_Monster_h_15_INCLASS_NO_PURE_DECLS \
+#define FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Actors_Monster_h_16_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesUMonsterDataAsset(); \
 	friend struct Z_Construct_UClass_UMonsterDataAsset_Statics; \
@@ -23,7 +23,7 @@ public: \
 	DECLARE_SERIALIZER(UMonsterDataAsset)
 
 
-#define FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Actors_Monster_h_15_ENHANCED_CONSTRUCTORS \
+#define FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Actors_Monster_h_16_ENHANCED_CONSTRUCTORS \
 private: \
 	/** Private move- and copy-constructors, should never be used */ \
 	UMonsterDataAsset(UMonsterDataAsset&&); \
@@ -35,28 +35,32 @@ public: \
 	NO_API virtual ~UMonsterDataAsset();
 
 
-#define FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Actors_Monster_h_12_PROLOG
-#define FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Actors_Monster_h_15_GENERATED_BODY \
+#define FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Actors_Monster_h_13_PROLOG
+#define FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Actors_Monster_h_16_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Actors_Monster_h_15_INCLASS_NO_PURE_DECLS \
-	FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Actors_Monster_h_15_ENHANCED_CONSTRUCTORS \
+	FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Actors_Monster_h_16_INCLASS_NO_PURE_DECLS \
+	FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Actors_Monster_h_16_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
 
 template<> DREAMINGISLAND_API UClass* StaticClass<class UMonsterDataAsset>();
 
-#define FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Actors_Monster_h_36_INCLASS_NO_PURE_DECLS \
+#define FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Actors_Monster_h_38_RPC_WRAPPERS_NO_PURE_DECLS \
+	DECLARE_FUNCTION(execOnDie);
+
+
+#define FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Actors_Monster_h_38_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesAMonster(); \
 	friend struct Z_Construct_UClass_AMonster_Statics; \
 public: \
-	DECLARE_CLASS(AMonster, AActor, COMPILED_IN_FLAGS(0 | CLASS_Config), CASTCLASS_None, TEXT("/Script/DreamingIsland"), NO_API) \
+	DECLARE_CLASS(AMonster, APawn, COMPILED_IN_FLAGS(0 | CLASS_Config), CASTCLASS_None, TEXT("/Script/DreamingIsland"), NO_API) \
 	DECLARE_SERIALIZER(AMonster)
 
 
-#define FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Actors_Monster_h_36_ENHANCED_CONSTRUCTORS \
+#define FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Actors_Monster_h_38_ENHANCED_CONSTRUCTORS \
 private: \
 	/** Private move- and copy-constructors, should never be used */ \
 	AMonster(AMonster&&); \
@@ -64,16 +68,17 @@ private: \
 public: \
 	DECLARE_VTABLE_PTR_HELPER_CTOR(NO_API, AMonster); \
 	DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(AMonster); \
-	DEFINE_DEFAULT_CONSTRUCTOR_CALL(AMonster) \
+	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(AMonster) \
 	NO_API virtual ~AMonster();
 
 
-#define FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Actors_Monster_h_33_PROLOG
-#define FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Actors_Monster_h_36_GENERATED_BODY \
+#define FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Actors_Monster_h_35_PROLOG
+#define FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Actors_Monster_h_38_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Actors_Monster_h_36_INCLASS_NO_PURE_DECLS \
-	FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Actors_Monster_h_36_ENHANCED_CONSTRUCTORS \
+	FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Actors_Monster_h_38_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Actors_Monster_h_38_INCLASS_NO_PURE_DECLS \
+	FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Actors_Monster_h_38_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
