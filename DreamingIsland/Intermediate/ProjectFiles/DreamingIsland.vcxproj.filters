@@ -57,5 +57,14 @@
     <ClInclude Include="..\..\Source\DreamingIsland\Animation\MonsterAnimInstance.h">
       <Filter>Source\DreamingIsland\Animation</Filter>
     </ClInclude>
+    <Filter Include="Source\DreamingIsland\Data">
+      <UniqueIdentifier>{08B49573-470D-384E-BD7F-6A11F4140B19}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\DreamingIsland\Data\PawnTableRow.cpp">
+      <Filter>Source\DreamingIsland\Data</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\DreamingIsland\Data\PawnTableRow.h">
+      <Filter>Source\DreamingIsland\Data</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -17,13 +17,13 @@ void EmptyLinkFunctionForGeneratedCodeDreamingIsland_init() {}
 				nullptr,
 				0,
 				PKG_CompiledIn | 0x00000000,
-				0x52BB47A7,
-				0xE926BA3A,
+				0x325D1EED,
+				0xDEDCED1B,
 				METADATA_PARAMS(0, nullptr)
 			};
 			UECodeGen_Private::ConstructUPackage(Z_Registration_Info_UPackage__Script_DreamingIsland.OuterSingleton, PackageParams);
 		}
 		return Z_Registration_Info_UPackage__Script_DreamingIsland.OuterSingleton;
 	}
-	static FRegisterCompiledInInfo Z_CompiledInDeferPackage_UPackage__Script_DreamingIsland(Z_Construct_UPackage__Script_DreamingIsland, TEXT("/Script/DreamingIsland"), Z_Registration_Info_UPackage__Script_DreamingIsland, CONSTRUCT_RELOAD_VERSION_INFO(FPackageReloadVersionInfo, 0x52BB47A7, 0xE926BA3A));
+	static FRegisterCompiledInInfo Z_CompiledInDeferPackage_UPackage__Script_DreamingIsland(Z_Construct_UPackage__Script_DreamingIsland, TEXT("/Script/DreamingIsland"), Z_Registration_Info_UPackage__Script_DreamingIsland, CONSTRUCT_RELOAD_VERSION_INFO(FPackageReloadVersionInfo, 0x325D1EED, 0xDEDCED1B));
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
