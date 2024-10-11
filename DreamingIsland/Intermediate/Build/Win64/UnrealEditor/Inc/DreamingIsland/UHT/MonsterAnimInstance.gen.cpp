@@ -14,6 +14,7 @@ void EmptyLinkFunctionForGeneratedCodeMonsterAnimInstance() {}
 DREAMINGISLAND_API UClass* Z_Construct_UClass_UMonsterAnimInstance();
 DREAMINGISLAND_API UClass* Z_Construct_UClass_UMonsterAnimInstance_NoRegister();
 ENGINE_API UClass* Z_Construct_UClass_UAnimInstance();
+ENGINE_API UClass* Z_Construct_UClass_UPawnMovementComponent_NoRegister();
 UPackage* Z_Construct_UPackage__Script_DreamingIsland();
 // End Cross Module References
 
@@ -37,13 +38,31 @@ struct Z_Construct_UClass_UMonsterAnimInstance_Statics
 		{ "IncludePath", "Animation/MonsterAnimInstance.h" },
 		{ "ModuleRelativePath", "Animation/MonsterAnimInstance.h" },
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_MovementComponent_MetaData[] = {
+		{ "EditInline", "true" },
+		{ "ModuleRelativePath", "Animation/MonsterAnimInstance.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_Speed_MetaData[] = {
+		{ "Category", "MonsterAnimInstance" },
+		{ "ModuleRelativePath", "Animation/MonsterAnimInstance.h" },
+	};
 #endif // WITH_METADATA
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_MovementComponent;
+	static const UECodeGen_Private::FDoublePropertyParams NewProp_Speed;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
 		TCppClassTypeTraits<UMonsterAnimInstance>::IsAbstract,
 	};
 	static const UECodeGen_Private::FClassParams ClassParams;
 };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UMonsterAnimInstance_Statics::NewProp_MovementComponent = { "MovementComponent", nullptr, (EPropertyFlags)0x0020080000080008, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UMonsterAnimInstance, MovementComponent), Z_Construct_UClass_UPawnMovementComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_MovementComponent_MetaData), NewProp_MovementComponent_MetaData) };
+const UECodeGen_Private::FDoublePropertyParams Z_Construct_UClass_UMonsterAnimInstance_Statics::NewProp_Speed = { "Speed", nullptr, (EPropertyFlags)0x0020080000000014, UECodeGen_Private::EPropertyGenFlags::Double, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UMonsterAnimInstance, Speed), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Speed_MetaData), NewProp_Speed_MetaData) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UMonsterAnimInstance_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UMonsterAnimInstance_Statics::NewProp_MovementComponent,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UMonsterAnimInstance_Statics::NewProp_Speed,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_UMonsterAnimInstance_Statics::PropPointers) < 2048);
 UObject* (*const Z_Construct_UClass_UMonsterAnimInstance_Statics::DependentSingletons[])() = {
 	(UObject* (*)())Z_Construct_UClass_UAnimInstance,
 	(UObject* (*)())Z_Construct_UPackage__Script_DreamingIsland,
@@ -55,11 +74,11 @@ const UECodeGen_Private::FClassParams Z_Construct_UClass_UMonsterAnimInstance_St
 	&StaticCppClassTypeInfo,
 	DependentSingletons,
 	nullptr,
-	nullptr,
+	Z_Construct_UClass_UMonsterAnimInstance_Statics::PropPointers,
 	nullptr,
 	UE_ARRAY_COUNT(DependentSingletons),
 	0,
-	0,
+	UE_ARRAY_COUNT(Z_Construct_UClass_UMonsterAnimInstance_Statics::PropPointers),
 	0,
 	0x009000A8u,
 	METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_UMonsterAnimInstance_Statics::Class_MetaDataParams), Z_Construct_UClass_UMonsterAnimInstance_Statics::Class_MetaDataParams)
@@ -85,10 +104,10 @@ UMonsterAnimInstance::~UMonsterAnimInstance() {}
 struct Z_CompiledInDeferFile_FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Animation_MonsterAnimInstance_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UMonsterAnimInstance, UMonsterAnimInstance::StaticClass, TEXT("UMonsterAnimInstance"), &Z_Registration_Info_UClass_UMonsterAnimInstance, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UMonsterAnimInstance), 111943394U) },
+		{ Z_Construct_UClass_UMonsterAnimInstance, UMonsterAnimInstance::StaticClass, TEXT("UMonsterAnimInstance"), &Z_Registration_Info_UClass_UMonsterAnimInstance, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UMonsterAnimInstance), 1359681352U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Animation_MonsterAnimInstance_h_1781164671(TEXT("/Script/DreamingIsland"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Animation_MonsterAnimInstance_h_3171913712(TEXT("/Script/DreamingIsland"),
 	Z_CompiledInDeferFile_FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Animation_MonsterAnimInstance_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Animation_MonsterAnimInstance_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

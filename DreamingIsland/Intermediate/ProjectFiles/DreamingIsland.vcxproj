@@ -356,6 +356,10 @@
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <ClInclude Include="..\..\Source\DreamingIsland\Actors\Monster.h"/>
+    <ClCompile Include="..\..\Source\DreamingIsland\Animation\AlbatossAnimInstance.cpp">
+      <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\DreamingIsland\Animation\AlbatossAnimInstance.h"/>
     <ClCompile Include="..\..\Source\DreamingIsland\Animation\MonsterAnimInstance.cpp">
       <AdditionalIncludeDirectories>$(ClCompile_AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>

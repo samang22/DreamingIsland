@@ -16,4 +16,11 @@ class DREAMINGISLAND_API UMonsterAnimInstance : public UAnimInstance
 public:
 	virtual void NativeInitializeAnimation() override;
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
+
+protected:
+	UPROPERTY()
+	class UPawnMovementComponent* MovementComponent;
+
+	UPROPERTY(BlueprintReadOnly)
+	double Speed = 0.0;
 };

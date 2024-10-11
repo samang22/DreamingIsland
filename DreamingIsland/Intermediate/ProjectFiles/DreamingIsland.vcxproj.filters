@@ -51,6 +51,12 @@
     <Filter Include="Source\DreamingIsland\Animation">
       <UniqueIdentifier>{8EB68A1D-EF46-333E-9E38-1713588341BD}</UniqueIdentifier>
     </Filter>
+    <ClCompile Include="..\..\Source\DreamingIsland\Animation\AlbatossAnimInstance.cpp">
+      <Filter>Source\DreamingIsland\Animation</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\DreamingIsland\Animation\AlbatossAnimInstance.h">
+      <Filter>Source\DreamingIsland\Animation</Filter>
+    </ClInclude>
     <ClCompile Include="..\..\Source\DreamingIsland\Animation\MonsterAnimInstance.cpp">
       <Filter>Source\DreamingIsland\Animation</Filter>
     </ClCompile>
