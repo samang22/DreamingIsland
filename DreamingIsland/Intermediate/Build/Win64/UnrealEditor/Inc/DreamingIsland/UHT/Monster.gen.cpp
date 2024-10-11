@@ -6,6 +6,7 @@
 
 #include "UObject/GeneratedCppIncludes.h"
 #include "DreamingIsland/Actors/Monster.h"
+#include "Runtime/Engine/Classes/Engine/DataTable.h"
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 void EmptyLinkFunctionForGeneratedCodeMonster() {}
 
@@ -23,6 +24,7 @@ ENGINE_API UClass* Z_Construct_UClass_UFloatingPawnMovement_NoRegister();
 ENGINE_API UClass* Z_Construct_UClass_UShapeComponent_NoRegister();
 ENGINE_API UClass* Z_Construct_UClass_USkeletalMesh_NoRegister();
 ENGINE_API UClass* Z_Construct_UClass_USkeletalMeshComponent_NoRegister();
+ENGINE_API UScriptStruct* Z_Construct_UScriptStruct_FDataTableRowHandle();
 UPackage* Z_Construct_UPackage__Script_DreamingIsland();
 // End Cross Module References
 
@@ -157,16 +159,10 @@ struct Z_Construct_UClass_AMonster_Statics
 {
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Class_MetaDataParams[] = {
-#if !UE_BUILD_SHIPPING
-		{ "Comment", "//class FDataTableRowHandle;\n" },
-#endif
 		{ "HideCategories", "Navigation" },
 		{ "IncludePath", "Actors/Monster.h" },
 		{ "ModuleRelativePath", "Actors/Monster.h" },
 		{ "ObjectInitializerConstructorDeclared", "" },
-#if !UE_BUILD_SHIPPING
-		{ "ToolTip", "class FDataTableRowHandle;" },
-#endif
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_CollisionComponent_MetaData[] = {
 #if !UE_BUILD_SHIPPING
@@ -188,10 +184,15 @@ struct Z_Construct_UClass_AMonster_Statics
 		{ "EditInline", "true" },
 		{ "ModuleRelativePath", "Actors/Monster.h" },
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_DataTableRowHandle_MetaData[] = {
+		{ "Category", "Monster" },
+		{ "ModuleRelativePath", "Actors/Monster.h" },
+	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_CollisionComponent;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_SkeletalMeshComponent;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_MovementComponent;
+	static const UECodeGen_Private::FStructPropertyParams NewProp_DataTableRowHandle;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
@@ -206,10 +207,12 @@ struct Z_Construct_UClass_AMonster_Statics
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AMonster_Statics::NewProp_CollisionComponent = { "CollisionComponent", nullptr, (EPropertyFlags)0x0124080000080008, UECodeGen_Private::EPropertyGenFlags::Object | UECodeGen_Private::EPropertyGenFlags::ObjectPtr, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AMonster, CollisionComponent), Z_Construct_UClass_UShapeComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CollisionComponent_MetaData), NewProp_CollisionComponent_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AMonster_Statics::NewProp_SkeletalMeshComponent = { "SkeletalMeshComponent", nullptr, (EPropertyFlags)0x01240800000a0009, UECodeGen_Private::EPropertyGenFlags::Object | UECodeGen_Private::EPropertyGenFlags::ObjectPtr, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AMonster, SkeletalMeshComponent), Z_Construct_UClass_USkeletalMeshComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_SkeletalMeshComponent_MetaData), NewProp_SkeletalMeshComponent_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AMonster_Statics::NewProp_MovementComponent = { "MovementComponent", nullptr, (EPropertyFlags)0x00200800000a0009, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AMonster, MovementComponent), Z_Construct_UClass_UFloatingPawnMovement_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_MovementComponent_MetaData), NewProp_MovementComponent_MetaData) };
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_AMonster_Statics::NewProp_DataTableRowHandle = { "DataTableRowHandle", nullptr, (EPropertyFlags)0x0020080000000001, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AMonster, DataTableRowHandle), Z_Construct_UScriptStruct_FDataTableRowHandle, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_DataTableRowHandle_MetaData), NewProp_DataTableRowHandle_MetaData) }; // 1360917958
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AMonster_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AMonster_Statics::NewProp_CollisionComponent,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AMonster_Statics::NewProp_SkeletalMeshComponent,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AMonster_Statics::NewProp_MovementComponent,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AMonster_Statics::NewProp_DataTableRowHandle,
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_AMonster_Statics::PropPointers) < 2048);
 UObject* (*const Z_Construct_UClass_AMonster_Statics::DependentSingletons[])() = {
@@ -253,10 +256,10 @@ struct Z_CompiledInDeferFile_FID_Minhyeok_DreamingIsland_DreamingIsland_Source_D
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
 		{ Z_Construct_UClass_UMonsterDataAsset, UMonsterDataAsset::StaticClass, TEXT("UMonsterDataAsset"), &Z_Registration_Info_UClass_UMonsterDataAsset, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UMonsterDataAsset), 323215599U) },
-		{ Z_Construct_UClass_AMonster, AMonster::StaticClass, TEXT("AMonster"), &Z_Registration_Info_UClass_AMonster, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AMonster), 2046080733U) },
+		{ Z_Construct_UClass_AMonster, AMonster::StaticClass, TEXT("AMonster"), &Z_Registration_Info_UClass_AMonster, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AMonster), 854241314U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Actors_Monster_h_3041932247(TEXT("/Script/DreamingIsland"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Actors_Monster_h_3073855502(TEXT("/Script/DreamingIsland"),
 	Z_CompiledInDeferFile_FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Actors_Monster_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Actors_Monster_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

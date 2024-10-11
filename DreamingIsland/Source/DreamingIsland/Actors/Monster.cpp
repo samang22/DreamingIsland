@@ -7,6 +7,7 @@
 #include "Components/SphereComponent.h"
 #include "Components/BoxComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Data/PawnTableRow.h"
 //#include "Components/StatusComponent.h"
 //#include "Misc/Utils.h"
 
@@ -22,34 +23,89 @@ AMonster::AMonster(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+	PrimaryActorTick.bCanEverTick = true;
 
-
-	SkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshComponent"));
-
-	SkeletalMeshComponent->SetupAttachment(RootComponent);
-	SkeletalMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	//RootComponent = CollisionComponent;
 
 	MovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("MovementComponent"));
 	//StatusComponent = CreateDefaultSubobject<UStatusComponent>(TEXT("StatusComponent"));
+
+
+
+	CollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("CollisionComponent"));
+	//CollisionComponent->RegisterComponent();
+	//CollisionComponent->SetCollisionProfileName(CollisionProfileName::Monster);
+	CollisionComponent->SetCanEverAffectNavigation(false);
+	RootComponent = CollisionComponent;
+
+
+	SkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshComponent"));
+	SkeletalMeshComponent->SetupAttachment(RootComponent);
+	SkeletalMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+
 }
+
+void AMonster::SetData(const FDataTableRowHandle& InDataTableRowHandle)
+{
+	DataTableRowHandle = InDataTableRowHandle;
+	if (DataTableRowHandle.IsNull()) { return; }
+	FPawnTableRow* Data = DataTableRowHandle.GetRow<FPawnTableRow>(TEXT("Character"));
+	if (!Data) { ensure(false); return; }
+	MonsterData = Data;
+
+	MovementComponent->MaxSpeed = MonsterData->MovementMaxSpeed;
+
+	MonsterData = Data;
+	if (IsValid(CollisionComponent))
+	{
+		USphereComponent* SphereComponent = Cast<USphereComponent>(CollisionComponent);
+		SphereComponent->SetSphereRadius(MonsterData->CollisionSphereRadius);
+	}
+
+	SkeletalMeshComponent->SetSkeletalMesh(MonsterData->SkeletalMesh);
+	SkeletalMeshComponent->SetAnimClass(MonsterData->AnimClass);
+	SkeletalMeshComponent->SetRelativeTransform(MonsterData->MeshTransform);
+}
+
+
 
 void AMonster::PostLoad()
 {
+	Super::PostLoad();
 }
 
 // Called when the game starts or when spawned
 void AMonster::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	SetData(DataTableRowHandle);
+
 }
 
 void AMonster::PostLoadSubobjects(FObjectInstancingGraph* OuterInstanceGraph)
 {
+	Super::PostLoadSubobjects(OuterInstanceGraph);
 }
 
 void AMonster::OnConstruction(const FTransform& Transform)
 {
+	Super::OnConstruction(Transform);
+	SetData(DataTableRowHandle);
+	SetActorTransform(Transform);
+}
+
+void AMonster::PostDuplicate(EDuplicateMode::Type DuplicateMode)
+{
+	Super::PostDuplicate(DuplicateMode);
+
+	if (DuplicateMode == EDuplicateMode::Normal)
+	{
+		FTransform Backup = GetActorTransform();
+		CollisionComponent->DestroyComponent();
+		SetData(DataTableRowHandle);
+		SetActorTransform(Backup);
+	}
 }
 
 // Called every frame

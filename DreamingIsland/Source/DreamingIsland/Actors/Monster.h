@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "GameFramework/Pawn.h"
+#include "Data/PawnTableRow.h"
 #include "Monster.generated.h"
 
 
@@ -31,7 +32,7 @@ public:
 
 class UFloatingPawnMovement;
 class UStatusComponent;
-//class FDataTableRowHandle;
+
 UCLASS()
 class DREAMINGISLAND_API AMonster : public APawn
 {
@@ -39,10 +40,12 @@ class DREAMINGISLAND_API AMonster : public APawn
 	
 public:
 	// Sets default values for this pawn's properties
+	//AMonster();
 	AMonster(const FObjectInitializer& ObjectInitializer);
-	//virtual void SetData(const FDataTableRowHandle& InDataTableRowHandle);
+	virtual void SetData(const FDataTableRowHandle& InDataTableRowHandle);
 
 protected:
+	virtual void PostDuplicate(EDuplicateMode::Type DuplicateMode) override;
 	virtual void PostLoad() override;
 	virtual void PostLoadSubobjects(FObjectInstancingGraph* OuterInstanceGraph) override;
 	// Called when the game starts or when spawned
@@ -75,10 +78,11 @@ protected:
 	//UStatusComponent* StatusComponent;
 
 protected:
-	//UPROPERTY(EditAnywhere)
-	//FDataTableRowHandle DataTableRowHandle;
+	UPROPERTY(EditAnywhere)
+	FDataTableRowHandle DataTableRowHandle;
+	FPawnTableRow* MonsterData;
 
-	//FPawnTableRow* EnemyData;
 
-	UAnimMontage* CurrentDieMontage;
+//protected:
+//	UAnimMontage* CurrentDieMontage;
 };

@@ -48,6 +48,15 @@
     <ClInclude Include="..\..\Source\DreamingIsland\Actors\Monster.h">
       <Filter>Source\DreamingIsland\Actors</Filter>
     </ClInclude>
+    <Filter Include="Source\DreamingIsland\Actors\Monsters">
+      <UniqueIdentifier>{38D4AB17-1BBE-336C-8A3F-CC7653A21B9A}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\DreamingIsland\Actors\Monsters\Albatoss.cpp">
+      <Filter>Source\DreamingIsland\Actors\Monsters</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\DreamingIsland\Actors\Monsters\Albatoss.h">
+      <Filter>Source\DreamingIsland\Actors\Monsters</Filter>
+    </ClInclude>
     <Filter Include="Source\DreamingIsland\Animation">
       <UniqueIdentifier>{8EB68A1D-EF46-333E-9E38-1713588341BD}</UniqueIdentifier>
     </Filter>

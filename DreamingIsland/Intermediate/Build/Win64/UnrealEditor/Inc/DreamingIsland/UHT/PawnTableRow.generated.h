@@ -14,7 +14,7 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 #endif
 #define DREAMINGISLAND_PawnTableRow_generated_h
 
-#define FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Data_PawnTableRow_h_13_GENERATED_BODY \
+#define FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Data_PawnTableRow_h_17_GENERATED_BODY \
 	friend struct Z_Construct_UScriptStruct_FPawnTableRow_Statics; \
 	static class UScriptStruct* StaticStruct(); \
 	typedef FTableRowBase Super;

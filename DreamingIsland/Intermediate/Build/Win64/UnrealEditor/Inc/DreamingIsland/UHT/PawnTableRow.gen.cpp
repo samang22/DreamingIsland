@@ -41,25 +41,22 @@ struct Z_Construct_UScriptStruct_FPawnTableRow_Statics
 {
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Struct_MetaDataParams[] = {
-#if !UE_BUILD_SHIPPING
-		{ "Comment", "/**\n * \n */" },
-#endif
 		{ "ModuleRelativePath", "Data/PawnTableRow.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_SkeletalMesh_MetaData[] = {
-		{ "Category", "Enemy" },
+		{ "Category", "Monster" },
 		{ "ModuleRelativePath", "Data/PawnTableRow.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_MeshTransform_MetaData[] = {
-		{ "Category", "Enemy" },
+		{ "Category", "Monster" },
 		{ "ModuleRelativePath", "Data/PawnTableRow.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_AnimClass_MetaData[] = {
-		{ "Category", "Enemy|Animation" },
+		{ "Category", "Monster|Animation" },
 		{ "ModuleRelativePath", "Data/PawnTableRow.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_CollisionClass_MetaData[] = {
-		{ "Category", "Enemy|Collision" },
+		{ "Category", "Monster|Collision" },
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "/* = USphereComponent::StaticClass()*/" },
 #endif
@@ -69,23 +66,33 @@ struct Z_Construct_UScriptStruct_FPawnTableRow_Statics
 #endif
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_CollisionSphereRadius_MetaData[] = {
-		{ "Category", "Enemy|Collision" },
+		{ "Category", "Monster|Collision" },
 		{ "ModuleRelativePath", "Data/PawnTableRow.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_CollisionBoxExtent_MetaData[] = {
-		{ "Category", "Enemy|Collision" },
+		{ "Category", "Monster|Collision" },
 		{ "ModuleRelativePath", "Data/PawnTableRow.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_CollisionCapsuleRadius_MetaData[] = {
-		{ "Category", "Enemy|Collision" },
+		{ "Category", "Monster|Collision" },
 		{ "ModuleRelativePath", "Data/PawnTableRow.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_CollisionCapsuleHalfHeight_MetaData[] = {
-		{ "Category", "Enemy|Collision" },
+		{ "Category", "Monster|Collision" },
 		{ "ModuleRelativePath", "Data/PawnTableRow.h" },
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_MovementMaxSpeed_MetaData[] = {
+		{ "Category", "Monster|Movement" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// Movement\n" },
+#endif
+		{ "ModuleRelativePath", "Data/PawnTableRow.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Movement" },
+#endif
+	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_HitReactMontage_MetaData[] = {
-		{ "Category", "Enemy|Animation" },
+		{ "Category", "Monster|Animation" },
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "// Animation\n" },
 #endif
@@ -95,7 +102,7 @@ struct Z_Construct_UScriptStruct_FPawnTableRow_Statics
 #endif
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_DieMontage_MetaData[] = {
-		{ "Category", "Enemy|Animation" },
+		{ "Category", "Monster|Animation" },
 		{ "ModuleRelativePath", "Data/PawnTableRow.h" },
 	};
 #endif // WITH_METADATA
@@ -107,6 +114,7 @@ struct Z_Construct_UScriptStruct_FPawnTableRow_Statics
 	static const UECodeGen_Private::FStructPropertyParams NewProp_CollisionBoxExtent;
 	static const UECodeGen_Private::FFloatPropertyParams NewProp_CollisionCapsuleRadius;
 	static const UECodeGen_Private::FFloatPropertyParams NewProp_CollisionCapsuleHalfHeight;
+	static const UECodeGen_Private::FFloatPropertyParams NewProp_MovementMaxSpeed;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_HitReactMontage_Inner;
 	static const UECodeGen_Private::FArrayPropertyParams NewProp_HitReactMontage;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_DieMontage_Inner;
@@ -126,6 +134,7 @@ const UECodeGen_Private::FFloatPropertyParams Z_Construct_UScriptStruct_FPawnTab
 const UECodeGen_Private::FStructPropertyParams Z_Construct_UScriptStruct_FPawnTableRow_Statics::NewProp_CollisionBoxExtent = { "CollisionBoxExtent", nullptr, (EPropertyFlags)0x0010000000000001, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FPawnTableRow, CollisionBoxExtent), Z_Construct_UScriptStruct_FVector, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CollisionBoxExtent_MetaData), NewProp_CollisionBoxExtent_MetaData) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UScriptStruct_FPawnTableRow_Statics::NewProp_CollisionCapsuleRadius = { "CollisionCapsuleRadius", nullptr, (EPropertyFlags)0x0010000000000001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FPawnTableRow, CollisionCapsuleRadius), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CollisionCapsuleRadius_MetaData), NewProp_CollisionCapsuleRadius_MetaData) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UScriptStruct_FPawnTableRow_Statics::NewProp_CollisionCapsuleHalfHeight = { "CollisionCapsuleHalfHeight", nullptr, (EPropertyFlags)0x0010000000000001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FPawnTableRow, CollisionCapsuleHalfHeight), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CollisionCapsuleHalfHeight_MetaData), NewProp_CollisionCapsuleHalfHeight_MetaData) };
+const UECodeGen_Private::FFloatPropertyParams Z_Construct_UScriptStruct_FPawnTableRow_Statics::NewProp_MovementMaxSpeed = { "MovementMaxSpeed", nullptr, (EPropertyFlags)0x0010000000000001, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FPawnTableRow, MovementMaxSpeed), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_MovementMaxSpeed_MetaData), NewProp_MovementMaxSpeed_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UScriptStruct_FPawnTableRow_Statics::NewProp_HitReactMontage_Inner = { "HitReactMontage", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UClass_UAnimMontage_NoRegister, METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FArrayPropertyParams Z_Construct_UScriptStruct_FPawnTableRow_Statics::NewProp_HitReactMontage = { "HitReactMontage", nullptr, (EPropertyFlags)0x0010000000000001, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FPawnTableRow, HitReactMontage), EArrayPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_HitReactMontage_MetaData), NewProp_HitReactMontage_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UScriptStruct_FPawnTableRow_Statics::NewProp_DieMontage_Inner = { "DieMontage", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UClass_UAnimMontage_NoRegister, METADATA_PARAMS(0, nullptr) };
@@ -139,6 +148,7 @@ const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UScriptStruct_FP
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FPawnTableRow_Statics::NewProp_CollisionBoxExtent,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FPawnTableRow_Statics::NewProp_CollisionCapsuleRadius,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FPawnTableRow_Statics::NewProp_CollisionCapsuleHalfHeight,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FPawnTableRow_Statics::NewProp_MovementMaxSpeed,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FPawnTableRow_Statics::NewProp_HitReactMontage_Inner,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FPawnTableRow_Statics::NewProp_HitReactMontage,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FPawnTableRow_Statics::NewProp_DieMontage_Inner,
@@ -172,10 +182,10 @@ UScriptStruct* Z_Construct_UScriptStruct_FPawnTableRow()
 struct Z_CompiledInDeferFile_FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Data_PawnTableRow_h_Statics
 {
 	static constexpr FStructRegisterCompiledInInfo ScriptStructInfo[] = {
-		{ FPawnTableRow::StaticStruct, Z_Construct_UScriptStruct_FPawnTableRow_Statics::NewStructOps, TEXT("PawnTableRow"), &Z_Registration_Info_UScriptStruct_PawnTableRow, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FPawnTableRow), 664076152U) },
+		{ FPawnTableRow::StaticStruct, Z_Construct_UScriptStruct_FPawnTableRow_Statics::NewStructOps, TEXT("PawnTableRow"), &Z_Registration_Info_UScriptStruct_PawnTableRow, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FPawnTableRow), 3395364850U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Data_PawnTableRow_h_3119217004(TEXT("/Script/DreamingIsland"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Data_PawnTableRow_h_2556153443(TEXT("/Script/DreamingIsland"),
 	nullptr, 0,
 	Z_CompiledInDeferFile_FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Data_PawnTableRow_h_Statics::ScriptStructInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Minhyeok_DreamingIsland_DreamingIsland_Source_DreamingIsland_Data_PawnTableRow_h_Statics::ScriptStructInfo),
 	nullptr, 0);
