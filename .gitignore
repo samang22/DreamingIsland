@@ -364,8 +364,8 @@ FodyWeavers.xsd
 
 vcpkg_installed/
 
-KDT3D/Intermediate/
-KDT3D/Saved/
-KDT3D/Binaries/
-KDT3D/Build/
-KDT3D/KDT3D.sln
+DreamingIsland/Intermediate/
+DreamingIsland/Saved/
+DreamingIsland/Binaries/
+DreamingIsland/Build/
+DreamingIsland/DreamingIsland.sln
