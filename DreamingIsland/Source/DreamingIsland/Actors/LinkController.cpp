@@ -7,6 +7,7 @@
 #include "GameFramework/Character.h"
 #include "Components/SoftWheelSpringArmComponent.h"
 #include "Components/LinkStatusComponent.h"
+#include "Actors/LinkCameraManager.h"
 
 
 ALinkController::ALinkController()
@@ -18,7 +19,7 @@ ALinkController::ALinkController()
 
 		IMC_Default = Asset.Object;
 	}
-	//PlayerCameraManagerClass = ABasicPlayerCameraManager::StaticClass();
+	PlayerCameraManagerClass = ALinkCameraManager::StaticClass();
 }
 
 void ALinkController::BeginPlay()

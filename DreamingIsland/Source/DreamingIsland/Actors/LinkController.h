@@ -39,6 +39,7 @@ protected:
 	void OnZoomWheel(const FInputActionValue& InputActionValue);
 
 protected:
+	UPROPERTY()
 	UInputMappingContext* IMC_Default = nullptr;
 
 	UPROPERTY(BlueprintReadWrite)

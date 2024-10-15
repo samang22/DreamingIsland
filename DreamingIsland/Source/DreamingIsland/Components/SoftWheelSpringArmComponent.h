@@ -6,6 +6,8 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "SoftWheelSpringArmComponent.generated.h"
 
+#define MIN_TARGET_ARM_LENGTH		300.f
+#define MAX_TARGET_ARM_LENGTH		800.f
 /**
  * 
  */
@@ -35,8 +37,8 @@ protected:
 	void UpdateDesiredTargetArmLength(const float DeltaTime);
 
 protected:
-	float MinTargetArmLength = 300.f;
-	float MaxTargetArmLength = 800.f;
+	float MinTargetArmLength = MIN_TARGET_ARM_LENGTH;
+	float MaxTargetArmLength = MAX_TARGET_ARM_LENGTH;
 
 	float DesiredTargetArmLength = TargetArmLength;
 
