@@ -6,7 +6,6 @@
 ULinkStatusComponent::ULinkStatusComponent()
 {
 	SetOnAnimationStatus(LINK_BIT_WAIT);
-	RunCoefficient = LINK_RUN_COEFFICIENT;
 }
 
 void ULinkStatusComponent::SetOnAnimationStatus(uint8 InBit)

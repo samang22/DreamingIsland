@@ -15,7 +15,7 @@ void ULinkAnimInstance::NativeInitializeAnimation()
 	APawn* Pawn = TryGetPawnOwner();
 	if (GIsEditor && FApp::IsGame() && !Pawn)
 	{
-		checkf(false, TEXT("UBaisicCharacterAnimInstance를 사용하려면 소유권자가 Pawn이여야 합니다."));
+		checkf(false, TEXT("ULinkAnimInstance를 사용하려면 소유권자가 Pawn이여야 합니다."));
 		return;
 	}
 	else if (!Pawn) { return; }
@@ -36,11 +36,11 @@ void ULinkAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 	Speed = UKismetMathLibrary::VSizeXY(MovementComponent->Velocity);
 
-	isWait = StatusComponent->GetAnimStatus(LINK_BIT_WAIT);
-	isWalk = StatusComponent->GetAnimStatus(LINK_BIT_WALK);
-	isRun = StatusComponent->GetAnimStatus(LINK_BIT_RUN);
-	isSlash = StatusComponent->GetAnimStatus(LINK_BIT_SLASH);
-	isSlashHold = StatusComponent->GetAnimStatus(LINK_BIT_SLASHHOLD);
-	isDeath = StatusComponent->GetAnimStatus(LINK_BIT_DEATH);
+	bIsWait = StatusComponent->GetAnimStatus(LINK_BIT_WAIT);
+	bIsWalk = StatusComponent->GetAnimStatus(LINK_BIT_WALK);
+	bIsRun = StatusComponent->GetAnimStatus(LINK_BIT_RUN);
+	bIsSlash = StatusComponent->GetAnimStatus(LINK_BIT_SLASH);
+	bIsSlashHold = StatusComponent->GetAnimStatus(LINK_BIT_SLASHHOLD);
+	bIsDeath = StatusComponent->GetAnimStatus(LINK_BIT_DEATH);
 }
 

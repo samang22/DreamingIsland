@@ -8,6 +8,7 @@
 #include "Components/SoftWheelSpringArmComponent.h"
 #include "Components/LinkStatusComponent.h"
 #include "Actors/LinkCameraManager.h"
+#include "Actors/Link.h"
 
 
 ALinkController::ALinkController()
@@ -101,8 +102,8 @@ void ALinkController::OnWalk(const FInputActionValue& InputActionValue)
 	APawn* ControlledPawn = GetPawn();
 	if (bRun)
 	{
-		ControlledPawn->AddMovementInput(ForwardVector, ActionValue.X * StatusComponent->GetRunCoefficient());
-		ControlledPawn->AddMovementInput(RightVector, ActionValue.Y * StatusComponent->GetRunCoefficient());
+		ControlledPawn->AddMovementInput(ForwardVector, ActionValue.X);
+		ControlledPawn->AddMovementInput(RightVector, ActionValue.Y);
 	}
 	else
 	{
@@ -120,12 +121,14 @@ void ALinkController::OnRun(const FInputActionValue& InputActionValue)
 {
 	bRun = true;
 	StatusComponent->SetOnAnimationStatus(LINK_BIT_RUN);
+	Cast<ALink>(GetPawn())->SetSpeedRun();
 }
 
 void ALinkController::OnRunOff(const FInputActionValue& InputActionValue)
 {
 	bRun = false;
 	StatusComponent->SetOffAnimationStatus(LINK_BIT_RUN);
+	Cast<ALink>(GetPawn())->SetSpeedWalk();
 }
 
 void ALinkController::OnAttack(const FInputActionValue& InputActionValue)

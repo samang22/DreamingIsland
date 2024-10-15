@@ -46,9 +46,12 @@ protected:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	TObjectPtr<class UCameraComponent> Camera;
 
-
 protected:
 	UAnimMontage* CurrentDieMontage;
+
+public:
+	void SetSpeedWalk();
+	void SetSpeedRun();
 
 public:
 	const class ULinkStatusComponent* GetStatusComponent() const;

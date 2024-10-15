@@ -31,17 +31,17 @@ protected:
 
 protected:
 	UPROPERTY(BlueprintReadOnly)
-	bool isWait = true;
+	bool bIsWait = true;
 	UPROPERTY(BlueprintReadOnly)
-	bool isWalk = false;
+	bool bIsWalk = false;
 	UPROPERTY(BlueprintReadOnly)
-	bool isRun = false;
+	bool bIsRun = false;
 	UPROPERTY(BlueprintReadOnly)
-	bool isSlash = false;
+	bool bIsSlash = false;
 	UPROPERTY(BlueprintReadOnly)
-	bool isSlashHold = false;
+	bool bIsSlashHold = false;
 	UPROPERTY(BlueprintReadOnly)
-	bool isDeath = false;
+	bool bIsDeath = false;
 
 
 };

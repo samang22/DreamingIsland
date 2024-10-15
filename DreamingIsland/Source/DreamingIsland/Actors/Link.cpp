@@ -11,11 +11,11 @@
 #include "Components/LinkStatusComponent.h"
 
 
-#define PROBE_SIZE				5.0
-#define MIN_TARGET_ARM_LENGTH	200.f
+#define PROBE_SIZE					5.0
+#define MIN_TARGET_ARM_LENGTH		200.f
 
-#define MAX_SPEED				200.f
-
+#define LINK_WALK_SPEED				100.f
+#define LINK_RUN_SPEED				300.f
 
 // Sets default values
 ALink::ALink(const FObjectInitializer& ObjectInitializer)
@@ -47,7 +47,7 @@ ALink::ALink(const FObjectInitializer& ObjectInitializer)
 		//Movement->RotationRate = CharacterData->RotationRate;
 		Movement->bOrientRotationToMovement = true;
 		//Movement->GetNavAgentPropertiesRef().bCanCrouch = true;
-		Movement->MaxWalkSpeed = MAX_SPEED;
+		Movement->MaxWalkSpeed = LINK_WALK_SPEED;
 		//Movement->SetCrouchedHalfHeight(NewCapsuleHalfHeight);
 		Movement->bCanWalkOffLedges = false;
 	}
@@ -86,6 +86,18 @@ void ALink::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 float ALink::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	return 0.0f;
+}
+
+void ALink::SetSpeedWalk()
+{
+	UCharacterMovementComponent* Movement = GetCharacterMovement();
+	Movement->MaxWalkSpeed = LINK_WALK_SPEED;
+}
+
+void ALink::SetSpeedRun()
+{
+	UCharacterMovementComponent* Movement = GetCharacterMovement();
+	Movement->MaxWalkSpeed = LINK_RUN_SPEED;
 }
 
 const ULinkStatusComponent* ALink::GetStatusComponent() const
