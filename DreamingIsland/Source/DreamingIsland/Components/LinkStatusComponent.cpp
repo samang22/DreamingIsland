@@ -5,35 +5,36 @@
 
 ULinkStatusComponent::ULinkStatusComponent()
 {
-	SetOnLinkAnimationStatus(LINK_BIT_WAIT);
+	SetOnAnimationStatus(LINK_BIT_WAIT);
+	RunCoefficient = LINK_RUN_COEFFICIENT;
 }
 
-void ULinkStatusComponent::SetOnLinkAnimationStatus(uint8 InBit)
+void ULinkStatusComponent::SetOnAnimationStatus(uint8 InBit)
 {
 	LinkAnimationStatus |= InBit;
 }
 
-void ULinkStatusComponent::SetOffLinkAnimationStatus(uint8 InBit)
+void ULinkStatusComponent::SetOffAnimationStatus(uint8 InBit)
 {
 	LinkAnimationStatus &= ~(InBit);
 }
 
-void ULinkStatusComponent::SetOnLinkToolOwnStatus(uint8 InBit)
+void ULinkStatusComponent::SetOnToolOwnStatus(uint8 InBit)
 {
 	LinkToolOwnStatus |= InBit;
 }
 
-void ULinkStatusComponent::SetOffLinkToolOwnStatus(uint8 InBit)
+void ULinkStatusComponent::SetOffToolOwnStatus(uint8 InBit)
 {
 	LinkToolOwnStatus &= ~(InBit);
 }
 
-void ULinkStatusComponent::SetOnLinkToolEqupStatus(uint8 InBit)
+void ULinkStatusComponent::SetOnToolEqupStatus(uint8 InBit)
 {
 	LinkToolEquipStatus |= InBit;
 }
 
-void ULinkStatusComponent::SetOffLinkToolEquipStatus(uint8 InBit)
+void ULinkStatusComponent::SetOffToolEquipStatus(uint8 InBit)
 {
 	LinkToolEquipStatus &= ~(InBit);
 }

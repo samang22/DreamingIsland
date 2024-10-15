@@ -6,6 +6,8 @@
 #include "Components/StatusComponent.h"
 #include "LinkStatusComponent.generated.h"
 
+#define LINK_RUN_COEFFICIENT	1.5f
+
 #define	LINK_BIT_WAIT			0x00000001
 #define	LINK_BIT_WALK			0x00000002
 #define	LINK_BIT_RUN			0x00000004
@@ -34,25 +36,28 @@ public:
 protected:
 	UPROPERTY()
 	uint8 LinkAnimationStatus;
-
 	UPROPERTY()
 	uint8 LinkToolOwnStatus;
-
 	UPROPERTY()
 	uint8 LinkToolEquipStatus;
 
-
 protected:
-	void SetOnLinkAnimationStatus(uint8 InBit);
-	void SetOffLinkAnimationStatus(uint8 InBit);
+	float RunCoefficient;
 
-protected:
-	void SetOnLinkToolOwnStatus(uint8 InBit);
-	void SetOffLinkToolOwnStatus(uint8 InBit);
+public:
+	float GetRunCoefficient() { return RunCoefficient; }
 
-protected:
-	void SetOnLinkToolEqupStatus(uint8 InBit);
-	void SetOffLinkToolEquipStatus(uint8 InBit);
+public:
+	void SetOnAnimationStatus(uint8 InBit);
+	void SetOffAnimationStatus(uint8 InBit);
+
+public:
+	void SetOnToolOwnStatus(uint8 InBit);
+	void SetOffToolOwnStatus(uint8 InBit);
+
+public:
+	void SetOnToolEqupStatus(uint8 InBit);
+	void SetOffToolEquipStatus(uint8 InBit);
 
 
 public:

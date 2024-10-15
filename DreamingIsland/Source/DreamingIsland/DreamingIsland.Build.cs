@@ -8,7 +8,12 @@ public class DreamingIsland : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput" });
+		PublicDependencyModuleNames.AddRange(
+            new string[] 
+            { 
+                "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput",
+                "UMG", "MoviePlayer", "AIModule"
+            });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
