@@ -18,32 +18,37 @@ void ULinkStatusComponent::SetOffLinkAnimationStatus(uint8 InBit)
 	LinkAnimationStatus &= ~(InBit);
 }
 
-bool ULinkStatusComponent::GetIsWait() const
+void ULinkStatusComponent::SetOnLinkToolOwnStatus(uint8 InBit)
 {
-	return LinkAnimationStatus & LINK_BIT_WAIT;
+	LinkToolOwnStatus |= InBit;
 }
 
-bool ULinkStatusComponent::GetIsWalk() const
+void ULinkStatusComponent::SetOffLinkToolOwnStatus(uint8 InBit)
 {
-	return LinkAnimationStatus & LINK_BIT_WALK;
+	LinkToolOwnStatus &= ~(InBit);
 }
 
-bool ULinkStatusComponent::GetIsRun() const
+void ULinkStatusComponent::SetOnLinkToolEqupStatus(uint8 InBit)
 {
-	return LinkAnimationStatus & LINK_BIT_RUN;
+	LinkToolEquipStatus |= InBit;
 }
 
-bool ULinkStatusComponent::GetIsSlash() const
+void ULinkStatusComponent::SetOffLinkToolEquipStatus(uint8 InBit)
 {
-	return LinkAnimationStatus & LINK_BIT_SLASH;
+	LinkToolEquipStatus &= ~(InBit);
 }
 
-bool ULinkStatusComponent::GetIsSlashHold() const
+bool ULinkStatusComponent::GetAnimStatus(uint8 InBit) const
 {
-	return LinkAnimationStatus & LINK_BIT_SLASH_HOLD;
+	return LinkAnimationStatus & InBit;
 }
 
-bool ULinkStatusComponent::GetIsDeath() const
+bool ULinkStatusComponent::GetToolOwnStatus(uint8 InBit) const
 {
-	return LinkAnimationStatus & LINK_BIT_DEATH;
+	return LinkToolOwnStatus & InBit;
+}
+
+bool ULinkStatusComponent::GetToolEquipStatus(uint8 InBit) const
+{
+	return LinkToolEquipStatus & InBit;
 }

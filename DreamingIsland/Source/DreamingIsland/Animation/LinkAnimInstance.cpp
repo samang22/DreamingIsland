@@ -36,13 +36,11 @@ void ULinkAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 	Speed = UKismetMathLibrary::VSizeXY(MovementComponent->Velocity);
 
-	isWait = StatusComponent->GetIsWait();
-	isWalk = StatusComponent->GetIsWalk();
-	isRun = StatusComponent->GetIsRun();
-	isSlash = StatusComponent->GetIsSlash();
-	isSlashHold = StatusComponent->GetIsSlashHold();
-	isDeath = StatusComponent->GetIsDeath();
-
-
+	isWait = StatusComponent->GetAnimStatus(LINK_BIT_WAIT);
+	isWalk = StatusComponent->GetAnimStatus(LINK_BIT_WALK);
+	isRun = StatusComponent->GetAnimStatus(LINK_BIT_RUN);
+	isSlash = StatusComponent->GetAnimStatus(LINK_BIT_SLASH);
+	isSlashHold = StatusComponent->GetAnimStatus(LINK_BIT_SLASHHOLD);
+	isDeath = StatusComponent->GetAnimStatus(LINK_BIT_DEATH);
 }
 

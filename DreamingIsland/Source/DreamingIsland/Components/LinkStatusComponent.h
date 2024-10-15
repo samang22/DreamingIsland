@@ -11,9 +11,13 @@
 #define	LINK_BIT_RUN			0x00000004
 #define	LINK_BIT_DEATH			0x00000008
 #define	LINK_BIT_SLASH			0x00000016
-#define	LINK_BIT_SLASH_HOLD		0x00000032
+#define	LINK_BIT_SLASHHOLD		0x00000032
 
-
+#define LINK_BIT_SWORD			0x00000001
+#define LINK_BIT_SHIELD			0x00000002
+#define LINK_BIT_MIRRORSHIELD	0x00000004
+#define LINK_BIT_FLIPPER		0x00000008
+#define LINK_BIT_OCARINA		0x00000016
 
 
 /**
@@ -31,22 +35,32 @@ protected:
 	UPROPERTY()
 	uint8 LinkAnimationStatus;
 
+	UPROPERTY()
+	uint8 LinkToolOwnStatus;
+
+	UPROPERTY()
+	uint8 LinkToolEquipStatus;
+
+
 protected:
 	void SetOnLinkAnimationStatus(uint8 InBit);
 	void SetOffLinkAnimationStatus(uint8 InBit);
 
+protected:
+	void SetOnLinkToolOwnStatus(uint8 InBit);
+	void SetOffLinkToolOwnStatus(uint8 InBit);
+
+protected:
+	void SetOnLinkToolEqupStatus(uint8 InBit);
+	void SetOffLinkToolEquipStatus(uint8 InBit);
+
+
 public:
 	UFUNCTION()
-	bool GetIsWait() const;
+	bool GetAnimStatus(uint8 InBit) const;
 	UFUNCTION()
-	bool GetIsWalk() const;
+	bool GetToolOwnStatus(uint8 InBit) const;
 	UFUNCTION()
-	bool GetIsRun() const;
-	UFUNCTION()
-	bool GetIsSlash() const;
-	UFUNCTION()
-	bool GetIsSlashHold() const;
-	UFUNCTION()
-	bool GetIsDeath() const;
+	bool GetToolEquipStatus(uint8 InBit) const;
 
 };

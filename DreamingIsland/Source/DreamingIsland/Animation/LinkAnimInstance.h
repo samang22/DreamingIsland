@@ -42,4 +42,6 @@ protected:
 	bool isSlashHold = false;
 	UPROPERTY(BlueprintReadOnly)
 	bool isDeath = false;
+
+
 };
