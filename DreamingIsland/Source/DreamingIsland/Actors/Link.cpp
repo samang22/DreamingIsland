@@ -8,7 +8,14 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SoftWheelSpringArmComponent.h"
-#include "Components/StatusComponent.h"
+#include "Components/LinkStatusComponent.h"
+
+
+#define PROBE_SIZE				5.0
+#define MIN_TARGET_ARM_LENGTH	200.f
+
+#define MAX_SPEED				200.f
+
 
 // Sets default values
 ALink::ALink(const FObjectInitializer& ObjectInitializer)
@@ -19,24 +26,31 @@ ALink::ALink(const FObjectInitializer& ObjectInitializer)
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	{
 		SpringArm->SetupAttachment(GetMesh());
-		SpringArm->ProbeSize = 5.0;
+		SpringArm->ProbeSize = PROBE_SIZE;
 		SpringArm->bUsePawnControlRotation = true;
 		SpringArm->bInheritRoll = false;
-		SpringArm->SetMinMaxTargetArmLength(200.f, SpringArm->GetMaxTargetArmLength());
+		SpringArm->SetMinMaxTargetArmLength(MIN_TARGET_ARM_LENGTH, SpringArm->GetMaxTargetArmLength());
 	}
 	Camera->SetupAttachment(SpringArm);
 
 	bUseControllerRotationYaw = false;
 
-	UCharacterMovementComponent* Movement = GetCharacterMovement();
-	Movement->bCanWalkOffLedges = false;
-	const FRotator Rotation = FRotator(0., 90.0, 0.);
+	const FRotator Rotation = FRotator(0., 0., 0.);
 	const FVector Translation = FVector(0., 0., 90.0);
 	FTransform SpringArmTransform = FTransform(Rotation, Translation, FVector::OneVector);
 	SpringArm->SetRelativeTransform(SpringArmTransform);
 
-	StatusComponent = CreateDefaultSubobject<UStatusComponent>(TEXT("StatusComponent"));
+	StatusComponent = CreateDefaultSubobject<ULinkStatusComponent>(TEXT("StatusComponent"));
 
+	{
+		UCharacterMovementComponent* Movement = GetCharacterMovement();
+		//Movement->RotationRate = CharacterData->RotationRate;
+		Movement->bOrientRotationToMovement = true;
+		//Movement->GetNavAgentPropertiesRef().bCanCrouch = true;
+		Movement->MaxWalkSpeed = MAX_SPEED;
+		//Movement->SetCrouchedHalfHeight(NewCapsuleHalfHeight);
+		Movement->bCanWalkOffLedges = false;
+	}
 }
 
 void ALink::OnDie()
@@ -72,5 +86,10 @@ void ALink::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 float ALink::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	return 0.0f;
+}
+
+const ULinkStatusComponent* ALink::GetStatusComponent() const
+{
+	return dynamic_cast<ULinkStatusComponent*>(StatusComponent);
 }
 

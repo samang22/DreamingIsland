@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "Link.generated.h"
 
+class UStatusComponent;
 UCLASS()
 class DREAMINGISLAND_API ALink : public ACharacter
 {
@@ -39,7 +40,7 @@ protected:
 	TObjectPtr<class USoftWheelSpringArmComponent> SpringArm;
 
 	UPROPERTY(VisibleAnywhere)
-	class UStatusComponent* StatusComponent;
+	UStatusComponent* StatusComponent;
 
 	/** Please add a variable description */
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
@@ -48,4 +49,7 @@ protected:
 
 protected:
 	UAnimMontage* CurrentDieMontage;
+
+public:
+	const class ULinkStatusComponent* GetStatusComponent() const;
 };
