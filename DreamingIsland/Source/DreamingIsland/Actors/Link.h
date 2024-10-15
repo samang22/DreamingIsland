@@ -47,7 +47,7 @@ protected:
 	TObjectPtr<class UCameraComponent> Camera;
 
 protected:
-	UAnimMontage* CurrentDieMontage;
+	UAnimMontage* AttackMontage;
 
 public:
 	void SetSpeedWalk();

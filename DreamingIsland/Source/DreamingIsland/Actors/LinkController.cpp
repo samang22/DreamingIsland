@@ -58,6 +58,15 @@ void ALinkController::SetupInputComponent()
 		UE_LOG(LogTemp, Warning, TEXT("IA_Run is disabled"));
 	}
 
+	if (const UInputAction* InputAction = FUtils::GetInputActionFromName(IMC_Default, TEXT("IA_Attack")))
+	{
+		EnhancedInputComponent->BindAction(InputAction, ETriggerEvent::Triggered, this, &ThisClass::OnAttack);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("IA_Attack is disabled"));
+	}
+
 	if (const UInputAction* InputAction = FUtils::GetInputActionFromName(IMC_Default, TEXT("IA_Interact")))
 	{
 		EnhancedInputComponent->BindAction(InputAction, ETriggerEvent::Triggered, this, &ThisClass::OnInteract);
@@ -133,6 +142,8 @@ void ALinkController::OnRunOff(const FInputActionValue& InputActionValue)
 
 void ALinkController::OnAttack(const FInputActionValue& InputActionValue)
 {
+	//StatusComponent->SetOffAnimationStatus(LINK_BIT_WALK);
+	// @TODO : after AnimMontage done
 }
 
 void ALinkController::OnInteract(const FInputActionValue& InputActionValue)

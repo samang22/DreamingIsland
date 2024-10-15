@@ -51,6 +51,10 @@ ALink::ALink(const FObjectInitializer& ObjectInitializer)
 		//Movement->SetCrouchedHalfHeight(NewCapsuleHalfHeight);
 		Movement->bCanWalkOffLedges = false;
 	}
+
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> MtgAsset(TEXT("/Script/Engine.AnimMontage'/Game/Assets/Link/Animation/MTG_Slash.MTG_Slash'"));
+	check(MtgAsset.Object);
+	AttackMontage = MtgAsset.Object;	
 }
 
 void ALink::OnDie()
