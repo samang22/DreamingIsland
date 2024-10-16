@@ -42,8 +42,6 @@ AMonster::AMonster(const FObjectInitializer& ObjectInitializer)
 	SkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshComponent"));
 	SkeletalMeshComponent->SetupAttachment(RootComponent);
 	SkeletalMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
-
 }
 
 void AMonster::SetData(const FDataTableRowHandle& InDataTableRowHandle)
