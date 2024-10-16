@@ -4,19 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimNotifies/AnimNotify.h"
-#include "AnimNotify_SlashAttack.generated.h"
+#include "AnimNotify_Albatoss_ClawAttack.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class DREAMINGISLAND_API UAnimNotify_SlashAttack : public UAnimNotify
+class DREAMINGISLAND_API UAnimNotify_Albatoss_ClawAttack : public UAnimNotify
 {
 	GENERATED_BODY()
-	
 public:
-	UAnimNotify_SlashAttack();
-
+	UAnimNotify_Albatoss_ClawAttack();
 	virtual void Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference) override;
 
 protected:

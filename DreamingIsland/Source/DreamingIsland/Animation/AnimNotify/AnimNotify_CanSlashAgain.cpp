@@ -12,5 +12,4 @@ void UAnimNotify_CanSlashAgain::Notify(USkeletalMeshComponent* MeshComp, UAnimSe
 	{
 		LinkAnimInstance->SetOnSlash();
 	}
-
 }

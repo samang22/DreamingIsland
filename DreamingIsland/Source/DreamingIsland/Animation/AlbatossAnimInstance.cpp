@@ -4,6 +4,14 @@
 #include "Animation/AlbatossAnimInstance.h"
 #include "AlbatossAnimInstance.h"
 
+UAlbatossAnimInstance::UAlbatossAnimInstance()
+{
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> MtgAttack(TEXT("/Script/Engine.AnimMontage'/Game/Assets/Monsters/Albatoss/Animation/MTG_Albatoss_AttackClaw.MTG_Albatoss_AttackClaw'"));
+	check(MtgAttack.Object);
+	AttackMontage = MtgAttack.Object;
+
+}
+
 void UAlbatossAnimInstance::NativeInitializeAnimation()
 {
 	Super::NativeInitializeAnimation();
@@ -20,4 +28,12 @@ void UAlbatossAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	bIsAttack = false;
 	bIsRush = false;
 	bIsWait = true;
+}
+
+void UAlbatossAnimInstance::PlayClawAttack()
+{
+	if (AttackMontage && !Montage_IsPlaying(nullptr))
+	{
+		Montage_Play(AttackMontage);
+	}
 }

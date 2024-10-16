@@ -2,18 +2,18 @@
 
 
 #include "Monster.h"
-//#include "Animation/MonsterAnimInstance.h"
+#include "Animation/MonsterAnimInstance.h"
 #include "GameFramework/FloatingPawnMovement.h"
 #include "Components/SphereComponent.h"
 #include "Components/BoxComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Data/PawnTableRow.h"
-//#include "Components/StatusComponent.h"
-//#include "Misc/Utils.h"
+#include "Components/StatusComponent.h"
+#include "Misc/Utils.h"
 
 
 UMonsterDataAsset::UMonsterDataAsset()
-//	: AnimClass(UMonsterAnimInstance::StaticClass())
+	: AnimClass(UMonsterAnimInstance::StaticClass())
 
 {
 }
@@ -25,10 +25,8 @@ AMonster::AMonster(const FObjectInitializer& ObjectInitializer)
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 	PrimaryActorTick.bCanEverTick = true;
 
-	//RootComponent = CollisionComponent;
-
 	MovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("MovementComponent"));
-	//StatusComponent = CreateDefaultSubobject<UStatusComponent>(TEXT("StatusComponent"));
+	StatusComponent = CreateDefaultSubobject<UStatusComponent>(TEXT("StatusComponent"));
 
 
 
@@ -44,11 +42,11 @@ AMonster::AMonster(const FObjectInitializer& ObjectInitializer)
 	SkeletalMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
-void AMonster::SetData(const FDataTableRowHandle& InDataTableRowHandle)
+void AMonster::SetData(const FDataTableRowHandle& InDataTableRowHandle, FString Key)
 {
 	DataTableRowHandle = InDataTableRowHandle;
 	if (DataTableRowHandle.IsNull()) { return; }
-	FPawnTableRow* Data = DataTableRowHandle.GetRow<FPawnTableRow>(TEXT("Character"));
+	FPawnTableRow* Data = DataTableRowHandle.GetRow<FPawnTableRow>(Key);
 	if (!Data) { ensure(false); return; }
 	MonsterData = Data;
 
@@ -77,8 +75,8 @@ void AMonster::PostLoad()
 void AMonster::BeginPlay()
 {
 	Super::BeginPlay();
-	SetData(DataTableRowHandle);
-
+	//SetData(DataTableRowHandle);
+	// SetData will be called by Subclasses
 }
 
 void AMonster::PostLoadSubobjects(FObjectInstancingGraph* OuterInstanceGraph)
@@ -89,7 +87,7 @@ void AMonster::PostLoadSubobjects(FObjectInstancingGraph* OuterInstanceGraph)
 void AMonster::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
-	SetData(DataTableRowHandle);
+	SetData(DataTableRowHandle, MonsterName);
 	SetActorTransform(Transform);
 }
 
@@ -101,7 +99,7 @@ void AMonster::PostDuplicate(EDuplicateMode::Type DuplicateMode)
 	{
 		FTransform Backup = GetActorTransform();
 		CollisionComponent->DestroyComponent();
-		SetData(DataTableRowHandle);
+		SetData(DataTableRowHandle, MonsterName);
 		SetActorTransform(Backup);
 	}
 }
@@ -120,6 +118,15 @@ float AMonster::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContr
 
 void AMonster::OnDie()
 {
+}
+
+void AMonster::Attack()
+{
+	if (AttackMontage)
+	{
+		//StatusComponent->SetOnAnimationStatus(LINK_BIT_SLASH);
+		//AnimInstance->PlaySlashMontage();
+	}
 }
 
 

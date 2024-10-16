@@ -13,9 +13,16 @@ UCLASS()
 class DREAMINGISLAND_API UAlbatossAnimInstance : public UMonsterAnimInstance
 {
 	GENERATED_BODY()
+
+public:
+	UAlbatossAnimInstance();
+
 public:
 	virtual void NativeInitializeAnimation() override;
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
+
+public:
+	void PlayClawAttack();
 
 protected:
 	UPROPERTY(BlueprintReadOnly)

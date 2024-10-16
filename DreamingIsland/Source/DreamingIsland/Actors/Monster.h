@@ -42,7 +42,7 @@ public:
 	// Sets default values for this pawn's properties
 	//AMonster();
 	AMonster(const FObjectInitializer& ObjectInitializer);
-	virtual void SetData(const FDataTableRowHandle& InDataTableRowHandle);
+	virtual void SetData(const FDataTableRowHandle& InDataTableRowHandle, FString Key);
 
 protected:
 	virtual void PostDuplicate(EDuplicateMode::Type DuplicateMode) override;
@@ -74,15 +74,23 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	UFloatingPawnMovement* MovementComponent;
 
-	//UPROPERTY(VisibleAnywhere)
-	//UStatusComponent* StatusComponent;
+	UPROPERTY(VisibleAnywhere)
+	UStatusComponent* StatusComponent;
 
 protected:
 	UPROPERTY(EditAnywhere)
 	FDataTableRowHandle DataTableRowHandle;
 	FPawnTableRow* MonsterData;
 
+protected:
+	UPROPERTY()
+	FString MonsterName;
 
-//protected:
-//	UAnimMontage* CurrentDieMontage;
+
+protected:
+	UAnimMontage* AttackMontage;
+
+public:
+	void Attack();
+
 };

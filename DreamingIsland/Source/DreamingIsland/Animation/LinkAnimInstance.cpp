@@ -54,7 +54,7 @@ void ULinkAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 void ULinkAnimInstance::PlaySlashMontage()
 {
-	if (!Montage_IsPlaying(nullptr))
+	if (AttackMontage && !Montage_IsPlaying(nullptr))
 	{
 		Montage_Play(AttackMontage);
 	}

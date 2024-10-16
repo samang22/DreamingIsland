@@ -44,3 +44,13 @@ namespace CollisionProfileName
 	static inline FName Link_Projectile = TEXT("Link_Projectile");
 	static inline FName Monster_Projectile = TEXT("Monster_Projectile");
 }
+
+namespace MonsterName
+{
+	static inline FName Albatoss = TEXT("Albatoss");
+}
+
+namespace MonsterName_FString
+{
+	static inline FString Albatoss = TEXT("Albatoss");
+}

@@ -24,3 +24,11 @@ void UMonsterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	}
 
 }
+
+void UMonsterAnimInstance::PlayAttackMontage()
+{
+	if (AttackMontage && !Montage_IsPlaying(nullptr))
+	{
+		Montage_Play(AttackMontage);
+	}
+}

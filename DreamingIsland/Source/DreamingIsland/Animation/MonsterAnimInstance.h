@@ -23,4 +23,10 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly)
 	double Speed = 0.0;
+
+protected:
+	UAnimMontage* AttackMontage;
+
+public:
+	void PlayAttackMontage();
 };
