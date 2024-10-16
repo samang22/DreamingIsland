@@ -9,6 +9,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/SoftWheelSpringArmComponent.h"
 #include "Components/LinkStatusComponent.h"
+#include "Actors/Projectile/ProjectileTableRow.h"
 
 
 #define PROBE_SIZE					5.0

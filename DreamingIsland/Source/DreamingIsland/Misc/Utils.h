@@ -31,10 +31,16 @@ namespace Link_SocketName
 	static inline FName SwordTop = TEXT("itemA_L_top");
 }
 
+namespace Link_SocketName_FString
+{
+	static inline FString SwordTop = TEXT("itemA_L_top");
+}
+
+
 namespace CollisionProfileName
 {
 	static inline FName Link = TEXT("Link");
 	static inline FName Monster = TEXT("Monster");
 	static inline FName Link_Projectile = TEXT("Link_Projectile");
-	static inline FName Monster_Projectile = TEXT("Monster_Projectile ");
+	static inline FName Monster_Projectile = TEXT("Monster_Projectile");
 }

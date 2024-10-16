@@ -4,9 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "GameFramework/ProjectileMovementComponent.h"
 #include "Projectile.generated.h"
 
+struct FProjectileTableRow;
 UCLASS()
 class DREAMINGISLAND_API AProjectile : public AActor
 {
@@ -15,8 +15,7 @@ class DREAMINGISLAND_API AProjectile : public AActor
 public:
 	// Sets default values for this actor's properties
 	AProjectile();
-	virtual void SetData(const FDataTableRowHandle& InDataTableRowHandle);
-
+	virtual void SetData(const FDataTableRowHandle& InDataTableRowHandle, FString ProjectileName);
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -33,6 +32,11 @@ protected:
 	UPROPERTY()
 	class UStaticMeshComponent* StaticMeshComponent;
 	UPROPERTY()
-	UProjectileMovementComponent* ProjectileMovementComponent;
+	class UProjectileMovementComponent* ProjectileMovementComponent;
 
+
+protected:
+	UPROPERTY(EditAnywhere, meta = (RowType = "ProjectileTableRow"))
+	FDataTableRowHandle DataTableRowHandle;
+	const struct FProjectileTableRow* ProjectileData;
 };

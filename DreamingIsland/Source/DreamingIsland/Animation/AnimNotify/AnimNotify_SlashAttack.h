@@ -19,4 +19,7 @@ public:
 
 	virtual void Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference) override;
 
+public:
+	UPROPERTY(EditAnywhere, meta = (RowType = "ProjectileTableRow"))
+	FDataTableRowHandle ProjectileTableRowHandle;
 };

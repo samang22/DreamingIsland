@@ -15,6 +15,10 @@ struct DREAMINGISLAND_API FProjectileTableRow : public FTableRowBase
 	FProjectileTableRow();
 
 public:
+	UPROPERTY(EditAnywhere, meta = (RowType = "ProjectileTableRow"))
+	FDataTableRowHandle ProjectileRowHandle;
+
+public:
 	UPROPERTY(EditAnywhere, Category = "Projectile")
 	UStaticMesh* StaticMesh = nullptr;
 
@@ -25,4 +29,6 @@ public:
 	TSubclassOf<class AProjectile> ProjectileClass;
 
 	// @TODO : Hit Effect
+
+	float Damage = 0.f;
 };

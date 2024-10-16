@@ -7,6 +7,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "ProjectileTableRow.h"
+#include "GameFramework/ProjectileMovementComponent.h"
 
 // Sets default values
 AProjectile::AProjectile()
@@ -28,8 +29,23 @@ AProjectile::AProjectile()
 
 }
 
-void AProjectile::SetData(const FDataTableRowHandle& InDataTableRowHandle)
+void AProjectile::SetData(const FDataTableRowHandle& InDataTableRowHandle, FString ProjectileName)
 {
+	DataTableRowHandle = InDataTableRowHandle;
+	if (DataTableRowHandle.IsNull()) { return; }
+	FProjectileTableRow* Data = DataTableRowHandle.GetRow<FProjectileTableRow>(ProjectileName);
+	if (!Data) { ensure(false); return; }
+
+	ProjectileData = Data;
+
+	StaticMeshComponent->MoveIgnoreActors.Empty();
+	StaticMeshComponent->MoveIgnoreActors.Add(GetOwner());
+
+	if (Data->StaticMesh)
+	{
+		StaticMeshComponent->SetStaticMesh(Data->StaticMesh);
+		StaticMeshComponent->SetRelativeTransform(Data->Transform);
+	}
 }
 
 // Called when the game starts or when spawned
