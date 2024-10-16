@@ -42,6 +42,12 @@ public:
 	void StopSlashMontage();
 
 protected:
+	bool bCanSlash = true;
+public:
+	void SetOnSlash() { bCanSlash = true; }
+	void SetOffSlash() { bCanSlash = false; }
+
+protected:
 	UPROPERTY(BlueprintReadOnly)
 	bool bIsWait = true;
 	UPROPERTY(BlueprintReadOnly)

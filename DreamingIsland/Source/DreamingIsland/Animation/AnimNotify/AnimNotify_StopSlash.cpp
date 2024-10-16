@@ -8,6 +8,8 @@
 
 void UAnimNotify_StopSlash::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
 {
+	Super::Notify(MeshComp, Animation, EventReference);
+
 	//ULinkAnimInstance* LinkAnimInstance = nullptr;
 	//if (MeshComp)
 	//{

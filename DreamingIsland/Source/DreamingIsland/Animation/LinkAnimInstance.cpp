@@ -10,7 +10,7 @@
 
 ULinkAnimInstance::ULinkAnimInstance()
 {
-	static ConstructorHelpers::FObjectFinder<UAnimMontage> MtgSlash(TEXT("/Script/Engine.AnimMontage'/Game/Assets/Link/Animation/MTG_Slash.MTG_Slash'"));
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> MtgSlash(TEXT("/Script/Engine.AnimMontage'/Game/Assets/Link/Animation/MTG_SlashAttack.MTG_SlashAttack'"));
 	check(MtgSlash.Object);
 	AttackMontage = MtgSlash.Object;
 }
@@ -54,11 +54,20 @@ void ULinkAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 void ULinkAnimInstance::PlaySlashMontage()
 {
-	Montage_Play(AttackMontage);
+	if (!Montage_IsPlaying(nullptr))
+	{
+		Montage_Play(AttackMontage);
+	}
 
-	//if (!Montage_IsPlaying(nullptr))
+
+
+	//if (bCanSlash)
 	//{
 	//	Montage_Play(AttackMontage);
+	//}
+	//else
+	//{
+	//	UE_LOG(LogTemp, Warning, TEXT("PlaySlashMontage is failed"));
 	//}
 }
 
