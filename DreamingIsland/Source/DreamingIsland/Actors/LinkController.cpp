@@ -9,6 +9,7 @@
 #include "Components/LinkStatusComponent.h"
 #include "Actors/LinkCameraManager.h"
 #include "Actors/Link.h"
+#include "Animation/LinkAnimInstance.h"
 
 
 ALinkController::ALinkController()
@@ -96,6 +97,14 @@ void ALinkController::OnPossess(APawn* InPawn)
 
 	StatusComponent = InPawn->GetComponentByClass<ULinkStatusComponent>();
 	check(StatusComponent);
+
+	USkeletalMeshComponent* SkeletalMeshComponent = InPawn->GetComponentByClass<USkeletalMeshComponent>();
+	AnimInstance = Cast<ULinkAnimInstance>(SkeletalMeshComponent->GetAnimInstance());
+	check(AnimInstance);
+
+	{
+		AnimInstance->OnMontageEnded.AddDynamic(this, &ThisClass::OnSlashAttackMontageEnd);
+	}
 }
 
 void ALinkController::OnWalk(const FInputActionValue& InputActionValue)
@@ -142,8 +151,8 @@ void ALinkController::OnRunOff(const FInputActionValue& InputActionValue)
 
 void ALinkController::OnAttack(const FInputActionValue& InputActionValue)
 {
-	//StatusComponent->SetOffAnimationStatus(LINK_BIT_WALK);
-	// @TODO : after AnimMontage done
+	StatusComponent->SetOnAnimationStatus(LINK_BIT_SLASH);
+	AnimInstance->PlaySlashMontage();
 }
 
 void ALinkController::OnInteract(const FInputActionValue& InputActionValue)
@@ -153,3 +162,10 @@ void ALinkController::OnInteract(const FInputActionValue& InputActionValue)
 void ALinkController::OnZoomWheel(const FInputActionValue& InputActionValue)
 {
 }
+
+void ALinkController::OnSlashAttackMontageEnd(UAnimMontage* Montage, bool bInterrupted)
+{
+	StatusComponent->SetOffAnimationStatus(LINK_BIT_SLASH);
+	AnimInstance->StopSlashMontage();
+}
+

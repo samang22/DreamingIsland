@@ -8,6 +8,13 @@
 #include "Components/LinkStatusComponent.h"
 
 
+ULinkAnimInstance::ULinkAnimInstance()
+{
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> MtgSlash(TEXT("/Script/Engine.AnimMontage'/Game/Assets/Link/Animation/MTG_Slash.MTG_Slash'"));
+	check(MtgSlash.Object);
+	AttackMontage = MtgSlash.Object;
+}
+
 void ULinkAnimInstance::NativeInitializeAnimation()
 {
 	Super::NativeInitializeAnimation();
@@ -26,6 +33,7 @@ void ULinkAnimInstance::NativeInitializeAnimation()
 	ALink* Link = Cast<ALink>(Pawn);
 
 	StatusComponent = Link->GetStatusComponent();
+
 }
 
 void ULinkAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
@@ -42,5 +50,19 @@ void ULinkAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	bIsSlash = StatusComponent->GetAnimStatus(LINK_BIT_SLASH);
 	bIsSlashHold = StatusComponent->GetAnimStatus(LINK_BIT_SLASHHOLD);
 	bIsDeath = StatusComponent->GetAnimStatus(LINK_BIT_DEATH);
+}
+
+void ULinkAnimInstance::PlaySlashMontage()
+{
+	Montage_Play(AttackMontage);
+
+	//if (!Montage_IsPlaying(nullptr))
+	//{
+	//	Montage_Play(AttackMontage);
+	//}
+}
+
+void ULinkAnimInstance::StopSlashMontage()
+{
 }
 

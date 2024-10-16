@@ -15,6 +15,9 @@ class DREAMINGISLAND_API ULinkAnimInstance : public UAnimInstance
 	GENERATED_BODY()
 	
 public:
+	ULinkAnimInstance();
+
+public:
 	virtual void NativeInitializeAnimation() override;
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 
@@ -28,6 +31,15 @@ protected:
 	UPROPERTY(BlueprintReadOnly)
 	double Speed = 0.0;
 
+protected:
+	UAnimMontage* AttackMontage;
+
+public:
+	UAnimMontage* GetAttackMontage() { return AttackMontage; }
+
+public:
+	void PlaySlashMontage();
+	void StopSlashMontage();
 
 protected:
 	UPROPERTY(BlueprintReadOnly)

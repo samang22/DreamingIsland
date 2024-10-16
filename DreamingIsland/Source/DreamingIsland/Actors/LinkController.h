@@ -39,6 +39,10 @@ protected:
 	void OnZoomWheel(const FInputActionValue& InputActionValue);
 
 protected:
+	UFUNCTION()
+	void OnSlashAttackMontageEnd(UAnimMontage* Montage, bool bInterrupted);
+
+protected:
 	UPROPERTY()
 	UInputMappingContext* IMC_Default = nullptr;
 
@@ -51,6 +55,8 @@ protected:
 
 	UPROPERTY()
 	class ULinkStatusComponent* StatusComponent;
+	UPROPERTY()
+	class ULinkAnimInstance* AnimInstance;
 
 
 

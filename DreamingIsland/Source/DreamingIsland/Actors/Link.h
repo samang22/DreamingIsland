@@ -46,9 +46,6 @@ protected:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	TObjectPtr<class UCameraComponent> Camera;
 
-protected:
-	UAnimMontage* AttackMontage;
-
 public:
 	void SetSpeedWalk();
 	void SetSpeedRun();

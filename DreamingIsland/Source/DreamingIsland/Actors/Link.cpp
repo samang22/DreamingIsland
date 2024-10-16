@@ -13,7 +13,6 @@
 
 
 #define PROBE_SIZE					5.0
-#define MIN_TARGET_ARM_LENGTH		200.f
 
 #define LINK_WALK_SPEED				100.f
 #define LINK_RUN_SPEED				300.f
@@ -45,19 +44,12 @@ ALink::ALink(const FObjectInitializer& ObjectInitializer)
 
 	{
 		UCharacterMovementComponent* Movement = GetCharacterMovement();
-		//Movement->RotationRate = CharacterData->RotationRate;
 		Movement->bOrientRotationToMovement = true;
-		//Movement->GetNavAgentPropertiesRef().bCanCrouch = true;
 		Movement->MaxWalkSpeed = LINK_WALK_SPEED;
-		//Movement->SetCrouchedHalfHeight(NewCapsuleHalfHeight);
 		Movement->bCanWalkOffLedges = false;
 	}
 
-	static ConstructorHelpers::FObjectFinder<UAnimMontage> MtgAsset(TEXT("/Script/Engine.AnimMontage'/Game/Assets/Link/Animation/MTG_Slash.MTG_Slash'"));
-	check(MtgAsset.Object);
-	AttackMontage = MtgAsset.Object;	
 }
-
 void ALink::OnDie()
 {
 }
