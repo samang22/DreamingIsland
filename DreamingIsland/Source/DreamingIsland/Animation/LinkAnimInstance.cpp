@@ -11,8 +11,10 @@
 ULinkAnimInstance::ULinkAnimInstance()
 {
 	static ConstructorHelpers::FObjectFinder<UAnimMontage> MtgSlash(TEXT("/Script/Engine.AnimMontage'/Game/Assets/Link/Animation/MTG_SlashAttack.MTG_SlashAttack'"));
-	check(MtgSlash.Object);
-	AttackMontage = MtgSlash.Object;
+	if (MtgSlash.Object)
+	{
+		AttackMontage = MtgSlash.Object;
+	}
 }
 
 void ULinkAnimInstance::NativeInitializeAnimation()

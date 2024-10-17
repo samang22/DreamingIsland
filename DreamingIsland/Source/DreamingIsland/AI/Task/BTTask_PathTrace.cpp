@@ -61,3 +61,4 @@ void UBTTask_PathTrace::OnResult(EPathFollowingResult::Type MovementResult)
 
 	FinishLatentTask(*BehaviorTreeComponent, EBTNodeResult::Succeeded);
 }
+

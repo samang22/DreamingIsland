@@ -1,6 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "AI/Task/BTTask_MonsterAttack.h"
 #include "Animation/MonsterAnimInstance.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h"
@@ -34,4 +31,5 @@ void UBTTask_MonsterAttack::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* N
 
 	// Do Nothing
 }
+
 

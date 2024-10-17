@@ -13,7 +13,6 @@ UCLASS()
 class DREAMINGISLAND_API UBTTask_PathTrace : public UBTTask_Base
 {
 	GENERATED_BODY()
-	
 public:
 	UBTTask_PathTrace();
 
@@ -31,5 +30,4 @@ public:
 	class USplineComponent* SplineComponent = nullptr;
 	int32 CurrentPatrolIndex = 0;
 	int32 SplinePoints = 0;
-
 };

@@ -4,13 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "AI/Task/BTTask_Base.h"
-#include "BTTask_PathTrace.generated.h"
+#include "BTTask_MonsterAttack.generated.h"
 
 /**
  * 
  */
+UCLASS()
 class DREAMINGISLAND_API UBTTask_MonsterAttack : public UBTTask_Base
 {
+	GENERATED_BODY()
 public:
 	UBTTask_MonsterAttack();
 
