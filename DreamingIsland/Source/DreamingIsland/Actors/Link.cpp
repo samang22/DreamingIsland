@@ -10,6 +10,8 @@
 #include "Components/SoftWheelSpringArmComponent.h"
 #include "Components/LinkStatusComponent.h"
 #include "Actors/Projectile/ProjectileTableRow.h"
+#include "Components/SphereComponent.h"
+#include "Misc/Utils.h"
 
 
 #define PROBE_SIZE					5.0
@@ -52,6 +54,16 @@ ALink::ALink(const FObjectInitializer& ObjectInitializer)
 	SkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshComponent"));
 	SkeletalMeshComponent->SetupAttachment(RootComponent);
 	SkeletalMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	CollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("CollisionComponent"));
+	CollisionComponent->RegisterComponent();
+	CollisionComponent->SetCollisionProfileName(CollisionProfileName::Monster);
+	CollisionComponent->SetCanEverAffectNavigation(false);
+	USphereComponent* SphereComponent = Cast<USphereComponent>(CollisionComponent);
+	SphereComponent->SetSphereRadius(COLLISION_SPHERE_RADIUS);
+	RootComponent = CollisionComponent;
+	CollisionComponent->SetCollisionProfileName(CollisionProfileName::Link);
+
 }
 void ALink::OnDie()
 {

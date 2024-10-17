@@ -41,8 +41,8 @@ namespace CollisionProfileName
 {
 	static inline FName Link = TEXT("Link");
 	static inline FName Monster = TEXT("Monster");
-	static inline FName Link_Projectile = TEXT("Link_Projectile");
-	static inline FName Monster_Projectile = TEXT("Monster_Projectile");
+	static inline FName Link_Projectile = TEXT("LinkProjectile");
+	static inline FName Monster_Projectile = TEXT("MonsterProjectile");
 }
 
 namespace MonsterName

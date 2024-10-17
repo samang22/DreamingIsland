@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "Link.generated.h"
 
+#define COLLISION_SPHERE_RADIUS 24.f
+
 class UStatusComponent;
 UCLASS()
 class DREAMINGISLAND_API ALink : public ACharacter
@@ -49,6 +51,9 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USkeletalMeshComponent> SkeletalMeshComponent;
 
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UShapeComponent> CollisionComponent;
+
 protected:
 	UPROPERTY(EditAnywhere, Category = "Projectile")
 	FDataTableRowHandle ProjectileTableRowHandle;
@@ -62,6 +67,5 @@ public:
 
 public:
 	const class ULinkStatusComponent* GetStatusComponent() const;
-
 
 };

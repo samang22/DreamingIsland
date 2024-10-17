@@ -8,6 +8,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "ProjectileTableRow.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "Components/SphereComponent.h"
 
 // Sets default values
 AProjectile::AProjectile()
@@ -24,12 +25,17 @@ AProjectile::AProjectile()
 	ProjectileMovementComponent->ProjectileGravityScale = 0.0;
 	InitialLifeSpan = 5.f;
 
-	StaticMeshComponent->SetCollisionProfileName(CollisionProfileName::Link_Projectile);
-	StaticMeshComponent->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::OnBeginOverlap);
+	//StaticMeshComponent->SetCollisionProfileName(CollisionProfileName::Link_Projectile);
+	//StaticMeshComponent->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::OnBeginOverlap);
 
+	CollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("CollisionComponent"));
+	CollisionComponent->RegisterComponent();
+	CollisionComponent->SetCanEverAffectNavigation(false);
+	USphereComponent* SphereComponent = Cast<USphereComponent>(CollisionComponent);
+	RootComponent = CollisionComponent;
 }
 
-void AProjectile::SetData(const FDataTableRowHandle& InDataTableRowHandle, FString ProjectileName)
+void AProjectile::SetData(const FDataTableRowHandle& InDataTableRowHandle, FString ProjectileName, FName ProfileName)
 {
 	DataTableRowHandle = InDataTableRowHandle;
 	if (DataTableRowHandle.IsNull()) { return; }
@@ -46,6 +52,8 @@ void AProjectile::SetData(const FDataTableRowHandle& InDataTableRowHandle, FStri
 		StaticMeshComponent->SetStaticMesh(Data->StaticMesh);
 		StaticMeshComponent->SetRelativeTransform(Data->Transform);
 	}
+
+	CollisionComponent->SetCollisionProfileName(ProfileName);
 }
 
 // Called when the game starts or when spawned

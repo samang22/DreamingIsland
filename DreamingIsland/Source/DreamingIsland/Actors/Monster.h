@@ -100,4 +100,5 @@ protected:
 
 public:
 	UMonsterStatusComponent* GetStatusComponent() { return StatusComponent; }
+
 };

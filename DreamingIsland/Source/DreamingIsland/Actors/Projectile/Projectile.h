@@ -15,7 +15,7 @@ class DREAMINGISLAND_API AProjectile : public AActor
 public:
 	// Sets default values for this actor's properties
 	AProjectile();
-	virtual void SetData(const FDataTableRowHandle& InDataTableRowHandle, FString ProjectileName);
+	virtual void SetData(const FDataTableRowHandle& InDataTableRowHandle, FString ProjectileName, FName ProfileName);
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -33,6 +33,8 @@ protected:
 	class UStaticMeshComponent* StaticMeshComponent;
 	UPROPERTY()
 	class UProjectileMovementComponent* ProjectileMovementComponent;
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UShapeComponent> CollisionComponent;
 
 
 protected:
