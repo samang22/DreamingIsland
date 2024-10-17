@@ -29,6 +29,8 @@ protected:
 	 */
 	virtual void OnPossess(APawn* InPawn);
 
+	virtual void Tick(float DeltaTime);
+
 protected:
 	void OnWalk(const FInputActionValue& InputActionValue);
 	void OnWalkOff(const FInputActionValue& InputActionValue);

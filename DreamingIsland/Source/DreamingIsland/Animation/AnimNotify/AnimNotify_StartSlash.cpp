@@ -12,6 +12,6 @@ void UAnimNotify_StartSlash::Notify(USkeletalMeshComponent* MeshComp, UAnimSeque
 	ULinkAnimInstance* LinkAnimInstance = Cast<ULinkAnimInstance>(MeshComp->GetAnimInstance());
 	if (LinkAnimInstance)
 	{
-		LinkAnimInstance->SetOffSlash();
+		LinkAnimInstance->SetOffCanSlash();
 	}
 }

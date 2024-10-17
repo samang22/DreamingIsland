@@ -10,7 +10,7 @@
 
 ULinkAnimInstance::ULinkAnimInstance()
 {
-	static ConstructorHelpers::FObjectFinder<UAnimMontage> MtgSlash(TEXT("/Script/Engine.AnimMontage'/Game/Assets/Link/Animation/MTG_SlashAttack.MTG_SlashAttack'"));
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> MtgSlash(TEXT("/Script/Engine.AnimMontage'/Game/Assets/Link/Animation/MTG_Link_SlashAttack.MTG_Link_SlashAttack'"));
 	if (MtgSlash.Object)
 	{
 		AttackMontage = MtgSlash.Object;
@@ -49,14 +49,14 @@ void ULinkAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	bIsWait = StatusComponent->GetAnimStatus(LINK_BIT_WAIT);
 	bIsWalk = StatusComponent->GetAnimStatus(LINK_BIT_WALK);
 	bIsRun = StatusComponent->GetAnimStatus(LINK_BIT_RUN);
-	bIsSlash = StatusComponent->GetAnimStatus(LINK_BIT_SLASH);
-	bIsSlashHold = StatusComponent->GetAnimStatus(LINK_BIT_SLASHHOLD);
+	//bIsSlash = StatusComponent->GetAnimStatus(LINK_BIT_SLASH);
+	//bIsSlashHold = StatusComponent->GetAnimStatus(LINK_BIT_SLASHHOLD);
 	bIsDeath = StatusComponent->GetAnimStatus(LINK_BIT_DEATH);
 }
 
 void ULinkAnimInstance::PlaySlashMontage()
 {
-	if (AttackMontage && !Montage_IsPlaying(nullptr))
+	if (bCanSlash && AttackMontage && !Montage_IsPlaying(nullptr))
 	{
 		Montage_Play(AttackMontage);
 	}

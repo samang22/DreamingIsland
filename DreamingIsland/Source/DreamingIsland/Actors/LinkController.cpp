@@ -107,6 +107,18 @@ void ALinkController::OnPossess(APawn* InPawn)
 	}
 }
 
+void ALinkController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	const bool bMontagePlaying = AnimInstance->IsAnyMontagePlaying();
+
+	if (bMontagePlaying)
+	{
+		//Movement
+	}
+}
+
 void ALinkController::OnWalk(const FInputActionValue& InputActionValue)
 {
 	StatusComponent->SetOnAnimationStatus(LINK_BIT_WALK);
@@ -151,7 +163,7 @@ void ALinkController::OnRunOff(const FInputActionValue& InputActionValue)
 
 void ALinkController::OnAttack(const FInputActionValue& InputActionValue)
 {
-	StatusComponent->SetOnAnimationStatus(LINK_BIT_SLASH);
+	//StatusComponent->SetOnAnimationStatus(LINK_BIT_SLASH);
 	AnimInstance->PlaySlashMontage();
 }
 
@@ -165,7 +177,7 @@ void ALinkController::OnZoomWheel(const FInputActionValue& InputActionValue)
 
 void ALinkController::OnSlashAttackMontageEnd(UAnimMontage* Montage, bool bInterrupted)
 {
-	StatusComponent->SetOffAnimationStatus(LINK_BIT_SLASH);
+	//StatusComponent->SetOffAnimationStatus(LINK_BIT_SLASH);
 	AnimInstance->StopSlashMontage();
 }
 

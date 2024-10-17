@@ -10,6 +10,6 @@ void UAnimNotify_CanSlashAgain::Notify(USkeletalMeshComponent* MeshComp, UAnimSe
 	ULinkAnimInstance* LinkAnimInstance = Cast<ULinkAnimInstance>(MeshComp->GetAnimInstance());
 	if (LinkAnimInstance)
 	{
-		LinkAnimInstance->SetOnSlash();
+		LinkAnimInstance->SetOnCanSlash();
 	}
 }

@@ -44,8 +44,8 @@ public:
 protected:
 	bool bCanSlash = true;
 public:
-	void SetOnSlash() { bCanSlash = true; }
-	void SetOffSlash() { bCanSlash = false; }
+	void SetOnCanSlash() { bCanSlash = true; }
+	void SetOffCanSlash() { bCanSlash = false; }
 
 protected:
 	UPROPERTY(BlueprintReadOnly)
