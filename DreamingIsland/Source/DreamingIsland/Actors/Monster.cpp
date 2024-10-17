@@ -2,15 +2,18 @@
 
 
 #include "Monster.h"
+#include "Kismet/KismetSystemLibrary.h"
 #include "Animation/MonsterAnimInstance.h"
 #include "GameFramework/FloatingPawnMovement.h"
 #include "Components/SphereComponent.h"
 #include "Components/BoxComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Data/PawnTableRow.h"
-#include "Components/StatusComponent.h"
+#include "Components/MonsterStatusComponent.h"
 #include "Misc/Utils.h"
-
+#include "Perception/AIPerceptionComponent.h"
+#include "Perception/AISenseConfig_Sight.h"
+#include "Actors/AI/PatrolPath.h"
 
 UMonsterDataAsset::UMonsterDataAsset()
 	: AnimClass(UMonsterAnimInstance::StaticClass())
@@ -26,13 +29,13 @@ AMonster::AMonster(const FObjectInitializer& ObjectInitializer)
 	PrimaryActorTick.bCanEverTick = true;
 
 	MovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("MovementComponent"));
-	StatusComponent = CreateDefaultSubobject<UStatusComponent>(TEXT("StatusComponent"));
+	StatusComponent = CreateDefaultSubobject<UMonsterStatusComponent>(TEXT("StatusComponent"));
 
 
 
 	CollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("CollisionComponent"));
-	//CollisionComponent->RegisterComponent();
-	//CollisionComponent->SetCollisionProfileName(CollisionProfileName::Monster);
+	CollisionComponent->RegisterComponent();
+	CollisionComponent->SetCollisionProfileName(CollisionProfileName::Monster);
 	CollisionComponent->SetCanEverAffectNavigation(false);
 	RootComponent = CollisionComponent;
 
@@ -40,6 +43,14 @@ AMonster::AMonster(const FObjectInitializer& ObjectInitializer)
 	SkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshComponent"));
 	SkeletalMeshComponent->SetupAttachment(RootComponent);
 	SkeletalMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	AIPerceptionComponent = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AIPerceptionComponent"));
+	AISenseConfig_Sight = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("AISenseConfig_Sight"));
+	AISenseConfig_Sight->DetectionByAffiliation.bDetectNeutrals = true;
+	AISenseConfig_Sight->SightRadius = 1000.f;
+	AISenseConfig_Sight->LoseSightRadius = 500.f;
+	AISenseConfig_Sight->PeripheralVisionAngleDegrees = 120.f;
+	AIPerceptionComponent->ConfigureSense(*AISenseConfig_Sight);
 }
 
 void AMonster::SetData(const FDataTableRowHandle& InDataTableRowHandle, FString Key)
@@ -47,12 +58,10 @@ void AMonster::SetData(const FDataTableRowHandle& InDataTableRowHandle, FString 
 	DataTableRowHandle = InDataTableRowHandle;
 	if (DataTableRowHandle.IsNull()) { return; }
 	FPawnTableRow* Data = DataTableRowHandle.GetRow<FPawnTableRow>(Key);
-	if (!Data) { ensure(false); return; }
+	if (!Data) { return; }
 	MonsterData = Data;
 
-	MovementComponent->MaxSpeed = MonsterData->MovementMaxSpeed;
 
-	MonsterData = Data;
 	if (IsValid(CollisionComponent))
 	{
 		USphereComponent* SphereComponent = Cast<USphereComponent>(CollisionComponent);
@@ -62,6 +71,11 @@ void AMonster::SetData(const FDataTableRowHandle& InDataTableRowHandle, FString 
 	SkeletalMeshComponent->SetSkeletalMesh(MonsterData->SkeletalMesh);
 	SkeletalMeshComponent->SetAnimClass(MonsterData->AnimClass);
 	SkeletalMeshComponent->SetRelativeTransform(MonsterData->MeshTransform);
+
+	MovementComponent->MaxSpeed = MonsterData->MovementMaxSpeed;
+
+
+	AIControllerClass = MonsterData->AIControllerClass;
 }
 
 
@@ -113,20 +127,56 @@ void AMonster::Tick(float DeltaTime)
 
 float AMonster::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
+	if (StatusComponent->IsDie()) { return 0.f; }
+
+	float DamageResult = StatusComponent->TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
+	if (FMath::IsNearlyZero(DamageResult)) { return 0.0; }
+
+	if (Controller)
+	{
+		Controller->StopMovement();
+	}
+
+
+	if (StatusComponent->IsDie() && !(MonsterData->DieMontage))
+	{
+		if (Controller)
+		{
+			Controller->Destroy();
+		}
+		SetActorEnableCollision(false);
+
+		PlayDieMontage();
+		UKismetSystemLibrary::K2_SetTimer(this, TEXT("OnDie"),
+			MonsterData->DieMontage->GetPlayLength() - 0.1f, false);
+	}
+	else if (!StatusComponent->IsDie() && !MonsterData->DamageMontage)
+	{
+		PlayDamageMontage();
+	}
+
 	return 0.0f;
 }
 
 void AMonster::OnDie()
 {
+	// @TODO : Die Effect
 }
 
-void AMonster::Attack()
+void AMonster::PlayAttackMontage()
 {
-	if (AttackMontage)
-	{
-		//StatusComponent->SetOnAnimationStatus(LINK_BIT_SLASH);
-		//AnimInstance->PlaySlashMontage();
-	}
+	UAnimInstance* AnimInstance = SkeletalMeshComponent->GetAnimInstance();
+	AnimInstance->Montage_Play(MonsterData->AttackMontage);
+}
+void AMonster::PlayDieMontage()
+{
+	UAnimInstance* AnimInstance = SkeletalMeshComponent->GetAnimInstance();
+	AnimInstance->Montage_Play(MonsterData->DieMontage);
+}
+void AMonster::PlayDamageMontage()
+{
+	UAnimInstance* AnimInstance = SkeletalMeshComponent->GetAnimInstance();
+	AnimInstance->Montage_Play(MonsterData->DamageMontage);
 }
 
 

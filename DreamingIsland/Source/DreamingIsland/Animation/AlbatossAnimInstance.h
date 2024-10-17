@@ -21,16 +21,7 @@ public:
 	virtual void NativeInitializeAnimation() override;
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 
-public:
-	void PlayClawAttack();
-
 protected:
-	UPROPERTY(BlueprintReadOnly)
-	bool bIsDead = false;
-	UPROPERTY(BlueprintReadOnly)
-	bool bIsDamage = false;
-	UPROPERTY(BlueprintReadOnly)
-	bool bIsAttack = false;
 	UPROPERTY(BlueprintReadOnly)
 	bool bIsRush = false;
 	UPROPERTY(BlueprintReadOnly)

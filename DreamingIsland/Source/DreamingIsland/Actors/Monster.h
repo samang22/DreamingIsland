@@ -31,7 +31,7 @@ public:
 };
 
 class UFloatingPawnMovement;
-class UStatusComponent;
+class UMonsterStatusComponent;
 
 UCLASS()
 class DREAMINGISLAND_API AMonster : public APawn
@@ -75,7 +75,7 @@ protected:
 	UFloatingPawnMovement* MovementComponent;
 
 	UPROPERTY(VisibleAnywhere)
-	UStatusComponent* StatusComponent;
+	UMonsterStatusComponent* StatusComponent;
 
 protected:
 	UPROPERTY(EditAnywhere)
@@ -86,11 +86,18 @@ protected:
 	UPROPERTY()
 	FString MonsterName;
 
+public:
+	void PlayAttackMontage();
+	void PlayDieMontage();
+	void PlayDamageMontage();
 
 protected:
-	UAnimMontage* AttackMontage;
+	UPROPERTY(VisibleAnywhere)
+	class UAIPerceptionComponent* AIPerceptionComponent;
+
+	UPROPERTY(VisibleAnywhere)
+	class UAISenseConfig_Sight* AISenseConfig_Sight;
 
 public:
-	void Attack();
-
+	UMonsterStatusComponent* GetStatusComponent() { return StatusComponent; }
 };

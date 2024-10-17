@@ -46,10 +46,22 @@ protected:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	TObjectPtr<class UCameraComponent> Camera;
 
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USkeletalMeshComponent> SkeletalMeshComponent;
+
+protected:
+	UPROPERTY(EditAnywhere, Category = "Projectile")
+	FDataTableRowHandle ProjectileTableRowHandle;
+
+public:
+	const FDataTableRowHandle GetProjectileTableRowHandle() const { return ProjectileTableRowHandle; }
+
 public:
 	void SetSpeedWalk();
 	void SetSpeedRun();
 
 public:
 	const class ULinkStatusComponent* GetStatusComponent() const;
+
+
 };

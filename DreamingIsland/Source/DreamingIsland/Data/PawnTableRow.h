@@ -4,7 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
-//#include "Actors/Monster.h"
+#include "GameFramework/Pawn.h"
+#include "GameFramework/FloatingPawnMovement.h"
+#include "Components/SphereComponent.h"
+#include "Components/BoxComponent.h"
+#include "Components/CapsuleComponent.h"
+#include "Misc/Utils.h"
+#include "Animation/MonsterAnimInstance.h"
+#include "AIController.h"
 #include "PawnTableRow.generated.h"
 /**
  * 
@@ -46,7 +53,17 @@ public: // Movement
 
 public: // Animation
 	UPROPERTY(EditAnywhere, Category = "Monster|Animation")
-	TArray<UAnimMontage*> HitReactMontage;
+	UAnimMontage* DamageMontage;
 	UPROPERTY(EditAnywhere, Category = "Monster|Animation")
-	TArray<UAnimMontage*> DieMontage;
+	UAnimMontage* DieMontage;
+	UPROPERTY(EditAnywhere, Category = "Monster|Animation")
+	UAnimMontage* AttackMontage;
+
+public: // AI (Only for Enemy)
+	UPROPERTY(EditAnywhere, Category = "Monster|AI")
+	TSubclassOf<AAIController> AIControllerClass;
+
+public:
+	UPROPERTY(EditAnywhere, Category = "Projectile", meta = (RowType = "ProjectileTableRow"))
+	FDataTableRowHandle ProjectileTableRowHandle;
 };

@@ -163,8 +163,7 @@ void ALinkController::OnRunOff(const FInputActionValue& InputActionValue)
 
 void ALinkController::OnAttack(const FInputActionValue& InputActionValue)
 {
-	//StatusComponent->SetOnAnimationStatus(LINK_BIT_SLASH);
-	AnimInstance->PlaySlashMontage();
+	AnimInstance->PlayAttackMontage();
 }
 
 void ALinkController::OnInteract(const FInputActionValue& InputActionValue)
@@ -177,7 +176,5 @@ void ALinkController::OnZoomWheel(const FInputActionValue& InputActionValue)
 
 void ALinkController::OnSlashAttackMontageEnd(UAnimMontage* Montage, bool bInterrupted)
 {
-	//StatusComponent->SetOffAnimationStatus(LINK_BIT_SLASH);
-	AnimInstance->StopSlashMontage();
 }
 

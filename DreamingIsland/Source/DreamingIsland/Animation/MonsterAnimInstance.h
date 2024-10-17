@@ -21,12 +21,9 @@ protected:
 	UPROPERTY()
 	class UPawnMovementComponent* MovementComponent;
 
+	UPROPERTY()
+	const class UMonsterStatusComponent* StatusComponent;
+
 	UPROPERTY(BlueprintReadOnly)
 	double Speed = 0.0;
-
-protected:
-	UAnimMontage* AttackMontage;
-
-public:
-	void PlayAttackMontage();
 };

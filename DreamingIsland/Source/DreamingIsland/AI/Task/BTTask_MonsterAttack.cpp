@@ -2,6 +2,7 @@
 #include "Animation/MonsterAnimInstance.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h"
 #include "Blueprint/AIAsyncTaskBlueprintProxy.h"
+#include "Actors/Monster.h"
 
 UBTTask_MonsterAttack::UBTTask_MonsterAttack()
 {
@@ -16,10 +17,9 @@ EBTNodeResult::Type UBTTask_MonsterAttack::ExecuteTask(UBehaviorTreeComponent& O
 	BehaviorTreeComponent = &OwnerComp;
 	BlackboardComponent = OwnerComp.GetBlackboardComponent();
 
-	APawn* Pawn = AIOwner->GetPawn();
-	USkeletalMeshComponent* SkeletalMeshComponent = Pawn->GetComponentByClass<USkeletalMeshComponent>();
-	UMonsterAnimInstance* AnimInstance = Cast<UMonsterAnimInstance>(SkeletalMeshComponent->GetAnimInstance());
-	AnimInstance->PlayAttackMontage();
+	AMonster* Monster = Cast<AMonster>(AIOwner->GetPawn());
+	Monster->PlayAttackMontage();
+
 
 	//return EBTNodeResult::InProgress;
 	return EBTNodeResult::Succeeded;

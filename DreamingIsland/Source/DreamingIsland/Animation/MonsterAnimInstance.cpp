@@ -4,6 +4,8 @@
 #include "MonsterAnimInstance.h"
 #include "GameFramework/PawnMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Actors/Monster.h"
+#include "Components/MonsterStatusComponent.h"
 
 void UMonsterAnimInstance::NativeInitializeAnimation()
 {
@@ -13,22 +15,17 @@ void UMonsterAnimInstance::NativeInitializeAnimation()
 	if (!Pawn) return;
 	MovementComponent = Pawn->GetMovementComponent();
 	check(MovementComponent);
+
+	AMonster* Monster = Cast<AMonster>(Pawn);
+	StatusComponent = Monster->GetStatusComponent();
 }
 
 void UMonsterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
 	Super::NativeUpdateAnimation(DeltaSeconds);
-	if (MovementComponent)
-	{
-		Speed = UKismetMathLibrary::VSizeXY(MovementComponent->Velocity);
-	}
+	//if (MovementComponent)
+	//{
+	//	Speed = UKismetMathLibrary::VSizeXY(MovementComponent->Velocity);
+	//}
 
-}
-
-void UMonsterAnimInstance::PlayAttackMontage()
-{
-	if (AttackMontage && !Montage_IsPlaying(nullptr))
-	{
-		Montage_Play(AttackMontage);
-	}
 }

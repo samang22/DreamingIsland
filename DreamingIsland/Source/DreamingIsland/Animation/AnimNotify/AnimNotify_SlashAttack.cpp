@@ -17,18 +17,20 @@ void UAnimNotify_SlashAttack::Notify(USkeletalMeshComponent* MeshComp, UAnimSequ
 #if WITH_EDITOR
 	if (GIsEditor && MeshComp->GetWorld() != GWorld) { return; } // 에디터 프리뷰
 #endif
-	if (ProjectileTableRowHandle.IsNull()) { return; }
-	FProjectileTableRow* Data = ProjectileTableRowHandle.GetRow<FProjectileTableRow>(TEXT("Link_SlashAttack"));
-	if (!Data) { ensure(false); return; }
 
-	APawn* OwningPawn = Cast<APawn>(MeshComp->GetOwner());
-	check(OwningPawn);
+	ALink* Link = Cast<ALink>(MeshComp->GetOwner());
+	check(Link);
 
 	const FVector SwordTopLocation = MeshComp->GetSocketLocation(Link_SocketName::SwordTop);
 
-	UWorld* World = OwningPawn->GetWorld();
+	const FDataTableRowHandle Handle = Link->GetProjectileTableRowHandle();
+
+
+	UWorld* World = Link->GetWorld();
+	
+	FProjectileTableRow* Data = Handle.GetRow<FProjectileTableRow>(TEXT("Link_SlashAttack"));
 	AProjectile* Projectile = World->SpawnActorDeferred<AProjectile>(Data->ProjectileClass,
-		FTransform::Identity, OwningPawn, OwningPawn, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
+		FTransform::Identity, Link, Link, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 
 	FTransform NewTransform;
 	Projectile->SetData(ProjectileTableRowHandle, FString(Link_SocketName_FString::SwordTop));

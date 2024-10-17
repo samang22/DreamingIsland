@@ -49,6 +49,9 @@ ALink::ALink(const FObjectInitializer& ObjectInitializer)
 		Movement->bCanWalkOffLedges = false;
 	}
 
+	SkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshComponent"));
+	SkeletalMeshComponent->SetupAttachment(RootComponent);
+	SkeletalMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 void ALink::OnDie()
 {
@@ -101,4 +104,3 @@ const ULinkStatusComponent* ALink::GetStatusComponent() const
 {
 	return dynamic_cast<ULinkStatusComponent*>(StatusComponent);
 }
-

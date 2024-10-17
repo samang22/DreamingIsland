@@ -49,31 +49,17 @@ void ULinkAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	bIsWait = StatusComponent->GetAnimStatus(LINK_BIT_WAIT);
 	bIsWalk = StatusComponent->GetAnimStatus(LINK_BIT_WALK);
 	bIsRun = StatusComponent->GetAnimStatus(LINK_BIT_RUN);
-	//bIsSlash = StatusComponent->GetAnimStatus(LINK_BIT_SLASH);
-	//bIsSlashHold = StatusComponent->GetAnimStatus(LINK_BIT_SLASHHOLD);
-	bIsDeath = StatusComponent->GetAnimStatus(LINK_BIT_DEATH);
 }
 
-void ULinkAnimInstance::PlaySlashMontage()
+void ULinkAnimInstance::PlayAttackMontage()
 {
-	if (bCanSlash && AttackMontage && !Montage_IsPlaying(nullptr))
+	if (!Montage_IsPlaying(nullptr))
 	{
 		Montage_Play(AttackMontage);
 	}
-
-
-
-	//if (bCanSlash)
-	//{
-	//	Montage_Play(AttackMontage);
-	//}
-	//else
-	//{
-	//	UE_LOG(LogTemp, Warning, TEXT("PlaySlashMontage is failed"));
-	//}
 }
 
-void ULinkAnimInstance::StopSlashMontage()
+void ULinkAnimInstance::PlayDieMontage()
 {
+	Montage_Play(DieMontage);
 }
-

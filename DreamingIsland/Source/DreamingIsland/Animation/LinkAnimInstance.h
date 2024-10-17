@@ -32,16 +32,6 @@ protected:
 	double Speed = 0.0;
 
 protected:
-	UAnimMontage* AttackMontage;
-
-public:
-	UAnimMontage* GetAttackMontage() { return AttackMontage; }
-
-public:
-	void PlaySlashMontage();
-	void StopSlashMontage();
-
-protected:
 	bool bCanSlash = true;
 public:
 	void SetOnCanSlash() { bCanSlash = true; }
@@ -54,12 +44,12 @@ protected:
 	bool bIsWalk = false;
 	UPROPERTY(BlueprintReadOnly)
 	bool bIsRun = false;
-	UPROPERTY(BlueprintReadOnly)
-	bool bIsSlash = false;
-	UPROPERTY(BlueprintReadOnly)
-	bool bIsSlashHold = false;
-	UPROPERTY(BlueprintReadOnly)
-	bool bIsDeath = false;
 
+protected:
+	UAnimMontage* AttackMontage;
+	UAnimMontage* DieMontage;
 
+public:
+	void PlayAttackMontage();
+	void PlayDieMontage();
 };

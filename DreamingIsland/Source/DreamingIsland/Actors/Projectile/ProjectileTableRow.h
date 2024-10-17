@@ -14,9 +14,9 @@ struct DREAMINGISLAND_API FProjectileTableRow : public FTableRowBase
 	GENERATED_BODY()
 	FProjectileTableRow();
 
-public:
-	UPROPERTY(EditAnywhere, meta = (RowType = "ProjectileTableRow"))
-	FDataTableRowHandle ProjectileRowHandle;
+//public:
+//	UPROPERTY(EditAnywhere, meta = (RowType = "ProjectileTableRow"))
+//	FDataTableRowHandle ProjectileRowHandle;
 
 public:
 	UPROPERTY(EditAnywhere, Category = "Projectile")
@@ -28,7 +28,23 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Projectile")
 	TSubclassOf<class AProjectile> ProjectileClass;
 
-	// @TODO : Hit Effect
 
+public:
+	UPROPERTY(EditAnywhere, Category = "Collision")
+	TSubclassOf<UShapeComponent> CollisionClass/* = USphereComponent::StaticClass()*/;
+	UPROPERTY(EditAnywhere, Category = "Collision")
+	float CollisionSphereRadius = 32.f;
+	UPROPERTY(EditAnywhere, Category = "Collision")
+	FVector CollisionBoxExtent = FVector(32.0, 32.0, 32.0);
+	UPROPERTY(EditAnywhere, Category = "Collision")
+	float CollisionCapsuleRadius = 22.f;
+	UPROPERTY(EditAnywhere, Category = "Collision")
+	float CollisionCapsuleHalfHeight = 44.f;
+
+
+
+	// @TODO : Hit Effect
+public:
+	UPROPERTY(EditAnywhere, Category = "Damage")
 	float Damage = 0.f;
 };
