@@ -78,7 +78,6 @@ void AMonster::SetData(const FDataTableRowHandle& InDataTableRowHandle, FString 
 	SkeletalMeshComponent->SetWorldRotation(NewRotator.Quaternion());
 	MovementComponent->MaxSpeed = MonsterData->MovementMaxSpeed;
 
-
 	AIControllerClass = MonsterData->AIControllerClass;
 }
 
