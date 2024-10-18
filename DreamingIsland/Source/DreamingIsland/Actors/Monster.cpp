@@ -183,12 +183,16 @@ float AMonster::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContr
 void AMonster::OnDie()
 {
 	// @TODO : Die Effect
+	Destroy();
 }
 
 void AMonster::PlayAttackMontage()
 {
 	UAnimInstance* AnimInstance = SkeletalMeshComponent->GetAnimInstance();
-	AnimInstance->Montage_Play(MonsterData->AttackMontage);
+	if (!AnimInstance->Montage_IsPlaying(nullptr))
+	{
+		AnimInstance->Montage_Play(MonsterData->AttackMontage);
+	}
 }
 void AMonster::PlayDieMontage()
 {
@@ -198,7 +202,10 @@ void AMonster::PlayDieMontage()
 void AMonster::PlayDamageMontage()
 {
 	UAnimInstance* AnimInstance = SkeletalMeshComponent->GetAnimInstance();
-	AnimInstance->Montage_Play(MonsterData->DamageMontage);
+	if (!AnimInstance->Montage_IsPlaying(MonsterData->DamageMontage))
+	{
+		AnimInstance->Montage_Play(MonsterData->DamageMontage);
+	}
 }
 
 
