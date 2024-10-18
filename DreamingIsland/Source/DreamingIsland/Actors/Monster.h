@@ -9,6 +9,8 @@
 #include "Monster.generated.h"
 
 
+#define ALBATOSS_CLAWATTACK_LENGTH 100.f
+
 class UMonsterAnimInstance;
 
 UCLASS()

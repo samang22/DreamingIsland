@@ -48,6 +48,7 @@ namespace CollisionProfileName
 namespace ProjectileName
 {
 	static inline FName Link_SlashAttack = TEXT("Link_SlashAttack");
+	static inline FName Albatoss_ClawAttack = TEXT("Albatoss_ClawAttack");
 }
 
 #define COLLISION_CHANNEL_LINKCHANNEL				ECollisionChannel::ECC_GameTraceChannel1
