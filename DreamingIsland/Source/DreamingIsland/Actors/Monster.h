@@ -32,7 +32,7 @@ public:
 
 };
 
-class UFloatingPawnMovement;
+class UAdvancedFloatingPawnMovement;
 class UMonsterStatusComponent;
 class APatrolPath;
 UCLASS()
@@ -75,7 +75,7 @@ protected: // 옵션에 따라 생성되고 Root로 지정 됩니다.
 
 protected:
 	UPROPERTY(VisibleAnywhere)
-	UFloatingPawnMovement* MovementComponent;
+	UAdvancedFloatingPawnMovement* MovementComponent;
 
 	UPROPERTY(VisibleAnywhere)
 	UMonsterStatusComponent* StatusComponent;

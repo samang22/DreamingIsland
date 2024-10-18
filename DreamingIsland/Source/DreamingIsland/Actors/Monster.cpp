@@ -4,7 +4,7 @@
 #include "Monster.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Animation/MonsterAnimInstance.h"
-#include "GameFramework/FloatingPawnMovement.h"
+#include "Components/AdvancedFloatingPawnMovement.h"
 #include "Components/SphereComponent.h"
 #include "Components/BoxComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -29,7 +29,7 @@ AMonster::AMonster(const FObjectInitializer& ObjectInitializer)
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 	PrimaryActorTick.bCanEverTick = true;
 
-	MovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("MovementComponent"));
+	MovementComponent = CreateDefaultSubobject<UAdvancedFloatingPawnMovement>(TEXT("MovementComponent"));
 	StatusComponent = CreateDefaultSubobject<UMonsterStatusComponent>(TEXT("StatusComponent"));
 
 
