@@ -29,7 +29,7 @@ void UAnimNotify_SlashAttack::Notify(USkeletalMeshComponent* MeshComp, UAnimSequ
 		FTransform::Identity, Link, Link, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 
 	FTransform NewTransform;
-	Projectile->SetData(ProjectileName::Link_SlashAttack, CollisionProfileName::Link_Projectile);
+	Projectile->SetData(ProjectileName::Link_SlashAttack, CollisionProfileName::Link_Projectile, COLLISION_CHANNEL_LINKPROJECTILE);
 	NewTransform.SetLocation(/*Link->GetActorLocation() + */SwordTopLocation);
 	NewTransform.SetRotation(FRotator::ZeroRotator.Quaternion());
 	Projectile->FinishSpawning(NewTransform);

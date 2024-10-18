@@ -50,6 +50,15 @@ namespace ProjectileName
 	static inline FName Link_SlashAttack = TEXT("Link_SlashAttack");
 }
 
+#define COLLISION_CHANNEL_LINKCHANNEL				ECollisionChannel::ECC_GameTraceChannel1
+#define COLLISION_CHANNEL_MONSTERCHANNEL			ECollisionChannel::ECC_GameTraceChannel2
+#define COLLISION_CHANNEL_LINKPROJECTILECHANNEL		ECollisionChannel::ECC_GameTraceChannel3
+#define COLLISION_CHANNEL_MONSTERPROJECTILECHANNEL	ECollisionChannel::ECC_GameTraceChannel4
+#define COLLISION_CHANNEL_LINK						ECollisionChannel::ECC_GameTraceChannel5
+#define COLLISION_CHANNEL_MONSTER					ECollisionChannel::ECC_GameTraceChannel6
+#define COLLISION_CHANNEL_LINKPROJECTILE			ECollisionChannel::ECC_GameTraceChannel7
+#define COLLISION_CHANNEL_MONSTERPROJECTILE			ECollisionChannel::ECC_GameTraceChannel8
+
 
 namespace MonsterName
 {

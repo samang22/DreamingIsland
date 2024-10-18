@@ -60,9 +60,9 @@ ALink::ALink(const FObjectInitializer& ObjectInitializer)
 	USkeletalMeshComponent* SkeletalMeshComponent = GetMesh();
 	SkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshComponent"));
 	SkeletalMeshComponent->SetupAttachment(RootComponent);
-	SkeletalMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	//SkeletalMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
-
+	//GetCapsuleComponent()->SetCollisionObjectType(COLLISION_CHANNEL_LINK);
 }
 void ALink::OnDie()
 {
@@ -72,7 +72,11 @@ void ALink::OnDie()
 void ALink::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	UCapsuleComponent* tempCapsuleComponent = GetCapsuleComponent();
+
+	tempCapsuleComponent->SetCollisionProfileName(CollisionProfileName::Link);
+	tempCapsuleComponent->bHiddenInGame = false;
+	//tempCapsuleComponent->SetGenerateOverlapEvents(true);
 }
 
 void ALink::OnConstruction(const FTransform& Transform)

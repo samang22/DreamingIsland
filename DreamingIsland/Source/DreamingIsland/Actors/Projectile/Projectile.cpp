@@ -17,7 +17,6 @@ AProjectile::AProjectile()
 	PrimaryActorTick.bCanEverTick = true;
 
 	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
-	RootComponent = StaticMeshComponent;
 
 	ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovementComponent"));
 	ProjectileMovementComponent->InitialSpeed = 100.0;
@@ -26,20 +25,19 @@ AProjectile::AProjectile()
 	InitialLifeSpan = 5.f;
 
 	//StaticMeshComponent->SetCollisionProfileName(CollisionProfileName::Link_Projectile);
-	//StaticMeshComponent->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::OnBeginOverlap);
 
 	CollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("CollisionComponent"));
-	CollisionComponent->RegisterComponent();
 	CollisionComponent->SetCanEverAffectNavigation(false);
 	USphereComponent* SphereComponent = Cast<USphereComponent>(CollisionComponent);
 	RootComponent = CollisionComponent;
+	CollisionComponent->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::OnBeginOverlap);
 
 	static ConstructorHelpers::FObjectFinder<UDataTable> Asset(TEXT("/Script/Engine.DataTable'/Game/Data/DT_Projectile.DT_Projectile'"));
 	check(Asset.Object);
 	ProjectileDataTable = Asset.Object;
 }
 
-void AProjectile::SetData(const FName& ProjectileName, FName ProfileName)
+void AProjectile::SetData(const FName& ProjectileName, FName ProfileName, ECollisionChannel eCollisionChannel)
 {
 	if (!ProjectileDataTable->GetRowMap().Find(ProjectileName)) { ensure(false); return; }
 	DataTableRowHandle.DataTable = ProjectileDataTable;
@@ -56,16 +54,19 @@ void AProjectile::SetData(const FName& ProjectileName, FName ProfileName)
 	}
 
 	CollisionComponent->SetCollisionProfileName(ProfileName);
+	CollisionComponent->RegisterComponent();
 
 	ProjectileMovementComponent->MaxSpeed = ProjectileTableRow->MaxSpeed;
 	ProjectileMovementComponent->InitialSpeed = ProjectileTableRow->InitialSpeed;
+
 }
 
 // Called when the game starts or when spawned
 void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	CollisionComponent->bHiddenInGame = false;
+
 }
 
 void AProjectile::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -73,24 +74,16 @@ void AProjectile::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 	FVector Location = GetActorLocation();
 	if (!IsValid(this)) { return; }
 
-	// BeginPlay 시점에 Overlapped 되면 들어 옴
-	if (!bFromSweep)
-	{
-		Destroy();
-		check(false);
-		return;
-	}
 
-	FTransform NewTransform;
-	NewTransform.SetLocation(SweepResult.ImpactPoint);
-	FRotator Rotation = UKismetMathLibrary::Conv_VectorToRotator(SweepResult.ImpactNormal);
-	NewTransform.SetRotation(Rotation.Quaternion());
+	//FTransform NewTransform;
+	//NewTransform.SetLocation(SweepResult.ImpactPoint);
+	//FRotator Rotation = UKismetMathLibrary::Conv_VectorToRotator(SweepResult.ImpactNormal);
+	//NewTransform.SetRotation(Rotation.Quaternion());
 
 	// @TODO : Generate Effects
 
 	Destroy();
-
-	UGameplayStatics::ApplyDamage(OtherActor, 1.f, GetInstigator()->GetController(), this, nullptr);
+	UGameplayStatics::ApplyDamage(OtherActor, 1.f, OtherActor->GetInstigator()->GetController(), this, nullptr);
 }
 
 // Called every frame

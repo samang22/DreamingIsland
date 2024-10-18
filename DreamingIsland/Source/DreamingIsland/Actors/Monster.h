@@ -32,7 +32,7 @@ public:
 
 class UFloatingPawnMovement;
 class UMonsterStatusComponent;
-
+class APatrolPath;
 UCLASS()
 class DREAMINGISLAND_API AMonster : public APawn
 {
@@ -49,6 +49,7 @@ protected:
 	virtual void PostLoad() override;
 	virtual void PostLoadSubobjects(FObjectInstancingGraph* OuterInstanceGraph) override;
 	// Called when the game starts or when spawned
+	virtual void PostInitializeComponents() override;
 	virtual void BeginPlay() override;
 	virtual void OnConstruction(const FTransform& Transform);
 
@@ -64,7 +65,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 protected: // 옵션에 따라 생성되고 Root로 지정 됩니다.
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UShapeComponent> CollisionComponent;
 
 	UPROPERTY(VisibleAnywhere)
@@ -97,6 +98,11 @@ protected:
 
 	UPROPERTY(VisibleAnywhere)
 	class UAISenseConfig_Sight* AISenseConfig_Sight;
+
+protected:
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<APatrolPath> PatrolPathRef;
+
 
 public:
 	UMonsterStatusComponent* GetStatusComponent() { return StatusComponent; }

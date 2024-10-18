@@ -14,6 +14,7 @@
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
 #include "Actors/AI/PatrolPath.h"
+#include "Actors/AI/BasicMonsterAIController.h"
 
 UMonsterDataAsset::UMonsterDataAsset()
 	: AnimClass(UMonsterAnimInstance::StaticClass())
@@ -34,15 +35,13 @@ AMonster::AMonster(const FObjectInitializer& ObjectInitializer)
 
 
 	CollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("CollisionComponent"));
-	CollisionComponent->RegisterComponent();
 	CollisionComponent->SetCollisionProfileName(CollisionProfileName::Monster);
+
 	CollisionComponent->SetCanEverAffectNavigation(false);
 	RootComponent = CollisionComponent;
 
-
 	SkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshComponent"));
 	SkeletalMeshComponent->SetupAttachment(RootComponent);
-	SkeletalMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	AIPerceptionComponent = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AIPerceptionComponent"));
 	AISenseConfig_Sight = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("AISenseConfig_Sight"));
@@ -66,6 +65,10 @@ void AMonster::SetData(const FDataTableRowHandle& InDataTableRowHandle, FString 
 	{
 		USphereComponent* SphereComponent = Cast<USphereComponent>(CollisionComponent);
 		SphereComponent->SetSphereRadius(MonsterData->CollisionSphereRadius);
+		CollisionComponent->SetCollisionProfileName(CollisionProfileName::Monster);
+		CollisionComponent->bHiddenInGame = false;
+		CollisionComponent->RegisterComponent();
+
 	}
 
 	SkeletalMeshComponent->SetSkeletalMesh(MonsterData->SkeletalMesh);
@@ -84,27 +87,10 @@ void AMonster::PostLoad()
 {
 	Super::PostLoad();
 }
-
-// Called when the game starts or when spawned
-void AMonster::BeginPlay()
-{
-	Super::BeginPlay();
-	//SetData(DataTableRowHandle);
-	// SetData will be called by Subclasses
-}
-
 void AMonster::PostLoadSubobjects(FObjectInstancingGraph* OuterInstanceGraph)
 {
 	Super::PostLoadSubobjects(OuterInstanceGraph);
 }
-
-void AMonster::OnConstruction(const FTransform& Transform)
-{
-	Super::OnConstruction(Transform);
-	SetData(DataTableRowHandle, MonsterName);
-	SetActorTransform(Transform);
-}
-
 void AMonster::PostDuplicate(EDuplicateMode::Type DuplicateMode)
 {
 	Super::PostDuplicate(DuplicateMode);
@@ -117,6 +103,40 @@ void AMonster::PostDuplicate(EDuplicateMode::Type DuplicateMode)
 		SetActorTransform(Backup);
 	}
 }
+
+void AMonster::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+
+	if (PatrolPathRef)
+	{
+		if (ABasicMonsterAIController* BasicMonsterAIController = Cast<ABasicMonsterAIController>(Controller))
+		{
+			BasicMonsterAIController->SetPatrolPath(PatrolPathRef->GetPath());
+		}
+	}
+}
+
+// Called when the game starts or when spawned
+void AMonster::BeginPlay()
+{
+	Super::BeginPlay();
+	CollisionComponent->SetCollisionProfileName(CollisionProfileName::Monster);
+	CollisionComponent->bHiddenInGame = false;
+
+	SetData(DataTableRowHandle, MonsterName);
+}
+
+
+
+void AMonster::OnConstruction(const FTransform& Transform)
+{
+	Super::OnConstruction(Transform);
+	SetData(DataTableRowHandle, MonsterName);
+	SetActorTransform(Transform);
+}
+
+
 
 // Called every frame
 void AMonster::Tick(float DeltaTime)
@@ -138,7 +158,7 @@ float AMonster::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContr
 	}
 
 
-	if (StatusComponent->IsDie() && !(MonsterData->DieMontage))
+	if (StatusComponent->IsDie() && MonsterData->DieMontage)
 	{
 		if (Controller)
 		{
@@ -150,13 +170,15 @@ float AMonster::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContr
 		UKismetSystemLibrary::K2_SetTimer(this, TEXT("OnDie"),
 			MonsterData->DieMontage->GetPlayLength() - 0.1f, false);
 	}
-	else if (!StatusComponent->IsDie() && !MonsterData->DamageMontage)
+	else if (!StatusComponent->IsDie() && MonsterData->DamageMontage)
 	{
 		PlayDamageMontage();
 	}
 
 	return 0.0f;
 }
+
+
 
 void AMonster::OnDie()
 {
