@@ -23,7 +23,12 @@
 ALink::ALink(const FObjectInitializer& ObjectInitializer)
 {
 	PrimaryActorTick.bCanEverTick = true;
-	//GetCapsuleComponent()->SetCollisionProfileName(CollisionProfileName::Player);
+
+	UCapsuleComponent* tempCapsuleComponent = GetCapsuleComponent();
+	tempCapsuleComponent->SetCanEverAffectNavigation(false);
+	RootComponent = tempCapsuleComponent;
+	tempCapsuleComponent->SetCollisionProfileName(CollisionProfileName::Link);
+
 	SpringArm = CreateDefaultSubobject<USoftWheelSpringArmComponent>(TEXT("SpringArm"));
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	{
@@ -51,18 +56,12 @@ ALink::ALink(const FObjectInitializer& ObjectInitializer)
 		Movement->bCanWalkOffLedges = false;
 	}
 
+
+	USkeletalMeshComponent* SkeletalMeshComponent = GetMesh();
 	SkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshComponent"));
 	SkeletalMeshComponent->SetupAttachment(RootComponent);
 	SkeletalMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
-	CollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("CollisionComponent"));
-	CollisionComponent->RegisterComponent();
-	CollisionComponent->SetCollisionProfileName(CollisionProfileName::Monster);
-	CollisionComponent->SetCanEverAffectNavigation(false);
-	USphereComponent* SphereComponent = Cast<USphereComponent>(CollisionComponent);
-	SphereComponent->SetSphereRadius(COLLISION_SPHERE_RADIUS);
-	RootComponent = CollisionComponent;
-	CollisionComponent->SetCollisionProfileName(CollisionProfileName::Link);
 
 }
 void ALink::OnDie()

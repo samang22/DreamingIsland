@@ -23,18 +23,14 @@ void UAnimNotify_SlashAttack::Notify(USkeletalMeshComponent* MeshComp, UAnimSequ
 
 	const FVector SwordTopLocation = MeshComp->GetSocketLocation(Link_SocketName::SwordTop);
 
-	const FDataTableRowHandle Handle = Link->GetProjectileTableRowHandle();
-
-
 	UWorld* World = Link->GetWorld();
 	
-	FProjectileTableRow* Data = Handle.GetRow<FProjectileTableRow>(TEXT("Link_SlashAttack"));
-	AProjectile* Projectile = World->SpawnActorDeferred<AProjectile>(Data->ProjectileClass,
+	AProjectile* Projectile = World->SpawnActorDeferred<AProjectile>(AProjectile::StaticClass(),
 		FTransform::Identity, Link, Link, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 
 	FTransform NewTransform;
-	Projectile->SetData(ProjectileTableRowHandle, TEXT("Link_SlashAttack"), CollisionProfileName::Link_Projectile);
-	NewTransform.SetLocation(Link->GetActorLocation());
+	Projectile->SetData(ProjectileName::Link_SlashAttack, CollisionProfileName::Link_Projectile);
+	NewTransform.SetLocation(/*Link->GetActorLocation() + */SwordTopLocation);
 	NewTransform.SetRotation(FRotator::ZeroRotator.Quaternion());
 	Projectile->FinishSpawning(NewTransform);
 }

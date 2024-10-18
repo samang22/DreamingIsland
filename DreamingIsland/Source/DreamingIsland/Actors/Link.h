@@ -48,11 +48,6 @@ protected:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	TObjectPtr<class UCameraComponent> Camera;
 
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<USkeletalMeshComponent> SkeletalMeshComponent;
-
-	UPROPERTY(EditAnywhere)
-	TObjectPtr<UShapeComponent> CollisionComponent;
 
 protected:
 	UPROPERTY(EditAnywhere, Category = "Projectile")

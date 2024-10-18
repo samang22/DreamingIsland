@@ -6,7 +6,7 @@
 #include "Misc/Utils.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/GameplayStatics.h"
-#include "ProjectileTableRow.h"
+#include "Actors/Projectile/ProjectileTableRow.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/SphereComponent.h"
 
@@ -33,27 +33,32 @@ AProjectile::AProjectile()
 	CollisionComponent->SetCanEverAffectNavigation(false);
 	USphereComponent* SphereComponent = Cast<USphereComponent>(CollisionComponent);
 	RootComponent = CollisionComponent;
+
+	static ConstructorHelpers::FObjectFinder<UDataTable> Asset(TEXT("/Script/Engine.DataTable'/Game/Data/DT_Projectile.DT_Projectile'"));
+	check(Asset.Object);
+	ProjectileDataTable = Asset.Object;
 }
 
-void AProjectile::SetData(const FDataTableRowHandle& InDataTableRowHandle, FString ProjectileName, FName ProfileName)
+void AProjectile::SetData(const FName& ProjectileName, FName ProfileName)
 {
-	DataTableRowHandle = InDataTableRowHandle;
-	if (DataTableRowHandle.IsNull()) { return; }
-	FProjectileTableRow* Data = DataTableRowHandle.GetRow<FProjectileTableRow>(ProjectileName);
-	if (!Data) { ensure(false); return; }
-
-	ProjectileData = Data;
+	if (!ProjectileDataTable->GetRowMap().Find(ProjectileName)) { ensure(false); return; }
+	DataTableRowHandle.DataTable = ProjectileDataTable;
+	DataTableRowHandle.RowName = ProjectileName;
+	ProjectileTableRow = DataTableRowHandle.GetRow<FProjectileTableRow>(ProjectileName.ToString());
 
 	StaticMeshComponent->MoveIgnoreActors.Empty();
 	StaticMeshComponent->MoveIgnoreActors.Add(GetOwner());
 
-	if (Data->StaticMesh)
+	if (ProjectileTableRow->StaticMesh)
 	{
-		StaticMeshComponent->SetStaticMesh(Data->StaticMesh);
-		StaticMeshComponent->SetRelativeTransform(Data->Transform);
+		StaticMeshComponent->SetStaticMesh(ProjectileTableRow->StaticMesh);
+		StaticMeshComponent->SetRelativeTransform(ProjectileTableRow->Transform);
 	}
 
 	CollisionComponent->SetCollisionProfileName(ProfileName);
+
+	ProjectileMovementComponent->MaxSpeed = ProjectileTableRow->MaxSpeed;
+	ProjectileMovementComponent->InitialSpeed = ProjectileTableRow->InitialSpeed;
 }
 
 // Called when the game starts or when spawned

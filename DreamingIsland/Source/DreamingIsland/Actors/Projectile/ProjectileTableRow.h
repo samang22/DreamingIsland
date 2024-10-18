@@ -41,7 +41,11 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Collision")
 	float CollisionCapsuleHalfHeight = 44.f;
 
-
+public:
+	UPROPERTY(EditAnywhere, Category = "Speed")
+	float MaxSpeed = 0.f;
+	UPROPERTY(EditAnywhere, Category = "Speed")
+	float InitialSpeed = 0.f;
 
 	// @TODO : Hit Effect
 public:

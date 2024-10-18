@@ -30,7 +30,7 @@ void UAnimNotify_Albatoss_ClawAttack::Notify(USkeletalMeshComponent* MeshComp, U
 		FTransform::Identity, OwningPawn, OwningPawn, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 
 	FTransform NewTransform;
-	Projectile->SetData(ProjectileTableRowHandle, FString(Link_SocketName_FString::SwordTop), CollisionProfileName::Monster_Projectile);
+	Projectile->SetData(Link_SocketName::SwordTop, CollisionProfileName::Monster_Projectile);
 	NewTransform.SetLocation(SwordTopLocation);
 	NewTransform.SetRotation(FRotator::ZeroRotator.Quaternion());
 	Projectile->FinishSpawning(NewTransform);
