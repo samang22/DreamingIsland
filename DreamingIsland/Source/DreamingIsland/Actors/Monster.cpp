@@ -46,9 +46,9 @@ AMonster::AMonster(const FObjectInitializer& ObjectInitializer)
 	AIPerceptionComponent = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AIPerceptionComponent"));
 	AISenseConfig_Sight = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("AISenseConfig_Sight"));
 	AISenseConfig_Sight->DetectionByAffiliation.bDetectNeutrals = true;
-	AISenseConfig_Sight->SightRadius = 1000.f;
-	AISenseConfig_Sight->LoseSightRadius = 500.f;
-	AISenseConfig_Sight->PeripheralVisionAngleDegrees = 120.f;
+	AISenseConfig_Sight->SightRadius = AISENSECONFIG_SIGHT_SIGHTRADIUS;
+	AISenseConfig_Sight->LoseSightRadius = AISENSECONFIG_SIGHT_LOSESIGHTRADIUS;
+	AISenseConfig_Sight->PeripheralVisionAngleDegrees = AISENSECONFIG_SIGHT_LOSESIGHTRADIUS_PERIPHERALVISIONANGLEDEGREES;
 	AIPerceptionComponent->ConfigureSense(*AISenseConfig_Sight);
 }
 

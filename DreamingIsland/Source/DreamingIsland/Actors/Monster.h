@@ -8,8 +8,14 @@
 #include "Data/PawnTableRow.h"
 #include "Monster.generated.h"
 
+#define AISENSECONFIG_SIGHT_SIGHTRADIUS										300.f
+#define AISENSECONFIG_SIGHT_LOSESIGHTRADIUS									400.f
+#define AISENSECONFIG_SIGHT_LOSESIGHTRADIUS_PERIPHERALVISIONANGLEDEGREES	120.f
+
 
 #define ALBATOSS_CLAWATTACK_LENGTH 70.f
+
+
 
 class UMonsterAnimInstance;
 
