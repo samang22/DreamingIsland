@@ -19,17 +19,24 @@ EBTNodeResult::Type UBTTask_MonsterAttack::ExecuteTask(UBehaviorTreeComponent& O
 
 	AMonster* Monster = Cast<AMonster>(AIOwner->GetPawn());
 	Monster->PlayAttackMontage();
-
-
-	//return EBTNodeResult::InProgress;
-	return EBTNodeResult::Succeeded;
+	return EBTNodeResult::InProgress;
 }
 
 void UBTTask_MonsterAttack::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
 	Super::TickTask(OwnerComp, NodeMemory, DeltaSeconds);
 
-	// Do Nothing
+	AMonster* Monster = Cast<AMonster>(AIOwner->GetPawn());
+	if (Monster->IsPlayingDamageMontage())
+	{
+		FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
+		return;
+	}
+	if (!Monster->IsPlayingAttackMontage())
+	{
+		FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
+		return;
+	}
 }
 
 

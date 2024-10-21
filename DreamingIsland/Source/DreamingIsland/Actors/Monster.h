@@ -93,7 +93,11 @@ public:
 	void PlayAttackMontage();
 	void PlayDieMontage();
 	void PlayDamageMontage();
-
+public:
+	bool IsPlayingMontage();
+	bool IsPlayingAttackMontage();
+	bool IsPlayingDieMontage();
+	bool IsPlayingDamageMontage();
 protected:
 	UPROPERTY(VisibleAnywhere)
 	class UAIPerceptionComponent* AIPerceptionComponent;

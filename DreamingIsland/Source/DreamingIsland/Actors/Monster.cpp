@@ -158,6 +158,7 @@ float AMonster::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContr
 	}
 
 
+
 	if (StatusComponent->IsDie() && MonsterData->DieMontage)
 	{
 		if (Controller)
@@ -194,6 +195,7 @@ void AMonster::PlayAttackMontage()
 		AnimInstance->Montage_Play(MonsterData->AttackMontage);
 	}
 }
+
 void AMonster::PlayDieMontage()
 {
 	UAnimInstance* AnimInstance = SkeletalMeshComponent->GetAnimInstance();
@@ -206,6 +208,30 @@ void AMonster::PlayDamageMontage()
 	{
 		AnimInstance->Montage_Play(MonsterData->DamageMontage);
 	}
+}
+
+bool AMonster::IsPlayingMontage()
+{
+	UAnimInstance* AnimInstance = SkeletalMeshComponent->GetAnimInstance();
+	return AnimInstance->Montage_IsPlaying(nullptr);
+}
+
+bool AMonster::IsPlayingAttackMontage()
+{
+	UAnimInstance* AnimInstance = SkeletalMeshComponent->GetAnimInstance();
+	return AnimInstance->Montage_IsPlaying(MonsterData->AttackMontage);
+}
+
+bool AMonster::IsPlayingDieMontage()
+{
+	UAnimInstance* AnimInstance = SkeletalMeshComponent->GetAnimInstance();
+	return AnimInstance->Montage_IsPlaying(MonsterData->DieMontage);
+}
+
+bool AMonster::IsPlayingDamageMontage()
+{
+	UAnimInstance* AnimInstance = SkeletalMeshComponent->GetAnimInstance();
+	return AnimInstance->Montage_IsPlaying(MonsterData->DamageMontage);
 }
 
 
