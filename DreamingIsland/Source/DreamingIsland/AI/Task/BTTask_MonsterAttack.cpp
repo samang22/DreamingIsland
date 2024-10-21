@@ -1,7 +1,7 @@
 #include "AI/Task/BTTask_MonsterAttack.h"
 #include "Animation/MonsterAnimInstance.h"
-#include "Blueprint/AIBlueprintHelperLibrary.h"
-#include "Blueprint/AIAsyncTaskBlueprintProxy.h"
+//#include "Blueprint/AIBlueprintHelperLibrary.h"
+//#include "Blueprint/AIAsyncTaskBlueprintProxy.h"
 #include "Actors/Monster.h"
 
 UBTTask_MonsterAttack::UBTTask_MonsterAttack()
@@ -34,7 +34,7 @@ void UBTTask_MonsterAttack::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* N
 	}
 	if (!Monster->IsPlayingAttackMontage())
 	{
-		FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
+		FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
 		return;
 	}
 }

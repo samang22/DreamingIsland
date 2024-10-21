@@ -143,6 +143,7 @@ void AMonster::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	TickMovement(DeltaTime);
 }
 
 float AMonster::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
@@ -209,6 +210,32 @@ void AMonster::PlayDamageMontage()
 		AnimInstance->Montage_Play(MonsterData->DamageMontage);
 	}
 }
+void AMonster::PlayRushMontage()
+{
+	UAnimInstance* AnimInstance = SkeletalMeshComponent->GetAnimInstance();
+	if (!AnimInstance->Montage_IsPlaying(MonsterData->RushMontage))
+	{
+		AnimInstance->Montage_Play(MonsterData->RushMontage);
+	}
+}
+
+bool AMonster::IsAttackMontage()
+{
+	return MonsterData->AttackMontage ? true : false;
+}
+bool AMonster::IsDieMontage()
+{
+	return MonsterData->DieMontage ? true : false;
+}
+bool AMonster::IsDamageMontage()
+{
+	return MonsterData->DamageMontage ? true : false;
+}
+bool AMonster::IsRushMontage()
+{
+	return MonsterData->RushMontage ? true : false;
+}
+
 
 bool AMonster::IsPlayingMontage()
 {
@@ -234,4 +261,20 @@ bool AMonster::IsPlayingDamageMontage()
 	return AnimInstance->Montage_IsPlaying(MonsterData->DamageMontage);
 }
 
+bool AMonster::IsPlayingRushMontage()
+{
+	UAnimInstance* AnimInstance = SkeletalMeshComponent->GetAnimInstance();
+	return AnimInstance->Montage_IsPlaying(MonsterData->RushMontage);
+}
 
+void AMonster::TickMovement(float fDeltaTime)
+{
+	if (IsRushMontage() && IsPlayingRushMontage())
+	{
+		MovementComponent->MaxSpeed = MonsterData->RushMovementMaxSpeed;
+	}
+	else
+	{
+		MovementComponent->MaxSpeed = MonsterData->MovementMaxSpeed;
+	}
+}

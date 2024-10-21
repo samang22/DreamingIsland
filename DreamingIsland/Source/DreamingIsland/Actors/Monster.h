@@ -99,11 +99,21 @@ public:
 	void PlayAttackMontage();
 	void PlayDieMontage();
 	void PlayDamageMontage();
+	void PlayRushMontage();
+public:
+	bool IsAttackMontage();
+	bool IsDieMontage();
+	bool IsDamageMontage();
+	bool IsRushMontage();
 public:
 	bool IsPlayingMontage();
 	bool IsPlayingAttackMontage();
 	bool IsPlayingDieMontage();
 	bool IsPlayingDamageMontage();
+	bool IsPlayingRushMontage();
+
+
+
 protected:
 	UPROPERTY(VisibleAnywhere)
 	class UAIPerceptionComponent* AIPerceptionComponent;
@@ -118,5 +128,9 @@ protected:
 
 public:
 	UMonsterStatusComponent* GetStatusComponent() { return StatusComponent; }
+
+
+private:
+	void TickMovement(float DeltaTime);
 
 };

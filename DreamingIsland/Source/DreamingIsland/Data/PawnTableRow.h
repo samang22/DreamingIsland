@@ -49,7 +49,11 @@ public:
 
 public: // Movement
 	UPROPERTY(EditAnywhere, Category = "Monster|Movement")
-	float MovementMaxSpeed = 400.f;
+	float MovementMaxSpeed = 200.f;
+	UPROPERTY(EditAnywhere, Category = "Monster|Movement")
+	float RushMovementMaxSpeed = 300.f;
+
+
 
 public: // Animation
 	UPROPERTY(EditAnywhere, Category = "Monster|Animation")
@@ -58,6 +62,8 @@ public: // Animation
 	UAnimMontage* DieMontage;
 	UPROPERTY(EditAnywhere, Category = "Monster|Animation")
 	UAnimMontage* AttackMontage;
+	UPROPERTY(EditAnywhere, Category = "Monster|Animation")
+	UAnimMontage* RushMontage;
 
 public: // AI (Only for Enemy)
 	UPROPERTY(EditAnywhere, Category = "Monster|AI")
