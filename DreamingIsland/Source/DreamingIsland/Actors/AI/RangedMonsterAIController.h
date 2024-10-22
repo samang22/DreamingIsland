@@ -11,16 +11,16 @@
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
 
-#include "BasicMonsterAIController.generated.h"
+#include "RangedMonsterAIController.generated.h"
 
 class UStatusComponent;
 class USplineComponent;
 
 UCLASS()
-class DREAMINGISLAND_API ABasicMonsterAIController : public AAIController
+class DREAMINGISLAND_API ARangedMonsterAIController : public AAIController
 {
 	GENERATED_BODY()
-
+	
 public:
 	virtual void BeginPlay() override;
 	virtual void OnPossess(APawn* InPawn) override;
@@ -47,5 +47,4 @@ protected:
 
 	UPROPERTY()
 	UStatusComponent* StatusComponentRef;
-	
 };

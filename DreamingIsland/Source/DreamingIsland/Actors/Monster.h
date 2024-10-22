@@ -12,8 +12,8 @@
 #define AISENSECONFIG_SIGHT_LOSESIGHTRADIUS									400.f
 #define AISENSECONFIG_SIGHT_LOSESIGHTRADIUS_PERIPHERALVISIONANGLEDEGREES	120.f
 
-
 #define ALBATOSS_CLAWATTACK_LENGTH 70.f
+#define OCTOROK_ROCKATTACK_LENGTH 50.f
 
 
 
@@ -91,6 +91,8 @@ protected:
 	FDataTableRowHandle DataTableRowHandle;
 	FPawnTableRow* MonsterData;
 
+public:
+	const FPawnTableRow* GetMonsterData() const { return MonsterData; }
 protected:
 	UPROPERTY()
 	FString MonsterName;

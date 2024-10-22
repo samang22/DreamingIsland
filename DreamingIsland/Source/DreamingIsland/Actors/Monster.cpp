@@ -15,6 +15,7 @@
 #include "Perception/AISenseConfig_Sight.h"
 #include "Actors/AI/PatrolPath.h"
 #include "Actors/AI/BasicMonsterAIController.h"
+#include "Actors/AI/RangedMonsterAIController.h"
 #include "Kismet/KismetMathLibrary.h"
 
 UMonsterDataAsset::UMonsterDataAsset()
@@ -114,6 +115,10 @@ void AMonster::PostInitializeComponents()
 		if (ABasicMonsterAIController* BasicMonsterAIController = Cast<ABasicMonsterAIController>(Controller))
 		{
 			BasicMonsterAIController->SetPatrolPath(PatrolPathRef->GetPath());
+		}
+		else if (ARangedMonsterAIController* RangedMonsterAIController = Cast<ARangedMonsterAIController>(Controller))
+		{
+			RangedMonsterAIController->SetPatrolPath(PatrolPathRef->GetPath());
 		}
 	}
 }

@@ -32,9 +32,15 @@ AProjectile::AProjectile()
 	RootComponent = CollisionComponent;
 	CollisionComponent->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::OnBeginOverlap);
 
+	StaticMeshComponent->AttachToComponent(CollisionComponent, FAttachmentTransformRules::KeepRelativeTransform);
+
+
 	static ConstructorHelpers::FObjectFinder<UDataTable> Asset(TEXT("/Script/Engine.DataTable'/Game/Data/DT_Projectile.DT_Projectile'"));
 	check(Asset.Object);
 	ProjectileDataTable = Asset.Object;
+
+
+
 }
 
 void AProjectile::SetData(const FName& ProjectileName, FName ProfileName, ECollisionChannel eCollisionChannel)
@@ -50,14 +56,20 @@ void AProjectile::SetData(const FName& ProjectileName, FName ProfileName, EColli
 	if (ProjectileTableRow->StaticMesh)
 	{
 		StaticMeshComponent->SetStaticMesh(ProjectileTableRow->StaticMesh);
-		StaticMeshComponent->SetRelativeTransform(ProjectileTableRow->Transform);
+		StaticMeshComponent->SetWorldScale3D(FVector(10.f, 10.f, 10.f));
 	}
+
 
 	CollisionComponent->SetCollisionProfileName(ProfileName);
 	CollisionComponent->RegisterComponent();
 
 	ProjectileMovementComponent->MaxSpeed = ProjectileTableRow->MaxSpeed;
 	ProjectileMovementComponent->InitialSpeed = ProjectileTableRow->InitialSpeed;
+
+	if (USphereComponent* SphereCom = Cast<USphereComponent>(CollisionComponent))
+	{
+		SphereCom->SetSphereRadius(ProjectileTableRow->CollisionSphereRadius);
+	}
 
 }
 

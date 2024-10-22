@@ -49,6 +49,7 @@ namespace ProjectileName
 {
 	static inline FName Link_SlashAttack = TEXT("Link_SlashAttack");
 	static inline FName Albatoss_ClawAttack = TEXT("Albatoss_ClawAttack");
+	static inline FName Octorok_RockAttack = TEXT("Octorok_RockAttack");
 }
 
 #define COLLISION_CHANNEL_LINKCHANNEL				ECollisionChannel::ECC_GameTraceChannel1
@@ -64,9 +65,12 @@ namespace ProjectileName
 namespace MonsterName
 {
 	static inline FName Albatoss = TEXT("Albatoss");
+	static inline FName Octorok = TEXT("Octorok");
 }
 
 namespace MonsterName_FString
 {
 	static inline FString Albatoss = TEXT("Albatoss");
+	static inline FString Octorok = TEXT("Octorok");
 }
+

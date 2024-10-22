@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Actors/AI/BasicMonsterAIController.h"
+#include "Actors/AI/RangedMonsterAIController.h"
 #include "Actors/Monster.h"
 #include "GameFramework/Character.h"
 #include "Components/StatusComponent.h"
@@ -11,7 +11,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Data/PawnTableRow.h"
 
-void ABasicMonsterAIController::BeginPlay()
+void ARangedMonsterAIController::BeginPlay()
 {
 	Super::BeginPlay();
 	if (!IsValid(PatrolPath))
@@ -23,7 +23,7 @@ void ABasicMonsterAIController::BeginPlay()
 	UBehaviorTree* BehaviorTree = nullptr;
 	if (!IsValid(BrainComponent))
 	{
-		BehaviorTree = LoadObject<UBehaviorTree>(nullptr, TEXT("/Script/AIModule.BehaviorTree'/Game/Blueprint/AI/BT_BasicMonster.BT_BasicMonster'"));
+		BehaviorTree = LoadObject<UBehaviorTree>(nullptr, TEXT("/Script/AIModule.BehaviorTree'/Game/Blueprint/AI/BT_RangedMonster.BT_RangedMonster'"));
 		check(BehaviorTree);
 		RunBehaviorTree(BehaviorTree);
 	}
@@ -39,14 +39,14 @@ void ABasicMonsterAIController::BeginPlay()
 	Blackboard->SetValueAsObject(TEXT("SplineComponent"), PatrolPath);
 }
 
-void ABasicMonsterAIController::OnPossess(APawn* InPawn)
+void ARangedMonsterAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 	StatusComponentRef = InPawn->GetComponentByClass<UStatusComponent>();
 	StatusComponentRef->OnHPChanged.AddDynamic(this, &ThisClass::OnDamaged);
 }
 
-void ABasicMonsterAIController::Tick(float DeltaTime)
+void ARangedMonsterAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
@@ -64,13 +64,9 @@ void ABasicMonsterAIController::Tick(float DeltaTime)
 	{
 		FindPlayerByPerception();
 	}
-
-
-
-
 }
 
-void ABasicMonsterAIController::OnDamaged(float CurrentHP, float MaxHP)
+void ARangedMonsterAIController::OnDamaged(float CurrentHP, float MaxHP)
 {
 	bDamaged = true;
 	AController* Instigator_ = StatusComponentRef->GetLastInstigator();
@@ -80,12 +76,12 @@ void ABasicMonsterAIController::OnDamaged(float CurrentHP, float MaxHP)
 	UKismetSystemLibrary::K2_SetTimer(this, TEXT("ResetOnDamaged"), 10.f, false);
 }
 
-void ABasicMonsterAIController::ResetOnDamaged()
+void ARangedMonsterAIController::ResetOnDamaged()
 {
 	bDamaged = false;
 }
 
-void ABasicMonsterAIController::FindPlayerByPerception()
+void ARangedMonsterAIController::FindPlayerByPerception()
 {
 	APawn* OwningPawn = GetPawn();
 	if (UAIPerceptionComponent* AIPerceptionComponent = OwningPawn->GetComponentByClass<UAIPerceptionComponent>())
@@ -93,7 +89,7 @@ void ABasicMonsterAIController::FindPlayerByPerception()
 		TArray<AActor*> OutActors;
 		AIPerceptionComponent->GetCurrentlyPerceivedActors(UAISenseConfig_Sight::StaticClass(), OutActors);
 
-		bool bFound = false;    
+		bool bFound = false;
 		for (AActor* It : OutActors)
 		{
 			if (ACharacter* DetectedPlayer = Cast<ACharacter>(It))
