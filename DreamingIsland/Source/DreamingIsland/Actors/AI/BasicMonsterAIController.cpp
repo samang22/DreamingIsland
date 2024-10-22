@@ -50,6 +50,10 @@ void ABasicMonsterAIController::Tick(float DeltaTime)
 	{
 		FindPlayerByPerception();
 	}
+
+
+
+
 }
 
 void ABasicMonsterAIController::OnDamaged(float CurrentHP, float MaxHP)

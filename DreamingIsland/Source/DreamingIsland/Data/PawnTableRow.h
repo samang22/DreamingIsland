@@ -32,8 +32,6 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Monster|Animation")
 	TSubclassOf<UAnimInstance> AnimClass;
 
-	//UPROPERTY(EditAnywhere, Category = "Monster|Pawn")
-	//TSubclassOf<AMonster> PawnClass;
 
 public:
 	UPROPERTY(EditAnywhere, Category = "Monster|Collision")

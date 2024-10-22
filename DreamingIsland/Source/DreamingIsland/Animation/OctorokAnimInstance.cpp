@@ -1,25 +1,24 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Animation/AlbatossAnimInstance.h"
+#include "Animation/OctorokAnimInstance.h"
 #include "Components/MonsterStatusComponent.h"
 
-UAlbatossAnimInstance::UAlbatossAnimInstance()
+UOctorokAnimInstance::UOctorokAnimInstance()
 {
 }
 
-void UAlbatossAnimInstance::NativeInitializeAnimation()
+void UOctorokAnimInstance::NativeInitializeAnimation()
 {
 	Super::NativeInitializeAnimation();
 }
 
-void UAlbatossAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
+void UOctorokAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
 	Super::NativeUpdateAnimation(DeltaSeconds);
 	if (StatusComponent)
 	{
-		bIsRush = StatusComponent->GetAnimStatus(MONSTER_BIT_RUSH);
+		bIsWalk = StatusComponent->GetAnimStatus(MONSTER_BIT_WALK);
 		bIsWait = StatusComponent->GetAnimStatus(MONSTER_BIT_WAIT);
 	}
 }
-

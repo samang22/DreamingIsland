@@ -44,7 +44,7 @@ void ULinkAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 	if (!MovementComponent) { return; }
 
-	Speed = UKismetMathLibrary::VSizeXY(MovementComponent->Velocity);
+	//Speed = UKismetMathLibrary::VSizeXY(MovementComponent->Velocity);
 
 	bIsWait = StatusComponent->GetAnimStatus(LINK_BIT_WAIT);
 	bIsWalk = StatusComponent->GetAnimStatus(LINK_BIT_WALK);

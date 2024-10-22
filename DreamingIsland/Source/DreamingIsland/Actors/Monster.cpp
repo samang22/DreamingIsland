@@ -15,6 +15,7 @@
 #include "Perception/AISenseConfig_Sight.h"
 #include "Actors/AI/PatrolPath.h"
 #include "Actors/AI/BasicMonsterAIController.h"
+#include "Kismet/KismetMathLibrary.h"
 
 UMonsterDataAsset::UMonsterDataAsset()
 	: AnimClass(UMonsterAnimInstance::StaticClass())
@@ -275,6 +276,18 @@ void AMonster::TickMovement(float fDeltaTime)
 	}
 	else
 	{
-		MovementComponent->MaxSpeed = MonsterData->MovementMaxSpeed;
+		MovementComponent->MaxSpeed = MonsterData->MovementMaxSpeed;   
 	}
+
+	const float Speed = UKismetMathLibrary::VSizeXY(MovementComponent->Velocity);
+	if (!FMath::IsNearlyZero(Speed))
+	{
+		StatusComponent->SetOnAnimationStatus(MONSTER_BIT_WALK);
+	}
+	else
+	{
+		StatusComponent->SetOffAnimationStatus(MONSTER_BIT_WALK);
+	}
+
+
 }
