@@ -12,15 +12,24 @@ UWeaponChildActorComponent::UWeaponChildActorComponent()
 void UWeaponChildActorComponent::SetData(FDataTableRowHandle InDataTableRowHandle)
 {
 	if (InDataTableRowHandle.IsNull()) { return; }
-	FWeaponTableRow* Data = InDataTableRowHandle.GetRow<FWeaponTableRow>(TEXT("Weapon"));
+	
+	FWeaponTableRow* Data = InDataTableRowHandle.GetRow<FWeaponTableRow>(InDataTableRowHandle.RowName.ToString());
 	if (!Data) { ensure(false); return; }
 
-	if (GetChildActorClass() != Data->WeaponClass)
-	{
-		SetChildActorClass(Data->WeaponClass);
-	}
+	SetChildActorClass(Data->WeaponClass);
 
-	AWeapon* Weapon = Cast<AWeapon>(GetChildActor());
+
+#if WITH_EDITOR
+	if (GIsEditor && GetWorld() != GWorld) { return; } // 에디터 프리뷰
+#endif
+
+	//if (GetChildActorClass() != Data->WeaponClass)
+	//{
+	//	SetChildActorClass(Data->WeaponClass);
+	//}
+
+	AActor* tempActor = GetChildActor();
+	AWeapon* Weapon = Cast<AWeapon>(tempActor);
 	check(Weapon);
 	APawn* OwnerPawn = Cast<APawn>(GetOwner());
 	check(OwnerPawn);

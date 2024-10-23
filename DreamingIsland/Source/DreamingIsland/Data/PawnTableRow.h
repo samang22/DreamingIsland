@@ -69,9 +69,9 @@ public: // AI (Only for Enemy)
 	UPROPERTY(EditAnywhere, Category = "Monster|AI")
 	TSubclassOf<AAIController> AIControllerClass;
 
-public:
-	UPROPERTY(EditAnywhere, Category = "Monster|Status")
-	TSubclassOf<UMonsterStatusComponent> MonsterStatusClass;
+//public:
+//	UPROPERTY(EditAnywhere, Category = "Monster|Status")
+//	TSubclassOf<UMonsterStatusComponent> MonsterStatusClass;
 
 public:
 	UPROPERTY(EditAnywhere, Category = "Projectile", meta = (RowType = "ProjectileTableRow"))

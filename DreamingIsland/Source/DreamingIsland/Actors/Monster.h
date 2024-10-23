@@ -51,7 +51,7 @@ public:
 	// Sets default values for this pawn's properties
 	//AMonster();
 	AMonster(const FObjectInitializer& ObjectInitializer);
-	virtual void SetData(const FDataTableRowHandle& InDataTableRowHandle, FString Key);
+	virtual void SetData(const FDataTableRowHandle& InDataTableRowHandle);
 
 protected:
 	virtual void PostDuplicate(EDuplicateMode::Type DuplicateMode) override;

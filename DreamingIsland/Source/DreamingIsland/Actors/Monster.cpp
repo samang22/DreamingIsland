@@ -56,15 +56,16 @@ AMonster::AMonster(const FObjectInitializer& ObjectInitializer)
 	Weapon = nullptr;
 
 	StatusComponent = CreateDefaultSubobject<UMonsterStatusComponent>(TEXT("StatusComponent"));
+	Weapon = CreateDefaultSubobject<UWeaponChildActorComponent>(TEXT("Weapon"));
 
 
 }
 
-void AMonster::SetData(const FDataTableRowHandle& InDataTableRowHandle, FString Key)
+void AMonster::SetData(const FDataTableRowHandle& InDataTableRowHandle)
 {
 	DataTableRowHandle = InDataTableRowHandle;
 	if (DataTableRowHandle.IsNull()) { return; }
-	FPawnTableRow* Data = DataTableRowHandle.GetRow<FPawnTableRow>(Key);
+	FPawnTableRow* Data = DataTableRowHandle.GetRow<FPawnTableRow>(DataTableRowHandle.RowName.ToString());
 	if (!Data) { return; }
 	MonsterData = Data;
 
@@ -108,9 +109,9 @@ void AMonster::SetData(const FDataTableRowHandle& InDataTableRowHandle, FString 
 
 	if (MonsterData->bUseWeapon)
 	{
-		Weapon = CreateDefaultSubobject<UWeaponChildActorComponent>(TEXT("Weapon"));
-		Weapon->SetupAttachment(SkeletalMeshComponent, Monster_SocketName::Weapon);
+		//Weapon = CreateDefaultSubobject<UWeaponChildActorComponent>(TEXT("Weapon"));
 		Weapon->SetData(MonsterData->WeaponTableRowHandle);
+		Weapon->SetupAttachment(SkeletalMeshComponent, Monster_SocketName::Weapon);
 	}
 }
 
@@ -132,7 +133,7 @@ void AMonster::PostDuplicate(EDuplicateMode::Type DuplicateMode)
 	{
 		FTransform Backup = GetActorTransform();
 		CollisionComponent->DestroyComponent();
-		SetData(DataTableRowHandle, MonsterName);
+		SetData(DataTableRowHandle);
 		SetActorTransform(Backup);
 	}
 }
@@ -161,7 +162,7 @@ void AMonster::BeginPlay()
 	CollisionComponent->SetCollisionProfileName(CollisionProfileName::Monster);
 	CollisionComponent->bHiddenInGame = false;
 
-	SetData(DataTableRowHandle, MonsterName);
+	SetData(DataTableRowHandle);
 }
 
 
@@ -169,7 +170,7 @@ void AMonster::BeginPlay()
 void AMonster::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
-	SetData(DataTableRowHandle, MonsterName);
+	//SetData(DataTableRowHandle, MonsterName);
 	SetActorTransform(Transform);
 }
 
@@ -257,18 +258,22 @@ void AMonster::PlayRushMontage()
 
 bool AMonster::IsAttackMontage()
 {
+	if (!MonsterData) return false;
 	return MonsterData->AttackMontage ? true : false;
 }
 bool AMonster::IsDieMontage()
 {
+	if (!MonsterData) return false;
 	return MonsterData->DieMontage ? true : false;
 }
 bool AMonster::IsDamageMontage()
 {
+	if (!MonsterData) return false;
 	return MonsterData->DamageMontage ? true : false;
 }
 bool AMonster::IsRushMontage()
 {
+	if (!MonsterData) return false;
 	return MonsterData->RushMontage ? true : false;
 }
 
@@ -299,6 +304,8 @@ bool AMonster::IsPlayingRushMontage()
 }
 void AMonster::TickMovement(float fDeltaTime)
 {
+	if (!MonsterData) return;
+
 	if (IsRushMontage() && IsPlayingRushMontage())
 	{
 		MovementComponent->MaxSpeed = MonsterData->RushMovementMaxSpeed;
