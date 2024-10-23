@@ -1,25 +1,24 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Animation/MoblinAnimInstance.h"
+#include "Animation/MoriblinAnimInstance.h"
 #include "Components/MonsterStatusComponent.h"
 
-UMoblinAnimInstance::UMoblinAnimInstance()
+UMoriblinAnimInstance::UMoriblinAnimInstance()
 {
 }
 
-void UMoblinAnimInstance::NativeInitializeAnimation()
+void UMoriblinAnimInstance::NativeInitializeAnimation()
 {
 	Super::NativeInitializeAnimation();
 }
 
-void UMoblinAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
+void UMoriblinAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
 	Super::NativeUpdateAnimation(DeltaSeconds);
 	if (StatusComponent)
 	{
 		bIsWait = StatusComponent->GetAnimStatus(MONSTER_BIT_WAIT);
 		bIsWalk = StatusComponent->GetAnimStatus(MONSTER_BIT_WALK);
-		bIsHoldingSpear = StatusComponent->GetAnimStatus(MONSTER_BIT_HOLDING_WEAPON);
 	}
 }

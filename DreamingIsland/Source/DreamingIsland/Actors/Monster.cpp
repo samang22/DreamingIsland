@@ -20,6 +20,7 @@
 #include "Actors/AI/BasicMonsterAIController.h"
 #include "Actors/AI/RangedMonsterAIController.h"
 #include "Actors/AI/MoblinAIController.h"
+#include "Actors/AI/MoriblinAIController.h"
 #include "Actors/Weapon/Weapon.h"
 
 UMonsterDataAsset::UMonsterDataAsset()
@@ -137,6 +138,10 @@ void AMonster::PostInitializeComponents()
 		{
 			MoblinAIController->SetPatrolPath(PatrolPathRef->GetPath());
 		}
+		else if (AMoriblinAIController* MoriblinAIController = Cast<AMoriblinAIController>(Controller))
+		{
+			MoriblinAIController->SetPatrolPath(PatrolPathRef->GetPath());
+		}
 		else
 		{
 			check(false);
@@ -151,8 +156,11 @@ void AMonster::BeginPlay()
 	CollisionComponent->SetCollisionProfileName(CollisionProfileName::Monster);
 	CollisionComponent->bHiddenInGame = false;
 	SetData(DataTableRowHandle);
-	RenderOnWeapon();
-	SetWeaponEquiped();
+	if (MonsterData && MonsterData->bUseWeapon)
+	{
+		RenderOnWeapon();
+		SetWeaponEquiped();
+	}
 }
 
 
@@ -336,11 +344,13 @@ void AMonster::SetWeaponEquiped()
 void AMonster::SetWeaponUnEquiped()
 {
 	bIsWeaponEquiped = false;
+	StatusComponent->SetHoldingWeaponOff();
 }
 
 void AMonster::RenderOffWeapon()
 {
 	Weapon->RenderOff();
+	StatusComponent->SetHoldingWeaponOn();
 }
 void AMonster::RenderOnWeapon()
 {
