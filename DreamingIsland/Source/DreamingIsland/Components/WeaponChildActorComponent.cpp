@@ -29,11 +29,21 @@ void UWeaponChildActorComponent::SetData(FDataTableRowHandle InDataTableRowHandl
 	//}
 
 	AActor* tempActor = GetChildActor();
-	AWeapon* Weapon = Cast<AWeapon>(tempActor);
+	Weapon = Cast<AWeapon>(tempActor);
 	check(Weapon);
 	APawn* OwnerPawn = Cast<APawn>(GetOwner());
 	check(OwnerPawn);
 	Weapon->SetOwner(OwnerPawn);
 	Weapon->SetInstigator(OwnerPawn);
 	Weapon->SetData(InDataTableRowHandle);
+}
+
+void UWeaponChildActorComponent::RenderOff()
+{
+	Weapon->RenderOff();
+}
+
+void UWeaponChildActorComponent::RenderOn()
+{
+	Weapon->RenderOn();
 }

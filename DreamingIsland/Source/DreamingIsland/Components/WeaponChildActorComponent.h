@@ -6,9 +6,7 @@
 #include "Components/ChildActorComponent.h"
 #include "WeaponChildActorComponent.generated.h"
 
-/**
- * 
- */
+class AWeapon;
 UCLASS()
 class DREAMINGISLAND_API UWeaponChildActorComponent : public UChildActorComponent
 {
@@ -17,4 +15,9 @@ public:
 	UWeaponChildActorComponent();
 	void SetData(FDataTableRowHandle InDataTableRowHandle);
 
+protected:
+	AWeapon* Weapon = nullptr;
+public:
+	void RenderOff();
+	void RenderOn();
 };

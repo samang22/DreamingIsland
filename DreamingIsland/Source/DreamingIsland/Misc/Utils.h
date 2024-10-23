@@ -58,6 +58,7 @@ namespace ProjectileName
 	static inline FName Link_SlashAttack = TEXT("Link_SlashAttack");
 	static inline FName Albatoss_ClawAttack = TEXT("Albatoss_ClawAttack");
 	static inline FName Octorok_RockAttack = TEXT("Octorok_RockAttack");
+	static inline FName Moblin_SpearAttack = TEXT("Moblin_SpearAttack");
 }
 
 #define COLLISION_CHANNEL_LINKCHANNEL				ECollisionChannel::ECC_GameTraceChannel1

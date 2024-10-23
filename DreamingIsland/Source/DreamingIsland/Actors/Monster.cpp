@@ -302,6 +302,7 @@ bool AMonster::IsPlayingRushMontage()
 	UAnimInstance* AnimInstance = SkeletalMeshComponent->GetAnimInstance();
 	return AnimInstance->Montage_IsPlaying(MonsterData->RushMontage);
 }
+
 void AMonster::TickMovement(float fDeltaTime)
 {
 	if (!MonsterData) return;
@@ -326,4 +327,13 @@ void AMonster::TickMovement(float fDeltaTime)
 	}
 
 
+}
+
+void AMonster::RenderOffWeapon()
+{
+	Weapon->RenderOff();
+}
+void AMonster::RenderOnWeapon()
+{
+	Weapon->RenderOn();
 }

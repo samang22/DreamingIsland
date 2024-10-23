@@ -59,3 +59,13 @@ void AWeapon::Tick(float DeltaTime)
 
 }
 
+void AWeapon::RenderOff()
+{
+	StaticMeshComponent->SetVisibility(false);
+}
+
+void AWeapon::RenderOn()
+{
+	StaticMeshComponent->SetVisibility(true);
+}
+

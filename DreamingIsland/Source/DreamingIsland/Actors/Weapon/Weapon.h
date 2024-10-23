@@ -62,4 +62,8 @@ protected:
 	FDataTableRowHandle DataTableRowHandle;
 
 	const FWeaponTableRow* WeaponTableRow = nullptr;
+
+public:
+	void RenderOff();
+	void RenderOn();
 };

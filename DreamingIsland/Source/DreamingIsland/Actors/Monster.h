@@ -139,4 +139,9 @@ protected:
 protected:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UWeaponChildActorComponent> Weapon;
+public:
+	void RenderOffWeapon();
+	void RenderOnWeapon();
+
+
 };
