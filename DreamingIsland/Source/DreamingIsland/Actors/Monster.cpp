@@ -10,6 +10,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Data/PawnTableRow.h"
 #include "Components/MonsterStatusComponent.h"
+#include "Components/MoblinStatusComponent.h"
 #include "Misc/Utils.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
@@ -17,6 +18,8 @@
 #include "Actors/AI/BasicMonsterAIController.h"
 #include "Actors/AI/RangedMonsterAIController.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Components/WeaponChildActorComponent.h"
+#include "Actors/Weapon/Weapon.h"
 
 UMonsterDataAsset::UMonsterDataAsset()
 	: AnimClass(UMonsterAnimInstance::StaticClass())
@@ -32,9 +35,6 @@ AMonster::AMonster(const FObjectInitializer& ObjectInitializer)
 	PrimaryActorTick.bCanEverTick = true;
 
 	MovementComponent = CreateDefaultSubobject<UAdvancedFloatingPawnMovement>(TEXT("MovementComponent"));
-	StatusComponent = CreateDefaultSubobject<UMonsterStatusComponent>(TEXT("StatusComponent"));
-
-
 
 	CollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("CollisionComponent"));
 	CollisionComponent->SetCollisionProfileName(CollisionProfileName::Monster);
@@ -52,6 +52,11 @@ AMonster::AMonster(const FObjectInitializer& ObjectInitializer)
 	AISenseConfig_Sight->LoseSightRadius = AISENSECONFIG_SIGHT_LOSESIGHTRADIUS;
 	AISenseConfig_Sight->PeripheralVisionAngleDegrees = AISENSECONFIG_SIGHT_LOSESIGHTRADIUS_PERIPHERALVISIONANGLEDEGREES;
 	AIPerceptionComponent->ConfigureSense(*AISenseConfig_Sight);
+
+	Weapon = nullptr;
+
+
+
 }
 
 void AMonster::SetData(const FDataTableRowHandle& InDataTableRowHandle, FString Key)
@@ -61,6 +66,24 @@ void AMonster::SetData(const FDataTableRowHandle& InDataTableRowHandle, FString 
 	FPawnTableRow* Data = DataTableRowHandle.GetRow<FPawnTableRow>(Key);
 	if (!Data) { return; }
 	MonsterData = Data;
+
+	if (MonsterData->MonsterStatusClass)
+	{
+		if (UStatusComponent* MoblinStatusComponent = Cast<UMoblinStatusComponent>(MonsterData->MonsterStatusClass))
+		{
+			StatusComponent = CreateDefaultSubobject<UMoblinStatusComponent>(TEXT("StatusComponent"));
+		}
+		else
+		{ 
+			StatusComponent = CreateDefaultSubobject<UMonsterStatusComponent>(TEXT("StatusComponent"));
+		}
+		// else ...
+	}
+	else
+	{
+		//StatusComponent = CreateDefaultSubobject<UMonsterStatusComponent>(TEXT("StatusComponent"));
+		// dont know why it makes problems
+	}
 
 
 	if (IsValid(CollisionComponent))
@@ -81,6 +104,13 @@ void AMonster::SetData(const FDataTableRowHandle& InDataTableRowHandle, FString 
 	MovementComponent->MaxSpeed = MonsterData->MovementMaxSpeed;
 
 	AIControllerClass = MonsterData->AIControllerClass;
+
+	if (MonsterData->bUseWeapon)
+	{
+		Weapon = CreateDefaultSubobject<UWeaponChildActorComponent>(TEXT("Weapon"));
+		Weapon->SetupAttachment(SkeletalMeshComponent, Monster_SocketName::Weapon);
+		Weapon->SetData(MonsterData->WeaponTableRowHandle);
+	}
 }
 
 
@@ -202,7 +232,6 @@ void AMonster::PlayAttackMontage()
 		AnimInstance->Montage_Play(MonsterData->AttackMontage);
 	}
 }
-
 void AMonster::PlayDieMontage()
 {
 	UAnimInstance* AnimInstance = SkeletalMeshComponent->GetAnimInstance();
@@ -242,37 +271,31 @@ bool AMonster::IsRushMontage()
 	return MonsterData->RushMontage ? true : false;
 }
 
-
 bool AMonster::IsPlayingMontage()
 {
 	UAnimInstance* AnimInstance = SkeletalMeshComponent->GetAnimInstance();
 	return AnimInstance->Montage_IsPlaying(nullptr);
 }
-
 bool AMonster::IsPlayingAttackMontage()
 {
 	UAnimInstance* AnimInstance = SkeletalMeshComponent->GetAnimInstance();
 	return AnimInstance->Montage_IsPlaying(MonsterData->AttackMontage);
 }
-
 bool AMonster::IsPlayingDieMontage()
 {
 	UAnimInstance* AnimInstance = SkeletalMeshComponent->GetAnimInstance();
 	return AnimInstance->Montage_IsPlaying(MonsterData->DieMontage);
 }
-
 bool AMonster::IsPlayingDamageMontage()
 {
 	UAnimInstance* AnimInstance = SkeletalMeshComponent->GetAnimInstance();
 	return AnimInstance->Montage_IsPlaying(MonsterData->DamageMontage);
 }
-
 bool AMonster::IsPlayingRushMontage()
 {
 	UAnimInstance* AnimInstance = SkeletalMeshComponent->GetAnimInstance();
 	return AnimInstance->Montage_IsPlaying(MonsterData->RushMontage);
 }
-
 void AMonster::TickMovement(float fDeltaTime)
 {
 	if (IsRushMontage() && IsPlayingRushMontage())

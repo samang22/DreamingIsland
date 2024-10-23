@@ -41,6 +41,7 @@ public:
 class UAdvancedFloatingPawnMovement;
 class UMonsterStatusComponent;
 class APatrolPath;
+class UWeaponChildActorComponent;
 UCLASS()
 class DREAMINGISLAND_API AMonster : public APawn
 {
@@ -132,7 +133,10 @@ public:
 	UMonsterStatusComponent* GetStatusComponent() { return StatusComponent; }
 
 
-private:
+protected:
 	void TickMovement(float DeltaTime);
 
+protected:
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UWeaponChildActorComponent> Weapon;
 };

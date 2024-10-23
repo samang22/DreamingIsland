@@ -12,6 +12,9 @@
 #include "Misc/Utils.h"
 #include "Animation/MonsterAnimInstance.h"
 #include "AIController.h"
+#include "Components/MonsterStatusComponent.h"
+#include "Components/WeaponChildActorComponent.h"
+
 #include "PawnTableRow.generated.h"
 /**
  * 
@@ -31,7 +34,6 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Monster|Animation")
 	TSubclassOf<UAnimInstance> AnimClass;
-
 
 public:
 	UPROPERTY(EditAnywhere, Category = "Monster|Collision")
@@ -68,6 +70,16 @@ public: // AI (Only for Enemy)
 	TSubclassOf<AAIController> AIControllerClass;
 
 public:
+	UPROPERTY(EditAnywhere, Category = "Monster|Status")
+	TSubclassOf<UMonsterStatusComponent> MonsterStatusClass;
+
+public:
 	UPROPERTY(EditAnywhere, Category = "Projectile", meta = (RowType = "ProjectileTableRow"))
 	FDataTableRowHandle ProjectileTableRowHandle;
+
+public:
+	UPROPERTY(EditAnywhere, Category = "Weapon", meta = (RowType = "WeaponTableRow"))
+	FDataTableRowHandle WeaponTableRowHandle;
+	UPROPERTY(EditAnywhere, Category = "Weapon")
+	bool bUseWeapon = false;
 };
