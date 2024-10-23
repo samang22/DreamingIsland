@@ -59,11 +59,15 @@ public: // Animation
 	UPROPERTY(EditAnywhere, Category = "Monster|Animation")
 	UAnimMontage* DamageMontage;
 	UPROPERTY(EditAnywhere, Category = "Monster|Animation")
-	UAnimMontage* DieMontage;
+	UAnimMontage* DeadMontage;
 	UPROPERTY(EditAnywhere, Category = "Monster|Animation")
 	UAnimMontage* AttackMontage;
 	UPROPERTY(EditAnywhere, Category = "Monster|Animation")
 	UAnimMontage* RushMontage;
+	UPROPERTY(EditAnywhere, Category = "Monster|Animation")
+	UAnimMontage* FindMontage;
+	UPROPERTY(EditAnywhere, Category = "Monster|Animation")
+	UAnimMontage* KyoroKyoroMontage;
 
 public: // AI (Only for Enemy)
 	UPROPERTY(EditAnywhere, Category = "Monster|AI")

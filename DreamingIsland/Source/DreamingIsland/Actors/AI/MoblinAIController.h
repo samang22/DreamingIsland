@@ -5,17 +5,14 @@
 #include "CoreMinimal.h"
 #include "AIController.h"
 
-
-#include "RangedMonsterAIController.generated.h"
+#include "MoblinAIController.generated.h"
 
 class UStatusComponent;
 class USplineComponent;
-
 UCLASS()
-class DREAMINGISLAND_API ARangedMonsterAIController : public AAIController
+class DREAMINGISLAND_API AMoblinAIController : public AAIController
 {
 	GENERATED_BODY()
-	
 public:
 	virtual void BeginPlay() override;
 	virtual void OnPossess(APawn* InPawn) override;
@@ -42,4 +39,5 @@ protected:
 
 	UPROPERTY()
 	UStatusComponent* StatusComponentRef;
+
 };

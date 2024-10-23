@@ -34,7 +34,4 @@ void UAnimNotify_Moblin_ThrowSpear::Notify(USkeletalMeshComponent* MeshComp, UAn
 	NewTransform.SetLocation(WeaponLocation);
 	NewTransform.SetRotation(MonsterForwardVector.Rotation().Quaternion());
 	Projectile->FinishSpawning(NewTransform);
-
-
-	Monster->RenderOffWeapon();
 }

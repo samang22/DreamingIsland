@@ -16,6 +16,18 @@
 #define OCTOROK_ROCKATTACK_LENGTH 50.f
 
 
+enum class MONSTER_MONTAGE : uint8
+{
+	ATTACK = 0,
+	DEAD,
+	DAMAGE,
+	RUSH,
+	FIND,
+	KYOROKYORO,
+	END,
+};
+
+
 
 class UMonsterAnimInstance;
 
@@ -99,21 +111,9 @@ protected:
 	FString MonsterName;
 
 public:
-	void PlayAttackMontage();
-	void PlayDieMontage();
-	void PlayDamageMontage();
-	void PlayRushMontage();
-public:
-	bool IsAttackMontage();
-	bool IsDieMontage();
-	bool IsDamageMontage();
-	bool IsRushMontage();
-public:
-	bool IsPlayingMontage();
-	bool IsPlayingAttackMontage();
-	bool IsPlayingDieMontage();
-	bool IsPlayingDamageMontage();
-	bool IsPlayingRushMontage();
+	void PlayMontage(MONSTER_MONTAGE _InEnum);
+	bool IsMontage(MONSTER_MONTAGE _InEnum);
+	bool IsPlayingMontage(MONSTER_MONTAGE _InEnum);
 
 
 
@@ -139,7 +139,13 @@ protected:
 protected:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UWeaponChildActorComponent> Weapon;
+
+protected:
+	bool bIsWeaponEquiped = false;
 public:
+	bool GetIsWeaponEquiped();
+	void SetWeaponEquiped();
+	void SetWeaponUnEquiped();
 	void RenderOffWeapon();
 	void RenderOnWeapon();
 

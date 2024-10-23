@@ -62,10 +62,12 @@ void AWeapon::Tick(float DeltaTime)
 void AWeapon::RenderOff()
 {
 	StaticMeshComponent->SetVisibility(false);
+	StaticMeshComponent->SetHiddenInGame(true);
 }
 
 void AWeapon::RenderOn()
 {
 	StaticMeshComponent->SetVisibility(true);
+	StaticMeshComponent->SetHiddenInGame(false);
 }
 

@@ -23,7 +23,7 @@ EBTNodeResult::Type UBTTask_MonsterRush::ExecuteTask(UBehaviorTreeComponent& Own
 	BlackboardComponent = OwnerComp.GetBlackboardComponent();
 
 	AMonster* Monster = Cast<AMonster>(AIOwner->GetPawn());
-	if (!Monster->IsRushMontage()) 
+	if (!Monster->IsMontage(MONSTER_MONTAGE::RUSH))
 	{
 		return EBTNodeResult::Failed;
 	} 	
@@ -34,7 +34,7 @@ EBTNodeResult::Type UBTTask_MonsterRush::ExecuteTask(UBehaviorTreeComponent& Own
 
 		if (Distance > MONSTER_RUSH_DISTANCE)
 		{
-			Monster->PlayRushMontage();
+			Monster->PlayMontage(MONSTER_MONTAGE::RUSH);
 			return EBTNodeResult::Failed;
 		}
 	}

@@ -30,8 +30,12 @@ EBTNodeResult::Type UBTTask_MonsterAttack::ExecuteTask(UBehaviorTreeComponent& O
 	{
 		return EBTNodeResult::Failed;
 	}
+	FVector Dir = Character->GetActorLocation() - Monster->GetActorLocation();
+	Dir.Normalize();
 
-	Monster->PlayAttackMontage();
+	Monster->SetActorRotation(Dir.Rotation().Quaternion());
+
+	Monster->PlayMontage(MONSTER_MONTAGE::ATTACK);
 	return EBTNodeResult::Failed;
 }
 
@@ -40,12 +44,12 @@ void UBTTask_MonsterAttack::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* N
 	Super::TickTask(OwnerComp, NodeMemory, DeltaSeconds);
 
 	AMonster* Monster = Cast<AMonster>(AIOwner->GetPawn());
-	if (Monster->IsPlayingDamageMontage())
+	if (Monster->IsPlayingMontage(MONSTER_MONTAGE::DAMAGE))
 	{
 		FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 		return;
 	}
-	if (!Monster->IsPlayingAttackMontage())
+	if (!Monster->IsPlayingMontage(MONSTER_MONTAGE::ATTACK))
 	{
 		FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
 		return;

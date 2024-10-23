@@ -18,17 +18,12 @@ void UWeaponChildActorComponent::SetData(FDataTableRowHandle InDataTableRowHandl
 
 	SetChildActorClass(Data->WeaponClass);
 
-
-#if WITH_EDITOR
-	if (GIsEditor && GetWorld() != GWorld) { return; } // 에디터 프리뷰
-#endif
-
-	//if (GetChildActorClass() != Data->WeaponClass)
-	//{
-	//	SetChildActorClass(Data->WeaponClass);
-	//}
-
 	AActor* tempActor = GetChildActor();
+	if (!tempActor)
+	{
+		return;
+	}
+
 	Weapon = Cast<AWeapon>(tempActor);
 	check(Weapon);
 	APawn* OwnerPawn = Cast<APawn>(GetOwner());

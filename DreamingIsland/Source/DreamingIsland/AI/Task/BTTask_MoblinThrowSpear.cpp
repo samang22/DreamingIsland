@@ -1,27 +1,32 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "AI/Task/BTTask_RangedMonsterAttack.h"
+
+#include "AI/Task/BTTask_MoblinThrowSpear.h"
 #include "Animation/MonsterAnimInstance.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/Character.h"
 #include "Actors/Monster.h"
 
-UBTTask_RangedMonsterAttack::UBTTask_RangedMonsterAttack()
+UBTTask_MoblinThrowSpear::UBTTask_MoblinThrowSpear()
 {
-	NodeName = "RangedMonsterAttack";
+	NodeName = "MoblinThrowSpear";
 	bCreateNodeInstance = true;
 	bTickIntervals = true;
 	bNotifyTick = true;
 }
 
-EBTNodeResult::Type UBTTask_RangedMonsterAttack::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
+EBTNodeResult::Type UBTTask_MoblinThrowSpear::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	BehaviorTreeComponent = &OwnerComp;
 	BlackboardComponent = OwnerComp.GetBlackboardComponent();
 
 	AMonster* Monster = Cast<AMonster>(AIOwner->GetPawn());
 
-	// Rotate to Link
+	if (!Monster->GetIsWeaponEquiped())
+	{
+		return EBTNodeResult::Failed;
+	}
+
 	ACharacter* Character = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
 	if (!Character || !Monster)
 	{
@@ -33,20 +38,20 @@ EBTNodeResult::Type UBTTask_RangedMonsterAttack::ExecuteTask(UBehaviorTreeCompon
 
 	Monster->SetActorRotation(Dir.Rotation().Quaternion());
 	Monster->PlayMontage(MONSTER_MONTAGE::ATTACK);
-	return EBTNodeResult::Succeeded;
+	Monster->RenderOffWeapon();
+	Monster->SetWeaponUnEquiped();
+	return EBTNodeResult::InProgress;
 }
 
-void UBTTask_RangedMonsterAttack::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
+void UBTTask_MoblinThrowSpear::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
-	Super::TickTask(OwnerComp, NodeMemory, DeltaSeconds);
-
 	AMonster* Monster = Cast<AMonster>(AIOwner->GetPawn());
-	if (Monster->IsPlayingMontage(MONSTER_MONTAGE::DAMAGE))
+	if (Monster->IsPlayingMontage(MONSTER_MONTAGE::ATTACK))
 	{
-		FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
+		FinishLatentTask(OwnerComp, EBTNodeResult::InProgress);
 		return;
 	}
-	if (!Monster->IsPlayingMontage(MONSTER_MONTAGE::ATTACK))
+	else
 	{
 		FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
 		return;

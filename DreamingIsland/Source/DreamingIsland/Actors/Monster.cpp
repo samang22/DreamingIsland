@@ -3,22 +3,23 @@
 
 #include "Monster.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "Animation/MonsterAnimInstance.h"
 #include "Components/AdvancedFloatingPawnMovement.h"
 #include "Components/SphereComponent.h"
 #include "Components/BoxComponent.h"
 #include "Components/CapsuleComponent.h"
-#include "Data/PawnTableRow.h"
+#include "Components/WeaponChildActorComponent.h"
 #include "Components/MonsterStatusComponent.h"
 #include "Components/MoblinStatusComponent.h"
+#include "Data/PawnTableRow.h"
 #include "Misc/Utils.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
 #include "Actors/AI/PatrolPath.h"
 #include "Actors/AI/BasicMonsterAIController.h"
 #include "Actors/AI/RangedMonsterAIController.h"
-#include "Kismet/KismetMathLibrary.h"
-#include "Components/WeaponChildActorComponent.h"
+#include "Actors/AI/MoblinAIController.h"
 #include "Actors/Weapon/Weapon.h"
 
 UMonsterDataAsset::UMonsterDataAsset()
@@ -57,6 +58,7 @@ AMonster::AMonster(const FObjectInitializer& ObjectInitializer)
 
 	StatusComponent = CreateDefaultSubobject<UMonsterStatusComponent>(TEXT("StatusComponent"));
 	Weapon = CreateDefaultSubobject<UWeaponChildActorComponent>(TEXT("Weapon"));
+	Weapon->SetupAttachment(SkeletalMeshComponent, Monster_SocketName::Weapon);
 
 
 }
@@ -68,25 +70,6 @@ void AMonster::SetData(const FDataTableRowHandle& InDataTableRowHandle)
 	FPawnTableRow* Data = DataTableRowHandle.GetRow<FPawnTableRow>(DataTableRowHandle.RowName.ToString());
 	if (!Data) { return; }
 	MonsterData = Data;
-
-	//if (MonsterData->MonsterStatusClass)
-	//{
-	//	if (UStatusComponent* MoblinStatusComponent = Cast<UMoblinStatusComponent>(MonsterData->MonsterStatusClass))
-	//	{
-	//		StatusComponent = CreateDefaultSubobject<UMoblinStatusComponent>(TEXT("StatusComponent"));
-	//	}
-	//	else
-	//	{ 
-	//		StatusComponent = CreateDefaultSubobject<UMonsterStatusComponent>(TEXT("StatusComponent"));
-	//	}
-	//	// else ...
-	//}
-	//else
-	//{
-	//	//StatusComponent = CreateDefaultSubobject<UMonsterStatusComponent>(TEXT("StatusComponent"));
-	//	// dont know why it makes problems
-	//}
-
 
 	if (IsValid(CollisionComponent))
 	{
@@ -109,9 +92,7 @@ void AMonster::SetData(const FDataTableRowHandle& InDataTableRowHandle)
 
 	if (MonsterData->bUseWeapon)
 	{
-		//Weapon = CreateDefaultSubobject<UWeaponChildActorComponent>(TEXT("Weapon"));
 		Weapon->SetData(MonsterData->WeaponTableRowHandle);
-		Weapon->SetupAttachment(SkeletalMeshComponent, Monster_SocketName::Weapon);
 	}
 }
 
@@ -152,6 +133,14 @@ void AMonster::PostInitializeComponents()
 		{
 			RangedMonsterAIController->SetPatrolPath(PatrolPathRef->GetPath());
 		}
+		else if (AMoblinAIController* MoblinAIController = Cast<AMoblinAIController>(Controller))
+		{
+			MoblinAIController->SetPatrolPath(PatrolPathRef->GetPath());
+		}
+		else
+		{
+			check(false);
+		}
 	}
 }
 
@@ -161,8 +150,9 @@ void AMonster::BeginPlay()
 	Super::BeginPlay();
 	CollisionComponent->SetCollisionProfileName(CollisionProfileName::Monster);
 	CollisionComponent->bHiddenInGame = false;
-
 	SetData(DataTableRowHandle);
+	RenderOnWeapon();
+	SetWeaponEquiped();
 }
 
 
@@ -170,7 +160,7 @@ void AMonster::BeginPlay()
 void AMonster::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
-	//SetData(DataTableRowHandle, MonsterName);
+	SetData(DataTableRowHandle);
 	SetActorTransform(Transform);
 }
 
@@ -182,6 +172,90 @@ void AMonster::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	TickMovement(DeltaTime);
+}
+
+void AMonster::PlayMontage(MONSTER_MONTAGE _InEnum)
+{
+	UAnimInstance* AnimInstance = SkeletalMeshComponent->GetAnimInstance();
+
+	UAnimMontage* tempMontage = nullptr;
+	switch (_InEnum)
+	{
+	case MONSTER_MONTAGE::ATTACK:
+		tempMontage = MonsterData->AttackMontage;
+		break;
+	case MONSTER_MONTAGE::DEAD:
+		tempMontage = MonsterData->DeadMontage;
+		break;
+	case MONSTER_MONTAGE::DAMAGE:
+		tempMontage = MonsterData->DamageMontage;
+		break;
+	case MONSTER_MONTAGE::RUSH:
+		tempMontage = MonsterData->RushMontage;
+		break;
+	case MONSTER_MONTAGE::FIND:
+		tempMontage = MonsterData->FindMontage;
+		break;
+	case MONSTER_MONTAGE::KYOROKYORO:
+		tempMontage = MonsterData->KyoroKyoroMontage;
+		break;
+	default:
+		break;
+	}
+
+	if (!AnimInstance->Montage_IsPlaying(tempMontage))
+	{
+		AnimInstance->Montage_Play(tempMontage);
+	}
+}
+bool AMonster::IsMontage(MONSTER_MONTAGE _InEnum)
+{
+	switch (_InEnum)
+	{
+	case MONSTER_MONTAGE::ATTACK:
+		if (!MonsterData) return false;
+		return MonsterData->AttackMontage ? true : false;
+	case MONSTER_MONTAGE::DEAD:
+		if (!MonsterData) return false;
+		return MonsterData->DeadMontage ? true : false;
+	case MONSTER_MONTAGE::DAMAGE:
+		if (!MonsterData) return false;
+		return MonsterData->DamageMontage ? true : false;
+	case MONSTER_MONTAGE::RUSH:
+		if (!MonsterData) return false;
+		return MonsterData->RushMontage ? true : false;
+	case MONSTER_MONTAGE::FIND:
+		if (!MonsterData) return false;
+		return MonsterData->FindMontage ? true : false;
+	case MONSTER_MONTAGE::KYOROKYORO:
+		if (!MonsterData) return false;
+		return MonsterData->KyoroKyoroMontage ? true : false;
+	default:
+		return false;
+	}
+}
+bool AMonster::IsPlayingMontage(MONSTER_MONTAGE _InEnum)
+{
+	UAnimInstance* AnimInstance = SkeletalMeshComponent->GetAnimInstance();
+
+	switch (_InEnum)
+	{
+	case MONSTER_MONTAGE::ATTACK:
+		return AnimInstance->Montage_IsPlaying(MonsterData->AttackMontage);
+	case MONSTER_MONTAGE::DEAD:
+		return AnimInstance->Montage_IsPlaying(MonsterData->DeadMontage);
+	case MONSTER_MONTAGE::DAMAGE:
+		return AnimInstance->Montage_IsPlaying(MonsterData->DamageMontage);
+	case MONSTER_MONTAGE::RUSH:
+		return AnimInstance->Montage_IsPlaying(MonsterData->RushMontage);
+	case MONSTER_MONTAGE::FIND:
+		return AnimInstance->Montage_IsPlaying(MonsterData->FindMontage);
+	case MONSTER_MONTAGE::KYOROKYORO:
+		return AnimInstance->Montage_IsPlaying(MonsterData->KyoroKyoroMontage);
+	default:
+		return AnimInstance->Montage_IsPlaying(nullptr);
+	}
+	return AnimInstance->Montage_IsPlaying(nullptr);
 }
 
 float AMonster::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
@@ -198,7 +272,7 @@ float AMonster::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContr
 
 
 
-	if (StatusComponent->IsDie() && MonsterData->DieMontage)
+	if (StatusComponent->IsDie() && MonsterData->DeadMontage)
 	{
 		if (Controller)
 		{
@@ -206,13 +280,13 @@ float AMonster::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContr
 		}
 		SetActorEnableCollision(false);
 
-		PlayDieMontage();
+		PlayMontage(MONSTER_MONTAGE::DEAD);
 		UKismetSystemLibrary::K2_SetTimer(this, TEXT("OnDie"),
-			MonsterData->DieMontage->GetPlayLength() - 0.1f, false);
+			MonsterData->DeadMontage->GetPlayLength() - 0.1f, false);
 	}
 	else if (!StatusComponent->IsDie() && MonsterData->DamageMontage)
 	{
-		PlayDamageMontage();
+		PlayMontage(MONSTER_MONTAGE::DAMAGE);
 	}
 
 	return 0.0f;
@@ -226,88 +300,11 @@ void AMonster::OnDie()
 	Destroy();
 }
 
-void AMonster::PlayAttackMontage()
-{
-	UAnimInstance* AnimInstance = SkeletalMeshComponent->GetAnimInstance();
-	if (!AnimInstance->Montage_IsPlaying(nullptr))
-	{
-		AnimInstance->Montage_Play(MonsterData->AttackMontage);
-	}
-}
-void AMonster::PlayDieMontage()
-{
-	UAnimInstance* AnimInstance = SkeletalMeshComponent->GetAnimInstance();
-	AnimInstance->Montage_Play(MonsterData->DieMontage);
-}
-void AMonster::PlayDamageMontage()
-{
-	UAnimInstance* AnimInstance = SkeletalMeshComponent->GetAnimInstance();
-	if (!AnimInstance->Montage_IsPlaying(MonsterData->DamageMontage))
-	{
-		AnimInstance->Montage_Play(MonsterData->DamageMontage);
-	}
-}
-void AMonster::PlayRushMontage()
-{
-	UAnimInstance* AnimInstance = SkeletalMeshComponent->GetAnimInstance();
-	if (!AnimInstance->Montage_IsPlaying(MonsterData->RushMontage))
-	{
-		AnimInstance->Montage_Play(MonsterData->RushMontage);
-	}
-}
-
-bool AMonster::IsAttackMontage()
-{
-	if (!MonsterData) return false;
-	return MonsterData->AttackMontage ? true : false;
-}
-bool AMonster::IsDieMontage()
-{
-	if (!MonsterData) return false;
-	return MonsterData->DieMontage ? true : false;
-}
-bool AMonster::IsDamageMontage()
-{
-	if (!MonsterData) return false;
-	return MonsterData->DamageMontage ? true : false;
-}
-bool AMonster::IsRushMontage()
-{
-	if (!MonsterData) return false;
-	return MonsterData->RushMontage ? true : false;
-}
-
-bool AMonster::IsPlayingMontage()
-{
-	UAnimInstance* AnimInstance = SkeletalMeshComponent->GetAnimInstance();
-	return AnimInstance->Montage_IsPlaying(nullptr);
-}
-bool AMonster::IsPlayingAttackMontage()
-{
-	UAnimInstance* AnimInstance = SkeletalMeshComponent->GetAnimInstance();
-	return AnimInstance->Montage_IsPlaying(MonsterData->AttackMontage);
-}
-bool AMonster::IsPlayingDieMontage()
-{
-	UAnimInstance* AnimInstance = SkeletalMeshComponent->GetAnimInstance();
-	return AnimInstance->Montage_IsPlaying(MonsterData->DieMontage);
-}
-bool AMonster::IsPlayingDamageMontage()
-{
-	UAnimInstance* AnimInstance = SkeletalMeshComponent->GetAnimInstance();
-	return AnimInstance->Montage_IsPlaying(MonsterData->DamageMontage);
-}
-bool AMonster::IsPlayingRushMontage()
-{
-	UAnimInstance* AnimInstance = SkeletalMeshComponent->GetAnimInstance();
-	return AnimInstance->Montage_IsPlaying(MonsterData->RushMontage);
-}
-
 void AMonster::TickMovement(float fDeltaTime)
 {
 	if (!MonsterData) return;
 
-	if (IsRushMontage() && IsPlayingRushMontage())
+	if (IsMontage(MONSTER_MONTAGE::RUSH) && IsPlayingMontage(MONSTER_MONTAGE::RUSH))
 	{
 		MovementComponent->MaxSpeed = MonsterData->RushMovementMaxSpeed;
 	}
@@ -327,6 +324,18 @@ void AMonster::TickMovement(float fDeltaTime)
 	}
 
 
+}
+bool AMonster::GetIsWeaponEquiped()
+{
+	return bIsWeaponEquiped;
+}
+void AMonster::SetWeaponEquiped()
+{
+	bIsWeaponEquiped = true;
+}
+void AMonster::SetWeaponUnEquiped()
+{
+	bIsWeaponEquiped = false;
 }
 
 void AMonster::RenderOffWeapon()
