@@ -16,17 +16,13 @@ struct DREAMINGISLAND_API FWeaponTableRow : public FTableRowBase
 
 public: // Base
 	UPROPERTY(EditAnywhere, Category = "Weapon")
-	USkeletalMesh* SkeletalMesh = nullptr;
+	UStaticMesh* StaticMesh = nullptr;
 
 	UPROPERTY(EditAnywhere, Category = "Weapon")
 	FTransform Transform = FTransform::Identity;
 
 	UPROPERTY(EditAnywhere, Category = "Weapon")
 	TSubclassOf<AWeapon> WeaponClass;
-
-	UPROPERTY(EditAnywhere, Category = "Weapon|Animation")
-	TSubclassOf<UAnimInstance> AnimClass;
-
 };
 
 UCLASS()
@@ -48,7 +44,7 @@ public:
 
 protected:
 	UPROPERTY(VisibleAnywhere)
-	USkeletalMeshComponent* SkeletalMeshComponent;
+	UStaticMeshComponent* StaticMeshComponent;
 
 protected: // Owner
 	// 이 무기의 소유권자 Pawn

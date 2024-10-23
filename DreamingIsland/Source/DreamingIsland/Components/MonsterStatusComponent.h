@@ -32,4 +32,14 @@ public:
 public:
 	UFUNCTION()
 	bool GetAnimStatus(uint8 InBit) const;
+
+protected:
+	UPROPERTY(BlueprintReadOnly)
+	bool bIsHoldingWeapon = false;
+
+public:
+	UFUNCTION(BlueprintCallable)
+	void SetHoldingWeaponOn() { bIsHoldingWeapon = true; }
+	UFUNCTION(BlueprintCallable)
+	void SetHoldingWeaponOff() { bIsHoldingWeapon = false; }
 };

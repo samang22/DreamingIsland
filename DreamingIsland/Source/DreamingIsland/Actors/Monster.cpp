@@ -55,6 +55,7 @@ AMonster::AMonster(const FObjectInitializer& ObjectInitializer)
 
 	Weapon = nullptr;
 
+	StatusComponent = CreateDefaultSubobject<UMonsterStatusComponent>(TEXT("StatusComponent"));
 
 
 }
@@ -67,23 +68,23 @@ void AMonster::SetData(const FDataTableRowHandle& InDataTableRowHandle, FString 
 	if (!Data) { return; }
 	MonsterData = Data;
 
-	if (MonsterData->MonsterStatusClass)
-	{
-		if (UStatusComponent* MoblinStatusComponent = Cast<UMoblinStatusComponent>(MonsterData->MonsterStatusClass))
-		{
-			StatusComponent = CreateDefaultSubobject<UMoblinStatusComponent>(TEXT("StatusComponent"));
-		}
-		else
-		{ 
-			StatusComponent = CreateDefaultSubobject<UMonsterStatusComponent>(TEXT("StatusComponent"));
-		}
-		// else ...
-	}
-	else
-	{
-		//StatusComponent = CreateDefaultSubobject<UMonsterStatusComponent>(TEXT("StatusComponent"));
-		// dont know why it makes problems
-	}
+	//if (MonsterData->MonsterStatusClass)
+	//{
+	//	if (UStatusComponent* MoblinStatusComponent = Cast<UMoblinStatusComponent>(MonsterData->MonsterStatusClass))
+	//	{
+	//		StatusComponent = CreateDefaultSubobject<UMoblinStatusComponent>(TEXT("StatusComponent"));
+	//	}
+	//	else
+	//	{ 
+	//		StatusComponent = CreateDefaultSubobject<UMonsterStatusComponent>(TEXT("StatusComponent"));
+	//	}
+	//	// else ...
+	//}
+	//else
+	//{
+	//	//StatusComponent = CreateDefaultSubobject<UMonsterStatusComponent>(TEXT("StatusComponent"));
+	//	// dont know why it makes problems
+	//}
 
 
 	if (IsValid(CollisionComponent))

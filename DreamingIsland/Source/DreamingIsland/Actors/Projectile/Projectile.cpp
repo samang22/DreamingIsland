@@ -56,7 +56,7 @@ void AProjectile::SetData(const FName& ProjectileName, FName ProfileName, EColli
 	if (ProjectileTableRow->StaticMesh)
 	{
 		StaticMeshComponent->SetStaticMesh(ProjectileTableRow->StaticMesh);
-		StaticMeshComponent->SetWorldScale3D(FVector(10.f, 10.f, 10.f));
+		StaticMeshComponent->SetWorldTransform(ProjectileTableRow->Transform);
 	}
 
 

@@ -15,10 +15,9 @@ AWeapon::AWeapon()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	SkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshComponent"));
-	SkeletalMeshComponent->SetupAttachment(RootComponent);
-	SkeletalMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	RootComponent = SkeletalMeshComponent;
+	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
+	StaticMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	RootComponent = StaticMeshComponent;
 }
 
 void AWeapon::SetData(const FDataTableRowHandle& InDataTableRowHandle)
@@ -29,12 +28,8 @@ void AWeapon::SetData(const FDataTableRowHandle& InDataTableRowHandle)
 	if (!Data) { ensure(false); return; }
 	WeaponTableRow = Data;
 
-	SkeletalMeshComponent->SetSkeletalMesh(Data->SkeletalMesh);
-	SkeletalMeshComponent->SetRelativeTransform(Data->Transform);
-	check(Data->AnimClass);
-	USkeletalMeshComponent* MeshComponent = GetOwner()->GetComponentByClass<USkeletalMeshComponent>();
-	check(MeshComponent);
-	MeshComponent->SetAnimClass(Data->AnimClass);
+	StaticMeshComponent->SetStaticMesh(Data->StaticMesh);
+	StaticMeshComponent->SetRelativeTransform(Data->Transform);
 
 	// Owner 정보 세팅
 	{
@@ -42,8 +37,6 @@ void AWeapon::SetData(const FDataTableRowHandle& InDataTableRowHandle)
 		check(OwningPawn);
 		OwningPawnBodyMesh = OwningPawn->GetComponentByClass<USkeletalMeshComponent>();
 		check(OwningPawnBodyMesh);
-		AnimInstance = Cast<UAnimInstance>(MeshComponent->GetAnimInstance());
-		check(AnimInstance);
 	}
 }
 
