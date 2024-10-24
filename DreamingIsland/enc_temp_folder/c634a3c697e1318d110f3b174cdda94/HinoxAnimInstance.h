@@ -26,6 +26,4 @@ protected:
 	bool bIsWalk = false;
 	UPROPERTY(BlueprintReadOnly)
 	bool bIsWait = true;
-	UPROPERTY(BlueprintReadOnly)
-	bool bIsRush = true;
 };

@@ -6,7 +6,6 @@
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/Character.h"
 #include "Actors/Monster.h"
-#include "Components/MonsterStatusComponent.h"
 
 UBTTask_Catch::UBTTask_Catch()
 {
@@ -28,8 +27,6 @@ EBTNodeResult::Type UBTTask_Catch::ExecuteTask(UBehaviorTreeComponent& OwnerComp
 	{
 		return EBTNodeResult::Failed;
 	}
-
-	Monster->GetStatusComponent()->SetOffAnimationStatus(MONSTER_BIT_RUSH);
 
 	float Distance = FVector::Dist2D(Character->GetActorLocation(), Monster->GetActorLocation());
 

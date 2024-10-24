@@ -20,6 +20,5 @@ void UHinoxAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	{
 		bIsWait = StatusComponent->GetAnimStatus(MONSTER_BIT_WAIT);
 		bIsWalk = StatusComponent->GetAnimStatus(MONSTER_BIT_WALK);
-		bIsRush = StatusComponent->GetAnimStatus(MONSTER_BIT_RUSH);
 	}
 }

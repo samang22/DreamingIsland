@@ -310,10 +310,11 @@ bool AMonster::IsPlayingMontage(MONSTER_MONTAGE _InEnum)
 		return AnimInstance->Montage_IsPlaying(MonsterData->CatchNoMontage);
 	case MONSTER_MONTAGE::THROW:
 		return AnimInstance->Montage_IsPlaying(MonsterData->ThrowMontage);
+
+
 	default:
 		return AnimInstance->Montage_IsPlaying(nullptr);
 	}
-
 	return AnimInstance->Montage_IsPlaying(nullptr);
 }
 
@@ -340,7 +341,8 @@ float AMonster::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContr
 		SetActorEnableCollision(false);
 
 		PlayMontage(MONSTER_MONTAGE::DEAD);
-		UKismetSystemLibrary::K2_SetTimer(this, TEXT("OnDie"), MonsterData->DeadMontage->GetPlayLength() - 0.1f, false);
+		UKismetSystemLibrary::K2_SetTimer(this, TEXT("OnDie"),
+			MonsterData->DeadMontage->GetPlayLength() - 0.1f, false);
 	}
 	else if (!StatusComponent->IsDie() && MonsterData->DamageMontage)
 	{
@@ -372,7 +374,6 @@ void AMonster::TickMovement(float fDeltaTime)
 	}
 
 	const float Speed = UKismetMathLibrary::VSizeXY(MovementComponent->Velocity);
-
 	if (!FMath::IsNearlyZero(Speed))
 	{
 		StatusComponent->SetOnAnimationStatus(MONSTER_BIT_WALK);
@@ -381,6 +382,8 @@ void AMonster::TickMovement(float fDeltaTime)
 	{
 		StatusComponent->SetOffAnimationStatus(MONSTER_BIT_WALK);
 	}
+
+
 }
 bool AMonster::GetIsWeaponEquiped()
 {

@@ -20,4 +20,7 @@ public:
 protected:
 	class UBehaviorTreeComponent* BehaviorTreeComponent = nullptr;
 	class UBlackboardComponent* BlackboardComponent = nullptr;
+
+protected:
+	uint8 Count = 0;
 };
