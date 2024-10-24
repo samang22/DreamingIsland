@@ -25,6 +25,7 @@ enum class MONSTER_MONTAGE : uint8
 	RUSH,
 	FIND,
 	KYOROKYORO,
+	GUARD,
 	END,
 };
 

@@ -207,11 +207,14 @@ void AMonster::PlayMontage(MONSTER_MONTAGE _InEnum)
 	case MONSTER_MONTAGE::KYOROKYORO:
 		tempMontage = MonsterData->KyoroKyoroMontage;
 		break;
+	case MONSTER_MONTAGE::GUARD:
+		tempMontage = MonsterData->GuardMontage;
+		break;
 	default:
 		break;
 	}
 
-	if (!AnimInstance->Montage_IsPlaying(tempMontage))
+	if (tempMontage && !AnimInstance->Montage_IsPlaying(tempMontage))
 	{
 		AnimInstance->Montage_Play(tempMontage);
 	}

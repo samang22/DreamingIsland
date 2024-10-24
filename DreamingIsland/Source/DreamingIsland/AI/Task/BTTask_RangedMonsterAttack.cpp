@@ -31,8 +31,11 @@ EBTNodeResult::Type UBTTask_RangedMonsterAttack::ExecuteTask(UBehaviorTreeCompon
 	FVector Dir = Character->GetActorLocation() - Monster->GetActorLocation();
 	Dir.Normalize();
 
-	Monster->SetActorRotation(Dir.Rotation().Quaternion());
-	Monster->PlayMontage(MONSTER_MONTAGE::ATTACK);
+	if (!Monster->IsPlayingMontage(MONSTER_MONTAGE::DAMAGE))
+	{
+		Monster->SetActorRotation(Dir.Rotation().Quaternion());
+		Monster->PlayMontage(MONSTER_MONTAGE::ATTACK);
+	}
 	return EBTNodeResult::InProgress;
 }
 

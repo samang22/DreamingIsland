@@ -36,10 +36,12 @@ EBTNodeResult::Type UBTTask_MoblinThrowSpear::ExecuteTask(UBehaviorTreeComponent
 	FVector Dir = Character->GetActorLocation() - Monster->GetActorLocation();
 	Dir.Normalize();
 
-	Monster->SetActorRotation(Dir.Rotation().Quaternion());
-	Monster->PlayMontage(MONSTER_MONTAGE::ATTACK);
-	//Monster->RenderOffWeapon();
-	//Monster->SetWeaponUnEquiped();
+	if (!Monster->IsPlayingMontage(MONSTER_MONTAGE::DAMAGE))
+	{
+		Monster->SetActorRotation(Dir.Rotation().Quaternion());
+		Monster->PlayMontage(MONSTER_MONTAGE::ATTACK);
+	}
+
 	return EBTNodeResult::InProgress;
 }
 
