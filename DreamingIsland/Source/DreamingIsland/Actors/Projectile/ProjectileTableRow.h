@@ -47,8 +47,21 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Speed")
 	float InitialSpeed = 0.f;
 
-	// @TODO : Hit Effect
+public:
+	UPROPERTY(EditAnywhere, Category = "Gravity")
+	float GravityScale = 0.f;
+
 public:
 	UPROPERTY(EditAnywhere, Category = "Damage")
 	float Damage = 0.f;
+
+
+public:
+	UPROPERTY(EditAnywhere, Category = "Monster", meta = (RowType = "PawnTableRow"))
+	FDataTableRowHandle MonsterTableRowHandle;
+	UPROPERTY(EditAnywhere, Category = "Monster")
+	bool bUseMonster = false;
+
+
+	// @TODO : Hit Effect
 };

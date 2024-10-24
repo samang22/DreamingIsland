@@ -21,6 +21,8 @@
 #include "Actors/AI/RangedMonsterAIController.h"
 #include "Actors/AI/MoblinAIController.h"
 #include "Actors/AI/MoriblinAIController.h"
+#include "Actors/AI/HinoxAIController.h"
+#include "Actors/AI/BomberAIController.h"
 #include "Actors/Weapon/Weapon.h"
 
 UMonsterDataAsset::UMonsterDataAsset()
@@ -141,6 +143,14 @@ void AMonster::PostInitializeComponents()
 		else if (AMoriblinAIController* MoriblinAIController = Cast<AMoriblinAIController>(Controller))
 		{
 			MoriblinAIController->SetPatrolPath(PatrolPathRef->GetPath());
+		}
+		else if (AHinoxAIController* HinoxAIController = Cast<AHinoxAIController>(Controller))
+		{
+			HinoxAIController->SetPatrolPath(PatrolPathRef->GetPath());
+		}
+		else if (ABomberAIController* BomberAIController = Cast<ABomberAIController>(Controller))
+		{
+			BomberAIController->SetPatrolPath(PatrolPathRef->GetPath());
 		}
 		else
 		{
@@ -263,6 +273,16 @@ bool AMonster::IsPlayingMontage(MONSTER_MONTAGE _InEnum)
 		return AnimInstance->Montage_IsPlaying(MonsterData->FindMontage);
 	case MONSTER_MONTAGE::KYOROKYORO:
 		return AnimInstance->Montage_IsPlaying(MonsterData->KyoroKyoroMontage);
+	case MONSTER_MONTAGE::GUARD:
+		return AnimInstance->Montage_IsPlaying(MonsterData->GuardMontage);
+	case MONSTER_MONTAGE::LAUGH:
+		return AnimInstance->Montage_IsPlaying(MonsterData->LaughMontage);
+	case MONSTER_MONTAGE::CATCH:
+		return AnimInstance->Montage_IsPlaying(MonsterData->CatchMontage);
+	case MONSTER_MONTAGE::CATCH_NO:
+		return AnimInstance->Montage_IsPlaying(MonsterData->CatchNoMontage);
+
+
 	default:
 		return AnimInstance->Montage_IsPlaying(nullptr);
 	}
@@ -358,4 +378,9 @@ void AMonster::RenderOffWeapon()
 void AMonster::RenderOnWeapon()
 {
 	Weapon->RenderOn();
+}
+
+void AMonster::SetCollisionProfileName(FName CollisionProfile)
+{
+	CollisionComponent->SetCollisionProfileName(CollisionProfile);
 }

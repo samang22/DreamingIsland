@@ -35,10 +35,10 @@ void UWeaponChildActorComponent::SetData(FDataTableRowHandle InDataTableRowHandl
 
 void UWeaponChildActorComponent::RenderOff()
 {
-	Weapon->RenderOff();
+	if (Weapon) Weapon->RenderOff();
 }
 
 void UWeaponChildActorComponent::RenderOn()
 {
-	Weapon->RenderOn();
+	if (Weapon) Weapon->RenderOn();
 }

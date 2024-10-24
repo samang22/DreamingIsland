@@ -29,6 +29,7 @@ EBTNodeResult::Type UBTTask_RangedMonsterAttack::ExecuteTask(UBehaviorTreeCompon
 	}
 
 	FVector Dir = Character->GetActorLocation() - Monster->GetActorLocation();
+	Dir.Z = 0.f;
 	Dir.Normalize();
 
 	if (!Monster->IsPlayingMontage(MONSTER_MONTAGE::DAMAGE))
@@ -44,12 +45,12 @@ void UBTTask_RangedMonsterAttack::TickTask(UBehaviorTreeComponent& OwnerComp, ui
 	Super::TickTask(OwnerComp, NodeMemory, DeltaSeconds);
 
 	AMonster* Monster = Cast<AMonster>(AIOwner->GetPawn());
-	if (Monster->IsPlayingMontage(MONSTER_MONTAGE::DAMAGE))
+	if (Monster->IsPlayingMontage(MONSTER_MONTAGE::ATTACK))
 	{
 		FinishLatentTask(OwnerComp, EBTNodeResult::InProgress);
 		return;
 	}
-	if (!Monster->IsPlayingMontage(MONSTER_MONTAGE::ATTACK))
+	else
 	{
 		FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
 		return;

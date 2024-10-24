@@ -9,6 +9,7 @@
 #include "Actors/Projectile/ProjectileTableRow.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/SphereComponent.h"
+#include "Actors/Monster.h"
 
 // Sets default values
 AProjectile::AProjectile()
@@ -48,7 +49,7 @@ void AProjectile::SetData(const FName& ProjectileName, FName ProfileName, EColli
 	if (!ProjectileDataTable->GetRowMap().Find(ProjectileName)) { ensure(false); return; }
 	DataTableRowHandle.DataTable = ProjectileDataTable;
 	DataTableRowHandle.RowName = ProjectileName;
-	ProjectileTableRow = DataTableRowHandle.GetRow<FProjectileTableRow>(ProjectileName.ToString());
+	ProjectileTableRow = DataTableRowHandle.GetRow<FProjectileTableRow>(DataTableRowHandle.RowName.ToString());
 
 	StaticMeshComponent->MoveIgnoreActors.Empty();
 	StaticMeshComponent->MoveIgnoreActors.Add(GetOwner());
@@ -65,6 +66,7 @@ void AProjectile::SetData(const FName& ProjectileName, FName ProfileName, EColli
 
 	ProjectileMovementComponent->MaxSpeed = ProjectileTableRow->MaxSpeed;
 	ProjectileMovementComponent->InitialSpeed = ProjectileTableRow->InitialSpeed;
+	ProjectileMovementComponent->ProjectileGravityScale = ProjectileTableRow->GravityScale;
 
 	if (USphereComponent* SphereCom = Cast<USphereComponent>(CollisionComponent))
 	{
@@ -93,6 +95,21 @@ void AProjectile::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 	//NewTransform.SetRotation(Rotation.Quaternion());
 
 	// @TODO : Generate Effects
+
+	if (ProjectileTableRow->bUseMonster)
+	{
+		UWorld* World = GetWorld();
+
+		AMonster* Monster = World->SpawnActorDeferred<AMonster>(AMonster::StaticClass(),
+			FTransform::Identity, nullptr, nullptr, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
+
+		FTransform NewTransform;
+		Monster->SetData(ProjectileTableRow->MonsterTableRowHandle);
+		NewTransform.SetLocation(GetActorLocation());
+		NewTransform.SetRotation(FRotator::ZeroRotator.Quaternion());
+		Monster->FinishSpawning(NewTransform);
+	}
+
 
 	Destroy();
 	UGameplayStatics::ApplyDamage(OtherActor, 1.f, OtherActor->GetInstigator()->GetController(), this, nullptr);

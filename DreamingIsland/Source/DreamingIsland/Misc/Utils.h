@@ -31,26 +31,18 @@ namespace Link_SocketName
 	static inline FName SwordTop = TEXT("itemA_L_top");
 }
 
-namespace Link_SocketName_FString
-{
-	static inline FString SwordTop = TEXT("itemA_L_top");
-}
-
 namespace Monster_SocketName
 {
 	static inline FName Weapon = TEXT("Weapon");
 }
 
-namespace Monster_SocketName_FString
-{
-	static inline FString Weapon = TEXT("Weapon");
-}
 namespace CollisionProfileName
 {
 	static inline FName Link = TEXT("Link");
 	static inline FName Monster = TEXT("Monster");
 	static inline FName Link_Projectile = TEXT("LinkProjectile");
 	static inline FName Monster_Projectile = TEXT("MonsterProjectile");
+	static inline FName MonsterBodyProjectile = TEXT("MonsterBodyProjectile");
 }
 
 namespace ProjectileName

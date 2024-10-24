@@ -15,7 +15,7 @@
 #define ALBATOSS_CLAWATTACK_LENGTH 70.f
 #define OCTOROK_ROCKATTACK_LENGTH 50.f
 #define MORIBLIN_SWORDATTACK_LENGTH 100.f
-
+#define HINOX_CATCH_LENGTH 200.f
 
 enum class MONSTER_MONTAGE : uint8
 {
@@ -26,6 +26,10 @@ enum class MONSTER_MONTAGE : uint8
 	FIND,
 	KYOROKYORO,
 	GUARD,
+	CATCH,
+	CATCH_NO,
+	LAUGH,
+	THROW,
 	END,
 };
 
@@ -151,5 +155,6 @@ public:
 	void RenderOffWeapon();
 	void RenderOnWeapon();
 
-
+public:
+	void SetCollisionProfileName(FName CollisionProfile);
 };

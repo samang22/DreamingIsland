@@ -70,6 +70,14 @@ public: // Animation
 	UAnimMontage* KyoroKyoroMontage;
 	UPROPERTY(EditAnywhere, Category = "Monster|Animation")
 	UAnimMontage* GuardMontage;
+	UPROPERTY(EditAnywhere, Category = "Monster|Animation")
+	UAnimMontage* LaughMontage;
+	UPROPERTY(EditAnywhere, Category = "Monster|Animation")
+	UAnimMontage* CatchMontage;
+	UPROPERTY(EditAnywhere, Category = "Monster|Animation")
+	UAnimMontage* CatchNoMontage;
+
+
 
 public: // AI (Only for Enemy)
 	UPROPERTY(EditAnywhere, Category = "Monster|AI")
