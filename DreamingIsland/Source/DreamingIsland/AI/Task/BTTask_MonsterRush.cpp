@@ -23,10 +23,6 @@ EBTNodeResult::Type UBTTask_MonsterRush::ExecuteTask(UBehaviorTreeComponent& Own
 	BlackboardComponent = OwnerComp.GetBlackboardComponent();
 
 	AMonster* Monster = Cast<AMonster>(AIOwner->GetPawn());
-	if (!Monster->IsMontage(MONSTER_MONTAGE::RUSH))
-	{
-		return EBTNodeResult::Failed;
-	} 	
 	AActor* PlayerActor = Cast<AActor>(BlackboardComponent->GetValueAsObject(TEXT("DetectedPlayer")));
 	if (PlayerActor)
 	{
@@ -35,7 +31,7 @@ EBTNodeResult::Type UBTTask_MonsterRush::ExecuteTask(UBehaviorTreeComponent& Own
 		if (Distance > MONSTER_RUSH_DISTANCE)
 		{
 			Monster->PlayMontage(MONSTER_MONTAGE::RUSH);
-			return EBTNodeResult::Failed;
+			return EBTNodeResult::InProgress;
 		}
 	}
 	return EBTNodeResult::Failed;
@@ -44,14 +40,22 @@ EBTNodeResult::Type UBTTask_MonsterRush::ExecuteTask(UBehaviorTreeComponent& Own
 void UBTTask_MonsterRush::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
 	AMonster* Monster = Cast<AMonster>(AIOwner->GetPawn());
-	//if (Monster->IsPlayingDamageMontage())
-	//{
-	//	FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
-	//	return;
-	//}
-	//if (!Monster->IsPlayingAttackMontage())
-	//{
-	//	FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
-	//	return;
-	//}
+	AActor* PlayerActor = Cast<AActor>(BlackboardComponent->GetValueAsObject(TEXT("DetectedPlayer")));
+
+	if (PlayerActor)
+	{
+		const float Distance = FVector::Dist(PlayerActor->GetActorLocation(), Monster->GetActorLocation());
+		if (Distance < MONSTER_RUSH_DISTANCE)
+		{
+			FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
+		}
+		else
+		{
+			FinishLatentTask(OwnerComp, EBTNodeResult::InProgress);
+		}
+	}
+	else
+	{
+		FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
+	}
 }

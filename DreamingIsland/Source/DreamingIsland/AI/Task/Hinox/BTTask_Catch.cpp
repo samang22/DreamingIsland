@@ -34,7 +34,9 @@ EBTNodeResult::Type UBTTask_Catch::ExecuteTask(UBehaviorTreeComponent& OwnerComp
 	{
 		if (!Monster->IsPlayingMontage(MONSTER_MONTAGE::DAMAGE))
 		{
-			Monster->PlayMontage(MONSTER_MONTAGE::CATCH);
+			Monster->PlayMontage(MONSTER_MONTAGE::ATTACK);
+			BlackboardComponent->SetValueAsBool(TEXT("CatchTried"), true);
+
 			return EBTNodeResult::InProgress;
 		}
 		else
@@ -48,7 +50,7 @@ EBTNodeResult::Type UBTTask_Catch::ExecuteTask(UBehaviorTreeComponent& OwnerComp
 void UBTTask_Catch::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
 	AMonster* Monster = Cast<AMonster>(AIOwner->GetPawn());
-	if (Monster->IsPlayingMontage(MONSTER_MONTAGE::CATCH))
+	if (Monster->IsPlayingMontage(MONSTER_MONTAGE::ATTACK))
 	{
 		FinishLatentTask(OwnerComp, EBTNodeResult::InProgress);
 		return;

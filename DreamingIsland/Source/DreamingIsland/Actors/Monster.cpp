@@ -192,7 +192,7 @@ void AMonster::Tick(float DeltaTime)
 	TickMovement(DeltaTime);
 }
 
-void AMonster::PlayMontage(MONSTER_MONTAGE _InEnum)
+void AMonster::PlayMontage(MONSTER_MONTAGE _InEnum, bool bIsLoop)
 {
 	UAnimInstance* AnimInstance = SkeletalMeshComponent->GetAnimInstance();
 
@@ -220,13 +220,29 @@ void AMonster::PlayMontage(MONSTER_MONTAGE _InEnum)
 	case MONSTER_MONTAGE::GUARD:
 		tempMontage = MonsterData->GuardMontage;
 		break;
+	case MONSTER_MONTAGE::LAUGH:
+		tempMontage = MonsterData->LaughMontage;
+		break;
+	case MONSTER_MONTAGE::CATCH_NO:
+		tempMontage = MonsterData->CatchNoMontage;
+		break;
+	case MONSTER_MONTAGE::THROW:
+		tempMontage = MonsterData->ThrowMontage;
+		break;
 	default:
 		break;
 	}
 
 	if (tempMontage && !AnimInstance->Montage_IsPlaying(tempMontage))
 	{
-		AnimInstance->Montage_Play(tempMontage);
+		if (bIsLoop)
+		{
+			AnimInstance->Montage_Play(tempMontage);
+		}
+		else
+		{
+			AnimInstance->Montage_Play(tempMontage, 1.0f, EMontagePlayReturnType::MontageLength, 0.0f, true);
+		}
 	}
 }
 bool AMonster::IsMontage(MONSTER_MONTAGE _InEnum)
@@ -251,12 +267,25 @@ bool AMonster::IsMontage(MONSTER_MONTAGE _InEnum)
 	case MONSTER_MONTAGE::KYOROKYORO:
 		if (!MonsterData) return false;
 		return MonsterData->KyoroKyoroMontage ? true : false;
+	case MONSTER_MONTAGE::GUARD:
+		if (!MonsterData) return false;
+		return MonsterData->GuardMontage ? true : false;
+	case MONSTER_MONTAGE::LAUGH:
+		if (!MonsterData) return false;
+		return MonsterData->LaughMontage ? true : false;
+	case MONSTER_MONTAGE::CATCH_NO:
+		if (!MonsterData) return false;
+		return MonsterData->CatchNoMontage ? true : false;
+	case MONSTER_MONTAGE::THROW:
+		if (!MonsterData) return false;
+		return MonsterData->ThrowMontage ? true : false;
 	default:
 		return false;
 	}
 }
 bool AMonster::IsPlayingMontage(MONSTER_MONTAGE _InEnum)
 {
+	if (!MonsterData) return false;
 	UAnimInstance* AnimInstance = SkeletalMeshComponent->GetAnimInstance();
 
 	switch (_InEnum)
@@ -277,10 +306,10 @@ bool AMonster::IsPlayingMontage(MONSTER_MONTAGE _InEnum)
 		return AnimInstance->Montage_IsPlaying(MonsterData->GuardMontage);
 	case MONSTER_MONTAGE::LAUGH:
 		return AnimInstance->Montage_IsPlaying(MonsterData->LaughMontage);
-	case MONSTER_MONTAGE::CATCH:
-		return AnimInstance->Montage_IsPlaying(MonsterData->CatchMontage);
 	case MONSTER_MONTAGE::CATCH_NO:
 		return AnimInstance->Montage_IsPlaying(MonsterData->CatchNoMontage);
+	case MONSTER_MONTAGE::THROW:
+		return AnimInstance->Montage_IsPlaying(MonsterData->ThrowMontage);
 
 
 	default:

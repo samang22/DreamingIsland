@@ -21,45 +21,42 @@ EBTNodeResult::Type UBTTask_HinoxRun::ExecuteTask(UBehaviorTreeComponent& OwnerC
 	BlackboardComponent = OwnerComp.GetBlackboardComponent();
 
 	AMonster* Monster = Cast<AMonster>(AIOwner->GetPawn());
-
-	ACharacter* Character = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
-	if (!Character || !Monster)
+	AActor* PlayerActor = Cast<AActor>(BlackboardComponent->GetValueAsObject(TEXT("DetectedPlayer")));
+	if (PlayerActor)
 	{
-		return EBTNodeResult::Failed;
+		const float Distance = FVector::Dist(PlayerActor->GetActorLocation(), Monster->GetActorLocation());
+
+		if (Distance > HINOX_LINK_RUSH_LENGTH)
+		{
+			Monster->PlayMontage(MONSTER_MONTAGE::RUSH, true);
+			return EBTNodeResult::InProgress;
+		}
 	}
-	FVector Dir = Character->GetActorLocation() - Monster->GetActorLocation();
-	Dir.Z = 0.f;
-	Dir.Normalize();
 
-
-	Monster->SetActorRotation(Dir.Rotation().Quaternion());
-	Monster->PlayMontage(MONSTER_MONTAGE::RUSH);
-
-	return EBTNodeResult::InProgress;
+	return EBTNodeResult::Failed;
 }
 
 void UBTTask_HinoxRun::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
 	AMonster* Monster = Cast<AMonster>(AIOwner->GetPawn());
-	if (Monster->IsPlayingMontage(MONSTER_MONTAGE::RUSH))
+	AActor* PlayerActor = Cast<AActor>(BlackboardComponent->GetValueAsObject(TEXT("DetectedPlayer")));
+
+	if (PlayerActor)
 	{
-		FinishLatentTask(OwnerComp, EBTNodeResult::InProgress);
-		return;
-	}
-	else
-	{
-		if (Count < 2)
+		const float Distance = FVector::Dist(PlayerActor->GetActorLocation(), Monster->GetActorLocation());
+		// if Hinox is close enough
+		if (Distance < HINOX_LINK_RUSH_LENGTH)
 		{
-			Monster->PlayMontage(MONSTER_MONTAGE::RUSH);
-			FinishLatentTask(OwnerComp, EBTNodeResult::InProgress);
-			++Count;
-			return;
+			FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
 		}
 		else
 		{
-			Count = 0;
-			FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
-			return;
+			FinishLatentTask(OwnerComp, EBTNodeResult::InProgress);
 		}
+	}
+	// if link is far away
+	else
+	{
+		FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
 	}
 }

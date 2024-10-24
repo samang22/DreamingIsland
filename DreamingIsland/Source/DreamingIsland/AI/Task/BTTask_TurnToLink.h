@@ -4,23 +4,21 @@
 
 #include "CoreMinimal.h"
 #include "AI/Task/BTTask_Base.h"
-#include "BTTask_HinoxRun.generated.h"
+#include "BTTask_TurnToLink.generated.h"
 
-#define HINOX_LINK_RUSH_LENGTH 200.f
+#define TURN_SPEED 2.f
+
 UCLASS()
-class DREAMINGISLAND_API UBTTask_HinoxRun : public UBTTask_Base
+class DREAMINGISLAND_API UBTTask_TurnToLink : public UBTTask_Base
 {
 	GENERATED_BODY()
 public:
-	UBTTask_HinoxRun();
-
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 	virtual void TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;
 
 protected:
 	class UBehaviorTreeComponent* BehaviorTreeComponent = nullptr;
 	class UBlackboardComponent* BlackboardComponent = nullptr;
-
 protected:
-	uint8 Count = 0;
+	FVector GoalDir = FVector::ZeroVector;
 };

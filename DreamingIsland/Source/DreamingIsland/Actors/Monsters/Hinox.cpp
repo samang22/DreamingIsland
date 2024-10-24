@@ -14,3 +14,7 @@ void AHinox::BeginPlay()
 	RenderOffWeapon();
 	SetWeaponUnEquiped();
 }
+
+void AHinox::SetIsRun(bool bFlag)
+{
+}

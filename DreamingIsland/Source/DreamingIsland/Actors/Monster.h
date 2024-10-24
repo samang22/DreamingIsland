@@ -26,7 +26,6 @@ enum class MONSTER_MONTAGE : uint8
 	FIND,
 	KYOROKYORO,
 	GUARD,
-	CATCH,
 	CATCH_NO,
 	LAUGH,
 	THROW,
@@ -117,7 +116,7 @@ protected:
 	FString MonsterName;
 
 public:
-	void PlayMontage(MONSTER_MONTAGE _InEnum);
+	void PlayMontage(MONSTER_MONTAGE _InEnum, bool bIsLoop = false);
 	bool IsMontage(MONSTER_MONTAGE _InEnum);
 	bool IsPlayingMontage(MONSTER_MONTAGE _InEnum);
 
