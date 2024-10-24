@@ -96,23 +96,44 @@ void AProjectile::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 
 	// @TODO : Generate Effects
 
-	if (ProjectileTableRow->bUseMonster)
-	{
-		UWorld* World = GetWorld();
+	//if (ProjectileTableRow->bUseMonster)
+	//{
+	//	UWorld* World = GetWorld();
 
-		AMonster* Monster = World->SpawnActorDeferred<AMonster>(AMonster::StaticClass(),
-			FTransform::Identity, nullptr, nullptr, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
+	//	AMonster* Monster = World->SpawnActorDeferred<AMonster>(AMonster::StaticClass(),
+	//		FTransform::Identity, nullptr, nullptr, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 
-		FTransform NewTransform;
-		Monster->SetData(ProjectileTableRow->MonsterTableRowHandle);
-		NewTransform.SetLocation(GetActorLocation());
-		NewTransform.SetRotation(FRotator::ZeroRotator.Quaternion());
-		Monster->FinishSpawning(NewTransform);
-	}
+	//	FTransform NewTransform;
+	//	Monster->SetData(ProjectileTableRow->MonsterTableRowHandle);
+	//	NewTransform.SetLocation(GetActorLocation());
+	//	NewTransform.SetRotation(FRotator::ZeroRotator.Quaternion());
+	//	Monster->FinishSpawning(NewTransform);
+	//}
 
 
 	Destroy();
 	UGameplayStatics::ApplyDamage(OtherActor, 1.f, OtherActor->GetInstigator()->GetController(), this, nullptr);
+}
+
+void AProjectile::OnBeginBlock(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (ProjectileTableRow->bUseMonster)
+	{
+		if (DataTableRowHandle.RowName == ProjectileName::Hinox_Bomb)
+		{
+			UWorld* World = GetWorld();
+
+			AMonster* Monster = World->SpawnActorDeferred<AMonster>(AMonster::StaticClass(),
+				FTransform::Identity, nullptr, nullptr, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
+
+			FTransform NewTransform;
+			Monster->SetData(ProjectileTableRow->MonsterTableRowHandle);
+			NewTransform.SetLocation(GetActorLocation());
+			NewTransform.SetRotation(FRotator::ZeroRotator.Quaternion());
+			Monster->FinishSpawning(NewTransform);
+		}
+	}
+	Destroy();
 }
 
 // Called every frame

@@ -6,9 +6,10 @@
 #include "AI/Task/BTTask_Base.h"
 #include "BTTask_ThrowBomb.generated.h"
 
-/**
- * 
- */
+
+#define HINOX_THROW_BOMB_MIN_LENGTH 200.f
+#define HINOX_THROW_BOMB_MAX_LENGTH 400.f
+
 UCLASS()
 class DREAMINGISLAND_API UBTTask_ThrowBomb : public UBTTask_Base
 {

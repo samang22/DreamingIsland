@@ -43,6 +43,7 @@ namespace CollisionProfileName
 	static inline FName Link_Projectile = TEXT("LinkProjectile");
 	static inline FName Monster_Projectile = TEXT("MonsterProjectile");
 	static inline FName MonsterBodyProjectile = TEXT("MonsterBodyProjectile");
+	static inline FName BombProjectile = TEXT("BombProjectile");
 }
 
 namespace ProjectileName
@@ -51,6 +52,7 @@ namespace ProjectileName
 	static inline FName Albatoss_ClawAttack = TEXT("Albatoss_ClawAttack");
 	static inline FName Octorok_RockAttack = TEXT("Octorok_RockAttack");
 	static inline FName Moblin_SpearAttack = TEXT("Moblin_SpearAttack");
+	static inline FName Hinox_Bomb = TEXT("Hinox_Bomb");
 }
 
 #define COLLISION_CHANNEL_LINKCHANNEL				ECollisionChannel::ECC_GameTraceChannel1

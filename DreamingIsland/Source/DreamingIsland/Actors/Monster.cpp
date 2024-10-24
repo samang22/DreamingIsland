@@ -24,6 +24,8 @@
 #include "Actors/AI/HinoxAIController.h"
 #include "Actors/AI/BomberAIController.h"
 #include "Actors/Weapon/Weapon.h"
+#include "GameFramework/Character.h"
+#include "Kismet/GameplayStatics.h"
 
 UMonsterDataAsset::UMonsterDataAsset()
 	: AnimClass(UMonsterAnimInstance::StaticClass())
@@ -190,6 +192,14 @@ void AMonster::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	TickMovement(DeltaTime);
+
+	//ACharacter* Character = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+	//if (Character)
+	//{
+	//	float Dist = FVector::Dist(GetActorLocation(), Character->GetActorLocation());
+	//	UE_LOG(LogTemp, Warning, TEXT("%f"), Dist);
+	//}
+
 }
 
 void AMonster::PlayMontage(MONSTER_MONTAGE _InEnum, bool bIsLoop)
@@ -237,11 +247,11 @@ void AMonster::PlayMontage(MONSTER_MONTAGE _InEnum, bool bIsLoop)
 	{
 		if (bIsLoop)
 		{
-			AnimInstance->Montage_Play(tempMontage);
+			AnimInstance->Montage_Play(tempMontage, 1.0f, EMontagePlayReturnType::MontageLength, 0.0f, true);
 		}
 		else
 		{
-			AnimInstance->Montage_Play(tempMontage, 1.0f, EMontagePlayReturnType::MontageLength, 0.0f, true);
+			AnimInstance->Montage_Play(tempMontage);
 		}
 	}
 }

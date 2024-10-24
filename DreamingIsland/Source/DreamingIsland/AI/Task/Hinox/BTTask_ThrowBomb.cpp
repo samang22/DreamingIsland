@@ -21,11 +21,29 @@ EBTNodeResult::Type UBTTask_ThrowBomb::ExecuteTask(UBehaviorTreeComponent& Owner
 	BlackboardComponent = OwnerComp.GetBlackboardComponent();
 
 	AMonster* Monster = Cast<AMonster>(AIOwner->GetPawn());
+	ACharacter* Character = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
 
-	//if (!Monster->GetIsWeaponEquiped())
-	//{
-	//	return EBTNodeResult::Failed;
-	//}
+	if (!Character || !Monster)
+	{
+		return EBTNodeResult::Failed;
+	}
+
+	const float Dist = FVector::Dist(Monster->GetActorLocation(), Character->GetActorLocation());
+
+	if (Dist < HINOX_THROW_BOMB_MIN_LENGTH
+		|| Dist > HINOX_THROW_BOMB_MAX_LENGTH)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Failed"));
+
+		return EBTNodeResult::Failed;
+	}
+	UE_LOG(LogTemp, Warning, TEXT("Succeeded"));
+
+	if (!Monster->GetIsWeaponEquiped())
+	{
+		Monster->SetWeaponEquiped();
+		Monster->RenderOnWeapon();
+	}
 
 	Monster->PlayMontage(MONSTER_MONTAGE::THROW);
 
@@ -42,7 +60,7 @@ void UBTTask_ThrowBomb::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 	}
 	else
 	{
-		FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
+		FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 		return;
 	}
 }
