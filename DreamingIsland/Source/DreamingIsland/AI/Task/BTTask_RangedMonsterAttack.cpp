@@ -33,7 +33,7 @@ EBTNodeResult::Type UBTTask_RangedMonsterAttack::ExecuteTask(UBehaviorTreeCompon
 
 	Monster->SetActorRotation(Dir.Rotation().Quaternion());
 	Monster->PlayMontage(MONSTER_MONTAGE::ATTACK);
-	return EBTNodeResult::Succeeded;
+	return EBTNodeResult::InProgress;
 }
 
 void UBTTask_RangedMonsterAttack::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
@@ -43,7 +43,7 @@ void UBTTask_RangedMonsterAttack::TickTask(UBehaviorTreeComponent& OwnerComp, ui
 	AMonster* Monster = Cast<AMonster>(AIOwner->GetPawn());
 	if (Monster->IsPlayingMontage(MONSTER_MONTAGE::DAMAGE))
 	{
-		FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
+		FinishLatentTask(OwnerComp, EBTNodeResult::InProgress);
 		return;
 	}
 	if (!Monster->IsPlayingMontage(MONSTER_MONTAGE::ATTACK))

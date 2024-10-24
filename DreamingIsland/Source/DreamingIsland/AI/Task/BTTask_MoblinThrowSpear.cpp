@@ -38,8 +38,8 @@ EBTNodeResult::Type UBTTask_MoblinThrowSpear::ExecuteTask(UBehaviorTreeComponent
 
 	Monster->SetActorRotation(Dir.Rotation().Quaternion());
 	Monster->PlayMontage(MONSTER_MONTAGE::ATTACK);
-	Monster->RenderOffWeapon();
-	Monster->SetWeaponUnEquiped();
+	//Monster->RenderOffWeapon();
+	//Monster->SetWeaponUnEquiped();
 	return EBTNodeResult::InProgress;
 }
 
