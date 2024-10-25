@@ -21,6 +21,8 @@ EBTNodeResult::Type UBTTask_Catch::ExecuteTask(UBehaviorTreeComponent& OwnerComp
 	BehaviorTreeComponent = &OwnerComp;
 	BlackboardComponent = OwnerComp.GetBlackboardComponent();
 
+	BlackboardComponent->SetValueAsBool(TEXT("HinoxRun"), false);
+
 	AMonster* Monster = Cast<AMonster>(AIOwner->GetPawn());
 
 	if (!Monster->GetStatusComponent()->GetAnimStatus(MONSTER_BIT_RUSH))

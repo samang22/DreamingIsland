@@ -21,8 +21,15 @@ EBTNodeResult::Type UBTTask_ThrowBomb::ExecuteTask(UBehaviorTreeComponent& Owner
 	BehaviorTreeComponent = &OwnerComp;
 	BlackboardComponent = OwnerComp.GetBlackboardComponent();
 
+	if (BlackboardComponent->GetValueAsBool(TEXT("HinoxRun")))
+	{
+		return EBTNodeResult::Failed;
+	}
+
+
 	AHinox* Monster = Cast<AHinox>(AIOwner->GetPawn());
 	ACharacter* Character = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+
 
 	if (!Character || !Monster)
 	{

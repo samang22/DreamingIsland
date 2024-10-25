@@ -17,7 +17,7 @@ void UAnimNotify_ThrowBomb::Notify(USkeletalMeshComponent* MeshComp, UAnimSequen
 {
 	Super::Notify(MeshComp, Animation, EventReference);
 #if WITH_EDITOR
-	if (GIsEditor && MeshComp->GetWorld() != GWorld) { return; } // 에디터 프리뷰
+	if (GIsEditor && MeshComp->GetWorld() != GWorld) { return; } 
 #endif
 
 	AMonster* Monster = Cast<AMonster>(MeshComp->GetOwner());

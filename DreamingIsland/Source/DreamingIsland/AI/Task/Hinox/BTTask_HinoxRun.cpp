@@ -20,6 +20,8 @@ EBTNodeResult::Type UBTTask_HinoxRun::ExecuteTask(UBehaviorTreeComponent& OwnerC
 	BehaviorTreeComponent = &OwnerComp;
 	BlackboardComponent = OwnerComp.GetBlackboardComponent();
 
+	BlackboardComponent->SetValueAsBool(TEXT("HinoxRun"), true);
+
 	AMonster* Monster = Cast<AMonster>(AIOwner->GetPawn());
 	//AActor* PlayerActor = Cast<AActor>(BlackboardComponent->GetValueAsObject(TEXT("DetectedPlayer")));
 	//if (PlayerActor)
@@ -32,6 +34,9 @@ EBTNodeResult::Type UBTTask_HinoxRun::ExecuteTask(UBehaviorTreeComponent& OwnerC
 	//		return EBTNodeResult::InProgress;
 	//	}
 	//}
+
+
+
 
 	Monster->GetStatusComponent()->SetOnAnimationStatus(MONSTER_BIT_RUSH);
 
