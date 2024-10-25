@@ -21,8 +21,17 @@ public:
 
 public:
 	bool ThrowBomb();
-	void SetIsRun(bool _bIsRun) { bIsRun = _bIsRun; }
-	bool GetIsRun() const { return bIsRun; };
+
+
 protected:
 	bool bIsRun = false;
+public:
+	void SetIsRun(bool _bIsRun) { bIsRun = _bIsRun; }
+	bool GetIsRun() const { return bIsRun; };
+
+protected:
+	bool bIsCatching = false;
+public:
+	void SetIsCatching(bool _bIsCatching) { bIsCatching = _bIsCatching; }
+	bool GetIsCatching() const { return bIsCatching; };
 };

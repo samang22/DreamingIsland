@@ -11,6 +11,9 @@
 #include "Components/SphereComponent.h"
 #include "Actors/Monster.h"
 #include "Actors/Monsters/Bomber.h"
+#include "Actors/Monsters/Hinox.h"
+#include "Actors/Link.h"
+#include "Components/HinoxStatusComponent.h"
 
 // Sets default values
 AProjectile::AProjectile()
@@ -90,8 +93,29 @@ void AProjectile::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 
 	// @TODO : Generate Effects
 
+	if (DataTableRowHandle.RowName == ProjectileName::Hinox_Catch)
+	{
+		AActor* tempOwner = GetOwner();
+		AHinox* Hinox = Cast<AHinox>(tempOwner);
+		if (Hinox)
+		{
+			ALink* Link = Cast<ALink>(OtherActor);
+			if (Link)
+			{
+				Link->StopMovement();
+				Link->SetCatchingLinkActor(Hinox);
+				Link->SetIsCatched(true);
+				UHinoxStatusComponent* HinoxStatusComponent = Cast<UHinoxStatusComponent>(Hinox->GetStatusComponent());
+				HinoxStatusComponent->SetIsCatching(true);
+			}
+		}
+	}
+	else
+	{
+		UGameplayStatics::ApplyDamage(OtherActor, ProjectileTableRow->Damage, OtherActor->GetInstigator()->GetController(), this, nullptr);
+	}
+
 	Destroy();
-	UGameplayStatics::ApplyDamage(OtherActor, 1.f, OtherActor->GetInstigator()->GetController(), this, nullptr);
 }
 
 void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
@@ -110,6 +134,21 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, U
 			NewTransform.SetLocation(GetActorLocation());
 			NewTransform.SetRotation(FRotator::ZeroRotator.Quaternion());
 			Monster->FinishSpawning(NewTransform);
+		}
+	}
+	if (DataTableRowHandle.RowName == ProjectileName::Hinox_Link)
+	{
+		AHinox* Hinox = Cast<AHinox>(Owner);
+		if (Hinox)
+		{
+			ACharacter* Character = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+			ALink* Link = Cast<ALink>(Character);
+			if (Link)
+			{
+				Link->ResumeMovement();
+				Link->SetCatchingLinkActor(nullptr);
+				Link->SetIsCatched(false);
+			}
 		}
 	}
 	Destroy();

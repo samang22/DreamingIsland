@@ -5,8 +5,8 @@
 #include "Animation/MonsterAnimInstance.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/Character.h"
-#include "Actors/Monster.h"
-
+#include "Actors/Monsters/Hinox.h"
+#include "Components/HinoxStatusComponent.h"
 UBTTask_CatchNo::UBTTask_CatchNo()
 {
 	NodeName = "CatchNo";
@@ -20,7 +20,20 @@ EBTNodeResult::Type UBTTask_CatchNo::ExecuteTask(UBehaviorTreeComponent& OwnerCo
 	BehaviorTreeComponent = &OwnerComp;
 	BlackboardComponent = OwnerComp.GetBlackboardComponent();
 
-	AMonster* Monster = Cast<AMonster>(AIOwner->GetPawn());
+	const bool bCatchTried = BlackboardComponent->GetValueAsBool(TEXT("CatchTried"));
+	if (!bCatchTried)
+	{
+		return EBTNodeResult::Failed;
+	}
+
+
+	AHinox* Monster = Cast<AHinox>(AIOwner->GetPawn());
+	UHinoxStatusComponent* HinoxStatusComponent = Cast<UHinoxStatusComponent>(Monster->GetStatusComponent());
+	if (HinoxStatusComponent->GetIsCatching())
+	{
+		return EBTNodeResult::Failed;
+	}
+
 	BlackboardComponent->SetValueAsBool(TEXT("CatchTried"), false);
 
 	if (!Monster->IsPlayingMontage(MONSTER_MONTAGE::DAMAGE))

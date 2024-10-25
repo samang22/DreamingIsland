@@ -416,6 +416,11 @@ void AMonster::RenderOnWeapon()
 	Weapon->RenderOn();
 }
 
+FVector AMonster::GetSocketLocation(FName SocketName)
+{
+	return SkeletalMeshComponent->GetSocketLocation(SocketName);
+}
+
 void AMonster::SetCollisionProfileName(FName CollisionProfile)
 {
 	CollisionComponent->SetCollisionProfileName(CollisionProfile);

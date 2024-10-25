@@ -62,5 +62,17 @@ public:
 
 public:
 	const class ULinkStatusComponent* GetStatusComponent() const;
-
+	
+protected:
+	bool bIsCatched = false;
+	AActor* CatchingLinkActor = nullptr;
+public:
+	void SetIsCatched(bool _bIsCatched) { bIsCatched = _bIsCatched; }
+	bool GetIsCatched() const { return bIsCatched; }
+	void StopMovement();
+	void ResumeMovement();
+	void SetCatchingLinkActor(AActor* _CatchingLinkActor) { CatchingLinkActor = _CatchingLinkActor; }
+	void StopCatchingLink() { CatchingLinkActor = nullptr; }
+protected:
+	void LinkCatchedSequence(float DeltaTime);
 };

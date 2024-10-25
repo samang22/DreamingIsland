@@ -22,8 +22,6 @@ EBTNodeResult::Type UBTTask_Catch::ExecuteTask(UBehaviorTreeComponent& OwnerComp
 	BehaviorTreeComponent = &OwnerComp;
 	BlackboardComponent = OwnerComp.GetBlackboardComponent();
 
-	UE_LOG(LogTemp, Warning, TEXT("InCatch"));
-
 	AMonster* Monster = Cast<AMonster>(AIOwner->GetPawn());
 
 	UHinoxStatusComponent* HinoxStatusComponent = Cast<UHinoxStatusComponent>(Monster->GetStatusComponent());

@@ -53,6 +53,8 @@ namespace ProjectileName
 	static inline FName Octorok_RockAttack = TEXT("Octorok_RockAttack");
 	static inline FName Moblin_SpearAttack = TEXT("Moblin_SpearAttack");
 	static inline FName Hinox_Bomb = TEXT("Hinox_Bomb");
+	static inline FName Hinox_Catch = TEXT("Hinox_Catch");
+	static inline FName Hinox_Link = TEXT("Hinox_Link");
 	static inline FName Bomber_Bomb = TEXT("Bomber_Bomb");
 }
 

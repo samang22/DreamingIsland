@@ -20,6 +20,7 @@ EBTNodeResult::Type UBTTask_ThrowBomb::ExecuteTask(UBehaviorTreeComponent& Owner
 {
 	BehaviorTreeComponent = &OwnerComp;
 	BlackboardComponent = OwnerComp.GetBlackboardComponent();
+	BlackboardComponent->SetValueAsBool(TEXT("CatchTried"), false);
 
 	AHinox* Monster = Cast<AHinox>(AIOwner->GetPawn());
 	UHinoxStatusComponent* HinoxStatusComponent = Cast<UHinoxStatusComponent>(Monster->GetStatusComponent());
@@ -63,7 +64,7 @@ EBTNodeResult::Type UBTTask_ThrowBomb::ExecuteTask(UBehaviorTreeComponent& Owner
 		return EBTNodeResult::Failed;
 	}
 
-	if (!Monster->GetIsWeaponEquiped())
+	if (!Monster->GetIsWeaponEquiped() && !HinoxStatusComponent->GetIsCatching())
 	{
 		Monster->SetWeaponEquiped();
 		Monster->RenderOnWeapon();

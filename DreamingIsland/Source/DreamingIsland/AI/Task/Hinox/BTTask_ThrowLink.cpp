@@ -20,9 +20,13 @@ EBTNodeResult::Type UBTTask_ThrowLink::ExecuteTask(UBehaviorTreeComponent& Owner
 	BehaviorTreeComponent = &OwnerComp;
 	BlackboardComponent = OwnerComp.GetBlackboardComponent();
 
+	BlackboardComponent->SetValueAsBool(TEXT("CatchTried"), false);
+
 	AMonster* Monster = Cast<AMonster>(AIOwner->GetPawn());
 
 	Monster->PlayMontage(MONSTER_MONTAGE::THROW);
+
+
 
 	return EBTNodeResult::InProgress;
 }

@@ -57,4 +57,9 @@ public:
 	UFUNCTION()
 	bool GetToolEquipStatus(uint8 InBit) const;
 
+protected:
+	bool bIsCatched = false;
+public:
+	void SetIsCatched(bool _bIsCatched) { bIsCatched = _bIsCatched; }
+	bool GetIsCatched() const { return bIsCatched; }
 };

@@ -155,4 +155,8 @@ public:
 
 public:
 	void SetCollisionProfileName(FName CollisionProfile);
+
+public:
+	FVector GetSocketLocation(FName SocketName);
+
 };

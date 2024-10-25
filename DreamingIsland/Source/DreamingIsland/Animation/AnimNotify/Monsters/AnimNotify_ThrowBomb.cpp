@@ -8,6 +8,8 @@
 #include "Actors/Monster.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/Character.h"
+#include "Actors/Monsters/Hinox.h"
+#include "Components/HinoxStatusComponent.h"
 
 UAnimNotify_ThrowBomb::UAnimNotify_ThrowBomb()
 {
@@ -20,7 +22,14 @@ void UAnimNotify_ThrowBomb::Notify(USkeletalMeshComponent* MeshComp, UAnimSequen
 	if (GIsEditor && MeshComp->GetWorld() != GWorld) { return; } 
 #endif
 
-	AMonster* Monster = Cast<AMonster>(MeshComp->GetOwner());
+	AHinox* Monster = Cast<AHinox>(MeshComp->GetOwner());
+	UHinoxStatusComponent* HinoxStatusComponent = Cast<UHinoxStatusComponent>(Monster->GetStatusComponent());
+	if (HinoxStatusComponent->GetIsCatching())
+	{
+		return;
+	}
+
+
 
 	const FVector MonsterForwardVector = Monster->GetActorForwardVector();
 	FVector MonsterShootDirection = MonsterForwardVector;

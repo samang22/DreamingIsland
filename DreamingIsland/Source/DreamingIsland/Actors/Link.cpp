@@ -12,6 +12,7 @@
 #include "Actors/Projectile/ProjectileTableRow.h"
 #include "Components/SphereComponent.h"
 #include "Misc/Utils.h"
+#include "Actors/Monsters/Hinox.h"
 
 
 #define PROBE_SIZE					5.0
@@ -88,7 +89,7 @@ void ALink::OnConstruction(const FTransform& Transform)
 void ALink::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	LinkCatchedSequence(DeltaTime);
 }
 
 // Called to bind functionality to input
@@ -118,4 +119,39 @@ void ALink::SetSpeedRun()
 const ULinkStatusComponent* ALink::GetStatusComponent() const
 {
 	return dynamic_cast<ULinkStatusComponent*>(StatusComponent);
+}
+
+void ALink::StopMovement()
+{
+	UCharacterMovementComponent* Movement = GetCharacterMovement();
+	Movement->MaxWalkSpeed = 0.f;
+}
+
+void ALink::ResumeMovement()
+{
+	UCharacterMovementComponent* Movement = GetCharacterMovement();
+	Movement->MaxWalkSpeed = LINK_WALK_SPEED;
+}
+
+void ALink::LinkCatchedSequence(float DeltaTime)
+{
+	if (bIsCatched)
+	{
+		if (CatchingLinkActor)
+		{
+			AHinox* Hinox = Cast<AHinox>(CatchingLinkActor);
+			if (Hinox)
+			{
+				SetActorLocation(Hinox->GetSocketLocation(Monster_SocketName::Weapon));
+			}
+			else
+			{
+				// To prevent link stuck in the ground;
+				FVector OffsetVector = CatchingLinkActor->GetActorLocation();
+				OffsetVector.Z += 20.f;
+				SetActorLocation(OffsetVector);
+			}
+
+		}
+	}
 }
