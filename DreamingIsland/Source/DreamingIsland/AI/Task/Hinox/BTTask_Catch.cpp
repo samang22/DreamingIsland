@@ -7,6 +7,7 @@
 #include "GameFramework/Character.h"
 #include "Actors/Monster.h"
 #include "Components/MonsterStatusComponent.h"
+#include "Components/HinoxStatusComponent.h"
 
 UBTTask_Catch::UBTTask_Catch()
 {
@@ -23,13 +24,23 @@ EBTNodeResult::Type UBTTask_Catch::ExecuteTask(UBehaviorTreeComponent& OwnerComp
 
 	UE_LOG(LogTemp, Warning, TEXT("InCatch"));
 
-	BlackboardComponent->SetValueAsBool(TEXT("HinoxRun"), false);
-
 	AMonster* Monster = Cast<AMonster>(AIOwner->GetPawn());
+
+	UHinoxStatusComponent* HinoxStatusComponent = Cast<UHinoxStatusComponent>(Monster->GetStatusComponent());
+	if (!HinoxStatusComponent)
+	{
+		return EBTNodeResult::Failed;
+	}
+	const bool bIsHinoxRun = HinoxStatusComponent->GetIsRun();
+	if (!bIsHinoxRun)
+	{
+		return EBTNodeResult::Failed;
+	}
+
+	HinoxStatusComponent->SetIsRun(false);
 
 	if (!Monster->GetStatusComponent()->GetAnimStatus(MONSTER_BIT_RUSH))
 	{
-		BlackboardComponent->SetValueAsBool(TEXT("CatchTried"), false);
 		return EBTNodeResult::Failed;
 	}
 
@@ -50,21 +61,20 @@ EBTNodeResult::Type UBTTask_Catch::ExecuteTask(UBehaviorTreeComponent& OwnerComp
 
 	float Distance = FVector::Dist2D(Character->GetActorLocation(), Monster->GetActorLocation());
 
-	if (Distance < HINOX_CATCH_LENGTH)
-	{
-		if (!Monster->IsPlayingMontage(MONSTER_MONTAGE::DAMAGE))
-		{
-			Monster->PlayMontage(MONSTER_MONTAGE::ATTACK);
-			BlackboardComponent->SetValueAsBool(TEXT("CatchTried"), true);
 
-			return EBTNodeResult::InProgress;
-		}
-		else
-		{
-			BlackboardComponent->SetValueAsBool(TEXT("CatchTried"), false);
-			return EBTNodeResult::Failed;
-		}
+	if (!Monster->IsPlayingMontage(MONSTER_MONTAGE::DAMAGE))
+	{
+		Monster->PlayMontage(MONSTER_MONTAGE::ATTACK);
+		BlackboardComponent->SetValueAsBool(TEXT("CatchTried"), true);
+
+		return EBTNodeResult::InProgress;
 	}
+	else
+	{
+		BlackboardComponent->SetValueAsBool(TEXT("CatchTried"), false);
+		return EBTNodeResult::Failed;
+	}
+	
 	return EBTNodeResult::Failed;
 }
 

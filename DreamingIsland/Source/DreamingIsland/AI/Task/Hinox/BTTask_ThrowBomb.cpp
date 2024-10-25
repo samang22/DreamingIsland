@@ -21,13 +21,21 @@ EBTNodeResult::Type UBTTask_ThrowBomb::ExecuteTask(UBehaviorTreeComponent& Owner
 	BehaviorTreeComponent = &OwnerComp;
 	BlackboardComponent = OwnerComp.GetBlackboardComponent();
 
-	if (BlackboardComponent->GetValueAsBool(TEXT("HinoxRun")))
+	AHinox* Monster = Cast<AHinox>(AIOwner->GetPawn());
+	UHinoxStatusComponent* HinoxStatusComponent = Cast<UHinoxStatusComponent>(Monster->GetStatusComponent());
+	if (!HinoxStatusComponent)
 	{
 		return EBTNodeResult::Failed;
 	}
 
+	const bool bIsHinoxRun = HinoxStatusComponent->GetIsRun();
+	if (bIsHinoxRun)
+	{
+		return EBTNodeResult::Failed;
+	}
 
-	AHinox* Monster = Cast<AHinox>(AIOwner->GetPawn());
+	UE_LOG(LogTemp, Warning, TEXT("InThrowBomb"));
+
 	ACharacter* Character = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
 
 
@@ -35,8 +43,6 @@ EBTNodeResult::Type UBTTask_ThrowBomb::ExecuteTask(UBehaviorTreeComponent& Owner
 	{
 		return EBTNodeResult::Failed;
 	}
-
-	UHinoxStatusComponent* HinoxStatusComponent = Cast<UHinoxStatusComponent>(Monster->GetStatusComponent());
 
 	bool bCanThrowBomb = false;
 	if (HinoxStatusComponent)

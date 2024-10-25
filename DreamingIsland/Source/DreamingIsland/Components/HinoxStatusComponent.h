@@ -21,5 +21,8 @@ public:
 
 public:
 	bool ThrowBomb();
-
+	void SetIsRun(bool _bIsRun) { bIsRun = _bIsRun; }
+	bool GetIsRun() const { return bIsRun; };
+protected:
+	bool bIsRun = false;
 };
