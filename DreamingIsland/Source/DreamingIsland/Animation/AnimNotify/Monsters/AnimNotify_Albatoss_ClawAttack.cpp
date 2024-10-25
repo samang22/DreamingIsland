@@ -28,7 +28,7 @@ void UAnimNotify_Albatoss_ClawAttack::Notify(USkeletalMeshComponent* MeshComp, U
 		FTransform::Identity, Monster, Monster, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 
 	FTransform NewTransform;
-	Projectile->SetData(ProjectileName::Albatoss_ClawAttack, CollisionProfileName::Monster_Projectile, COLLISION_CHANNEL_MONSTERPROJECTILE);
+	Projectile->SetData(ProjectileName::Albatoss_ClawAttack, CollisionProfileName::MonsterProjectile, COLLISION_CHANNEL_MONSTERPROJECTILE);
 	NewTransform.SetLocation(Monster->GetActorLocation() + ALBATOSS_CLAWATTACK_LENGTH * MonsterForwardVector);
 	NewTransform.SetRotation(FRotator::ZeroRotator.Quaternion());
 	Projectile->FinishSpawning(NewTransform);

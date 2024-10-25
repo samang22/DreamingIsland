@@ -30,7 +30,7 @@ void UAnimNotify_Moblin_ThrowSpear::Notify(USkeletalMeshComponent* MeshComp, UAn
 		FTransform::Identity, Monster, Monster, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 
 	FTransform NewTransform;
-	Projectile->SetData(ProjectileName::Moblin_SpearAttack, CollisionProfileName::Monster_Projectile, COLLISION_CHANNEL_MONSTERPROJECTILE);
+	Projectile->SetData(ProjectileName::Moblin_SpearAttack, CollisionProfileName::MonsterProjectile, COLLISION_CHANNEL_MONSTERPROJECTILE);
 	NewTransform.SetLocation(WeaponLocation);
 	NewTransform.SetRotation(MonsterForwardVector.Rotation().Quaternion());
 	Projectile->FinishSpawning(NewTransform);

@@ -10,6 +10,7 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/SphereComponent.h"
 #include "Actors/Monster.h"
+#include "Actors/Monsters/Bomber.h"
 
 // Sets default values
 AProjectile::AProjectile()
@@ -25,14 +26,11 @@ AProjectile::AProjectile()
 	ProjectileMovementComponent->ProjectileGravityScale = 0.0;
 	InitialLifeSpan = 5.f;
 
-	//StaticMeshComponent->SetCollisionProfileName(CollisionProfileName::Link_Projectile);
-
 	CollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("CollisionComponent"));
 	CollisionComponent->SetCanEverAffectNavigation(false);
-	USphereComponent* SphereComponent = Cast<USphereComponent>(CollisionComponent);
 	RootComponent = CollisionComponent;
 	CollisionComponent->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::OnBeginOverlap);
-
+	CollisionComponent->OnComponentHit.AddDynamic(this, &ThisClass::OnHit);
 	StaticMeshComponent->AttachToComponent(CollisionComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
 
@@ -61,8 +59,11 @@ void AProjectile::SetData(const FName& ProjectileName, FName ProfileName, EColli
 	}
 
 
+
+
+
 	CollisionComponent->SetCollisionProfileName(ProfileName);
-	CollisionComponent->RegisterComponent();
+	CollisionComponent->SetCollisionObjectType(eCollisionChannel);
 
 	ProjectileMovementComponent->MaxSpeed = ProjectileTableRow->MaxSpeed;
 	ProjectileMovementComponent->InitialSpeed = ProjectileTableRow->InitialSpeed;
@@ -72,7 +73,6 @@ void AProjectile::SetData(const FName& ProjectileName, FName ProfileName, EColli
 	{
 		SphereCom->SetSphereRadius(ProjectileTableRow->CollisionSphereRadius);
 	}
-
 }
 
 // Called when the game starts or when spawned
@@ -88,34 +88,13 @@ void AProjectile::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 	FVector Location = GetActorLocation();
 	if (!IsValid(this)) { return; }
 
-
-	//FTransform NewTransform;
-	//NewTransform.SetLocation(SweepResult.ImpactPoint);
-	//FRotator Rotation = UKismetMathLibrary::Conv_VectorToRotator(SweepResult.ImpactNormal);
-	//NewTransform.SetRotation(Rotation.Quaternion());
-
 	// @TODO : Generate Effects
-
-	//if (ProjectileTableRow->bUseMonster)
-	//{
-	//	UWorld* World = GetWorld();
-
-	//	AMonster* Monster = World->SpawnActorDeferred<AMonster>(AMonster::StaticClass(),
-	//		FTransform::Identity, nullptr, nullptr, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
-
-	//	FTransform NewTransform;
-	//	Monster->SetData(ProjectileTableRow->MonsterTableRowHandle);
-	//	NewTransform.SetLocation(GetActorLocation());
-	//	NewTransform.SetRotation(FRotator::ZeroRotator.Quaternion());
-	//	Monster->FinishSpawning(NewTransform);
-	//}
-
 
 	Destroy();
 	UGameplayStatics::ApplyDamage(OtherActor, 1.f, OtherActor->GetInstigator()->GetController(), this, nullptr);
 }
 
-void AProjectile::OnBeginBlock(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	if (ProjectileTableRow->bUseMonster)
 	{
@@ -123,7 +102,7 @@ void AProjectile::OnBeginBlock(UPrimitiveComponent* OverlappedComponent, AActor*
 		{
 			UWorld* World = GetWorld();
 
-			AMonster* Monster = World->SpawnActorDeferred<AMonster>(AMonster::StaticClass(),
+			ABomber* Monster = World->SpawnActorDeferred<ABomber>(ABomber::StaticClass(),
 				FTransform::Identity, nullptr, nullptr, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 
 			FTransform NewTransform;
@@ -135,7 +114,6 @@ void AProjectile::OnBeginBlock(UPrimitiveComponent* OverlappedComponent, AActor*
 	}
 	Destroy();
 }
-
 // Called every frame
 void AProjectile::Tick(float DeltaTime)
 {

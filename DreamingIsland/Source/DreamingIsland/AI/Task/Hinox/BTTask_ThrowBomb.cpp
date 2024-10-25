@@ -46,7 +46,6 @@ EBTNodeResult::Type UBTTask_ThrowBomb::ExecuteTask(UBehaviorTreeComponent& Owner
 
 	if (!bCanThrowBomb)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("InThrowBomb Failed CoolTime"));
 		return EBTNodeResult::Failed;
 	}
 
@@ -55,11 +54,8 @@ EBTNodeResult::Type UBTTask_ThrowBomb::ExecuteTask(UBehaviorTreeComponent& Owner
 
 	if (Dist > HINOX_THROW_BOMB_MIN_LENGTH)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("InThrowBomb Failed : %f"), Dist);
-
 		return EBTNodeResult::Failed;
 	}
-	UE_LOG(LogTemp, Warning, TEXT("InThrowBomb Succeeded %f"), Dist);
 
 	if (!Monster->GetIsWeaponEquiped())
 	{
