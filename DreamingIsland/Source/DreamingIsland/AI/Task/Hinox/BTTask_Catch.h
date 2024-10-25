@@ -6,9 +6,9 @@
 #include "AI/Task/BTTask_Base.h"
 #include "BTTask_Catch.generated.h"
 
-/**
- * 
- */
+
+#define HINOX_CATCH_LENGTH 50.f
+
 UCLASS()
 class DREAMINGISLAND_API UBTTask_Catch : public UBTTask_Base
 {

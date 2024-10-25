@@ -22,14 +22,27 @@ EBTNodeResult::Type UBTTask_Catch::ExecuteTask(UBehaviorTreeComponent& OwnerComp
 	BlackboardComponent = OwnerComp.GetBlackboardComponent();
 
 	AMonster* Monster = Cast<AMonster>(AIOwner->GetPawn());
+
+	if (!Monster->GetStatusComponent()->GetAnimStatus(MONSTER_BIT_RUSH))
+	{
+		BlackboardComponent->SetValueAsBool(TEXT("CatchTried"), false);
+		return EBTNodeResult::Failed;
+	}
+
 	ACharacter* Character = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
 
 	if (!Character || !Monster)
 	{
+		BlackboardComponent->SetValueAsBool(TEXT("CatchTried"), false);
 		return EBTNodeResult::Failed;
 	}
 
 	Monster->GetStatusComponent()->SetOffAnimationStatus(MONSTER_BIT_RUSH);
+
+
+
+
+
 
 	float Distance = FVector::Dist2D(Character->GetActorLocation(), Monster->GetActorLocation());
 
@@ -44,6 +57,7 @@ EBTNodeResult::Type UBTTask_Catch::ExecuteTask(UBehaviorTreeComponent& OwnerComp
 		}
 		else
 		{
+			BlackboardComponent->SetValueAsBool(TEXT("CatchTried"), false);
 			return EBTNodeResult::Failed;
 		}
 	}

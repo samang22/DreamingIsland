@@ -23,6 +23,7 @@ EBTNodeResult::Type UBTTask_TurnToLink::ExecuteTask(UBehaviorTreeComponent& Owne
 	
 	if (!Character || !Monster)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("TurnToLink_Failed"));
 		return EBTNodeResult::Failed;
 	}
 
@@ -31,11 +32,15 @@ EBTNodeResult::Type UBTTask_TurnToLink::ExecuteTask(UBehaviorTreeComponent& Owne
 	Dir.Normalize();
 	GoalDir = Dir;
 
+	UE_LOG(LogTemp, Warning, TEXT("TurnToLink_Success"));
+
 	return EBTNodeResult::InProgress;
 }
 
 void UBTTask_TurnToLink::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
+	UE_LOG(LogTemp, Warning, TEXT("TurnToLink_Tick"));
+
 	AMonster* Monster = Cast<AMonster>(AIOwner->GetPawn());
 	const FVector MonsterForwardVector = Monster->GetActorForwardVector();
 	if (IsNearlyEqualVector(GoalDir, MonsterForwardVector))
@@ -43,7 +48,8 @@ void UBTTask_TurnToLink::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Node
 		FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
 	}
 
-	const float DeltaSpeed = FMath::Clamp(DeltaSeconds * TURN_SPEED, 0.f, 1.f);
+	//const float DeltaSpeed = FMath::Clamp(DeltaSeconds * TURN_SPEED, 0.f, 1.f);
+	const float DeltaSpeed = DeltaSeconds * TURN_SPEED;
 	FVector NewForward;
 	NewForward = FMath::Lerp(MonsterForwardVector, GoalDir, DeltaSpeed);
 	Monster->SetActorRotation(NewForward.Rotation().Quaternion());

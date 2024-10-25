@@ -17,7 +17,4 @@ public:
 	AHinox(const FObjectInitializer& ObjectInitializer);
 protected:
 	virtual void BeginPlay() override;
-
-public:
-	void SetIsRun(bool bFlag);
 };

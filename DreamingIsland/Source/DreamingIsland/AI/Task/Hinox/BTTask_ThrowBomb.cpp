@@ -5,7 +5,8 @@
 #include "Animation/MonsterAnimInstance.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/Character.h"
-#include "Actors/Monster.h"
+#include "Actors/Monsters/Hinox.h"
+#include "Components/HinoxStatusComponent.h"
 
 UBTTask_ThrowBomb::UBTTask_ThrowBomb()
 {
@@ -20,7 +21,7 @@ EBTNodeResult::Type UBTTask_ThrowBomb::ExecuteTask(UBehaviorTreeComponent& Owner
 	BehaviorTreeComponent = &OwnerComp;
 	BlackboardComponent = OwnerComp.GetBlackboardComponent();
 
-	AMonster* Monster = Cast<AMonster>(AIOwner->GetPawn());
+	AHinox* Monster = Cast<AHinox>(AIOwner->GetPawn());
 	ACharacter* Character = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
 
 	if (!Character || !Monster)
@@ -28,16 +29,30 @@ EBTNodeResult::Type UBTTask_ThrowBomb::ExecuteTask(UBehaviorTreeComponent& Owner
 		return EBTNodeResult::Failed;
 	}
 
+	UHinoxStatusComponent* HinoxStatusComponent = Cast<UHinoxStatusComponent>(Monster->GetStatusComponent());
+
+	bool bCanThrowBomb = false;
+	if (HinoxStatusComponent)
+	{
+		bCanThrowBomb = HinoxStatusComponent->ThrowBomb();
+	}
+
+	if (!bCanThrowBomb)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("InThrowBomb Failed CoolTime"));
+		return EBTNodeResult::Failed;
+	}
+
 	const float Dist = FVector::Dist(Monster->GetActorLocation(), Character->GetActorLocation());
 
-	if (Dist < HINOX_THROW_BOMB_MIN_LENGTH
-		|| Dist > HINOX_THROW_BOMB_MAX_LENGTH)
+
+	if (Dist > HINOX_THROW_BOMB_MIN_LENGTH)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Failed"));
+		UE_LOG(LogTemp, Warning, TEXT("InThrowBomb Failed : %f"), Dist);
 
 		return EBTNodeResult::Failed;
 	}
-	UE_LOG(LogTemp, Warning, TEXT("Succeeded"));
+	UE_LOG(LogTemp, Warning, TEXT("InThrowBomb Succeeded %f"), Dist);
 
 	if (!Monster->GetIsWeaponEquiped())
 	{

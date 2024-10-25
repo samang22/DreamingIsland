@@ -21,7 +21,7 @@ EBTNodeResult::Type UBTTask_CatchNo::ExecuteTask(UBehaviorTreeComponent& OwnerCo
 	BlackboardComponent = OwnerComp.GetBlackboardComponent();
 
 	AMonster* Monster = Cast<AMonster>(AIOwner->GetPawn());
-	BlackboardComponent->SetValueAsBool(TEXT("CatchTried"), true);
+	BlackboardComponent->SetValueAsBool(TEXT("CatchTried"), false);
 
 	if (!Monster->IsPlayingMontage(MONSTER_MONTAGE::DAMAGE))
 	{

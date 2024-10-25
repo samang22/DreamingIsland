@@ -2,10 +2,11 @@
 
 
 #include "Actors/Monsters/Hinox.h"
-
+#include "Components/HinoxStatusComponent.h"
 AHinox::AHinox(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
+	StatusComponent = CreateDefaultSubobject<UHinoxStatusComponent>(TEXT("HinoxStatusComponent"));
 }
 
 void AHinox::BeginPlay()
@@ -13,8 +14,4 @@ void AHinox::BeginPlay()
 	Super::BeginPlay();
 	RenderOffWeapon();
 	SetWeaponUnEquiped();
-}
-
-void AHinox::SetIsRun(bool bFlag)
-{
 }
