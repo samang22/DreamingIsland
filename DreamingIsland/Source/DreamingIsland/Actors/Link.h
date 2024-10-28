@@ -7,6 +7,8 @@
 #include "Link.generated.h"
 
 #define COLLISION_SPHERE_RADIUS 24.f
+#define LINK_WALK_SPEED				500.f
+#define LINK_RUN_SPEED				1000.f
 
 class UStatusComponent;
 UCLASS()

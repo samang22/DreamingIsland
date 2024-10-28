@@ -17,8 +17,6 @@
 
 #define PROBE_SIZE					5.0
 
-#define LINK_WALK_SPEED				100.f
-#define LINK_RUN_SPEED				300.f
 
 // Sets default values
 ALink::ALink(const FObjectInitializer& ObjectInitializer)
