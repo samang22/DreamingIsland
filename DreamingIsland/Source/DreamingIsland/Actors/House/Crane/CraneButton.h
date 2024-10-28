@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "CraneButton.generated.h"
 
+class UAnimMontage;
 UCLASS()
 class DREAMINGISLAND_API ACraneButton : public AActor
 {
@@ -22,5 +23,13 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+protected:
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UShapeComponent> CollisionComponent;
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USkeletalMeshComponent> SkeletalMeshComponent;
 
+public:
+	void PlayMontage_ButtonAOn();
+	void PlayMontage_ButtonXOn();
 };
