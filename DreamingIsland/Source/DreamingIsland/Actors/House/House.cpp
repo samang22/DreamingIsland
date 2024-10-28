@@ -8,11 +8,13 @@
 
 
 // Sets default values
-AHouse::AHouse()
+AHouse::AHouse(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
+	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
+	RootComponent = StaticMeshComponent;
 }
 
 void AHouse::PostInitializeComponents()
@@ -24,6 +26,7 @@ void AHouse::PostInitializeComponents()
 void AHouse::BeginPlay()
 {
 	Super::BeginPlay();
+	SetData(DataTableRowHandle);
 }
 
 void AHouse::OnConstruction(const FTransform& Transform)
@@ -37,7 +40,6 @@ void AHouse::OnConstruction(const FTransform& Transform)
 void AHouse::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 void AHouse::SetData(const FDataTableRowHandle& InDataTableRowHandle)
@@ -49,7 +51,15 @@ void AHouse::SetData(const FDataTableRowHandle& InDataTableRowHandle)
 	HouseData = Data;
 
 	StaticMeshComponent->SetStaticMesh(HouseData->StaticMesh);
-	StaticMeshComponent->SetRelativeTransform(HouseData->MeshTransform);
+	const FVector Location = HouseData->MeshTransform.GetLocation();
+	const FVector Scale = HouseData->MeshTransform.GetScale3D();
+	StaticMeshComponent->SetWorldLocation(Location);
+	//StaticMeshComponent->SetWorldScale3D(Scale);
+
+	SetActorScale3D(Scale);
+
+
+	StaticMeshComponent->SetWorldRotation(HouseData->MeshTransform.GetRotation());
 }
 
 void AHouse::PostDuplicate(EDuplicateMode::Type DuplicateMode)

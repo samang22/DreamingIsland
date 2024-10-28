@@ -16,7 +16,7 @@ class DREAMINGISLAND_API AHouse : public AActor
 	
 public:	
 	// Sets default values for this actor's properties
-	AHouse();
+	AHouse(const FObjectInitializer& ObjectInitializer);
 
 public:	
 	// Called every frame

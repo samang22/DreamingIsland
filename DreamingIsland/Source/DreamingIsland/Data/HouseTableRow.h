@@ -15,9 +15,10 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Mesh")
 	UStaticMesh* StaticMesh = nullptr;
 
-	UPROPERTY(EditAnywhere, Category = "Light")
+	UPROPERTY(EditAnywhere, Category = "Mesh")
 	FTransform MeshTransform = FTransform::Identity;
 
+public:
 	UPROPERTY(EditAnywhere, Category = "Light")
 	FTransform DirectionalLightTransform = FTransform::Identity;
 };
