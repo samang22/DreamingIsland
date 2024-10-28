@@ -8,7 +8,7 @@
  * 
  */
 USTRUCT()
-struct DREAMINGISLAND_API FHouseTableRow
+struct DREAMINGISLAND_API FHouseTableRow : public FTableRowBase
 {
 	GENERATED_BODY()
 public:
