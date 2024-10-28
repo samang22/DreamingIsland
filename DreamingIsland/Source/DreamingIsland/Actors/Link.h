@@ -40,14 +40,14 @@ protected:
 	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
 protected:
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 	TObjectPtr<class USoftWheelSpringArmComponent> SpringArm;
 
 	UPROPERTY(VisibleAnywhere)
 	UStatusComponent* StatusComponent;
 
 	/** Please add a variable description */
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 	TObjectPtr<class UCameraComponent> Camera;
 
 

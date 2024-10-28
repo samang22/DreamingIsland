@@ -44,6 +44,7 @@ namespace CollisionProfileName
 	static inline FName MonsterProjectile = TEXT("MonsterProjectile");
 	static inline FName MonsterBodyProjectile = TEXT("MonsterBodyProjectile");
 	static inline FName BombProjectile = TEXT("BombProjectile");
+	static inline FName MapMesh = TEXT("MapMesh");
 }
 
 namespace ProjectileName

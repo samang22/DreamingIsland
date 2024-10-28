@@ -32,8 +32,8 @@ void AHouse::BeginPlay()
 void AHouse::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
-	SetData(DataTableRowHandle);
 	SetActorTransform(Transform);
+	SetData(DataTableRowHandle);
 }
 
 // Called every frame
@@ -51,15 +51,7 @@ void AHouse::SetData(const FDataTableRowHandle& InDataTableRowHandle)
 	HouseData = Data;
 
 	StaticMeshComponent->SetStaticMesh(HouseData->StaticMesh);
-	const FVector Location = HouseData->MeshTransform.GetLocation();
-	const FVector Scale = HouseData->MeshTransform.GetScale3D();
-	StaticMeshComponent->SetWorldLocation(Location);
-	//StaticMeshComponent->SetWorldScale3D(Scale);
-
-	SetActorScale3D(Scale);
-
-
-	StaticMeshComponent->SetWorldRotation(HouseData->MeshTransform.GetRotation());
+	SetActorTransform(HouseData->MeshTransform);
 }
 
 void AHouse::PostDuplicate(EDuplicateMode::Type DuplicateMode)
