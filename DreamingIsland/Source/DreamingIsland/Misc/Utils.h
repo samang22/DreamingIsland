@@ -36,6 +36,11 @@ namespace Monster_SocketName
 	static inline FName Weapon = TEXT("Weapon");
 }
 
+namespace NPC_SocketName
+{
+	static inline FName Light = TEXT("Light");
+}
+
 namespace CollisionProfileName
 {
 	static inline FName Link = TEXT("Link");
@@ -86,3 +91,7 @@ namespace MonsterName_FString
 	static inline FString Octorok = TEXT("Octorok");
 }
 
+inline bool IsNearlyEqualVector_My(const FVector& A, const FVector& B, float Tolerance = KINDA_SMALL_NUMBER)
+{
+	return FVector::DistSquared(A, B) < FMath::Square(Tolerance);
+}

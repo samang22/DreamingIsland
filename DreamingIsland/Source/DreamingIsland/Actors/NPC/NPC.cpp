@@ -175,3 +175,8 @@ void ANPC::PlayMontage_Action02()
 	}
 }
 
+FVector ANPC::GetSocketLocation(FName SocketName)
+{
+	return SkeletalMeshComponent->GetSocketLocation(SocketName);
+}
+

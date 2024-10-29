@@ -81,4 +81,6 @@ public:
 	void PlayMontage_Action01();
 	void PlayMontage_Action02();
 
+public:
+	FVector GetSocketLocation(FName SocketName);
 };

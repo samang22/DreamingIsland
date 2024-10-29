@@ -5,11 +5,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/Character.h"
 #include "Actors/Monster.h"
-
-bool IsNearlyEqualVector(const FVector& A, const FVector& B, float Tolerance = KINDA_SMALL_NUMBER) 
-{
-	return FVector::DistSquared(A, B) < FMath::Square(Tolerance);
-}
+#include "Misc/Utils.h"
 
 EBTNodeResult::Type UBTTask_TurnToLink::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
@@ -43,7 +39,7 @@ void UBTTask_TurnToLink::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* Node
 
 	AMonster* Monster = Cast<AMonster>(AIOwner->GetPawn());
 	const FVector MonsterForwardVector = Monster->GetActorForwardVector();
-	if (IsNearlyEqualVector(GoalDir, MonsterForwardVector))
+	if (IsNearlyEqualVector_My(GoalDir, MonsterForwardVector))
 	{
 		FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
 	}
