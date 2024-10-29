@@ -32,8 +32,8 @@ public:
 
 protected:
 	void Tick_Watching(float DeltaTime);
-
-
+	void Tick_Rotation(float DeltaTime);
+	void Tick_LineTrace(float DeltaTime);
 protected:
 	USpotLightComponent* SpotLightComponent;
 

@@ -28,7 +28,7 @@ void UAnimNotify_Octorok_RockAttack::Notify(USkeletalMeshComponent* MeshComp, UA
 		FTransform::Identity, Monster, Monster, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 
 	FTransform NewTransform;
-	Projectile->SetData(ProjectileName::Octorok_RockAttack, CollisionProfileName::MonsterProjectile, COLLISION_CHANNEL_MONSTERPROJECTILE);
+	Projectile->SetData(ProjectileName::Octorok_RockAttack, CollisionProfileName::MonsterProjectile, TRACE_CHANNEL_MONSTERPROJECTILE);
 	NewTransform.SetLocation(Monster->GetActorLocation() + OCTOROK_ROCKATTACK_LENGTH * MonsterForwardVector);
 	NewTransform.SetRotation(Monster->GetActorRotation().Quaternion());
 	Projectile->FinishSpawning(NewTransform);

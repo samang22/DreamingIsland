@@ -81,6 +81,7 @@ void AInvisibleCollider::BeginPlay()
 {
 	Super::BeginPlay();
 	SetData(DataTableRowHandle);
+	CollisionComponent->SetCollisionResponseToChannel(TRACE_CHANNEL_INVISIBLECOLLIDER, ECR_Block);
 }
 
 void AInvisibleCollider::OnConstruction(const FTransform& Transform)

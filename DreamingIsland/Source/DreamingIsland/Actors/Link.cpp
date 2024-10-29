@@ -75,7 +75,7 @@ void ALink::BeginPlay()
 
 	tempCapsuleComponent->SetCollisionProfileName(CollisionProfileName::Link);
 	tempCapsuleComponent->bHiddenInGame = false;
-	//tempCapsuleComponent->SetGenerateOverlapEvents(true);
+	tempCapsuleComponent->SetCollisionResponseToChannel(TRACE_CHANNEL_LINKCHANNEL, ECR_Block);
 }
 
 void ALink::OnConstruction(const FTransform& Transform)

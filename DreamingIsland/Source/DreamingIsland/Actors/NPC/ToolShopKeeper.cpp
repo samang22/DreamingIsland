@@ -4,13 +4,13 @@
 #include "Actors/NPC/ToolShopKeeper.h"
 #include "Misc/Utils.h"
 #include "Components/SpotLightComponent.h"
-
+#include "Actors/Link.h"
 AToolShopKeeper::AToolShopKeeper(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
 	SpotLightComponent = CreateDefaultSubobject<USpotLightComponent>(TEXT("SpotLightComponent"));
 	SpotLightComponent->SetupAttachment(RootComponent);
-	SpotLightComponent->SetInnerConeAngle(TSK_SPOTLIGHT_ANGLE);
+	SpotLightComponent->SetInnerConeAngle(0.f);
 	SpotLightComponent->SetOuterConeAngle(TSK_SPOTLIGHT_ANGLE);
 }
 
@@ -21,6 +21,8 @@ void AToolShopKeeper::Tick(float DeltaTime)
 	if (bIsWatching)
 	{
 		Tick_Watching(DeltaTime);
+
+
 	}
 }
 
@@ -49,6 +51,12 @@ void AToolShopKeeper::SetIsWatching(const bool _bIsWatching)
 
 void AToolShopKeeper::Tick_Watching(float DeltaTime)
 {
+	Tick_Rotation(DeltaTime);
+	Tick_LineTrace(DeltaTime);
+}
+
+void AToolShopKeeper::Tick_Rotation(float DeltaTime)
+{
 	const FVector TSK_ForwardVector = GetActorForwardVector();
 	const float DeltaSpeed = DeltaTime * TSK_TURN_SPEED;
 
@@ -70,4 +78,40 @@ void AToolShopKeeper::Tick_Watching(float DeltaTime)
 		}
 	}
 	SetActorRotation(NewForward.Rotation().Quaternion());
+}
+
+void AToolShopKeeper::Tick_LineTrace(float DeltaTime)
+{
+	const FVector Start = GetActorLocation();
+	const FVector ForwardVector = GetActorForwardVector();
+	FVector End = Start + (ForwardVector * 10000.0f); 
+
+	TArray<FHitResult> HitResults;
+	FHitResult HitResult;
+	FCollisionQueryParams CollisionParams;
+
+	GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, TRACE_CHANNEL_LINKCHANNEL, CollisionParams);
+	DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 0.02f);
+
+	static int iCount = 0;
+	if (HitResult.bBlockingHit)
+	{
+		AActor* HitActor = HitResult.GetActor();
+		if (ALink* Link = Cast<ALink>(HitActor))
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Hit: %s %d"), *HitActor->GetName(), iCount++);
+		}
+	}
+
+	//for (const FHitResult& Hit : HitResults)
+	//{
+	//	if (AActor* HitActor = Hit.GetActor())
+	//	{
+	//		UE_LOG(LogTemp, Warning, TEXT("Hit: %s %d"), *HitActor->GetName(), iCount++);
+	//		//if (ALink* Link = Cast<ALink>(HitActor))
+	//		//{
+	//		//	UE_LOG(LogTemp, Warning, TEXT("Hit: %s %d"), *HitActor->GetName(), iCount++);
+	//		//}
+	//	}
+	//}
 }

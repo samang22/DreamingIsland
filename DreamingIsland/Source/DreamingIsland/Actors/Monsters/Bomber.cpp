@@ -5,6 +5,7 @@
 #include "Actors/Projectile/Projectile.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
+#include "Misc/Utils.h"
 
 ABomber::ABomber(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -73,7 +74,7 @@ void ABomber::SpawnProjectileAndDestory()
 		FTransform::Identity, nullptr, nullptr, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 
 	FTransform NewTransform;
-	Projectile->SetData(ProjectileName::Bomber_Bomb, CollisionProfileName::MonsterProjectile, COLLISION_CHANNEL_MONSTERPROJECTILE);
+	Projectile->SetData(ProjectileName::Bomber_Bomb, CollisionProfileName::MonsterProjectile, TRACE_CHANNEL_MONSTERPROJECTILECHANNEL);
 	NewTransform.SetLocation(GetActorLocation());
 	NewTransform.SetRotation(FRotator::ZeroRotator.Quaternion());
 	Projectile->FinishSpawning(NewTransform);

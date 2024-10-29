@@ -30,17 +30,20 @@ ANPC::ANPC(const FObjectInitializer& ObjectInitializer)
 	CollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("CollisionComponent"));
 	CollisionComponent->SetCollisionProfileName(CollisionProfileName::NPC);
 	CollisionComponent->SetCanEverAffectNavigation(false);
+	//CollisionComponent->SetCollisionResponseToChannel(TRACE_CHANNEL_NPCCHANNEL, ECR_Ignore);
 	RootComponent = CollisionComponent;
 
 	SenseLinkCollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("SenseLinkCollisionComponent"));
 	SenseLinkCollisionComponent->SetCollisionProfileName(CollisionProfileName::SenseLink);
 	SenseLinkCollisionComponent->SetCanEverAffectNavigation(false);
 	SenseLinkCollisionComponent->SetupAttachment(RootComponent);
+	//SenseLinkCollisionComponent->SetCollisionResponseToChannel(TRACE_CHANNEL_NPCCHANNEL, ECR_Ignore);
 
 	SkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshComponent"));
 	SkeletalMeshComponent->SetupAttachment(RootComponent);
 	FRotator NewRotator = FRotator(0.0, 0.0, 0.0);
 	SkeletalMeshComponent->SetWorldRotation(NewRotator.Quaternion());
+	SkeletalMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	AIPerceptionComponent = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AIPerceptionComponent"));
 	AISenseConfig_Sight = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("AISenseConfig_Sight"));
