@@ -14,7 +14,7 @@
 #include "Misc/Utils.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
-#include "Actors/AI/NPCAIController.h"
+#include "Actors/AI/NPC/NPCAIController.h"
 #include "Actors/AI/PatrolPath.h"
 #include "GameFramework/Character.h"
 #include "Kismet/GameplayStatics.h"
@@ -35,9 +35,12 @@ ANPC::ANPC(const FObjectInitializer& ObjectInitializer)
 	SenseLinkCollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("SenseLinkCollisionComponent"));
 	SenseLinkCollisionComponent->SetCollisionProfileName(CollisionProfileName::SenseLink);
 	SenseLinkCollisionComponent->SetCanEverAffectNavigation(false);
+	SenseLinkCollisionComponent->SetupAttachment(RootComponent);
 
 	SkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshComponent"));
 	SkeletalMeshComponent->SetupAttachment(RootComponent);
+	FRotator NewRotator = FRotator(0.0, 0.0, 0.0);
+	SkeletalMeshComponent->SetWorldRotation(NewRotator.Quaternion());
 
 	AIPerceptionComponent = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AIPerceptionComponent"));
 	AISenseConfig_Sight = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("AISenseConfig_Sight"));
@@ -80,8 +83,6 @@ void ANPC::SetData(const FDataTableRowHandle& InDataTableRowHandle)
 	SkeletalMeshComponent->SetSkeletalMesh(NPCData->SkeletalMesh);
 	SkeletalMeshComponent->SetAnimClass(NPCData->AnimClass);
 	SkeletalMeshComponent->SetRelativeTransform(NPCData->MeshTransform);
-	FRotator NewRotator = FRotator(0.0, 0.0, 0.0);
-	SkeletalMeshComponent->SetWorldRotation(NewRotator.Quaternion());
 	MovementComponent->MaxSpeed = NPCData->MovementMaxSpeed;
 
 	AIControllerClass = NPCData->AIControllerClass;
@@ -135,8 +136,8 @@ void ANPC::BeginPlay()
 void ANPC::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
-	SetData(DataTableRowHandle);
 	SetActorTransform(Transform);
+	SetData(DataTableRowHandle);
 }
 
 // Called every frame

@@ -21,8 +21,11 @@ EBTNodeResult::Type UBTTask_PathTrace::ExecuteTask(UBehaviorTreeComponent& Owner
 	SplineComponent = Cast<USplineComponent>(BlackboardComponent->GetValueAsObject(TEXT("SplineComponent")));
 	check(SplineComponent);
 
-	SplinePoints = SplineComponent->GetNumberOfSplinePoints();
-	CurrentPatrolIndex = BlackboardComponent->GetValueAsInt(TEXT("PatrolIndex"));
+	if (SplineComponent)
+	{
+		SplinePoints = SplineComponent->GetNumberOfSplinePoints();
+		CurrentPatrolIndex = BlackboardComponent->GetValueAsInt(TEXT("PatrolIndex"));
+	}
 
 	const FVector TargetLocation = SplineComponent->GetLocationAtSplinePoint(CurrentPatrolIndex, ESplineCoordinateSpace::World);
 

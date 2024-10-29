@@ -1,10 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Actors/AI/HinoxAIController.h"
+#include "Actors/AI/Monsters/BomberAIController.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BehaviorTreeComponent.h"
-#include "BehaviorTree/BlackboardComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "BehaviorTree/Decorators/BTDecorator_IsAtLocation.h"
 #include "Components/SplineComponent.h"
@@ -16,19 +15,19 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Data/PawnTableRow.h"
 
-void AHinoxAIController::BeginPlay()
+void ABomberAIController::BeginPlay()
 {
 	Super::BeginPlay();
-	if (!IsValid(PatrolPath))
-	{
-		//checkf(false, TEXT("PatrolPath not valid"));
-		return;
-	}
+	//if (!IsValid(PatrolPath))
+	//{
+	//	//checkf(false, TEXT("PatrolPath not valid"));
+	//	return;
+	//}
 
 	UBehaviorTree* BehaviorTree = nullptr;
 	if (!IsValid(BrainComponent))
 	{
-		BehaviorTree = LoadObject<UBehaviorTree>(nullptr, TEXT("/Script/AIModule.BehaviorTree'/Game/Blueprint/AI/BT_Hinox.BT_Hinox'"));
+		BehaviorTree = LoadObject<UBehaviorTree>(nullptr, TEXT("/Script/AIModule.BehaviorTree'/Game/Blueprint/AI/BT_Bomber.BT_Bomber'"));
 		check(BehaviorTree);
 		RunBehaviorTree(BehaviorTree);
 	}
@@ -44,14 +43,14 @@ void AHinoxAIController::BeginPlay()
 	Blackboard->SetValueAsObject(TEXT("SplineComponent"), PatrolPath);
 }
 
-void AHinoxAIController::OnPossess(APawn* InPawn)
+void ABomberAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 	StatusComponentRef = InPawn->GetComponentByClass<UStatusComponent>();
 	StatusComponentRef->OnHPChanged.AddDynamic(this, &ThisClass::OnDamaged);
 }
 
-void AHinoxAIController::Tick(float DeltaTime)
+void ABomberAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
@@ -71,7 +70,7 @@ void AHinoxAIController::Tick(float DeltaTime)
 	}
 }
 
-void AHinoxAIController::OnDamaged(float CurrentHP, float MaxHP)
+void ABomberAIController::OnDamaged(float CurrentHP, float MaxHP)
 {
 	bDamaged = true;
 	AController* Instigator_ = StatusComponentRef->GetLastInstigator();
@@ -81,12 +80,12 @@ void AHinoxAIController::OnDamaged(float CurrentHP, float MaxHP)
 	UKismetSystemLibrary::K2_SetTimer(this, TEXT("ResetOnDamaged"), 2.f, false);
 }
 
-void AHinoxAIController::ResetOnDamaged()
+void ABomberAIController::ResetOnDamaged()
 {
 	bDamaged = false;
 }
 
-void AHinoxAIController::FindPlayerByPerception()
+void ABomberAIController::FindPlayerByPerception()
 {
 	APawn* OwningPawn = GetPawn();
 	if (UAIPerceptionComponent* AIPerceptionComponent = OwningPawn->GetComponentByClass<UAIPerceptionComponent>())

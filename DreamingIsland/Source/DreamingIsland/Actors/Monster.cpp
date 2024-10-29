@@ -4,7 +4,13 @@
 #include "Monster.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Kismet/GameplayStatics.h"
+#include "Misc/Utils.h"
+#include "Data/PawnTableRow.h"
+#include "GameFramework/Character.h"
 #include "Animation/MonsterAnimInstance.h"
+#include "Perception/AIPerceptionComponent.h"
+#include "Perception/AISenseConfig_Sight.h"
 #include "Components/AdvancedFloatingPawnMovement.h"
 #include "Components/SphereComponent.h"
 #include "Components/BoxComponent.h"
@@ -12,20 +18,14 @@
 #include "Components/WeaponChildActorComponent.h"
 #include "Components/MonsterStatusComponent.h"
 #include "Components/MoblinStatusComponent.h"
-#include "Data/PawnTableRow.h"
-#include "Misc/Utils.h"
-#include "Perception/AIPerceptionComponent.h"
-#include "Perception/AISenseConfig_Sight.h"
 #include "Actors/AI/PatrolPath.h"
-#include "Actors/AI/BasicMonsterAIController.h"
-#include "Actors/AI/RangedMonsterAIController.h"
-#include "Actors/AI/MoblinAIController.h"
-#include "Actors/AI/MoriblinAIController.h"
-#include "Actors/AI/HinoxAIController.h"
-#include "Actors/AI/BomberAIController.h"
+#include "Actors/AI/Monsters/BasicMonsterAIController.h"
+#include "Actors/AI/Monsters/RangedMonsterAIController.h"
+#include "Actors/AI/Monsters/MoblinAIController.h"
+#include "Actors/AI/Monsters/MoriblinAIController.h"
+#include "Actors/AI/Monsters/HinoxAIController.h"
+#include "Actors/AI/Monsters/BomberAIController.h"
 #include "Actors/Weapon/Weapon.h"
-#include "GameFramework/Character.h"
-#include "Kismet/GameplayStatics.h"
 
 UMonsterDataAsset::UMonsterDataAsset()
 	: AnimClass(UMonsterAnimInstance::StaticClass())
@@ -50,6 +50,8 @@ AMonster::AMonster(const FObjectInitializer& ObjectInitializer)
 
 	SkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshComponent"));
 	SkeletalMeshComponent->SetupAttachment(RootComponent);
+	FRotator NewRotator = FRotator(0.0, 0.0, 0.0);
+	SkeletalMeshComponent->SetWorldRotation(NewRotator.Quaternion());
 
 	AIPerceptionComponent = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AIPerceptionComponent"));
 	AISenseConfig_Sight = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("AISenseConfig_Sight"));
@@ -89,8 +91,6 @@ void AMonster::SetData(const FDataTableRowHandle& InDataTableRowHandle)
 	SkeletalMeshComponent->SetSkeletalMesh(MonsterData->SkeletalMesh);
 	SkeletalMeshComponent->SetAnimClass(MonsterData->AnimClass);
 	SkeletalMeshComponent->SetRelativeTransform(MonsterData->MeshTransform);
-	FRotator NewRotator = FRotator(0.0, 0.0, 0.0);
-	SkeletalMeshComponent->SetWorldRotation(NewRotator.Quaternion());
 	MovementComponent->MaxSpeed = MonsterData->MovementMaxSpeed;
 
 	AIControllerClass = MonsterData->AIControllerClass;
@@ -192,14 +192,6 @@ void AMonster::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	TickMovement(DeltaTime);
-
-	//ACharacter* Character = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
-	//if (Character)
-	//{
-	//	float Dist = FVector::Dist(GetActorLocation(), Character->GetActorLocation());
-	//	UE_LOG(LogTemp, Warning, TEXT("%f"), Dist);
-	//}
-
 }
 
 void AMonster::PlayMontage(MONSTER_MONTAGE _InEnum, bool bIsLoop)

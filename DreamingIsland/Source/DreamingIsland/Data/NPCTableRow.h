@@ -42,15 +42,15 @@ public:
 	float CollisionCapsuleHalfHeight = 44.f;
 
 public: // To sense link
-	UPROPERTY(EditAnywhere, Category = "NPC|Collision")
+	UPROPERTY(EditAnywhere, Category = "NPC|SenseLinkCollision")
 	TSubclassOf<UShapeComponent> SenseLinkCollisionClass;
-	UPROPERTY(EditAnywhere, Category = "NPC|Collision")
+	UPROPERTY(EditAnywhere, Category = "NPC|SenseLinkCollision")
 	float SenseLinkCollisionSphereRadius = 32.f;
-	UPROPERTY(EditAnywhere, Category = "NPC|Collision")
+	UPROPERTY(EditAnywhere, Category = "NPC|SenseLinkCollision")
 	FVector SenseLinkCollisionBoxExtent = FVector(32.0, 32.0, 32.0);
-	UPROPERTY(EditAnywhere, Category = "NPC|Collision")
+	UPROPERTY(EditAnywhere, Category = "NPC|SenseLinkCollision")
 	float SenseLinkCollisionCapsuleRadius = 22.f;
-	UPROPERTY(EditAnywhere, Category = "NPC|Collision")
+	UPROPERTY(EditAnywhere, Category = "NPC|SenseLinkCollision")
 	float SenseLinkCollisionCapsuleHalfHeight = 44.f;
 
 
@@ -71,6 +71,6 @@ public: // Animation
 
 
 public: // AI
-	UPROPERTY(EditAnywhere, Category = "Monster|AI")
+	UPROPERTY(EditAnywhere, Category = "NPC|AI")
 	TSubclassOf<AAIController> AIControllerClass;
 };

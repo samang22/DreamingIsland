@@ -1,22 +1,22 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Actors/AI/BasicMonsterAIController.h"
-#include "Actors/Monster.h"
-#include "GameFramework/Character.h"
-#include "Components/StatusComponent.h"
-#include "Components/SplineComponent.h"
+#include "Actors/AI/Monsters/HinoxAIController.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BehaviorTreeComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "BehaviorTree/BlackboardComponent.h"
 #include "BehaviorTree/Decorators/BTDecorator_IsAtLocation.h"
-#include "Kismet/KismetSystemLibrary.h"
-#include "Data/PawnTableRow.h"
+#include "Components/SplineComponent.h"
+#include "Components/StatusComponent.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
+#include "Actors/Monster.h"
+#include "GameFramework/Character.h"
+#include "Kismet/KismetSystemLibrary.h"
+#include "Data/PawnTableRow.h"
 
-
-void ABasicMonsterAIController::BeginPlay()
+void AHinoxAIController::BeginPlay()
 {
 	Super::BeginPlay();
 	if (!IsValid(PatrolPath))
@@ -28,22 +28,30 @@ void ABasicMonsterAIController::BeginPlay()
 	UBehaviorTree* BehaviorTree = nullptr;
 	if (!IsValid(BrainComponent))
 	{
-		BehaviorTree = LoadObject<UBehaviorTree>(nullptr, TEXT("/Script/AIModule.BehaviorTree'/Game/Blueprint/AI/BT_BasicMonster.BT_BasicMonster'"));
+		BehaviorTree = LoadObject<UBehaviorTree>(nullptr, TEXT("/Script/AIModule.BehaviorTree'/Game/Blueprint/AI/BT_Hinox.BT_Hinox'"));
 		check(BehaviorTree);
 		RunBehaviorTree(BehaviorTree);
+	}
+
+
+	AMonster* Monster = Cast<AMonster>(GetPawn());
+	const FPawnTableRow* Data = nullptr;
+	if (Monster)
+	{
+		Data = Monster->GetMonsterData();
 	}
 
 	Blackboard->SetValueAsObject(TEXT("SplineComponent"), PatrolPath);
 }
 
-void ABasicMonsterAIController::OnPossess(APawn* InPawn)
+void AHinoxAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 	StatusComponentRef = InPawn->GetComponentByClass<UStatusComponent>();
 	StatusComponentRef->OnHPChanged.AddDynamic(this, &ThisClass::OnDamaged);
 }
 
-void ABasicMonsterAIController::Tick(float DeltaTime)
+void AHinoxAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
@@ -57,32 +65,28 @@ void ABasicMonsterAIController::Tick(float DeltaTime)
 
 	Blackboard->SetValueAsBool(TEXT("MontagePlaying"), bMontagePlaying);
 
-	if (!bDamaged)
+	if (!bDamaged && !bMontagePlaying)
 	{
 		FindPlayerByPerception();
 	}
-
-
-
-
 }
 
-void ABasicMonsterAIController::OnDamaged(float CurrentHP, float MaxHP)
+void AHinoxAIController::OnDamaged(float CurrentHP, float MaxHP)
 {
 	bDamaged = true;
 	AController* Instigator_ = StatusComponentRef->GetLastInstigator();
 	APawn* InstigatorPawn = Instigator_->GetPawn();
 	check(InstigatorPawn);
 	Blackboard->SetValueAsObject(TEXT("DetectedPlayer"), Cast<UObject>(InstigatorPawn));
-	UKismetSystemLibrary::K2_SetTimer(this, TEXT("ResetOnDamaged"), 10.f, false);
+	UKismetSystemLibrary::K2_SetTimer(this, TEXT("ResetOnDamaged"), 2.f, false);
 }
 
-void ABasicMonsterAIController::ResetOnDamaged()
+void AHinoxAIController::ResetOnDamaged()
 {
 	bDamaged = false;
 }
 
-void ABasicMonsterAIController::FindPlayerByPerception()
+void AHinoxAIController::FindPlayerByPerception()
 {
 	APawn* OwningPawn = GetPawn();
 	if (UAIPerceptionComponent* AIPerceptionComponent = OwningPawn->GetComponentByClass<UAIPerceptionComponent>())
@@ -90,7 +94,7 @@ void ABasicMonsterAIController::FindPlayerByPerception()
 		TArray<AActor*> OutActors;
 		AIPerceptionComponent->GetCurrentlyPerceivedActors(UAISenseConfig_Sight::StaticClass(), OutActors);
 
-		bool bFound = false;    
+		bool bFound = false;
 		for (AActor* It : OutActors)
 		{
 			if (ACharacter* DetectedPlayer = Cast<ACharacter>(It))

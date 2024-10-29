@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Actors/AI/NPCAIController.h"
+#include "Actors/AI/NPC/NPCAIController.h"
 #include "Actors/NPC/NPC.h"
 #include "GameFramework/Character.h"
 #include "Components/StatusComponent.h"
@@ -18,14 +18,6 @@
 void ANPCAIController::BeginPlay()
 {
 	Super::BeginPlay();
-
-	UBehaviorTree* BehaviorTree = nullptr;
-	if (!IsValid(BrainComponent))
-	{
-		BehaviorTree = LoadObject<UBehaviorTree>(nullptr, TEXT("/Script/AIModule.BehaviorTree'/Game/Blueprint/AI/BT_BasicMonster.BT_BasicMonster'"));
-		check(BehaviorTree);
-		RunBehaviorTree(BehaviorTree);
-	}
 
 	if (PatrolPath)
 	{
@@ -49,7 +41,6 @@ void ANPCAIController::Tick(float DeltaTime)
 	// Montage가 Play 중이라면 BT 내부에서 AI 진행을 멈춘다
 	const bool bMontagePlaying = OwningPawn->GetComponentByClass<USkeletalMeshComponent>()->GetAnimInstance()->IsAnyMontagePlaying();
 	Blackboard->SetValueAsBool(TEXT("MontagePlaying"), bMontagePlaying);
-
 }
 
 void ANPCAIController::FindPlayerByPerception()

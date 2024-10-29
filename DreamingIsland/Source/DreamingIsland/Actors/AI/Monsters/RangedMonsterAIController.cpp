@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Actors/AI/BomberAIController.h"
+#include "Actors/AI/Monsters/RangedMonsterAIController.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BehaviorTreeComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
@@ -16,19 +16,19 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Data/PawnTableRow.h"
 
-void ABomberAIController::BeginPlay()
+void ARangedMonsterAIController::BeginPlay()
 {
 	Super::BeginPlay();
-	//if (!IsValid(PatrolPath))
-	//{
-	//	//checkf(false, TEXT("PatrolPath not valid"));
-	//	return;
-	//}
+	if (!IsValid(PatrolPath))
+	{
+		//checkf(false, TEXT("PatrolPath not valid"));
+		return;
+	}
 
 	UBehaviorTree* BehaviorTree = nullptr;
 	if (!IsValid(BrainComponent))
 	{
-		BehaviorTree = LoadObject<UBehaviorTree>(nullptr, TEXT("/Script/AIModule.BehaviorTree'/Game/Blueprint/AI/BT_Bomber.BT_Bomber'"));
+		BehaviorTree = LoadObject<UBehaviorTree>(nullptr, TEXT("/Script/AIModule.BehaviorTree'/Game/Blueprint/AI/BT_RangedMonster.BT_RangedMonster'"));
 		check(BehaviorTree);
 		RunBehaviorTree(BehaviorTree);
 	}
@@ -44,14 +44,14 @@ void ABomberAIController::BeginPlay()
 	Blackboard->SetValueAsObject(TEXT("SplineComponent"), PatrolPath);
 }
 
-void ABomberAIController::OnPossess(APawn* InPawn)
+void ARangedMonsterAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 	StatusComponentRef = InPawn->GetComponentByClass<UStatusComponent>();
 	StatusComponentRef->OnHPChanged.AddDynamic(this, &ThisClass::OnDamaged);
 }
 
-void ABomberAIController::Tick(float DeltaTime)
+void ARangedMonsterAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
@@ -65,13 +65,13 @@ void ABomberAIController::Tick(float DeltaTime)
 
 	Blackboard->SetValueAsBool(TEXT("MontagePlaying"), bMontagePlaying);
 
-	if (!bDamaged && !bMontagePlaying)
+	if (!bDamaged)
 	{
 		FindPlayerByPerception();
 	}
 }
 
-void ABomberAIController::OnDamaged(float CurrentHP, float MaxHP)
+void ARangedMonsterAIController::OnDamaged(float CurrentHP, float MaxHP)
 {
 	bDamaged = true;
 	AController* Instigator_ = StatusComponentRef->GetLastInstigator();
@@ -81,12 +81,12 @@ void ABomberAIController::OnDamaged(float CurrentHP, float MaxHP)
 	UKismetSystemLibrary::K2_SetTimer(this, TEXT("ResetOnDamaged"), 2.f, false);
 }
 
-void ABomberAIController::ResetOnDamaged()
+void ARangedMonsterAIController::ResetOnDamaged()
 {
 	bDamaged = false;
 }
 
-void ABomberAIController::FindPlayerByPerception()
+void ARangedMonsterAIController::FindPlayerByPerception()
 {
 	APawn* OwningPawn = GetPawn();
 	if (UAIPerceptionComponent* AIPerceptionComponent = OwningPawn->GetComponentByClass<UAIPerceptionComponent>())
