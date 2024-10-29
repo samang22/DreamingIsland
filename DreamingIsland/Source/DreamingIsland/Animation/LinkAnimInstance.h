@@ -44,6 +44,8 @@ protected:
 	bool bIsWalk = false;
 	UPROPERTY(BlueprintReadOnly)
 	bool bIsRun = false;
+	UPROPERTY(BlueprintReadOnly)
+	bool bIsCarry = false;
 
 protected:
 	UAnimMontage* AttackMontage;

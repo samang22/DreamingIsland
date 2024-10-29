@@ -49,6 +49,7 @@ void ULinkAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	bIsWait = StatusComponent->GetAnimStatus(LINK_BIT_WAIT);
 	bIsWalk = StatusComponent->GetAnimStatus(LINK_BIT_WALK);
 	bIsRun = StatusComponent->GetAnimStatus(LINK_BIT_RUN);
+	bIsCarry = StatusComponent->GetAnimStatus(LINK_BIT_RUN);
 }
 
 void ULinkAnimInstance::PlayAttackMontage()

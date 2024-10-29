@@ -12,6 +12,9 @@ AToolShopKeeper::AToolShopKeeper(const FObjectInitializer& ObjectInitializer)
 	SpotLightComponent->SetupAttachment(RootComponent);
 	SpotLightComponent->SetInnerConeAngle(0.f);
 	SpotLightComponent->SetOuterConeAngle(TSK_SPOTLIGHT_ANGLE);
+
+	// Default Value is 5000.f
+	SpotLightComponent->Intensity = 8000.f;
 }
 
 void AToolShopKeeper::Tick(float DeltaTime)
@@ -41,6 +44,7 @@ void AToolShopKeeper::BeginPlay()
 
 	SpotLightComponent->SetInnerConeAngle(TSK_SPOTLIGHT_ANGLE);
 	SpotLightComponent->SetOuterConeAngle(TSK_SPOTLIGHT_ANGLE);
+	SpotLightComponent->Intensity = 8000.f;
 }
 
 void AToolShopKeeper::SetIsWatching(const bool _bIsWatching)
@@ -102,16 +106,4 @@ void AToolShopKeeper::Tick_LineTrace(float DeltaTime)
 			UE_LOG(LogTemp, Warning, TEXT("Hit: %s %d"), *HitActor->GetName(), iCount++);
 		}
 	}
-
-	//for (const FHitResult& Hit : HitResults)
-	//{
-	//	if (AActor* HitActor = Hit.GetActor())
-	//	{
-	//		UE_LOG(LogTemp, Warning, TEXT("Hit: %s %d"), *HitActor->GetName(), iCount++);
-	//		//if (ALink* Link = Cast<ALink>(HitActor))
-	//		//{
-	//		//	UE_LOG(LogTemp, Warning, TEXT("Hit: %s %d"), *HitActor->GetName(), iCount++);
-	//		//}
-	//	}
-	//}
 }
