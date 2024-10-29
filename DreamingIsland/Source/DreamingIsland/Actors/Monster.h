@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "GameFramework/Pawn.h"
-#include "Data/PawnTableRow.h"
 #include "Monster.generated.h"
 
 #define AISENSECONFIG_SIGHT_SIGHTRADIUS										700.f
@@ -58,6 +57,7 @@ class UAdvancedFloatingPawnMovement;
 class UMonsterStatusComponent;
 class APatrolPath;
 class UWeaponChildActorComponent;
+struct FPawnTableRow;
 UCLASS()
 class DREAMINGISLAND_API AMonster : public APawn
 {

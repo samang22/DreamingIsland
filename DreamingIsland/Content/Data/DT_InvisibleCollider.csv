@@ -1,0 +1,4 @@
+---,CollisionClass,CollisionSphereRadius,CollisionBoxExtent,CollisionCapsuleRadius,CollisionCapsuleHalfHeight
+Sphere,"/Script/CoreUObject.Class'/Script/Engine.SphereComponent'","32.000000","(X=32.000000,Y=32.000000,Z=32.000000)","22.000000","44.000000"
+Capsule,"/Script/CoreUObject.Class'/Script/Engine.CapsuleComponent'","32.000000","(X=32.000000,Y=32.000000,Z=32.000000)","22.000000","44.000000"
+Box,"/Script/CoreUObject.Class'/Script/Engine.BoxComponent'","32.000000","(X=32.000000,Y=32.000000,Z=32.000000)","22.000000","44.000000"

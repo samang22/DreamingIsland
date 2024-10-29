@@ -4,15 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
-
-
-#include "BasicMonsterAIController.generated.h"
+#include "NPCAIController.generated.h"
 
 class UStatusComponent;
 class USplineComponent;
 
 UCLASS()
-class DREAMINGISLAND_API ABasicMonsterAIController : public AAIController
+class DREAMINGISLAND_API ANPCAIController : public AAIController
 {
 	GENERATED_BODY()
 
@@ -22,12 +20,6 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 protected:
-	UFUNCTION()
-	void OnDamaged(float CurrentHP, float MaxHP);
-
-	UFUNCTION()
-	void ResetOnDamaged();
-
 	void FindPlayerByPerception();
 
 public:
@@ -42,5 +34,5 @@ protected:
 
 	UPROPERTY()
 	UStatusComponent* StatusComponentRef;
-	
+
 };

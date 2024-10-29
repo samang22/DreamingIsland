@@ -4,9 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "HouseTableRow.generated.h"
-/**
- * 
- */
+
+
 USTRUCT()
 struct DREAMINGISLAND_API FHouseTableRow : public FTableRowBase
 {

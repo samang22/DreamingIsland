@@ -15,11 +15,8 @@
 #include "AIController.h"
 
 #include "PawnTableRow.generated.h"
-/**
- * 
- */
 
-class Monster;
+
 USTRUCT()
 struct DREAMINGISLAND_API FPawnTableRow : public FTableRowBase
 {
