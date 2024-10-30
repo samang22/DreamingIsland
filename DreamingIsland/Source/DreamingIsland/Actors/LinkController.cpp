@@ -77,6 +77,15 @@ void ALinkController::SetupInputComponent()
 		UE_LOG(LogTemp, Warning, TEXT("IA_Interact is disabled"));
 	}
 
+	if (const UInputAction* InputAction = FUtils::GetInputActionFromName(IMC_Default, TEXT("IA_Lay")))
+	{
+		EnhancedInputComponent->BindAction(InputAction, ETriggerEvent::Triggered, this, &ThisClass::OnLay);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("IA_Interact is disabled"));
+	}
+
 	if (bZoomWheel)
 	{
 		if (const UInputAction* InputAction = FUtils::GetInputActionFromName(IMC_Default, TEXT("IA_ZoomWheel")))
@@ -177,11 +186,6 @@ void ALinkController::OnInteract(const FInputActionValue& InputActionValue)
 		AnimInstance->PlayItemCarryMontage();
 		Link->CatchItem();
 	}
-	else if (Link->IsCatchingItem()
-		&& !Link->IsPlayingMontage(LINK_MONTAGE::END))
-	{
-		//Link->LayItem();
-	}
 	else if (Link->IsOverlappedNPC())
 	{
 		// @TODO
@@ -189,6 +193,16 @@ void ALinkController::OnInteract(const FInputActionValue& InputActionValue)
 		// 2. NPC Turn to LInk
 		// 3. Camera close up
 		// 4. Conversation blah blah
+	}
+}
+
+void ALinkController::OnLay(const FInputActionValue& InputActionValue)
+{
+	ALink* Link = Cast<ALink>(GetPawn());
+	if (Link->IsCatchingItem()
+	&& !Link->IsPlayingMontage(LINK_MONTAGE::END))
+	{
+		Link->LayItem();
 	}
 }
 

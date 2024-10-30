@@ -70,6 +70,7 @@ ALink::ALink(const FObjectInitializer& ObjectInitializer)
 	{
 		UCharacterMovementComponent* Movement = GetCharacterMovement();
 		Movement->bOrientRotationToMovement = true;
+		Movement->RotationRate = FRotator(0.f, 720.0f, 0.0f);
 		Movement->MaxWalkSpeed = LINK_WALK_SPEED;
 		Movement->bCanWalkOffLedges = false;
 	}
@@ -252,6 +253,7 @@ void ALink::LayItem()
 	AItem* Item = Cast<AItem>(CatchingItem);
 	Item->SetItemCatched(false);
 	Item->SetCatchingItemActor(nullptr);
+	CatchingItem = nullptr;
 	StatusComponent->SetOffAnimationStatus(LINK_BIT_CARRY);
 }
 

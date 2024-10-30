@@ -38,6 +38,7 @@ protected:
 	void OnRunOff(const FInputActionValue& InputActionValue);
 	void OnAttack(const FInputActionValue& InputActionValue);
 	void OnInteract(const FInputActionValue& InputActionValue);
+	void OnLay(const FInputActionValue& InputActionValue);
 	void OnZoomWheel(const FInputActionValue& InputActionValue);
 
 protected:

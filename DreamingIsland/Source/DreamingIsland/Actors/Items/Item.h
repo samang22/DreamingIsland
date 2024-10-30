@@ -8,6 +8,8 @@
 
 struct FItemTableRow;
 class USphereComponent;
+class UCharacterMovementComponent;
+
 UCLASS()
 class DREAMINGISLAND_API AItem : public AActor
 {

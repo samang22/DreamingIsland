@@ -6,8 +6,9 @@
 #include "Misc/Utils.h"
 #include "Data/ItemTableRow.h"
 #include "Actors/Link.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
-#define LINK_LOCATION_OFFSET 90.f
+#define LINK_LOCATION_OFFSET 70.f
 // Sets default values
 AItem::AItem(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -17,12 +18,15 @@ AItem::AItem(const FObjectInitializer& ObjectInitializer)
 	CollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("CollisionComponent"));
 	CollisionComponent->SetCollisionProfileName(CollisionProfileName::Item);
 	CollisionComponent->SetCanEverAffectNavigation(false);
-
+	CollisionComponent->SetEnableGravity(true);
+	CollisionComponent->SetMassOverrideInKg(NAME_None, 10.0f, true);
+	CollisionComponent->BodyInstance.bSimulatePhysics = true;
 	RootComponent = CollisionComponent;
 
 
 	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
 	StaticMeshComponent->SetupAttachment(RootComponent);
+
 }
 
 void AItem::SetData(const FDataTableRowHandle& InDataTableRowHandle)
@@ -88,6 +92,7 @@ void AItem::BeginPlay()
 {
 	Super::BeginPlay();
 	SetData(DataTableRowHandle);
+	CollisionComponent->BodyInstance.bSimulatePhysics = true;
 }
 
 // Called every frame
@@ -108,6 +113,7 @@ void AItem::ItemCatchedSequence(float DeltaTime)
 				FVector LinkLocation = Link->GetActorLocation();
 				LinkLocation.Z += LINK_LOCATION_OFFSET;
 				SetActorLocation(LinkLocation);
+				SetActorRotation(Link->GetActorRotation());
 			}
 		}
 	}
