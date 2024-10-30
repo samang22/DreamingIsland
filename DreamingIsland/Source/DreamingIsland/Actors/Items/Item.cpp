@@ -44,6 +44,7 @@ void AItem::SetData(const FDataTableRowHandle& InDataTableRowHandle)
 		CollisionComponent->SetCollisionProfileName(CollisionProfileName::Item);
 		CollisionComponent->bHiddenInGame = COLLISION_HIDDEN_IN_GAME;
 		CollisionComponent->RegisterComponent();
+		CollisionComponent->BodyInstance.bSimulatePhysics = true;
 
 	}
 
