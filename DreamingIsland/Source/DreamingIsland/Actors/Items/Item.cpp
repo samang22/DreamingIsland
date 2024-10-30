@@ -7,6 +7,7 @@
 #include "Data/ItemTableRow.h"
 #include "Actors/Link.h"
 
+#define LINK_LOCATION_OFFSET 90.f
 // Sets default values
 AItem::AItem(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -36,7 +37,7 @@ void AItem::SetData(const FDataTableRowHandle& InDataTableRowHandle)
 	{
 		USphereComponent* SphereComponent = Cast<USphereComponent>(CollisionComponent);
 		SphereComponent->SetSphereRadius(ItemData->CollisionSphereRadius);
-		CollisionComponent->SetCollisionProfileName(CollisionProfileName::Monster);
+		CollisionComponent->SetCollisionProfileName(CollisionProfileName::Item);
 		CollisionComponent->bHiddenInGame = COLLISION_HIDDEN_IN_GAME;
 		CollisionComponent->RegisterComponent();
 
@@ -71,6 +72,7 @@ void AItem::PostLoadSubobjects(FObjectInstancingGraph* OuterInstanceGraph)
 
 void AItem::PostInitializeComponents()
 {
+	Super::PostInitializeComponents();
 	// nothing to do
 }
 
@@ -103,8 +105,9 @@ void AItem::ItemCatchedSequence(float DeltaTime)
 		{
 			if (ALink* Link = Cast<ALink>(CatchingItemActor))
 			{
-				FVector ItemCarryLocation = Link->GetSocketLocation(Link_SocketName::ItemCarry);
-				SetActorLocation(ItemCarryLocation);
+				FVector LinkLocation = Link->GetActorLocation();
+				LinkLocation.Z += LINK_LOCATION_OFFSET;
+				SetActorLocation(LinkLocation);
 			}
 		}
 	}

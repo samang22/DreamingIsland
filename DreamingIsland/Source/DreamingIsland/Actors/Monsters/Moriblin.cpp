@@ -4,24 +4,9 @@
 #include "Actors/Monsters/Moriblin.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/KismetMathLibrary.h"
-
-float CalculateAngleBetweenVectors(const FVector& A, const FVector& B) {
-	// Calculate dot product
-	float DotProduct = FVector::DotProduct(A, B);
-
-	// 두 벡터의 크기를 계산
-	float MagnitudeA = A.Size();
-	float MagnitudeB = B.Size();
-
-	// 코사인 값 계산
-	float CosTheta = DotProduct / (MagnitudeA * MagnitudeB);
-
-	// 각도 계산 (라디안)
-	float AngleRadians = FMath::Acos(CosTheta);
-
-	// 라디안을 각도로 변환
-	return FMath::RadiansToDegrees(AngleRadians);
-}
+#include "Components/MonsterStatusComponent.h"
+#include "Data/PawnTableRow.h"
+#include "Misc/Utils.h"
 
 float AMoriblin::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {

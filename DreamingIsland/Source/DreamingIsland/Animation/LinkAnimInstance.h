@@ -6,9 +6,6 @@
 #include "Animation/AnimInstance.h"
 #include "LinkAnimInstance.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class DREAMINGISLAND_API ULinkAnimInstance : public UAnimInstance
 {

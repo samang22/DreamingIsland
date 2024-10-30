@@ -10,12 +10,6 @@
 
 ULinkAnimInstance::ULinkAnimInstance()
 {
-	static ConstructorHelpers::FObjectFinder<UAnimMontage> MtgSlash(TEXT("/Script/Engine.AnimMontage'/Game/Assets/Link/Animation/MTG_Link_SlashAttack.MTG_Link_SlashAttack'"));
-	static ConstructorHelpers::FObjectFinder<UAnimMontage> MtgItemCarry(TEXT("/Script/Engine.AnimMontage'/Game/Assets/Link/Animation/MTG_Link_Item_Carry.MTG_Link_Item_Carry'"));
-	static ConstructorHelpers::FObjectFinder<UAnimMontage> MtgItemGet(TEXT("/Script/Engine.AnimMontage'/Game/Assets/Link/Animation/MTG_Link_Item_Get.MTG_Link_Item_Get'"));
-	if (MtgSlash.Object) { AttackMontage = MtgSlash.Object; }
-	if (MtgItemCarry.Object) { ItemCarryMontage = MtgItemCarry.Object; }
-	if (MtgItemGet.Object) { ItemGetMontage = MtgItemGet.Object; }
 }
 
 void ULinkAnimInstance::NativeInitializeAnimation()

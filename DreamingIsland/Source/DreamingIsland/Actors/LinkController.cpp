@@ -175,10 +175,12 @@ void ALinkController::OnInteract(const FInputActionValue& InputActionValue)
 		)
 	{
 		AnimInstance->PlayItemCarryMontage();
+		Link->CatchItem();
 	}
-	else if (Link->IsCatchingItem())
+	else if (Link->IsCatchingItem()
+		&& !Link->IsPlayingMontage(LINK_MONTAGE::END))
 	{
-		Link->LayItem();
+		//Link->LayItem();
 	}
 	else if (Link->IsOverlappedNPC())
 	{

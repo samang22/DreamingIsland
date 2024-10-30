@@ -45,7 +45,7 @@ ALink::ALink(const FObjectInitializer& ObjectInitializer)
 	SenseInteractCollisionComponent->SetupAttachment(RootComponent);
 	SenseInteractCollisionComponent->SetRelativeLocation(GetActorForwardVector() * LINK_SENSE_COLLISION_OFFSET);
 	SenseInteractCollisionComponent->SetSphereRadius(LINK_SENSEINTERACTIVE_COLLISION_SPHERE_RADIUS);
-
+	SenseInteractCollisionComponent->SetCollisionProfileName(CollisionProfileName::SenseInteractive);
 
 	SpringArm = CreateDefaultSubobject<USoftWheelSpringArmComponent>(TEXT("SpringArm"));
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
@@ -78,7 +78,19 @@ ALink::ALink(const FObjectInitializer& ObjectInitializer)
 	USkeletalMeshComponent* SkeletalMeshComponent = GetMesh();
 	SkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshComponent"));
 	SkeletalMeshComponent->SetupAttachment(RootComponent);
+
+
+
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> MtgSlash(TEXT("/Script/Engine.AnimMontage'/Game/Assets/Link/Animation/MTG_Link_SlashAttack.MTG_Link_SlashAttack'"));
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> MtgItemCarry(TEXT("/Script/Engine.AnimMontage'/Game/Assets/Link/Animation/MTG_Link_Item_Carry.MTG_Link_Item_Carry'"));
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> MtgItemGet(TEXT("/Script/Engine.AnimMontage'/Game/Assets/Link/Animation/MTG_Link_Item_Get.MTG_Link_Item_Get'"));
+	if (MtgSlash.Object) { SlashMontage = MtgSlash.Object; }
+	if (MtgItemCarry.Object) { ItemCarryMontage = MtgItemCarry.Object; }
+	if (MtgItemGet.Object) { ItemGetMontage = MtgItemGet.Object; }
 }
+
+
+
 void ALink::OnDie()
 {
 }
@@ -88,14 +100,13 @@ void ALink::BeginPlay()
 {
 	Super::BeginPlay();
 	UCapsuleComponent* tempCapsuleComponent = GetCapsuleComponent();
-
 	tempCapsuleComponent->SetCollisionProfileName(CollisionProfileName::Link);
 	tempCapsuleComponent->bHiddenInGame = COLLISION_HIDDEN_IN_GAME;
 	tempCapsuleComponent->SetCollisionResponseToChannel(TRACE_CHANNEL_LINKCHANNEL, ECR_Block);
 
 	SenseInteractCollisionComponent->SetRelativeLocation(GetActorForwardVector() * LINK_SENSE_COLLISION_OFFSET);
 	SenseInteractCollisionComponent->SetSphereRadius(LINK_SENSEINTERACTIVE_COLLISION_SPHERE_RADIUS);
-
+	SenseInteractCollisionComponent->SetCollisionProfileName(CollisionProfileName::SenseInteractive);
 }
 
 void ALink::OnConstruction(const FTransform& Transform)
@@ -251,4 +262,94 @@ bool ALink::IsCatchingItem()
 		return true;
 	}
 	return false;
+}
+
+void ALink::PlayMontage(LINK_MONTAGE _InEnum, bool bIsLoop)
+{
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+
+	UAnimMontage* tempMontage = nullptr;
+	switch (_InEnum)
+	{
+	case LINK_MONTAGE::SLASH:
+		tempMontage = SlashMontage;
+		break;
+	case LINK_MONTAGE::ITEM_CARRY:
+		tempMontage = ItemCarryMontage;
+		break;
+	case LINK_MONTAGE::ITEM_GET:
+		tempMontage = ItemGetMontage;
+		break;
+	case LINK_MONTAGE::DEAD:
+		break;
+	case LINK_MONTAGE::DAMAGE:
+		break;
+	default:
+		break;
+	}
+
+	if (tempMontage && !AnimInstance->Montage_IsPlaying(tempMontage))
+	{
+		if (bIsLoop)
+		{
+			AnimInstance->Montage_Play(tempMontage, 1.0f, EMontagePlayReturnType::MontageLength, 0.0f, true);
+		}
+		else
+		{
+			AnimInstance->Montage_Play(tempMontage);
+		}
+	}
+}
+
+bool ALink::IsMontage(LINK_MONTAGE _InEnum)
+{
+	switch (_InEnum)
+	{
+	case LINK_MONTAGE::SLASH:
+		return SlashMontage ? true : false;
+		break;
+	case LINK_MONTAGE::ITEM_CARRY:
+		return ItemCarryMontage ? true : false;
+		break;
+	case LINK_MONTAGE::ITEM_GET:
+		return ItemGetMontage ? true : false;
+		break;
+	case LINK_MONTAGE::DEAD:
+	case LINK_MONTAGE::DAMAGE:
+	case LINK_MONTAGE::GUARD:
+	default:
+		check(false);
+		return false;
+		break;
+	}
+}
+
+bool ALink::IsPlayingMontage(LINK_MONTAGE _InEnum)
+{
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+
+	UAnimMontage* tempMontage = nullptr;
+	switch (_InEnum)
+	{
+	case LINK_MONTAGE::SLASH:
+		tempMontage = SlashMontage;
+		break;
+	case LINK_MONTAGE::ITEM_CARRY:
+		tempMontage = ItemCarryMontage;
+		break;
+	case LINK_MONTAGE::ITEM_GET:
+		tempMontage = ItemGetMontage;
+		break;
+	case LINK_MONTAGE::END:
+		tempMontage = nullptr;
+		break;
+	case LINK_MONTAGE::DEAD:
+	case LINK_MONTAGE::DAMAGE:
+	default:
+		check(false);
+		return false;
+		break;
+	}
+
+	return AnimInstance->Montage_IsPlaying(tempMontage);
 }

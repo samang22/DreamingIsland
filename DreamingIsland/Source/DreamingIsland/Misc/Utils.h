@@ -58,6 +58,7 @@ namespace CollisionProfileName
 	static inline FName SenseLink = TEXT("SenseLink");
 	static inline FName NPC = TEXT("NPC");
 	static inline FName Item = TEXT("Item");
+	static inline FName SenseInteractive = TEXT("SenseInteractive");
 }
 
 namespace ProjectileName
@@ -107,4 +108,23 @@ namespace MonsterName_FString
 inline bool IsNearlyEqualVector_My(const FVector& A, const FVector& B, float Tolerance = KINDA_SMALL_NUMBER)
 {
 	return FVector::DistSquared(A, B) < FMath::Square(Tolerance);
+}
+
+inline float CalculateAngleBetweenVectors(const FVector& A, const FVector& B) 
+{
+	// Calculate dot product
+	float DotProduct = FVector::DotProduct(A, B);
+
+	// 두 벡터의 크기를 계산
+	float MagnitudeA = A.Size();
+	float MagnitudeB = B.Size();
+
+	// 코사인 값 계산
+	float CosTheta = DotProduct / (MagnitudeA * MagnitudeB);
+
+	// 각도 계산 (라디안)
+	float AngleRadians = FMath::Acos(CosTheta);
+
+	// 라디안을 각도로 변환
+	return FMath::RadiansToDegrees(AngleRadians);
 }

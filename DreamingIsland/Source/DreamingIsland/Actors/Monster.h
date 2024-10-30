@@ -75,8 +75,8 @@ protected:
 	virtual void PostLoadSubobjects(FObjectInstancingGraph* OuterInstanceGraph) override;
 	// Called when the game starts or when spawned
 	virtual void PostInitializeComponents() override;
-	virtual void BeginPlay() override;
 	virtual void OnConstruction(const FTransform& Transform);
+	virtual void BeginPlay() override;
 
 protected:
 	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;

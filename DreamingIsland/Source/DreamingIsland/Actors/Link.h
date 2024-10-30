@@ -6,6 +6,19 @@
 #include "GameFramework/Character.h"
 #include "Link.generated.h"
 
+
+enum class LINK_MONTAGE : uint8
+{
+	SLASH = 0,
+	ITEM_CARRY,
+	ITEM_GET,
+	DEAD,
+	DAMAGE,
+	THROW,
+	GUARD,
+	END,
+};
+
 class USphereComponent;
 class ULinkStatusComponent;
 UCLASS()
@@ -101,4 +114,14 @@ public:
 	void CatchItem();
 	void LayItem();
 	bool IsCatchingItem();
+
+protected:
+	UAnimMontage* SlashMontage = nullptr;
+	UAnimMontage* ItemCarryMontage = nullptr;
+	UAnimMontage* ItemGetMontage = nullptr;
+
+public:
+	void PlayMontage(LINK_MONTAGE _InEnum, bool bIsLoop = false);
+	bool IsMontage(LINK_MONTAGE _InEnum);
+	bool IsPlayingMontage(LINK_MONTAGE _InEnum);
 };
