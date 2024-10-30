@@ -28,7 +28,7 @@ void AHinoxAIController::BeginPlay()
 	UBehaviorTree* BehaviorTree = nullptr;
 	if (!IsValid(BrainComponent))
 	{
-		BehaviorTree = LoadObject<UBehaviorTree>(nullptr, TEXT("/Script/AIModule.BehaviorTree'/Game/Blueprint/AI/BT_Hinox.BT_Hinox'"));
+		BehaviorTree = LoadObject<UBehaviorTree>(nullptr, TEXT("/Script/AIModule.BehaviorTree'/Game/Blueprint/AI/Monster/BT_Hinox.BT_Hinox'"));
 		check(BehaviorTree);
 		RunBehaviorTree(BehaviorTree);
 	}

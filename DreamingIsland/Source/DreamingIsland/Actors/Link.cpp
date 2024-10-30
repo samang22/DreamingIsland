@@ -15,7 +15,7 @@
 #include "Actors/Monsters/Hinox.h"
 #include "Actors/NPC/NPC.h"
 #include "Actors/Items/Item.h"
-
+#include "Actors/LinkController.h"
 
 #define PROBE_SIZE										5.0
 #define COLLISION_SPHERE_RADIUS							24.f
@@ -354,4 +354,9 @@ bool ALink::IsPlayingMontage(LINK_MONTAGE _InEnum)
 	}
 
 	return AnimInstance->Montage_IsPlaying(tempMontage);
+}
+
+void ALink::SetMoveAuto(bool bFlag, FVector Direction)
+{
+	Cast<ALinkController>(Controller)->SetMoveAuto(bFlag, Direction);
 }

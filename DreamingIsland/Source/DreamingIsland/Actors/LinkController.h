@@ -61,6 +61,10 @@ protected:
 	UPROPERTY()
 	class ULinkAnimInstance* AnimInstance;
 
-
-
+protected:
+	bool bIsMoveAuto = false;
+	FVector MoveAutoDirection = FVector::Zero();
+	void MoveAutoSequence(float DeltaTime);
+public:
+	void SetMoveAuto(bool bFlag, FVector Direction = FVector::Zero());
 };

@@ -28,7 +28,7 @@ void AMoriblinAIController::BeginPlay()
 	UBehaviorTree* BehaviorTree = nullptr;
 	if (!IsValid(BrainComponent))
 	{
-		BehaviorTree = LoadObject<UBehaviorTree>(nullptr, TEXT("/Script/AIModule.BehaviorTree'/Game/Blueprint/AI/BT_Moriblin.BT_Moriblin'"));
+		BehaviorTree = LoadObject<UBehaviorTree>(nullptr, TEXT("/Script/AIModule.BehaviorTree'/Game/Blueprint/AI/Monster/BT_Moriblin.BT_Moriblin'"));
 		check(BehaviorTree);
 		RunBehaviorTree(BehaviorTree);
 	}

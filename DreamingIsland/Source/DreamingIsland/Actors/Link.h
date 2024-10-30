@@ -124,4 +124,10 @@ public:
 	void PlayMontage(LINK_MONTAGE _InEnum, bool bIsLoop = false);
 	bool IsMontage(LINK_MONTAGE _InEnum);
 	bool IsPlayingMontage(LINK_MONTAGE _InEnum);
+
+protected:
+	bool bIsMoveAuto = false;
+public:
+	void SetMoveAuto(bool bFlag, FVector Direction = FVector::Zero());
+
 };

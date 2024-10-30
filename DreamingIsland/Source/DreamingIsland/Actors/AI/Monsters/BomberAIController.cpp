@@ -27,7 +27,7 @@ void ABomberAIController::BeginPlay()
 	UBehaviorTree* BehaviorTree = nullptr;
 	if (!IsValid(BrainComponent))
 	{
-		BehaviorTree = LoadObject<UBehaviorTree>(nullptr, TEXT("/Script/AIModule.BehaviorTree'/Game/Blueprint/AI/BT_Bomber.BT_Bomber'"));
+		BehaviorTree = LoadObject<UBehaviorTree>(nullptr, TEXT("/Script/AIModule.BehaviorTree'/Game/Blueprint/AI/Monster/BT_Bomber.BT_Bomber'"));
 		check(BehaviorTree);
 		RunBehaviorTree(BehaviorTree);
 	}

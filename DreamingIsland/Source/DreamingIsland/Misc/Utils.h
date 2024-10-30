@@ -59,6 +59,7 @@ namespace CollisionProfileName
 	static inline FName NPC = TEXT("NPC");
 	static inline FName Item = TEXT("Item");
 	static inline FName SenseInteractive = TEXT("SenseInteractive");
+	static inline FName MyTrigger = TEXT("MyTrigger");
 }
 
 namespace ProjectileName

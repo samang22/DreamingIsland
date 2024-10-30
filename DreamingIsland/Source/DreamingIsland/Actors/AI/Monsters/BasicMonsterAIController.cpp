@@ -28,7 +28,7 @@ void ABasicMonsterAIController::BeginPlay()
 	UBehaviorTree* BehaviorTree = nullptr;
 	if (!IsValid(BrainComponent))
 	{
-		BehaviorTree = LoadObject<UBehaviorTree>(nullptr, TEXT("/Script/AIModule.BehaviorTree'/Game/Blueprint/AI/BT_BasicMonster.BT_BasicMonster'"));
+		BehaviorTree = LoadObject<UBehaviorTree>(nullptr, TEXT("/Script/AIModule.BehaviorTree'/Game/Blueprint/AI/Monster/BT_BasicMonster.BT_BasicMonster'"));
 		check(BehaviorTree);
 		RunBehaviorTree(BehaviorTree);
 	}

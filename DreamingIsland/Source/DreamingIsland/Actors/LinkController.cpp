@@ -126,6 +126,8 @@ void ALinkController::Tick(float DeltaTime)
 	{
 		//Movement
 	}
+
+	MoveAutoSequence(DeltaTime);
 }
 
 void ALinkController::OnWalk(const FInputActionValue& InputActionValue)
@@ -212,5 +214,24 @@ void ALinkController::OnZoomWheel(const FInputActionValue& InputActionValue)
 
 void ALinkController::OnSlashAttackMontageEnd(UAnimMontage* Montage, bool bInterrupted)
 {
+}
+
+void ALinkController::MoveAutoSequence(float DeltaTime)
+{
+	if (bIsMoveAuto)
+	{
+		APawn* ControlledPawn = GetPawn();
+		if (ControlledPawn)
+		{
+			ControlledPawn->AddMovementInput(MoveAutoDirection, 1);
+			StatusComponent->SetOnAnimationStatus(LINK_BIT_WALK);
+		}
+	}
+}
+
+void ALinkController::SetMoveAuto(bool bFlag, FVector Direction)
+{
+	bIsMoveAuto = bFlag;
+	MoveAutoDirection = Direction;
 }
 
