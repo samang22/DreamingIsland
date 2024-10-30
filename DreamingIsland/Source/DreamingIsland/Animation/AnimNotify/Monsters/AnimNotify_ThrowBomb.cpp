@@ -44,7 +44,7 @@ void UAnimNotify_ThrowBomb::Notify(USkeletalMeshComponent* MeshComp, UAnimSequen
 		FTransform::Identity, Monster, Monster, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 
 	FTransform NewTransform;
-	Projectile->SetData(ProjectileName::Hinox_Bomb, CollisionProfileName::BombProjectile, TRACE_CHANNEL_BOMBPROJECTILE);
+	Projectile->SetData(ProjectileName::Hinox_Bomb, CollisionProfileName::BombProjectile);
 	NewTransform.SetLocation(WeaponLocation);
 	NewTransform.SetRotation(MonsterShootDirection.Rotation().Quaternion());
 	Projectile->FinishSpawning(NewTransform);

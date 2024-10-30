@@ -13,10 +13,17 @@
 #include "Components/SphereComponent.h"
 #include "Misc/Utils.h"
 #include "Actors/Monsters/Hinox.h"
+#include "Actors/NPC/NPC.h"
+#include "Actors/Items/Item.h"
 
 
-#define PROBE_SIZE					5.0
-
+#define PROBE_SIZE										5.0
+#define COLLISION_SPHERE_RADIUS							24.f
+#define LINK_WALK_SPEED									500.f
+#define LINK_RUN_SPEED									1000.f
+#define LINK_SENSEINTERACTIVE_COLLISION_SPHERE_RADIUS	24.f
+#define LINK_CAPSULE_HALF_HEIGHT						200.f
+#define LINK_SENSE_COLLISION_OFFSET						36.f
 
 // Sets default values
 ALink::ALink(const FObjectInitializer& ObjectInitializer)
@@ -27,6 +34,18 @@ ALink::ALink(const FObjectInitializer& ObjectInitializer)
 	tempCapsuleComponent->SetCanEverAffectNavigation(false);
 	RootComponent = tempCapsuleComponent;
 	tempCapsuleComponent->SetCollisionProfileName(CollisionProfileName::Link);
+	tempCapsuleComponent->SetCapsuleHalfHeight(LINK_CAPSULE_HALF_HEIGHT);
+
+
+	SenseInteractCollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("SenseInteractCollisionComponent"));
+	SenseInteractCollisionComponent->SetCanEverAffectNavigation(false);
+	SenseInteractCollisionComponent->bHiddenInGame = COLLISION_HIDDEN_IN_GAME;
+	SenseInteractCollisionComponent->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::OnSenseInteractiveBeginOverlap);
+	SenseInteractCollisionComponent->OnComponentEndOverlap.AddDynamic(this, &ThisClass::OnSenseInteractiveEndOverlap);
+	SenseInteractCollisionComponent->SetupAttachment(RootComponent);
+	SenseInteractCollisionComponent->SetRelativeLocation(GetActorForwardVector() * LINK_SENSE_COLLISION_OFFSET);
+	SenseInteractCollisionComponent->SetSphereRadius(LINK_SENSEINTERACTIVE_COLLISION_SPHERE_RADIUS);
+
 
 	SpringArm = CreateDefaultSubobject<USoftWheelSpringArmComponent>(TEXT("SpringArm"));
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
@@ -59,9 +78,6 @@ ALink::ALink(const FObjectInitializer& ObjectInitializer)
 	USkeletalMeshComponent* SkeletalMeshComponent = GetMesh();
 	SkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshComponent"));
 	SkeletalMeshComponent->SetupAttachment(RootComponent);
-	//SkeletalMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
-	//GetCapsuleComponent()->SetCollisionObjectType(COLLISION_CHANNEL_LINK);
 }
 void ALink::OnDie()
 {
@@ -74,8 +90,12 @@ void ALink::BeginPlay()
 	UCapsuleComponent* tempCapsuleComponent = GetCapsuleComponent();
 
 	tempCapsuleComponent->SetCollisionProfileName(CollisionProfileName::Link);
-	tempCapsuleComponent->bHiddenInGame = false;
+	tempCapsuleComponent->bHiddenInGame = COLLISION_HIDDEN_IN_GAME;
 	tempCapsuleComponent->SetCollisionResponseToChannel(TRACE_CHANNEL_LINKCHANNEL, ECR_Block);
+
+	SenseInteractCollisionComponent->SetRelativeLocation(GetActorForwardVector() * LINK_SENSE_COLLISION_OFFSET);
+	SenseInteractCollisionComponent->SetSphereRadius(LINK_SENSEINTERACTIVE_COLLISION_SPHERE_RADIUS);
+
 }
 
 void ALink::OnConstruction(const FTransform& Transform)
@@ -100,6 +120,34 @@ void ALink::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 float ALink::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	return 0.0f;
+}
+
+void ALink::OnSenseInteractiveBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	ANPC* NPC = Cast<ANPC>(OtherActor);
+	if (NPC)
+	{
+		OverlappedNPC = NPC;
+		return;
+	}
+
+	AItem* Item = Cast<AItem>(OtherActor);
+	if (Item)
+	{
+		OverlappedItem = Item;
+	}
+}
+
+void ALink::OnSenseInteractiveEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	if (OtherActor == OverlappedNPC)
+	{
+		OverlappedNPC = nullptr;
+	}
+	else if (OtherActor == OverlappedItem)
+	{
+		OverlappedItem = nullptr;
+	}
 }
 
 void ALink::SetSpeedWalk()
@@ -149,7 +197,58 @@ void ALink::LinkCatchedSequence(float DeltaTime)
 				OffsetVector.Z += 20.f;
 				SetActorLocation(OffsetVector);
 			}
-
 		}
 	}
+}
+
+FVector ALink::GetSocketLocation(FName SocketName)
+{
+	return GetMesh()->GetSocketLocation(SocketName);
+}
+
+bool ALink::IsOverlappedNPC()
+{
+	if (OverlappedNPC)
+	{
+		return true;
+	}
+	return false;
+}
+
+bool ALink::IsOverlappedItem()
+{
+	if (OverlappedItem)
+	{
+		return true;
+	}
+	return false;
+}
+
+void ALink::CatchItem()
+{
+	if (!OverlappedItem) return;
+	AItem* Item = Cast<AItem>(OverlappedItem);
+	Item->SetItemCatched(true);
+	Item->SetCatchingItemActor(this);
+	CatchingItem = OverlappedItem;
+	OverlappedItem = nullptr;
+	StatusComponent->SetOnAnimationStatus(LINK_BIT_CARRY);
+}
+
+void ALink::LayItem()
+{
+	if (!CatchingItem) return;
+	AItem* Item = Cast<AItem>(CatchingItem);
+	Item->SetItemCatched(false);
+	Item->SetCatchingItemActor(nullptr);
+	StatusComponent->SetOffAnimationStatus(LINK_BIT_CARRY);
+}
+
+bool ALink::IsCatchingItem()
+{
+	if (CatchingItem)
+	{
+		return true;
+	}
+	return false;
 }

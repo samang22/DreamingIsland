@@ -83,7 +83,7 @@ void AMonster::SetData(const FDataTableRowHandle& InDataTableRowHandle)
 		USphereComponent* SphereComponent = Cast<USphereComponent>(CollisionComponent);
 		SphereComponent->SetSphereRadius(MonsterData->CollisionSphereRadius);
 		CollisionComponent->SetCollisionProfileName(CollisionProfileName::Monster);
-		CollisionComponent->bHiddenInGame = false;
+		CollisionComponent->bHiddenInGame = COLLISION_HIDDEN_IN_GAME;
 		CollisionComponent->RegisterComponent();
 
 	}
@@ -166,7 +166,7 @@ void AMonster::BeginPlay()
 {
 	Super::BeginPlay();
 	CollisionComponent->SetCollisionProfileName(CollisionProfileName::Monster);
-	CollisionComponent->bHiddenInGame = false;
+	CollisionComponent->bHiddenInGame = COLLISION_HIDDEN_IN_GAME;
 	SetData(DataTableRowHandle);
 	if (MonsterData && MonsterData->bUseWeapon)
 	{

@@ -74,7 +74,7 @@ void ABomber::SpawnProjectileAndDestory()
 		FTransform::Identity, nullptr, nullptr, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 
 	FTransform NewTransform;
-	Projectile->SetData(ProjectileName::Bomber_Bomb, CollisionProfileName::MonsterProjectile, TRACE_CHANNEL_MONSTERPROJECTILECHANNEL);
+	Projectile->SetData(ProjectileName::Bomber_Bomb, CollisionProfileName::MonsterProjectile);
 	NewTransform.SetLocation(GetActorLocation());
 	NewTransform.SetRotation(FRotator::ZeroRotator.Quaternion());
 	Projectile->FinishSpawning(NewTransform);

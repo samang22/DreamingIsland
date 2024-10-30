@@ -45,7 +45,7 @@ AProjectile::AProjectile()
 
 }
 
-void AProjectile::SetData(const FName& ProjectileName, FName ProfileName, ECollisionChannel eCollisionChannel)
+void AProjectile::SetData(const FName& ProjectileName, FName ProfileName)
 {
 	if (!ProjectileDataTable->GetRowMap().Find(ProjectileName)) { ensure(false); return; }
 	DataTableRowHandle.DataTable = ProjectileDataTable;
@@ -66,7 +66,6 @@ void AProjectile::SetData(const FName& ProjectileName, FName ProfileName, EColli
 
 
 	CollisionComponent->SetCollisionProfileName(ProfileName);
-	CollisionComponent->SetCollisionObjectType(eCollisionChannel);
 
 	ProjectileMovementComponent->MaxSpeed = ProjectileTableRow->MaxSpeed;
 	ProjectileMovementComponent->InitialSpeed = ProjectileTableRow->InitialSpeed;
@@ -82,7 +81,7 @@ void AProjectile::SetData(const FName& ProjectileName, FName ProfileName, EColli
 void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
-	CollisionComponent->bHiddenInGame = false;
+	CollisionComponent->bHiddenInGame = COLLISION_HIDDEN_IN_GAME;
 
 }
 

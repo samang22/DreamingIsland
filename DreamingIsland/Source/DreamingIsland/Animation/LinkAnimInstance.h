@@ -50,8 +50,12 @@ protected:
 protected:
 	UAnimMontage* AttackMontage;
 	UAnimMontage* DieMontage;
+	UAnimMontage* ItemCarryMontage;
+	UAnimMontage* ItemGetMontage;
 
 public:
 	void PlayAttackMontage();
 	void PlayDieMontage();
+	void PlayItemCarryMontage();
+	void PlayItemGetMontage();
 };

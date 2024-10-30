@@ -28,7 +28,7 @@ void UAnimNotify_CatchLink::Notify(USkeletalMeshComponent* MeshComp, UAnimSequen
 		FTransform::Identity, Monster, Monster, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 
 	FTransform NewTransform;
-	Projectile->SetData(ProjectileName::Hinox_Catch, CollisionProfileName::MonsterProjectile, TRACE_CHANNEL_MONSTERPROJECTILE);
+	Projectile->SetData(ProjectileName::Hinox_Catch, CollisionProfileName::MonsterProjectile);
 	NewTransform.SetLocation(WeaponLocation);
 	NewTransform.SetRotation(FVector::Zero().Rotation().Quaternion());
 	Projectile->FinishSpawning(NewTransform);

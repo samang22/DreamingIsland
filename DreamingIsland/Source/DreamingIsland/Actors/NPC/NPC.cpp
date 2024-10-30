@@ -70,7 +70,7 @@ void ANPC::SetData(const FDataTableRowHandle& InDataTableRowHandle)
 		USphereComponent* SphereComponent = Cast<USphereComponent>(CollisionComponent);
 		SphereComponent->SetSphereRadius(NPCData->CollisionSphereRadius);
 		CollisionComponent->SetCollisionProfileName(CollisionProfileName::NPC);
-		CollisionComponent->bHiddenInGame = false;
+		CollisionComponent->bHiddenInGame = COLLISION_HIDDEN_IN_GAME;
 		CollisionComponent->RegisterComponent();
 	}
 
@@ -79,7 +79,7 @@ void ANPC::SetData(const FDataTableRowHandle& InDataTableRowHandle)
 		USphereComponent* SphereComponent = Cast<USphereComponent>(SenseLinkCollisionComponent);
 		SphereComponent->SetSphereRadius(NPCData->SenseLinkCollisionSphereRadius);
 		SenseLinkCollisionComponent->SetCollisionProfileName(CollisionProfileName::SenseLink);
-		SenseLinkCollisionComponent->bHiddenInGame = false;
+		SenseLinkCollisionComponent->bHiddenInGame = COLLISION_HIDDEN_IN_GAME;
 		SenseLinkCollisionComponent->RegisterComponent();
 	}
 

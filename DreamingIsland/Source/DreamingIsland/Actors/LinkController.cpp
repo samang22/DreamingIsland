@@ -168,6 +168,26 @@ void ALinkController::OnAttack(const FInputActionValue& InputActionValue)
 
 void ALinkController::OnInteract(const FInputActionValue& InputActionValue)
 {
+	ALink* Link = Cast<ALink>(GetPawn());
+
+	if (Link->IsOverlappedItem()
+		&& !Link->IsCatchingItem()
+		)
+	{
+		AnimInstance->PlayItemCarryMontage();
+	}
+	else if (Link->IsCatchingItem())
+	{
+		Link->LayItem();
+	}
+	else if (Link->IsOverlappedNPC())
+	{
+		// @TODO
+		// 1. Turn to NPC
+		// 2. NPC Turn to LInk
+		// 3. Camera close up
+		// 4. Conversation blah blah
+	}
 }
 
 void ALinkController::OnZoomWheel(const FInputActionValue& InputActionValue)

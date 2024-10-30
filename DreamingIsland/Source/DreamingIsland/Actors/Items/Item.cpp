@@ -1,0 +1,111 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+
+#include "Actors/Items/Item.h"
+#include "Components/SphereComponent.h"
+#include "Misc/Utils.h"
+#include "Data/ItemTableRow.h"
+#include "Actors/Link.h"
+
+// Sets default values
+AItem::AItem(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
+{
+	PrimaryActorTick.bCanEverTick = true;
+
+	CollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("CollisionComponent"));
+	CollisionComponent->SetCollisionProfileName(CollisionProfileName::Item);
+	CollisionComponent->SetCanEverAffectNavigation(false);
+
+	RootComponent = CollisionComponent;
+
+
+	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
+	StaticMeshComponent->SetupAttachment(RootComponent);
+}
+
+void AItem::SetData(const FDataTableRowHandle& InDataTableRowHandle)
+{
+	DataTableRowHandle = InDataTableRowHandle;
+	if (DataTableRowHandle.IsNull()) { return; }
+	FItemTableRow* Data = DataTableRowHandle.GetRow<FItemTableRow>(DataTableRowHandle.RowName.ToString());
+	if (!Data) { return; }
+	ItemData = Data;
+	
+	if (IsValid(CollisionComponent))
+	{
+		USphereComponent* SphereComponent = Cast<USphereComponent>(CollisionComponent);
+		SphereComponent->SetSphereRadius(ItemData->CollisionSphereRadius);
+		CollisionComponent->SetCollisionProfileName(CollisionProfileName::Monster);
+		CollisionComponent->bHiddenInGame = COLLISION_HIDDEN_IN_GAME;
+		CollisionComponent->RegisterComponent();
+
+	}
+
+	StaticMeshComponent->SetStaticMesh(ItemData->SkeletalMesh);
+	StaticMeshComponent->SetRelativeTransform(ItemData->MeshTransform);
+}
+
+void AItem::PostDuplicate(EDuplicateMode::Type DuplicateMode)
+{
+	Super::PostDuplicate(DuplicateMode);
+
+	if (DuplicateMode == EDuplicateMode::Normal)
+	{
+		FTransform Backup = GetActorTransform();
+		CollisionComponent->DestroyComponent();
+		SetData(DataTableRowHandle);
+		SetActorTransform(Backup);
+	}
+}
+
+void AItem::PostLoad()
+{
+	Super::PostLoad();
+}
+
+void AItem::PostLoadSubobjects(FObjectInstancingGraph* OuterInstanceGraph)
+{
+	Super::PostLoadSubobjects(OuterInstanceGraph);
+}
+
+void AItem::PostInitializeComponents()
+{
+	// nothing to do
+}
+
+void AItem::OnConstruction(const FTransform& Transform)
+{
+	Super::OnConstruction(Transform);
+	SetActorTransform(Transform);
+	SetData(DataTableRowHandle);
+}
+
+// Called when the game starts or when spawned
+void AItem::BeginPlay()
+{
+	Super::BeginPlay();
+	SetData(DataTableRowHandle);
+}
+
+// Called every frame
+void AItem::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	ItemCatchedSequence(DeltaTime);
+}
+
+void AItem::ItemCatchedSequence(float DeltaTime)
+{
+	if (bIsItemCatched)
+	{
+		if (CatchingItemActor)
+		{
+			if (ALink* Link = Cast<ALink>(CatchingItemActor))
+			{
+				FVector ItemCarryLocation = Link->GetSocketLocation(Link_SocketName::ItemCarry);
+				SetActorLocation(ItemCarryLocation);
+			}
+		}
+	}
+}

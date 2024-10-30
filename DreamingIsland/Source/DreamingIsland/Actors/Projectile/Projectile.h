@@ -15,7 +15,7 @@ class DREAMINGISLAND_API AProjectile : public AActor
 public:
 	// Sets default values for this actor's properties
 	AProjectile();
-	virtual void SetData(const FName& ProjectileName, FName ProfileName, ECollisionChannel eCollisionChannel);
+	virtual void SetData(const FName& ProjectileName, FName ProfileName);
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

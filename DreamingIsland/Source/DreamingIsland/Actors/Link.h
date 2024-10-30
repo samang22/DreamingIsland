@@ -6,11 +6,8 @@
 #include "GameFramework/Character.h"
 #include "Link.generated.h"
 
-#define COLLISION_SPHERE_RADIUS 24.f
-#define LINK_WALK_SPEED				500.f
-#define LINK_RUN_SPEED				1000.f
-
-class UStatusComponent;
+class USphereComponent;
+class ULinkStatusComponent;
 UCLASS()
 class DREAMINGISLAND_API ALink : public ACharacter
 {
@@ -28,6 +25,14 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	virtual void OnConstruction(const FTransform& Transform) override;
+	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+
+	UFUNCTION()
+	virtual void OnSenseInteractiveBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	UFUNCTION()
+	virtual void OnSenseInteractiveEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 public:
 	// Called every frame
@@ -36,19 +41,20 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-protected:
-	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
 protected:
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 	TObjectPtr<class USoftWheelSpringArmComponent> SpringArm;
 
 	UPROPERTY(VisibleAnywhere)
-	UStatusComponent* StatusComponent;
+	ULinkStatusComponent* StatusComponent;
 
 	/** Please add a variable description */
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 	TObjectPtr<class UCameraComponent> Camera;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USphereComponent> SenseInteractCollisionComponent;
 
 
 protected:
@@ -68,6 +74,7 @@ public:
 protected:
 	bool bIsCatched = false;
 	AActor* CatchingLinkActor = nullptr;
+
 public:
 	void SetIsCatched(bool _bIsCatched) { bIsCatched = _bIsCatched; }
 	bool GetIsCatched() const { return bIsCatched; }
@@ -75,6 +82,23 @@ public:
 	void ResumeMovement();
 	void SetCatchingLinkActor(AActor* _CatchingLinkActor) { CatchingLinkActor = _CatchingLinkActor; }
 	void StopCatchingLink() { CatchingLinkActor = nullptr; }
+
 protected:
 	void LinkCatchedSequence(float DeltaTime);
+
+public:
+	FVector GetSocketLocation(FName SocketName);
+
+
+protected:
+	AActor* OverlappedNPC = nullptr;
+	AActor* OverlappedItem = nullptr;
+	AActor* CatchingItem = nullptr;
+
+public:
+	bool IsOverlappedNPC();
+	bool IsOverlappedItem();
+	void CatchItem();
+	void LayItem();
+	bool IsCatchingItem();
 };

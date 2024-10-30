@@ -11,10 +11,11 @@
 ULinkAnimInstance::ULinkAnimInstance()
 {
 	static ConstructorHelpers::FObjectFinder<UAnimMontage> MtgSlash(TEXT("/Script/Engine.AnimMontage'/Game/Assets/Link/Animation/MTG_Link_SlashAttack.MTG_Link_SlashAttack'"));
-	if (MtgSlash.Object)
-	{
-		AttackMontage = MtgSlash.Object;
-	}
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> MtgItemCarry(TEXT("/Script/Engine.AnimMontage'/Game/Assets/Link/Animation/MTG_Link_Item_Carry.MTG_Link_Item_Carry'"));
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> MtgItemGet(TEXT("/Script/Engine.AnimMontage'/Game/Assets/Link/Animation/MTG_Link_Item_Get.MTG_Link_Item_Get'"));
+	if (MtgSlash.Object) { AttackMontage = MtgSlash.Object; }
+	if (MtgItemCarry.Object) { ItemCarryMontage = MtgItemCarry.Object; }
+	if (MtgItemGet.Object) { ItemGetMontage = MtgItemGet.Object; }
 }
 
 void ULinkAnimInstance::NativeInitializeAnimation()
@@ -49,7 +50,7 @@ void ULinkAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	bIsWait = StatusComponent->GetAnimStatus(LINK_BIT_WAIT);
 	bIsWalk = StatusComponent->GetAnimStatus(LINK_BIT_WALK);
 	bIsRun = StatusComponent->GetAnimStatus(LINK_BIT_RUN);
-	bIsCarry = StatusComponent->GetAnimStatus(LINK_BIT_RUN);
+	bIsCarry = StatusComponent->GetAnimStatus(LINK_BIT_CARRY);
 }
 
 void ULinkAnimInstance::PlayAttackMontage()
@@ -63,4 +64,20 @@ void ULinkAnimInstance::PlayAttackMontage()
 void ULinkAnimInstance::PlayDieMontage()
 {
 	Montage_Play(DieMontage);
+}
+
+void ULinkAnimInstance::PlayItemCarryMontage()
+{
+	if (!Montage_IsPlaying(nullptr))
+	{
+		Montage_Play(ItemCarryMontage);
+	}
+}
+
+void ULinkAnimInstance::PlayItemGetMontage()
+{
+	if (!Montage_IsPlaying(nullptr))
+	{
+		Montage_Play(ItemGetMontage);
+	}
 }

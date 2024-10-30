@@ -30,7 +30,7 @@ void UAnimNotify_MoriblinSwordAttack::Notify(USkeletalMeshComponent* MeshComp, U
 		FTransform::Identity, Monster, Monster, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 
 	FTransform NewTransform;
-	Projectile->SetData(ProjectileName::Albatoss_ClawAttack, CollisionProfileName::MonsterProjectile, TRACE_CHANNEL_MONSTERPROJECTILE);
+	Projectile->SetData(ProjectileName::Albatoss_ClawAttack, CollisionProfileName::MonsterProjectile);
 	NewTransform.SetLocation(Monster->GetActorLocation() + MORIBLIN_SWORDATTACK_LENGTH * MonsterForwardVector);
 	NewTransform.SetRotation(FRotator::ZeroRotator.Quaternion());
 	Projectile->FinishSpawning(NewTransform);
