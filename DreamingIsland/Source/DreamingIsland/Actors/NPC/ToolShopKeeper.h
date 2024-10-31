@@ -37,5 +37,10 @@ protected:
 protected:
 	USpotLightComponent* SpotLightComponent;
 
+protected:
+	UFUNCTION()
+	void SetLinkResetPosition();
+protected:
+	AActor* TSK_Link = nullptr;
 
 };

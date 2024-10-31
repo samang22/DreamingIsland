@@ -7,9 +7,13 @@
 #include "Components/ConversationComponent/ConversationComponent.h"
 #include "Components/ConversationComponent/TSKConversationComponent.h"
 #include "Actors/Link/Link.h"
+#include "Actors/Link/LinkController.h"
+#include "Kismet/GameplayStatics.h"
+#include "Actors/Default/DefaultHUD.h"
 
-#define TOOLSHOPKEEPER_SPOTLIGHT_INTENSITY 8000.f
-
+#define TOOLSHOPKEEPER_SPOTLIGHT_INTENSITY			8000.f
+#define TSK_SAFE_LENGTH								400.f
+#define TSK_LINK_RESET_POSITION						FVector(0.f, 0.f, 50.f)
 AToolShopKeeper::AToolShopKeeper(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
@@ -112,10 +116,26 @@ void AToolShopKeeper::Tick_LineTrace(float DeltaTime)
 		AActor* HitActor = HitResult.GetActor();
 		if (ALink* Link = Cast<ALink>(HitActor))
 		{
+			TSK_Link = Link;
 			if (Link->IsCatchingItem())
 			{
-				ConversationComponent->Conversation(Name.ToString(), TEXT("Blame"));
+				float Distance = FVector::Dist(Link->GetActorLocation(), GetActorLocation());
+				if (Distance > TSK_SAFE_LENGTH)
+				{
+					APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+					ADefaultHUD* DefaultHUD = Cast<ADefaultHUD>(PlayerController->GetHUD());
+					DefaultHUD->OnSetStringToConversation(GetNPCName().ToString(), ConversationComponent->GetScript(TEXT("Blame")));
+					UKismetSystemLibrary::K2_SetTimer(this, TEXT("SetLinkResetPosition"), 1.f, false);
+				}
 			}
 		}
+	}
+}
+
+void AToolShopKeeper::SetLinkResetPosition()
+{
+	if (TSK_Link)
+	{
+		TSK_Link->SetActorLocation(TSK_LINK_RESET_POSITION);
 	}
 }
