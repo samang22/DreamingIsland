@@ -30,14 +30,12 @@ ANPC::ANPC(const FObjectInitializer& ObjectInitializer)
 	CollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("CollisionComponent"));
 	CollisionComponent->SetCollisionProfileName(CollisionProfileName::NPC);
 	CollisionComponent->SetCanEverAffectNavigation(false);
-	//CollisionComponent->SetCollisionResponseToChannel(TRACE_CHANNEL_NPCCHANNEL, ECR_Ignore);
 	RootComponent = CollisionComponent;
 
 	SenseLinkCollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("SenseLinkCollisionComponent"));
 	SenseLinkCollisionComponent->SetCollisionProfileName(CollisionProfileName::SenseLink);
 	SenseLinkCollisionComponent->SetCanEverAffectNavigation(false);
 	SenseLinkCollisionComponent->SetupAttachment(RootComponent);
-	//SenseLinkCollisionComponent->SetCollisionResponseToChannel(TRACE_CHANNEL_NPCCHANNEL, ECR_Ignore);
 
 	SkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshComponent"));
 	SkeletalMeshComponent->SetupAttachment(RootComponent);
@@ -148,6 +146,12 @@ void ANPC::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (bIsTalking)
+	{
+		FRotator CurrentRotator = GetActorRotation();
+		CurrentRotator = FMath::Lerp(CurrentRotator, DesiredRotator, 0.03f);
+		SetActorRotation(CurrentRotator);
+	}
 }
 
 void ANPC::SetCollisionProfileName(FName CollisionProfile)
@@ -181,5 +185,29 @@ void ANPC::PlayMontage_Action02()
 FVector ANPC::GetSocketLocation(FName SocketName)
 {
 	return SkeletalMeshComponent->GetSocketLocation(SocketName);
+}
+
+void ANPC::SetIsTalking(bool _bIsTalking, FVector _LinkLocation)
+{
+	bIsTalking = _bIsTalking;
+	LinkLocation = _LinkLocation;
+
+	if (bIsTalking)
+	{
+		StatusComponent->SetOnAnimationStatus(NPC_BIT_TALK);
+
+		FVector NewVector = _LinkLocation - GetActorLocation();
+		NewVector.Z = 0.;
+		NewVector.Normalize();
+
+		float Pitch = FMath::Asin(NewVector.Z) * (180.0f / PI);
+		float Yaw = FMath::Atan2(NewVector.Y, NewVector.X) * (180.0f / PI);
+		DesiredRotator = FRotator(Pitch, Yaw, 0.f);
+	}
+	else
+	{
+		StatusComponent->SetOffAnimationStatus(NPC_BIT_TALK);
+	}
+
 }
 

@@ -108,6 +108,11 @@ void ALink::BeginPlay()
 	SenseInteractCollisionComponent->SetRelativeLocation(GetActorForwardVector() * LINK_SENSE_COLLISION_OFFSET);
 	SenseInteractCollisionComponent->SetSphereRadius(LINK_SENSEINTERACTIVE_COLLISION_SPHERE_RADIUS);
 	SenseInteractCollisionComponent->SetCollisionProfileName(CollisionProfileName::SenseInteractive);
+
+	ALinkController* LinkController = Cast<ALinkController>(Controller);
+	LinkController->OnLinkTalk.AddDynamic(this, &ThisClass::OnLinkTalk);
+	LinkController->OnLinkTalkEnd.AddDynamic(this, &ThisClass::OnLinkTalkEnd);
+
 }
 
 void ALink::OnConstruction(const FTransform& Transform)
@@ -359,4 +364,20 @@ bool ALink::IsPlayingMontage(LINK_MONTAGE _InEnum)
 void ALink::SetMoveAuto(bool bFlag, FVector Direction)
 {
 	Cast<ALinkController>(Controller)->SetMoveAuto(bFlag, Direction);
+}
+
+void ALink::OnLinkTalk(FVector LinkLocation, FVector LinkLeftVector, FVector LinkForwardVector)
+{
+	if (OverlappedNPC)
+	{
+		Cast<ANPC>(OverlappedNPC)->SetIsTalking(true, GetActorLocation());
+	}
+}
+
+void ALink::OnLinkTalkEnd()
+{
+	if (OverlappedNPC)
+	{
+		Cast<ANPC>(OverlappedNPC)->SetIsTalking(false, GetActorLocation());
+	}
 }

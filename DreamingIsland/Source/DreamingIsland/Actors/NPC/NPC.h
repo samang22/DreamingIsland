@@ -83,4 +83,12 @@ public:
 
 public:
 	FVector GetSocketLocation(FName SocketName);
+
+protected:
+	bool bIsTalking = false;
+	FVector LinkLocation = FVector::Zero();
+	FRotator DesiredRotator = FRotator::ZeroRotator;
+public:
+	void SetIsTalking(bool _bIsTalking, FVector _LinkLocation);
+
 };

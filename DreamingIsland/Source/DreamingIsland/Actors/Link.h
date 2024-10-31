@@ -130,4 +130,11 @@ protected:
 public:
 	void SetMoveAuto(bool bFlag, FVector Direction = FVector::Zero());
 
+public:
+	UFUNCTION()
+	void OnLinkTalk(FVector LinkLocation, FVector LinkLeftVector, FVector LinkForwardVector);
+	UFUNCTION()
+	void OnLinkTalkEnd();
+
+
 };

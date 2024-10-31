@@ -5,6 +5,9 @@
 #include "Misc/Utils.h"
 #include "Components/SpotLightComponent.h"
 #include "Actors/Link.h"
+
+#define TOOLSHOPKEEPER_SPOTLIGHT_INTENSITY 8000.f
+
 AToolShopKeeper::AToolShopKeeper(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
@@ -14,14 +17,14 @@ AToolShopKeeper::AToolShopKeeper(const FObjectInitializer& ObjectInitializer)
 	SpotLightComponent->SetOuterConeAngle(TSK_SPOTLIGHT_ANGLE);
 
 	// Default Value is 5000.f
-	SpotLightComponent->Intensity = 8000.f;
+	SpotLightComponent->Intensity = TOOLSHOPKEEPER_SPOTLIGHT_INTENSITY;
 }
 
 void AToolShopKeeper::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (bIsWatching)
+	if (bIsWatching && !bIsTalking)
 	{
 		Tick_Watching(DeltaTime);
 
