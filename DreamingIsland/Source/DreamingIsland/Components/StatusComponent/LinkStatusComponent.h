@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/StatusComponent.h"
+#include "Components/StatusComponent/StatusComponent.h"
 #include "LinkStatusComponent.generated.h"
 
 #define	LINK_BIT_WAIT			0x00000001

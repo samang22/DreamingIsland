@@ -8,7 +8,7 @@
 #include "Components/SphereComponent.h"
 #include "Components/BoxComponent.h"
 #include "Components/CapsuleComponent.h"
-#include "Components/MonsterStatusComponent.h"
+#include "Components/StatusComponent/MonsterStatusComponent.h"
 #include "Components/WeaponChildActorComponent.h"
 #include "Misc/Utils.h"
 #include "Animation/MonsterAnimInstance.h"

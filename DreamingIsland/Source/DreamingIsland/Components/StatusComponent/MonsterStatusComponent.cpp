@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Components/MonsterStatusComponent.h"
+#include "Components/StatusComponent/MonsterStatusComponent.h"
 
 UMonsterStatusComponent::UMonsterStatusComponent()
 {

@@ -4,7 +4,7 @@
 #include "Actors/AI/Monsters/BasicMonsterAIController.h"
 #include "Actors/Monster.h"
 #include "GameFramework/Character.h"
-#include "Components/StatusComponent.h"
+#include "Components/StatusComponent/StatusComponent.h"
 #include "Components/SplineComponent.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BehaviorTreeComponent.h"

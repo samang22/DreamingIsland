@@ -4,8 +4,8 @@
 #include "Actors/NPC/ToolShopKeeper.h"
 #include "Misc/Utils.h"
 #include "Components/SpotLightComponent.h"
-#include "Components/ConversationComponent.h"
-#include "Components/TSKConversationComponent.h"
+#include "Components/ConversationComponent/ConversationComponent.h"
+#include "Components/ConversationComponent/TSKConversationComponent.h"
 #include "Actors/Link.h"
 
 #define TOOLSHOPKEEPER_SPOTLIGHT_INTENSITY 8000.f

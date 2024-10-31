@@ -7,7 +7,7 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "BehaviorTree/Decorators/BTDecorator_IsAtLocation.h"
 #include "Components/SplineComponent.h"
-#include "Components/StatusComponent.h"
+#include "Components/StatusComponent/StatusComponent.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
 #include "Actors/Monster.h"

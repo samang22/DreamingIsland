@@ -8,7 +8,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SoftWheelSpringArmComponent.h"
-#include "Components/LinkStatusComponent.h"
+#include "Components/StatusComponent/LinkStatusComponent.h"
 #include "Actors/Projectile/ProjectileTableRow.h"
 #include "Components/SphereComponent.h"
 #include "Misc/Utils.h"

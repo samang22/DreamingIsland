@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/MonsterStatusComponent.h"
+#include "Components/StatusComponent/MonsterStatusComponent.h"
 #include "HinoxStatusComponent.generated.h"
 
 #define HINOX_THROW_BOMB_COOLTIME 3.f

@@ -3,7 +3,7 @@
 
 #include "Animation/NPCAnimInstance.h"
 #include "Actors/NPC/NPC.h"
-#include "Components/NPCStatusComponent.h"
+#include "Components/StatusComponent/NPCStatusComponent.h"
 
 void UNPCAnimInstance::NativeInitializeAnimation()
 {

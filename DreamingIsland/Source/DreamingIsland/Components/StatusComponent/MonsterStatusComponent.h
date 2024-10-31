@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/StatusComponent.h"
+#include "Components/StatusComponent/StatusComponent.h"
 #include "MonsterStatusComponent.generated.h"
 
 #define MONSTER_BIT_WAIT			0x00000001

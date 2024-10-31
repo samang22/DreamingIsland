@@ -5,7 +5,7 @@
 #include "GameFramework/PawnMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Actors/Monster.h"
-#include "Components/MonsterStatusComponent.h"
+#include "Components/StatusComponent/MonsterStatusComponent.h"
 
 void UMonsterAnimInstance::NativeInitializeAnimation()
 {

@@ -2,7 +2,7 @@
 
 
 #include "Animation/AlbatossAnimInstance.h"
-#include "Components/MonsterStatusComponent.h"
+#include "Components/StatusComponent/MonsterStatusComponent.h"
 
 UAlbatossAnimInstance::UAlbatossAnimInstance()
 {

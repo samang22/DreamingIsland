@@ -6,7 +6,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "GameFramework/Character.h"
 #include "Components/SoftWheelSpringArmComponent.h"
-#include "Components/LinkStatusComponent.h"
+#include "Components/StatusComponent/LinkStatusComponent.h"
 #include "Actors/LinkCameraManager.h"
 #include "Actors/Link.h"
 #include "Animation/LinkAnimInstance.h"
@@ -190,11 +190,19 @@ void ALinkController::OnInteract(const FInputActionValue& InputActionValue)
 		ADefaultHUD* DefaultHUD = Cast<ADefaultHUD>(GetHUD());
 		
 		const ANPC* NPC = Cast<ANPC>(Link->GetOverlappedNPC());
-		FString Script = NPC->GetScript(TEXT("Greeting"));
-		DefaultHUD->OnSetStringToConversation(NPC->GetNPCName().ToString(), Script);
 
-		return;
-		// 4. Conversation blah blah
+		if (Link->IsCatchingItem())
+		{
+			FString Script = NPC->GetScript(TEXT("Blame"));
+			DefaultHUD->OnSetStringToConversation(NPC->GetNPCName().ToString(), Script);
+		}
+		else if (!Link->IsCatchingItem())
+		{
+			FString Script = NPC->GetScript(TEXT("Greeting"));
+			DefaultHUD->OnSetStringToConversation(NPC->GetNPCName().ToString(), Script);
+		}
+
+
 	}
 	else if (Link->IsOverlappedItem()
 		&& !Link->IsCatchingItem()

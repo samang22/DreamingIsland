@@ -8,7 +8,7 @@
 #include "Actors/Monster.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/Character.h"
-#include "Components/HinoxStatusComponent.h"
+#include "Components/StatusComponent/HinoxStatusComponent.h"
 #include "Actors/Link.h"
 
 

@@ -6,8 +6,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/Character.h"
 #include "Actors/Monster.h"
-#include "Components/MonsterStatusComponent.h"
-#include "Components/HinoxStatusComponent.h"
+#include "Components/StatusComponent/MonsterStatusComponent.h"
+#include "Components/StatusComponent/HinoxStatusComponent.h"
 
 UBTTask_Catch::UBTTask_Catch()
 {

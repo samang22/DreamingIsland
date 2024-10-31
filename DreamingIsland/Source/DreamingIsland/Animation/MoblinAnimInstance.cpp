@@ -2,7 +2,7 @@
 
 
 #include "Animation/MoblinAnimInstance.h"
-#include "Components/MonsterStatusComponent.h"
+#include "Components/StatusComponent/MonsterStatusComponent.h"
 
 UMoblinAnimInstance::UMoblinAnimInstance()
 {

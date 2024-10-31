@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/ConversationComponent.h"
+#include "Components/ConversationComponent/ConversationComponent.h"
 #include "TSKConversationComponent.generated.h"
 
 /**

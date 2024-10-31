@@ -4,7 +4,7 @@
 #include "Actors/Monsters/Moriblin.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/KismetMathLibrary.h"
-#include "Components/MonsterStatusComponent.h"
+#include "Components/StatusComponent/MonsterStatusComponent.h"
 #include "Data/PawnTableRow.h"
 #include "Misc/Utils.h"
 

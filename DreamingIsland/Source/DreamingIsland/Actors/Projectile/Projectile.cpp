@@ -13,7 +13,7 @@
 #include "Actors/Monsters/Bomber.h"
 #include "Actors/Monsters/Hinox.h"
 #include "Actors/Link.h"
-#include "Components/HinoxStatusComponent.h"
+#include "Components/StatusComponent/HinoxStatusComponent.h"
 
 // Sets default values
 AProjectile::AProjectile()

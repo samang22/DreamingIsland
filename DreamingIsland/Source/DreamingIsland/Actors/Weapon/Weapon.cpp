@@ -2,7 +2,7 @@
 
 
 #include "Actors/Weapon/Weapon.h"
-#include "Components/StatusComponent.h"
+#include "Components/StatusComponent/StatusComponent.h"
 
 FWeaponTableRow::FWeaponTableRow()
 	: WeaponClass(AWeapon::StaticClass())

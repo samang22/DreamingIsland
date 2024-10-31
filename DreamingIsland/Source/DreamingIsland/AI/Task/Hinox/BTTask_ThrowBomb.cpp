@@ -6,7 +6,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/Character.h"
 #include "Actors/Monsters/Hinox.h"
-#include "Components/HinoxStatusComponent.h"
+#include "Components/StatusComponent/HinoxStatusComponent.h"
 
 UBTTask_ThrowBomb::UBTTask_ThrowBomb()
 {

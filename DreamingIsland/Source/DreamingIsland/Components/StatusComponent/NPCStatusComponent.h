@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/StatusComponent.h"
+#include "Components/StatusComponent/StatusComponent.h"
 #include "NPCStatusComponent.generated.h"
 
 #define NPC_BIT_WAIT			0x00000001

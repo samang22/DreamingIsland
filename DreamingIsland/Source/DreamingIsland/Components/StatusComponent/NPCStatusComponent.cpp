@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Components/NPCStatusComponent.h"
+#include "Components/StatusComponent/NPCStatusComponent.h"
 
 UNPCStatusComponent::UNPCStatusComponent()
 {

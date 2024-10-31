@@ -2,7 +2,7 @@
 
 
 #include "Actors/Monsters/Hinox.h"
-#include "Components/HinoxStatusComponent.h"
+#include "Components/StatusComponent/HinoxStatusComponent.h"
 AHinox::AHinox(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {

@@ -8,7 +8,7 @@
 #include "Components/SphereComponent.h"
 #include "Components/BoxComponent.h"
 #include "Components/CapsuleComponent.h"
-#include "Components/NPCStatusComponent.h"
+#include "Components/StatusComponent/NPCStatusComponent.h"
 #include "Misc/Utils.h"
 #include "Animation/NPCAnimInstance.h"
 #include "AIController.h"

@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Components/HinoxStatusComponent.h"
+#include "Components/StatusComponent/HinoxStatusComponent.h"
 
 void UHinoxStatusComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {

@@ -5,7 +5,7 @@
 #include "GameFramework/PawnMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Actors/Link.h"
-#include "Components/LinkStatusComponent.h"
+#include "Components/StatusComponent/LinkStatusComponent.h"
 
 
 ULinkAnimInstance::ULinkAnimInstance()

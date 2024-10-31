@@ -4,7 +4,7 @@
 #include "Actors/AI/NPC/NPCAIController.h"
 #include "Actors/NPC/NPC.h"
 #include "GameFramework/Character.h"
-#include "Components/StatusComponent.h"
+#include "Components/StatusComponent/StatusComponent.h"
 #include "Components/SplineComponent.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BehaviorTreeComponent.h"
