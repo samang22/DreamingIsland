@@ -10,6 +10,7 @@
 #include "Components/BoxComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/NPCStatusComponent.h"
+#include "Components/ConversationComponent.h"
 #include "Data/NPCTableRow.h"
 #include "Misc/Utils.h"
 #include "Perception/AIPerceptionComponent.h"
@@ -51,8 +52,10 @@ ANPC::ANPC(const FObjectInitializer& ObjectInitializer)
 	AISenseConfig_Sight->PeripheralVisionAngleDegrees = NPC_AISENSECONFIG_SIGHT_LOSESIGHTRADIUS_PERIPHERALVISIONANGLEDEGREES;
 	AIPerceptionComponent->ConfigureSense(*AISenseConfig_Sight);
 
-
 	StatusComponent = CreateDefaultSubobject<UNPCStatusComponent>(TEXT("StatusComponent"));
+
+	// Conversation Status will be Created in Subclass
+
 }
 
 void ANPC::SetData(const FDataTableRowHandle& InDataTableRowHandle)
@@ -209,5 +212,15 @@ void ANPC::SetIsTalking(bool _bIsTalking, FVector _LinkLocation)
 		StatusComponent->SetOffAnimationStatus(NPC_BIT_TALK);
 	}
 
+}
+
+void ANPC::OnConversation(FString Key)
+{
+	ConversationComponent->Conversation(Name.ToString(), Key);
+}
+
+FString ANPC::GetScript(FString Key) const
+{
+	return ConversationComponent->GetScript(Key);
 }
 

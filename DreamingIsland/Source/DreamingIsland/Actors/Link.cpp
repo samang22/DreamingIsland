@@ -370,7 +370,8 @@ void ALink::OnLinkTalk(FVector LinkLocation, FVector LinkLeftVector, FVector Lin
 {
 	if (OverlappedNPC)
 	{
-		Cast<ANPC>(OverlappedNPC)->SetIsTalking(true, GetActorLocation());
+		ANPC* NPC = Cast<ANPC>(OverlappedNPC);
+		NPC->SetIsTalking(true, GetActorLocation());
 	}
 }
 

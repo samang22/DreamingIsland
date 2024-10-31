@@ -16,5 +16,5 @@ void UUserWidgetBase::NativePreConstruct()
 void UUserWidgetBase::NativeConstruct()
 {
 	Super::NativeConstruct();
-	ensure(OwningPawn);
+	//ensure(OwningPawn);
 }

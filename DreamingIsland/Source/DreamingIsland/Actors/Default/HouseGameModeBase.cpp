@@ -2,8 +2,12 @@
 
 
 #include "Actors/Default/HouseGameModeBase.h"
-
 #include "Actors/LinkController.h"
+#include "Actors/Default/DefaultHUD.h"
+
+
+
+
 AHouseGameModeBase::AHouseGameModeBase()
 {
 	PlayerControllerClass = ALinkController::StaticClass();
@@ -12,4 +16,6 @@ AHouseGameModeBase::AHouseGameModeBase()
 		check(ClassFinder.Class);
 		DefaultPawnClass = ClassFinder.Class;
 	}
+
+	HUDClass = ADefaultHUD::StaticClass();
 }

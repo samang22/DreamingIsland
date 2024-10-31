@@ -114,6 +114,7 @@ public:
 	void CatchItem();
 	void LayItem();
 	bool IsCatchingItem();
+	const AActor* GetOverlappedNPC() { return OverlappedNPC; }
 
 protected:
 	UAnimMontage* SlashMontage = nullptr;
@@ -135,6 +136,5 @@ public:
 	void OnLinkTalk(FVector LinkLocation, FVector LinkLeftVector, FVector LinkForwardVector);
 	UFUNCTION()
 	void OnLinkTalkEnd();
-
 
 };

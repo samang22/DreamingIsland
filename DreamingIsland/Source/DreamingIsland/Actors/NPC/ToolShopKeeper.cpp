@@ -4,6 +4,8 @@
 #include "Actors/NPC/ToolShopKeeper.h"
 #include "Misc/Utils.h"
 #include "Components/SpotLightComponent.h"
+#include "Components/ConversationComponent.h"
+#include "Components/TSKConversationComponent.h"
 #include "Actors/Link.h"
 
 #define TOOLSHOPKEEPER_SPOTLIGHT_INTENSITY 8000.f
@@ -18,6 +20,10 @@ AToolShopKeeper::AToolShopKeeper(const FObjectInitializer& ObjectInitializer)
 
 	// Default Value is 5000.f
 	SpotLightComponent->Intensity = TOOLSHOPKEEPER_SPOTLIGHT_INTENSITY;
+
+	ConversationComponent = CreateDefaultSubobject<UTSKConversationComponent>(TEXT("ConversationComponent"));
+
+	Name = TEXT("도구 상점 주인");
 }
 
 void AToolShopKeeper::Tick(float DeltaTime)
@@ -106,7 +112,10 @@ void AToolShopKeeper::Tick_LineTrace(float DeltaTime)
 		AActor* HitActor = HitResult.GetActor();
 		if (ALink* Link = Cast<ALink>(HitActor))
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Hit: %s %d"), *HitActor->GetName(), iCount++);
+			if (Link->IsCatchingItem())
+			{
+				ConversationComponent->Conversation(Name.ToString(), TEXT("Blame"));
+			}
 		}
 	}
 }

@@ -2,6 +2,7 @@
 
 
 #include "UI/ConversationWidget.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 void UConversationWidget::NativeOnInitialized()
 {
@@ -29,4 +30,17 @@ void UConversationWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaT
 void UConversationWidget::OnHiddenUI()
 {
 	SetVisibility(ESlateVisibility::Hidden);
+}
+
+void UConversationWidget::OnSetStringToConversation(FString _Speaker, FString String)
+{
+	FText tempText = FText::FromString(String);
+	TextBlock->SetText(tempText);
+
+	tempText = FText::FromString(_Speaker);
+	Speaker->SetText(tempText);
+
+
+	SetVisibility(ESlateVisibility::Visible);
+	UKismetSystemLibrary::K2_SetTimer(this, TEXT("OnHiddenUI"), 2.f, false);
 }

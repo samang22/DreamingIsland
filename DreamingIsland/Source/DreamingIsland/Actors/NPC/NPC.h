@@ -15,6 +15,7 @@ class UAdvancedFloatingPawnMovement;
 class APatrolPath;
 class UNPCStatusComponent;
 struct FNPCTableRow;
+class UConversationComponent;
 
 UCLASS()
 class DREAMINGISLAND_API ANPC : public APawn
@@ -66,6 +67,13 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	UNPCStatusComponent* StatusComponent;
 
+	UPROPERTY(VisibleAnywhere)
+	UConversationComponent* ConversationComponent;
+
+	UPROPERTY(VisibleAnywhere)
+	FName Name;
+public:
+	FName GetNPCName() const { return Name; }
 public:
 	UNPCStatusComponent* GetStatusComponent() { return StatusComponent; }
 protected:
@@ -90,5 +98,7 @@ protected:
 	FRotator DesiredRotator = FRotator::ZeroRotator;
 public:
 	void SetIsTalking(bool _bIsTalking, FVector _LinkLocation);
-
+	UFUNCTION()
+	void OnConversation(FString Key);
+	FString GetScript(FString Key) const;
 };

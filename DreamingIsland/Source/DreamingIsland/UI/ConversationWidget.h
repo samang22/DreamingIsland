@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "UI/UserWidgetBase.h"
 #include "Components/Image.h"
+#include "Components/TextBlock.h"
 #include "ConversationWidget.generated.h"
 
 /**
@@ -22,8 +23,15 @@ protected:
 
 	UFUNCTION()
 	void OnHiddenUI();
+public:
+	UFUNCTION()
+	void OnSetStringToConversation(FString Speaker, FString String);
 
 protected:
 	UPROPERTY(VisibleAnywhere, meta = (BindWidget))
 	UImage* ConversationMold;
+	UPROPERTY(VisibleAnywhere, meta = (BindWidget))
+	UTextBlock* Speaker;
+	UPROPERTY(VisibleAnywhere, meta = (BindWidget))
+	UTextBlock* TextBlock;
 };
