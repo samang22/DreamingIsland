@@ -1,6 +1,6 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "{715D33CC-4A17-7B9D-1484-CDBCC53A0D28}",
+	"EngineAssociation": "{36EA2B80-49B1-9B22-69F5-A0A317C1B0F0}",
 	"Category": "",
 	"Description": "",
 	"Modules": [
@@ -11,7 +11,8 @@
 			"AdditionalDependencies": [
 				"Engine",
 				"AIModule",
-				"NavigationSystem"
+				"NavigationSystem",
+				"UMG"
 			]
 		}
 	],

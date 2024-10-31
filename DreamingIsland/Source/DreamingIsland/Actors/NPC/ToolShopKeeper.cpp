@@ -47,7 +47,7 @@ void AToolShopKeeper::BeginPlay()
 
 	SpotLightComponent->SetInnerConeAngle(TSK_SPOTLIGHT_ANGLE);
 	SpotLightComponent->SetOuterConeAngle(TSK_SPOTLIGHT_ANGLE);
-	SpotLightComponent->Intensity = 8000.f;
+	SpotLightComponent->Intensity = TOOLSHOPKEEPER_SPOTLIGHT_INTENSITY;
 }
 
 void AToolShopKeeper::SetIsWatching(const bool _bIsWatching)
