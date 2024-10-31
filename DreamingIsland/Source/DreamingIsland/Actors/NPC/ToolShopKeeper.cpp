@@ -10,6 +10,10 @@
 #include "Actors/Link/LinkController.h"
 #include "Kismet/GameplayStatics.h"
 #include "Actors/Default/DefaultHUD.h"
+#include "GameFramework/PlayerController.h"
+#include "Actors/House/HouseCamera.h"
+
+
 
 #define TOOLSHOPKEEPER_SPOTLIGHT_INTENSITY			12000.f
 #define TSK_SAFE_LENGTH								400.f
@@ -37,8 +41,6 @@ void AToolShopKeeper::Tick(float DeltaTime)
 	if (bIsWatching && !bIsTalking)
 	{
 		Tick_Watching(DeltaTime);
-
-
 	}
 }
 
@@ -53,7 +55,14 @@ void AToolShopKeeper::BeginPlay()
 	RightGoalDir = TSK_ForwardVector + TSK_RightVector;
 	RightGoalDir.Normalize();
 
-	//
+	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this, 0);
+	AActor* CameraActor = PlayerController ? PlayerController->GetViewTarget() : nullptr;
+	AHouseCamera* HouseCamera = Cast<AHouseCamera>(CameraActor);
+	if (HouseCamera)
+	{
+		// To bind delegate to HouseCamera
+		HouseCamera->SetTSKDelgateBind(this);
+	}
 
 	SpotLightComponent->SetInnerConeAngle(TSK_SPOTLIGHT_ANGLE);
 	SpotLightComponent->SetOuterConeAngle(TSK_SPOTLIGHT_ANGLE);
@@ -127,8 +136,10 @@ void AToolShopKeeper::Tick_LineTrace(float DeltaTime)
 					DefaultHUD->OnSetStringToConversation(GetNPCName().ToString(), ConversationComponent->GetScript(TEXT("Blame")));
 					UKismetSystemLibrary::K2_SetTimer(this, TEXT("SetLinkResetPosition"), 1.f, false);
 
-					ALinkController* LinkController = Cast<ALinkController>(PlayerController);
-					LinkController->SetTSKLocation(GetActorLocation());
+					OnLinkCaught.Broadcast(GetActorLocation(), GetActorForwardVector());
+					bIsWatching = false;
+
+					UKismetSystemLibrary::K2_SetTimer(this, TEXT("CallOnLinkCaughtEnd"), 1.f, false);
 				}
 			}
 		}
@@ -141,4 +152,10 @@ void AToolShopKeeper::SetLinkResetPosition()
 	{
 		TSK_Link->SetActorLocation(TSK_LINK_RESET_POSITION);
 	}
+}
+
+void AToolShopKeeper::CallOnLinkCaughtEnd()
+{
+	OnLinkCaughtEnd.Broadcast();
+	bIsWatching = true;
 }

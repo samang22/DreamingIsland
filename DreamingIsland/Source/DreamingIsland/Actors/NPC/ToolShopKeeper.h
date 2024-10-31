@@ -8,8 +8,11 @@
 
 #define TSK_TURN_SPEED 3.f
 #define TSK_SPOTLIGHT_ANGLE 10.f
-class USpotLightComponent;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnLinkCaught, FVector, TSKLocation, FVector, ForwardVector);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLinkCaughtEnd);
+
+class USpotLightComponent;
 UCLASS()
 class DREAMINGISLAND_API AToolShopKeeper : public ANPC
 {
@@ -42,5 +45,16 @@ protected:
 	void SetLinkResetPosition();
 protected:
 	AActor* TSK_Link = nullptr;
+
+public:
+	UPROPERTY(BlueprintAssignable)
+	FOnLinkCaught OnLinkCaught;
+	UPROPERTY(BlueprintAssignable)
+	FOnLinkCaughtEnd OnLinkCaughtEnd;
+protected:
+	UFUNCTION()
+	void CallOnLinkCaughtEnd();
+
+
 
 };

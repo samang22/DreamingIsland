@@ -5,13 +5,14 @@
 #include "Camera/CameraComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Actors/Link/LinkController.h"
+#include "Actors/NPC/ToolShopKeeper.h"
 
 #define LINK_LEFT_OFFSET 200.f
 #define LINK_FOWARD_OFFSET -40.f
 #define LINK_UP_OFFSET 50.f
 
-#define TSK_FOWARD_OFFSET -40.f
-#define TSK_UP_OFFSET 50.f
+#define TSK_FOWARD_OFFSET 100.f
+#define TSK_UP_OFFSET 30.f
 
 #define DEFAULT_HOUSE_CAMERA_POSITION FVector(0., 670., 730.)
 #define DEFAULT_HOUSE_CAMERA_ROTATION FRotator(-50., -89.99, 0)
@@ -35,8 +36,8 @@ void AHouseCamera::BeginPlay()
 	LinkController->SetViewTarget(this);
 	LinkController->OnLinkTalk.AddDynamic(this, &ThisClass::OnLinkTalk);
 	LinkController->OnLinkTalkEnd.AddDynamic(this, &ThisClass::OnLinkTalkEnd);
-	LinkController->OnLinkCaught.AddDynamic(this, &ThisClass::OnLinkCaught);
-	LinkController->OnLinkCaughtEnd.AddDynamic(this, &ThisClass::OnLinkCaughtEnd);
+
+
 
 	DefaultLocation = DEFAULT_HOUSE_CAMERA_POSITION;
 	DefaultRotator = DEFAULT_HOUSE_CAMERA_ROTATION;
@@ -83,15 +84,15 @@ void AHouseCamera::OnLinkTalkEnd()
 	DesiredRotator = DefaultRotator;
 }
 
-void AHouseCamera::OnLinkCaught(FVector TSKLocation)
+void AHouseCamera::OnLinkCaught(FVector TSKLocation, FVector ForwardVector)
 {
 	FVector TempLocation = TSKLocation;
-	TempLocation += FVector(0., 1., 0.) * TSK_FOWARD_OFFSET;
+	TempLocation += ForwardVector * TSK_FOWARD_OFFSET;
 	TempLocation += FVector(0., 0., 1.) * TSK_UP_OFFSET;
 	DesiredLocation = TempLocation;
 
 	FVector LinkRightVector = TSKLocation * -1;
-	FVector NewVector = DesiredLocation - TSKLocation;
+	FVector NewVector = TSKLocation - DesiredLocation;
 	NewVector.Normalize();
 
 	float Pitch = FMath::Asin(NewVector.Z) * (180.0f / PI);
@@ -103,5 +104,12 @@ void AHouseCamera::OnLinkCaughtEnd()
 {
 	DesiredLocation = DefaultLocation;
 	DesiredRotator = DefaultRotator;
+}
+
+void AHouseCamera::SetTSKDelgateBind(AToolShopKeeper* _Keeper)
+{
+	ToolShopKeeper = _Keeper;
+	ToolShopKeeper->OnLinkCaught.AddDynamic(this, &ThisClass::OnLinkCaught);
+	ToolShopKeeper->OnLinkCaughtEnd.AddDynamic(this, &ThisClass::OnLinkCaughtEnd);
 }
 

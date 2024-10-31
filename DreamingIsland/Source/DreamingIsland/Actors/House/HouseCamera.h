@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "HouseCamera.generated.h"
 
+class AToolShopKeeper;
 UCLASS()
 class DREAMINGISLAND_API AHouseCamera : public AActor
 {
@@ -44,8 +45,12 @@ public:
 	UFUNCTION()
 	void OnLinkTalkEnd();
 	UFUNCTION()
-	void OnLinkCaught(FVector TSKLocation);
+	void OnLinkCaught(FVector TSKLocation, FVector ForwardVector);
 	UFUNCTION()
 	void OnLinkCaughtEnd();
 
+protected:
+	AToolShopKeeper* ToolShopKeeper = nullptr;
+public:
+	void SetTSKDelgateBind(AToolShopKeeper* _Keeper);
 };
