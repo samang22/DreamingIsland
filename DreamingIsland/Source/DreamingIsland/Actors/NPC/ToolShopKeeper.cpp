@@ -11,7 +11,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Actors/Default/DefaultHUD.h"
 
-#define TOOLSHOPKEEPER_SPOTLIGHT_INTENSITY			8000.f
+#define TOOLSHOPKEEPER_SPOTLIGHT_INTENSITY			12000.f
 #define TSK_SAFE_LENGTH								400.f
 #define TSK_LINK_RESET_POSITION						FVector(0.f, 0.f, 50.f)
 AToolShopKeeper::AToolShopKeeper(const FObjectInitializer& ObjectInitializer)
@@ -126,6 +126,9 @@ void AToolShopKeeper::Tick_LineTrace(float DeltaTime)
 					ADefaultHUD* DefaultHUD = Cast<ADefaultHUD>(PlayerController->GetHUD());
 					DefaultHUD->OnSetStringToConversation(GetNPCName().ToString(), ConversationComponent->GetScript(TEXT("Blame")));
 					UKismetSystemLibrary::K2_SetTimer(this, TEXT("SetLinkResetPosition"), 1.f, false);
+
+					ALinkController* LinkController = Cast<ALinkController>(PlayerController);
+					LinkController->SetTSKLocation(GetActorLocation());
 				}
 			}
 		}

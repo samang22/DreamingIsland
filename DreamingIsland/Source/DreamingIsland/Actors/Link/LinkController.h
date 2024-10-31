@@ -10,6 +10,8 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnLinkTalk, FVector, LinkLocation, FVector, LinkLeftVector, FVector, LinkForwardVector);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLinkTalkEnd);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLinkCaught, FVector, TSKLocation);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLinkCaughtEnd);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnConversation, FString, Key);
 
 UCLASS()
@@ -70,5 +72,15 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnLinkTalkEnd OnLinkTalkEnd;
 	UPROPERTY(BlueprintAssignable)
+	FOnLinkTalk OnLinkCaught;
+	UPROPERTY(BlueprintAssignable)
+	FOnLinkTalkEnd OnLinkCaughtEnd;
+
+	UPROPERTY(BlueprintAssignable)
 	FOnConversation OnConversation;
+
+public:
+	void SetTSKLocation(FVector Location) { TSKLocation = Location; }
+protected:
+	FVector TSKLocation;
 };

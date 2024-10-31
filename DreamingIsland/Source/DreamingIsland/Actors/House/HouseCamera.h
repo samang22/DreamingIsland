@@ -43,5 +43,9 @@ public:
 	void OnLinkTalk(FVector LinkLocation, FVector LinkLeftVector, FVector LinkForwardVector);
 	UFUNCTION()
 	void OnLinkTalkEnd();
+	UFUNCTION()
+	void OnLinkCaught(FVector TSKLocation);
+	UFUNCTION()
+	void OnLinkCaughtEnd();
 
 };
