@@ -6,11 +6,10 @@
 #include "GameFramework/PlayerController.h"
 #include "Misc/Utils.h"
 #include "LinkController.generated.h"
-/**
- * 
- */
 
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnLinkTalk, FVector, LinkLocation, FVector, LinkLeftVector, FVector, LinkForwardVector);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLinkTalkEnd);
 
 UCLASS()
 class DREAMINGISLAND_API ALinkController : public APlayerController
@@ -23,10 +22,6 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
-	/**
-	 * Overridable native function for when this controller is asked to possess a pawn.
-	 * @param InPawn The Pawn to be possessed
-	 */
 	virtual void OnPossess(APawn* InPawn);
 
 	virtual void Tick(float DeltaTime);
@@ -67,4 +62,10 @@ protected:
 	void MoveAutoSequence(float DeltaTime);
 public:
 	void SetMoveAuto(bool bFlag, FVector Direction = FVector::Zero());
+
+public:
+	UPROPERTY(BlueprintAssignable)
+	FOnLinkTalk OnLinkTalk;
+	UPROPERTY(BlueprintAssignable)
+	FOnLinkTalkEnd OnLinkTalkEnd;
 };

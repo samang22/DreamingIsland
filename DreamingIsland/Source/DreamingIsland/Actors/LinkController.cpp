@@ -181,31 +181,43 @@ void ALinkController::OnInteract(const FInputActionValue& InputActionValue)
 {
 	ALink* Link = Cast<ALink>(GetPawn());
 
-	if (Link->IsOverlappedItem()
+	if (Link->IsOverlappedNPC())
+	{
+		// @TODO
+		// 1. Turn to NPC
+		// 2. NPC Turn to LInk
+
+		OnLinkTalk.Broadcast(Link->GetActorLocation(), -1 * Link->GetActorRightVector(), Link->GetActorForwardVector());
+		return;
+		// 4. Conversation blah blah
+	}
+	else if (Link->IsOverlappedItem()
 		&& !Link->IsCatchingItem()
 		)
 	{
 		AnimInstance->PlayItemCarryMontage();
 		Link->CatchItem();
 	}
-	else if (Link->IsOverlappedNPC())
-	{
-		// @TODO
-		// 1. Turn to NPC
-		// 2. NPC Turn to LInk
-		// 3. Camera close up
-		// 4. Conversation blah blah
-	}
+	 
 }
 
 void ALinkController::OnLay(const FInputActionValue& InputActionValue)
 {
 	ALink* Link = Cast<ALink>(GetPawn());
+
+	if (Link->IsOverlappedNPC())
+	{
+		OnLinkTalkEnd.Broadcast();
+		return;
+	}
+
 	if (Link->IsCatchingItem()
 	&& !Link->IsPlayingMontage(LINK_MONTAGE::END))
 	{
 		Link->LayItem();
 	}
+
+
 }
 
 void ALinkController::OnZoomWheel(const FInputActionValue& InputActionValue)

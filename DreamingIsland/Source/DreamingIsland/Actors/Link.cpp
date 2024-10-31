@@ -21,9 +21,9 @@
 #define COLLISION_SPHERE_RADIUS							24.f
 #define LINK_WALK_SPEED									500.f
 #define LINK_RUN_SPEED									1000.f
-#define LINK_SENSEINTERACTIVE_COLLISION_SPHERE_RADIUS	24.f
+#define LINK_SENSEINTERACTIVE_COLLISION_SPHERE_RADIUS	48.f
+#define LINK_SENSE_COLLISION_OFFSET						48.f
 #define LINK_CAPSULE_HALF_HEIGHT						200.f
-#define LINK_SENSE_COLLISION_OFFSET						36.f
 
 // Sets default values
 ALink::ALink(const FObjectInitializer& ObjectInitializer)

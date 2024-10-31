@@ -27,4 +27,21 @@ protected:
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 	TObjectPtr<class UCameraComponent> Camera;
 
+protected:
+	UPROPERTY(EditAnywhere)
+	FVector DefaultLocation = FVector::Zero();
+	UPROPERTY(EditAnywhere)
+	FRotator DefaultRotator = FRotator::ZeroRotator;
+
+	UPROPERTY(EditAnywhere)
+	FVector DesiredLocation = FVector::Zero();
+	UPROPERTY(EditAnywhere)
+	FRotator DesiredRotator = FRotator::ZeroRotator;
+
+public:
+	UFUNCTION()
+	void OnLinkTalk(FVector LinkLocation, FVector LinkLeftVector, FVector LinkForwardVector);
+	UFUNCTION()
+	void OnLinkTalkEnd();
+
 };
