@@ -2,7 +2,7 @@
 
 
 #include "Animation/AnimNotify/Monsters/AnimNotify_HideBomb.h"
-#include "Actors/Monster.h"
+#include "Actors/Monsters/Monster.h"
 
 UAnimNotify_HideBomb::UAnimNotify_HideBomb()
 {
@@ -12,7 +12,7 @@ void UAnimNotify_HideBomb::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenc
 {
 	Super::Notify(MeshComp, Animation, EventReference);
 #if WITH_EDITOR
-	if (GIsEditor && MeshComp->GetWorld() != GWorld) { return; } // ¿¡µðÅÍ ÇÁ¸®ºä
+	if (GIsEditor && MeshComp->GetWorld() != GWorld) { return; } // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 #endif
 
 	AMonster* Monster = Cast<AMonster>(MeshComp->GetOwner());

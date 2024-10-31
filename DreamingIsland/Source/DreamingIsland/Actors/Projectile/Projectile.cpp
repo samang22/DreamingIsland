@@ -9,10 +9,10 @@
 #include "Actors/Projectile/ProjectileTableRow.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/SphereComponent.h"
-#include "Actors/Monster.h"
+#include "Actors/Monsters/Monster.h"
 #include "Actors/Monsters/Bomber.h"
 #include "Actors/Monsters/Hinox.h"
-#include "Actors/Link.h"
+#include "Actors/Link/Link.h"
 #include "Components/StatusComponent/HinoxStatusComponent.h"
 
 // Sets default values

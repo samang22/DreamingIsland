@@ -5,7 +5,7 @@
 #include "Misc/Utils.h"
 #include "Actors/Projectile/Projectile.h"
 #include "Actors/Projectile/ProjectileTableRow.h"
-#include "Actors/Monster.h"
+#include "Actors/Monsters/Monster.h"
 
 UAnimNotify_CatchLink::UAnimNotify_CatchLink()
 {

@@ -11,7 +11,7 @@
 #include "Components/StatusComponent/StatusComponent.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
-#include "Actors/Monster.h"
+#include "Actors/Monsters/Monster.h"
 #include "GameFramework/Character.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Data/PawnTableRow.h"

@@ -4,7 +4,7 @@
 #include "Animation/LinkAnimInstance.h"
 #include "GameFramework/PawnMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
-#include "Actors/Link.h"
+#include "Actors/Link/Link.h"
 #include "Components/StatusComponent/LinkStatusComponent.h"
 
 

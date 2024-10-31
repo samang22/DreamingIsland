@@ -3,7 +3,7 @@
 
 #include "Animation/AnimNotify/Monsters/AnimNotify_HinoxRunStart.h"
 #include "Misc/Utils.h"
-#include "Actors/Monster.h"
+#include "Actors/Monsters/Monster.h"
 void UAnimNotify_HinoxRunStart::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
 {
 	Super::Notify(MeshComp, Animation, EventReference);

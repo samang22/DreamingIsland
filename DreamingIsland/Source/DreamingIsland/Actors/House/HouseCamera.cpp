@@ -4,7 +4,7 @@
 #include "Actors/House/HouseCamera.h"
 #include "Camera/CameraComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "Actors/LinkController.h"
+#include "Actors/Link/LinkController.h"
 
 #define LINK_LEFT_OFFSET 200.f
 #define LINK_FOWARD_OFFSET -40.f

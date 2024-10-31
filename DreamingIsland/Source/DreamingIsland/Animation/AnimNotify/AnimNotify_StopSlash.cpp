@@ -2,7 +2,7 @@
 
 
 #include "Animation/AnimNotify/AnimNotify_StopSlash.h"
-#include "Actors/LinkController.h"
+#include "Actors/Link/LinkController.h"
 #include "GameFramework/Character.h"
 #include "Animation/LinkAnimInstance.h"
 

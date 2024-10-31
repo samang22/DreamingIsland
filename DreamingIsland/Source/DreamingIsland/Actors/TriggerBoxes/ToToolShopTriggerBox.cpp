@@ -5,7 +5,7 @@
 #include "Components/BoxComponent.h"
 #include "Actors/TriggerBoxes/TriggerInterface.h"
 #include "Misc/Utils.h"
-#include "Actors/Link.h"
+#include "Actors/Link/Link.h"
 #include "Kismet/GameplayStatics.h"
 
 AToToolShopTriggerBox::AToToolShopTriggerBox(const FObjectInitializer& ObjectInitializer)

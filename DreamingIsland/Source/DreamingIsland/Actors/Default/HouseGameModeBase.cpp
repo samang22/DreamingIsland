@@ -2,7 +2,7 @@
 
 
 #include "Actors/Default/HouseGameModeBase.h"
-#include "Actors/LinkController.h"
+#include "Actors/Link/LinkController.h"
 #include "Actors/Default/DefaultHUD.h"
 
 

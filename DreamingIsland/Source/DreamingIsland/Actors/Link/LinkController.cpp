@@ -1,14 +1,14 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Actors/LinkController.h"
+#include "Actors/Link/LinkController.h"
 #include "LinkController.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "GameFramework/Character.h"
 #include "Components/SoftWheelSpringArmComponent.h"
 #include "Components/StatusComponent/LinkStatusComponent.h"
-#include "Actors/LinkCameraManager.h"
-#include "Actors/Link.h"
+#include "Actors/Link/LinkCameraManager.h"
+#include "Actors/Link/Link.h"
 #include "Animation/LinkAnimInstance.h"
 #include "Actors/Default/DefaultHUD.h"
 #include "Actors/NPC/NPC.h"

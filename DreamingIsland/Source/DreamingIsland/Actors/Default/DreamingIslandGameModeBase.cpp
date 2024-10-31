@@ -2,7 +2,7 @@
 
 
 #include "Actors/Default/DreamingIslandGameModeBase.h"
-#include "Actors/LinkController.h"
+#include "Actors/Link/LinkController.h"
 
 ADreamingIslandGameModeBase::ADreamingIslandGameModeBase()
 {

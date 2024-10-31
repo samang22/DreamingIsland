@@ -4,7 +4,7 @@
 #include "AI/Task/BTTask_TurnToLink.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/Character.h"
-#include "Actors/Monster.h"
+#include "Actors/Monsters/Monster.h"
 #include "Misc/Utils.h"
 
 EBTNodeResult::Type UBTTask_TurnToLink::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)

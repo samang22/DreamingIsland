@@ -5,7 +5,7 @@
 #include "Misc/Utils.h"
 #include "Actors/Projectile/Projectile.h"
 #include "Actors/Projectile/ProjectileTableRow.h"
-#include "Actors/Link.h"
+#include "Actors/Link/Link.h"
 
 UAnimNotify_SlashAttack::UAnimNotify_SlashAttack()
 {

@@ -2,7 +2,7 @@
 
 
 #include "Animation/AnimNotify/Monsters/AnimNotify_UnequipWeapon.h"
-#include "Actors/Monster.h"
+#include "Actors/Monsters/Monster.h"
 
 UAnimNotify_UnequipWeapon::UAnimNotify_UnequipWeapon()
 {

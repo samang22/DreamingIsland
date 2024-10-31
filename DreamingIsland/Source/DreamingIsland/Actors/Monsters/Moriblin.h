@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Actors/Monster.h"
+#include "Actors/Monsters/Monster.h"
 #include "Moriblin.generated.h"
 
 // this class derived from AMonster to make Guard 

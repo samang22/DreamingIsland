@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Actors/Monster.h"
+#include "Actors/Monsters/Monster.h"
 #include "Bomber.generated.h"
 
 class UMaterialInterface;

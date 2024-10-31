@@ -6,7 +6,7 @@
 #include "Components/SpotLightComponent.h"
 #include "Components/ConversationComponent/ConversationComponent.h"
 #include "Components/ConversationComponent/TSKConversationComponent.h"
-#include "Actors/Link.h"
+#include "Actors/Link/Link.h"
 
 #define TOOLSHOPKEEPER_SPOTLIGHT_INTENSITY 8000.f
 

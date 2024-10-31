@@ -4,7 +4,7 @@
 #include "Animation/MonsterAnimInstance.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/Character.h"
-#include "Actors/Monster.h"
+#include "Actors/Monsters/Monster.h"
 
 UBTTask_RangedMonsterAttack::UBTTask_RangedMonsterAttack()
 {

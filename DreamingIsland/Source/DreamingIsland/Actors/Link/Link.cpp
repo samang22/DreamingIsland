@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Actors/Link.h"
+#include "Actors/Link/Link.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Camera/CameraComponent.h"
 #include "Components/SoftWheelSpringArmComponent.h"
@@ -15,7 +15,7 @@
 #include "Actors/Monsters/Hinox.h"
 #include "Actors/NPC/NPC.h"
 #include "Actors/Items/Item.h"
-#include "Actors/LinkController.h"
+#include "Actors/Link/LinkController.h"
 
 #define PROBE_SIZE										5.0
 #define COLLISION_SPHERE_RADIUS							24.f

@@ -5,7 +5,7 @@
 #include "Components/SphereComponent.h"
 #include "Misc/Utils.h"
 #include "Data/ItemTableRow.h"
-#include "Actors/Link.h"
+#include "Actors/Link/Link.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 #define LINK_LOCATION_OFFSET 70.f
