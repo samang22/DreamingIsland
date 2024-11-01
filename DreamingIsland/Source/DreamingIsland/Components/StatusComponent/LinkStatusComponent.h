@@ -63,4 +63,11 @@ protected:
 public:
 	void SetIsCatched(bool _bIsCatched) { bIsCatched = _bIsCatched; }
 	bool GetIsCatched() const { return bIsCatched; }
+
+
+protected:
+	int Rupee = 0;
+public:
+	void AddRupee(int _Rupee) { Rupee = _Rupee; }
+	int GetRupee() const { return Rupee; }
 };

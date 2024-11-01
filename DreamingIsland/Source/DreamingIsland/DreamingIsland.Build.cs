@@ -12,7 +12,7 @@ public class DreamingIsland : ModuleRules
             new string[] 
             { 
                 "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput",
-                "UMG", "MoviePlayer", "AIModule"
+                "UMG", "MoviePlayer", "AIModule"/*, "PhysicalMaterials"*/
             });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });

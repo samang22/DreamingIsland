@@ -22,7 +22,8 @@ protected:
 
 protected:
 	class UConversationWidget* Widget;
+	class URupeeWidget* RupeeWidget;
 public:
 	void OnSetStringToConversation(FString Speaker, FString String);
-
+	void OnSetRupeeNum(int RupeeNum);
 };

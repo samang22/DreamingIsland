@@ -45,8 +45,12 @@ protected:
 	FDataTableRowHandle DataTableRowHandle;
 	FItemTableRow* ItemData;
 
+protected:
+	int ItemValue = 0;
+
 public:
-	FName GetItemName() { return DataTableRowHandle.RowName; }
+	FName GetItemName() const { return DataTableRowHandle.RowName; }
+	int GetItemValue() const { return ItemValue; }
 
 protected:
 	void ItemCatchedSequence(float DeltaTime);

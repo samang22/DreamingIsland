@@ -23,4 +23,8 @@ public:
 public:
 	UPROPERTY(EditAnywhere, Category = "Item|Collision")
 	float CollisionSphereRadius = 32.f;
+
+public:
+	UPROPERTY(EditAnywhere, Category = "Item|Value")
+	int ItemValue = 0;
 };

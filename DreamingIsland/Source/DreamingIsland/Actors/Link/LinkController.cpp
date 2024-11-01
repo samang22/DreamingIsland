@@ -12,6 +12,7 @@
 #include "Animation/LinkAnimInstance.h"
 #include "Actors/Default/DefaultHUD.h"
 #include "Actors/NPC/NPC.h"
+#include "Actors/Items/Item.h"
 
 ALinkController::ALinkController()
 {
@@ -193,8 +194,13 @@ void ALinkController::OnInteract(const FInputActionValue& InputActionValue)
 
 		if (Link->IsCatchingItem())
 		{
-			FString Script = NPC->GetScript(TEXT("Blame"));
-			DefaultHUD->OnSetStringToConversation(NPC->GetNPCName().ToString(), Script);
+			const AItem* Item = Cast<AItem>(Link->GetCatchingItem());
+			FString ItemName = Item->GetItemName().ToString();
+			FString Script1 = NPC->GetScript(TEXT("Buy1")); // 은
+			FString ItemValue = FString::FormatAsNumber(Item->GetItemValue());
+			FString Script2 = NPC->GetScript(TEXT("Buy2")); // 루피입니다!
+			FString Result = ItemName + Script1 + ItemValue + Script2;
+			DefaultHUD->OnSetStringToConversation(NPC->GetNPCName().ToString(), Result);
 		}
 		else if (!Link->IsCatchingItem())
 		{
