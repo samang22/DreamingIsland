@@ -91,6 +91,31 @@ namespace NPC_Name_Korean
 }
 
 
+namespace Item_Name
+{
+	static inline FName Bomb = TEXT("Bomb");
+	static inline FName Arrow = TEXT("Arrow");
+	static inline FName Bow = TEXT("Bow");
+	static inline FName Shield = TEXT("Shield");
+	static inline FName Sword = TEXT("Sword");
+	static inline FName RupeeGreen = TEXT("RupeeGreen");
+	static inline FName RupeeBlue = TEXT("RupeeBlue");
+	static inline FName RupeeGold = TEXT("RupeeGold");
+}
+
+enum class LINK_MONTAGE : uint8
+{
+	SLASH = 0,
+	ITEM_CARRY,
+	ITEM_GET,
+	DEAD,
+	DAMAGE,
+	THROW,
+	GUARD,
+	END,
+};
+
+
 #define TRACE_CHANNEL_LINKCHANNEL						ECC_GameTraceChannel1
 #define TRACE_CHANNEL_MONSTERCHANNEL					ECC_GameTraceChannel2
 #define TRACE_CHANNEL_ITEM								ECC_GameTraceChannel3

@@ -10,6 +10,12 @@
 
 ULinkAnimInstance::ULinkAnimInstance()
 {
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> MtgSlash(TEXT("/Script/Engine.AnimMontage'/Game/Assets/Link/Animation/MTG_Link_Slash.MTG_Link_Slash'"));
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> MtgItemCarry(TEXT("/Script/Engine.AnimMontage'/Game/Assets/Link/Animation/MTG_Link_Item_Carry.MTG_Link_Item_Carry'"));
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> MtgItemGet(TEXT("/Script/Engine.AnimMontage'/Game/Assets/Link/Animation/MTG_Link_Item_Get.MTG_Link_Item_Get'"));
+	if (MtgSlash.Object) { SlashMontage = MtgSlash.Object; }
+	if (MtgItemCarry.Object) { ItemCarryMontage = MtgItemCarry.Object; }
+	if (MtgItemGet.Object) { ItemGetMontage = MtgItemGet.Object; }
 }
 
 void ULinkAnimInstance::NativeInitializeAnimation()
@@ -47,31 +53,117 @@ void ULinkAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	bIsCarry = StatusComponent->GetAnimStatus(LINK_BIT_CARRY);
 }
 
-void ULinkAnimInstance::PlayAttackMontage()
+void ULinkAnimInstance::PlayMontage(LINK_MONTAGE _InEnum, bool bIsLoop)
 {
-	if (!Montage_IsPlaying(nullptr))
+	UAnimMontage* tempMontage = nullptr;
+	switch (_InEnum)
 	{
-		Montage_Play(AttackMontage);
+	case LINK_MONTAGE::SLASH:
+		tempMontage = SlashMontage;
+		break;
+	case LINK_MONTAGE::ITEM_CARRY:
+		tempMontage = ItemCarryMontage;
+		break;
+	case LINK_MONTAGE::ITEM_GET:
+		tempMontage = ItemGetMontage;
+		break;
+	case LINK_MONTAGE::DEAD:
+		break;
+	case LINK_MONTAGE::DAMAGE:
+		break;
+	default:
+		break;
+	}
+
+	if (tempMontage && !Montage_IsPlaying(tempMontage))
+	{
+		if (bIsLoop)
+		{
+			Montage_Play(tempMontage, 1.0f, EMontagePlayReturnType::MontageLength, 0.0f, true);
+		}
+		else
+		{
+			Montage_Play(tempMontage);
+		}
 	}
 }
 
-void ULinkAnimInstance::PlayDieMontage()
+bool ULinkAnimInstance::IsMontage(LINK_MONTAGE _InEnum)
 {
-	Montage_Play(DieMontage);
-}
-
-void ULinkAnimInstance::PlayItemCarryMontage()
-{
-	if (!Montage_IsPlaying(nullptr))
+	switch (_InEnum)
 	{
-		Montage_Play(ItemCarryMontage);
+	case LINK_MONTAGE::SLASH:
+		return SlashMontage ? true : false;
+		break;
+	case LINK_MONTAGE::ITEM_CARRY:
+		return ItemCarryMontage ? true : false;
+		break;
+	case LINK_MONTAGE::ITEM_GET:
+		return ItemGetMontage ? true : false;
+		break;
+	case LINK_MONTAGE::DEAD:
+	case LINK_MONTAGE::DAMAGE:
+	case LINK_MONTAGE::GUARD:
+	default:
+		check(false);
+		return false;
+		break;
 	}
 }
 
-void ULinkAnimInstance::PlayItemGetMontage()
+bool ULinkAnimInstance::IsPlayingMontage(LINK_MONTAGE _InEnum)
 {
-	if (!Montage_IsPlaying(nullptr))
+	UAnimMontage* tempMontage = nullptr;
+	switch (_InEnum)
 	{
-		Montage_Play(ItemGetMontage);
+	case LINK_MONTAGE::SLASH:
+		tempMontage = SlashMontage;
+		break;
+	case LINK_MONTAGE::ITEM_CARRY:
+		tempMontage = ItemCarryMontage;
+		break;
+	case LINK_MONTAGE::ITEM_GET:
+		tempMontage = ItemGetMontage;
+		break;
+	case LINK_MONTAGE::END:
+		tempMontage = nullptr;
+		break;
+	case LINK_MONTAGE::DEAD:
+	case LINK_MONTAGE::DAMAGE:
+	default:
+		check(false);
+		return false;
+		break;
 	}
+
+	return Montage_IsPlaying(tempMontage);
 }
+
+//void ULinkAnimInstance::PlayAttackMontage()
+//{
+//	if (!Montage_IsPlaying(nullptr))
+//	{
+//		Montage_Play(AttackMontage);
+//	}
+//}
+//
+//void ULinkAnimInstance::PlayDieMontage()
+//{
+//	Montage_Play(DieMontage);
+//}
+//
+//void ULinkAnimInstance::PlayItemCarryMontage()
+//{
+//	if (!Montage_IsPlaying(nullptr))
+//	{
+//		Montage_Play(ItemCarryMontage);
+//	}
+//}
+//
+//void ULinkAnimInstance::PlayItemGetMontage()
+//{
+//	if (!Montage_IsPlaying(nullptr))
+//	{
+//		Montage_Play(ItemGetMontage);
+//	}
+//}

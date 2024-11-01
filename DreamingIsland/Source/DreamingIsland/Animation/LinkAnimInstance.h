@@ -4,7 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
+#include "Misc/Utils.h"
 #include "LinkAnimInstance.generated.h"
+
 
 UCLASS()
 class DREAMINGISLAND_API ULinkAnimInstance : public UAnimInstance
@@ -45,14 +47,19 @@ protected:
 	bool bIsCarry = false;
 
 protected:
-	UAnimMontage* AttackMontage;
+	UAnimMontage* SlashMontage;
 	UAnimMontage* DieMontage;
 	UAnimMontage* ItemCarryMontage;
 	UAnimMontage* ItemGetMontage;
 
 public:
-	void PlayAttackMontage();
-	void PlayDieMontage();
-	void PlayItemCarryMontage();
-	void PlayItemGetMontage();
+	void PlayMontage(LINK_MONTAGE _InEnum, bool bIsLoop = false);
+	bool IsMontage(LINK_MONTAGE _InEnum);
+	bool IsPlayingMontage(LINK_MONTAGE _InEnum);
+
+//public:
+//	void PlayAttackMontage();
+//	void PlayDieMontage();
+//	void PlayItemCarryMontage();
+//	void PlayItemGetMontage();
 };

@@ -11,11 +11,12 @@
 #define	LINK_BIT_RUN			0x00000004
 #define	LINK_BIT_CARRY			0x00000008
 
-#define LINK_TOOl_BIT_SWORD				0x00000001
-#define LINK_TOOl_BIT_SHIELD			0x00000002
-#define LINK_TOOl_BIT_MIRRORSHIELD		0x00000004
-#define LINK_TOOl_BIT_FLIPPER			0x00000008
-#define LINK_TOOl_BIT_OCARINA			0x00000010
+#define LINK_TOOL_BIT_SWORD				0x00000001
+#define LINK_TOOL_BIT_SHIELD			0x00000002
+#define LINK_TOOL_BIT_MIRRORSHIELD		0x00000004
+#define LINK_TOOL_BIT_FLIPPER			0x00000008
+#define LINK_TOOL_BIT_OCARINA			0x00000010
+#define LINK_TOOL_BIT_BOW				0x00000011
 
 
 /**
@@ -48,7 +49,7 @@ public:
 	void SetOffToolOwnStatus(uint8 InBit);
 
 public:
-	void SetOnToolEqupStatus(uint8 InBit);
+	void SetOnToolEquipStatus(uint8 InBit);
 	void SetOffToolEquipStatus(uint8 InBit);
 
 
@@ -74,8 +75,23 @@ public:
 	int GetRupee() const { return Rupee; }
 
 protected:
+	int Bomb = 0;
+public:
+	void AddBomb(int _Bomb) { Bomb += _Bomb; }
+	int GetBomb() const { return Bomb; }
+
+protected:
+	int Arrow = 0;
+public:
+	void AddArrow(int _Arrow) { Arrow += _Arrow; }
+	int GetArrow() const { return Arrow; }
+
+protected:
 	bool bIsConversation = false;;
 public:
 	void SetIsConversation(bool _bIsConversation) { bIsConversation = _bIsConversation; }
 	bool GetIsConversation() const { return bIsConversation; }
+
+
+
 };

@@ -35,7 +35,7 @@ void ULinkStatusComponent::SetOffToolOwnStatus(uint8 InBit)
 	LinkToolOwnStatus &= ~(InBit);
 }
 
-void ULinkStatusComponent::SetOnToolEqupStatus(uint8 InBit)
+void ULinkStatusComponent::SetOnToolEquipStatus(uint8 InBit)
 {
 	LinkToolEquipStatus |= InBit;
 }

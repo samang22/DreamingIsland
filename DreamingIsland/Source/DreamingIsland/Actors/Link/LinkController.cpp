@@ -87,8 +87,19 @@ void ALinkController::SetupInputComponent()
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("IA_Interact is disabled"));
+		UE_LOG(LogTemp, Warning, TEXT("IA_Lay is disabled"));
 	}
+
+	if (const UInputAction* InputAction = FUtils::GetInputActionFromName(IMC_Default, TEXT("IA_Get")))
+	{
+		EnhancedInputComponent->BindAction(InputAction, ETriggerEvent::Completed, this, &ThisClass::OnGet);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("IA_Get is disabled"));
+	}
+
+
 
 	if (bZoomWheel)
 	{
@@ -134,7 +145,10 @@ void ALinkController::Tick(float DeltaTime)
 	MoveAutoSequence(DeltaTime);
 
 	ADefaultHUD* DefaultHUD = Cast<ADefaultHUD>(GetHUD());
-	DefaultHUD->OnSetRupeeNum(StatusComponent->GetRupee());
+	if (DefaultHUD)
+	{
+		DefaultHUD->OnSetRupeeNum(StatusComponent->GetRupee());
+	}
 }
 
 void ALinkController::OnWalk(const FInputActionValue& InputActionValue)
@@ -184,7 +198,7 @@ void ALinkController::OnRunOff(const FInputActionValue& InputActionValue)
 void ALinkController::OnAttack(const FInputActionValue& InputActionValue)
 {
 	if (StatusComponent->GetIsConversation()) return;
-	AnimInstance->PlayAttackMontage();
+	Cast<ALink>(GetPawn())->PlayMontage(LINK_MONTAGE::SLASH);
 }
 
 void ALinkController::OnInteract(const FInputActionValue& InputActionValue)
@@ -229,7 +243,7 @@ void ALinkController::OnInteract(const FInputActionValue& InputActionValue)
 		&& !Link->IsCatchingItem()
 		)
 	{
-		AnimInstance->PlayItemCarryMontage();
+		AnimInstance->PlayMontage(LINK_MONTAGE::ITEM_CARRY);
 		Link->CatchItem();
 	}
 	 
@@ -314,6 +328,43 @@ void ALinkController::OnCheck(const FInputActionValue& InputActionValue)
 		DefaultHUD->OnHideChooseWidget();
 		DefaultHUD->OnHideConversationWidget();
 		DefaultHUD->OnHideRupeeWidget();
+	}
+
+}
+
+void ALinkController::OnGet(const FInputActionValue& InputActionValue)
+{
+	ALink* Link = Cast<ALink>(GetPawn());
+	if (Link->IsCatchingItem())
+	{
+		AItem* Item = Cast<AItem>(Link->GetCatchingItem());
+		FName ItemName = Item->GetItemName();
+
+		if (Item_Name::Bomb == ItemName)
+		{
+			StatusComponent->AddBomb(1);
+		}
+		else if (Item_Name::Arrow == ItemName)
+		{
+			StatusComponent->AddArrow(1);
+		}
+		else if (Item_Name::Bow == ItemName)
+		{
+			StatusComponent->SetOnToolEquipStatus(LINK_TOOL_BIT_BOW);
+		}
+		else if (Item_Name::Shield == ItemName)
+		{
+			StatusComponent->SetOnToolEquipStatus(LINK_TOOL_BIT_SHIELD);
+		}
+		else if (Item_Name::Sword == ItemName)
+		{
+			StatusComponent->SetOnToolEquipStatus(LINK_TOOL_BIT_SWORD);
+		}
+		Item->Destroy();
+		// @TODO : maybe TSK should know this
+
+		Link->PlayMontage(LINK_MONTAGE::ITEM_GET);
+		Link->LayItem();
 	}
 
 }

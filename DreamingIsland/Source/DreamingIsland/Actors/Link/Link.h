@@ -4,20 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Misc/Utils.h"
 #include "Link.generated.h"
 
 
-enum class LINK_MONTAGE : uint8
-{
-	SLASH = 0,
-	ITEM_CARRY,
-	ITEM_GET,
-	DEAD,
-	DAMAGE,
-	THROW,
-	GUARD,
-	END,
-};
+
 
 class USphereComponent;
 class ULinkStatusComponent;

@@ -16,6 +16,7 @@
 #include "Actors/NPC/NPC.h"
 #include "Actors/Items/Item.h"
 #include "Actors/Link/LinkController.h"
+#include "Animation/LinkAnimInstance.h"
 
 #define PROBE_SIZE										5.0
 #define COLLISION_SPHERE_RADIUS							24.f
@@ -82,12 +83,6 @@ ALink::ALink(const FObjectInitializer& ObjectInitializer)
 
 
 
-	static ConstructorHelpers::FObjectFinder<UAnimMontage> MtgSlash(TEXT("/Script/Engine.AnimMontage'/Game/Assets/Link/Animation/MTG_Link_SlashAttack.MTG_Link_SlashAttack'"));
-	static ConstructorHelpers::FObjectFinder<UAnimMontage> MtgItemCarry(TEXT("/Script/Engine.AnimMontage'/Game/Assets/Link/Animation/MTG_Link_Item_Carry.MTG_Link_Item_Carry'"));
-	static ConstructorHelpers::FObjectFinder<UAnimMontage> MtgItemGet(TEXT("/Script/Engine.AnimMontage'/Game/Assets/Link/Animation/MTG_Link_Item_Get.MTG_Link_Item_Get'"));
-	if (MtgSlash.Object) { SlashMontage = MtgSlash.Object; }
-	if (MtgItemCarry.Object) { ItemCarryMontage = MtgItemCarry.Object; }
-	if (MtgItemGet.Object) { ItemGetMontage = MtgItemGet.Object; }
 }
 
 
@@ -256,8 +251,11 @@ void ALink::LayItem()
 {
 	if (!CatchingItem) return;
 	AItem* Item = Cast<AItem>(CatchingItem);
-	Item->SetItemCatched(false);
-	Item->SetCatchingItemActor(nullptr);
+	if (Item)
+	{
+		Item->SetItemCatched(false);
+		Item->SetCatchingItemActor(nullptr);
+	}
 	CatchingItem = nullptr;
 	StatusComponent->SetOffAnimationStatus(LINK_BIT_CARRY);
 }
@@ -273,92 +271,20 @@ bool ALink::IsCatchingItem()
 
 void ALink::PlayMontage(LINK_MONTAGE _InEnum, bool bIsLoop)
 {
-	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-
-	UAnimMontage* tempMontage = nullptr;
-	switch (_InEnum)
-	{
-	case LINK_MONTAGE::SLASH:
-		tempMontage = SlashMontage;
-		break;
-	case LINK_MONTAGE::ITEM_CARRY:
-		tempMontage = ItemCarryMontage;
-		break;
-	case LINK_MONTAGE::ITEM_GET:
-		tempMontage = ItemGetMontage;
-		break;
-	case LINK_MONTAGE::DEAD:
-		break;
-	case LINK_MONTAGE::DAMAGE:
-		break;
-	default:
-		break;
-	}
-
-	if (tempMontage && !AnimInstance->Montage_IsPlaying(tempMontage))
-	{
-		if (bIsLoop)
-		{
-			AnimInstance->Montage_Play(tempMontage, 1.0f, EMontagePlayReturnType::MontageLength, 0.0f, true);
-		}
-		else
-		{
-			AnimInstance->Montage_Play(tempMontage);
-		}
-	}
+	ULinkAnimInstance* LinkAnimInstance = Cast<ULinkAnimInstance>(GetMesh()->GetAnimInstance());
+	LinkAnimInstance->PlayMontage(_InEnum, bIsLoop);
 }
 
 bool ALink::IsMontage(LINK_MONTAGE _InEnum)
 {
-	switch (_InEnum)
-	{
-	case LINK_MONTAGE::SLASH:
-		return SlashMontage ? true : false;
-		break;
-	case LINK_MONTAGE::ITEM_CARRY:
-		return ItemCarryMontage ? true : false;
-		break;
-	case LINK_MONTAGE::ITEM_GET:
-		return ItemGetMontage ? true : false;
-		break;
-	case LINK_MONTAGE::DEAD:
-	case LINK_MONTAGE::DAMAGE:
-	case LINK_MONTAGE::GUARD:
-	default:
-		check(false);
-		return false;
-		break;
-	}
+	ULinkAnimInstance* LinkAnimInstance = Cast<ULinkAnimInstance>(GetMesh()->GetAnimInstance());
+	return LinkAnimInstance->IsMontage(_InEnum);
 }
 
 bool ALink::IsPlayingMontage(LINK_MONTAGE _InEnum)
 {
-	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-
-	UAnimMontage* tempMontage = nullptr;
-	switch (_InEnum)
-	{
-	case LINK_MONTAGE::SLASH:
-		tempMontage = SlashMontage;
-		break;
-	case LINK_MONTAGE::ITEM_CARRY:
-		tempMontage = ItemCarryMontage;
-		break;
-	case LINK_MONTAGE::ITEM_GET:
-		tempMontage = ItemGetMontage;
-		break;
-	case LINK_MONTAGE::END:
-		tempMontage = nullptr;
-		break;
-	case LINK_MONTAGE::DEAD:
-	case LINK_MONTAGE::DAMAGE:
-	default:
-		check(false);
-		return false;
-		break;
-	}
-
-	return AnimInstance->Montage_IsPlaying(tempMontage);
+	ULinkAnimInstance* LinkAnimInstance = Cast<ULinkAnimInstance>(GetMesh()->GetAnimInstance());
+	return LinkAnimInstance->IsPlayingMontage(_InEnum);
 }
 
 void ALink::SetMoveAuto(bool bFlag, FVector Direction)
