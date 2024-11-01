@@ -73,4 +73,10 @@ protected:
 
 protected:
 	bool bIsMadOrExecution = false;
+	bool bIsShootBeam = false;
+
+public:
+	void SetIsShootBeam(bool bFlag) { bIsShootBeam = bFlag; }
+	void EndShootBeam();
+	bool GetIsShootBeam() { return bIsShootBeam; }
 };

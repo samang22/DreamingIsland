@@ -13,6 +13,7 @@
 #include "GameFramework/PlayerController.h"
 #include "Actors/House/HouseCamera.h"
 #include "Actors/Items/Item.h"
+#include "Data/NPCTableRow.h"
 
 
 
@@ -204,4 +205,14 @@ void AToolShopKeeper::CallOnMadEnd()
 {
 	OnMadEnd.Broadcast();
 	SetActorLocation(TSK_MAD_LOCATION);
+	SkeletalMeshComponent->GetAnimInstance()->Montage_Play(NPCData->BeamStMontage);
+
+	SetIsShootBeam(true);
+	UKismetSystemLibrary::K2_SetTimer(this, TEXT("EndShootBeam"), 3.f, false);
+}
+
+void AToolShopKeeper::EndShootBeam()
+{
+	SetIsShootBeam(false);
+	// TODO : LevelChange
 }

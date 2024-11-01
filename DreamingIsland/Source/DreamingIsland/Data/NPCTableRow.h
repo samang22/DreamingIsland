@@ -64,9 +64,9 @@ public: // Movement
 
 public: // Animation
 	UPROPERTY(EditAnywhere, Category = "NPC|Animation")
-	UAnimMontage* Action01_Montage;
+	UAnimMontage* BeamStMontage;
 	UPROPERTY(EditAnywhere, Category = "NPC|Animation")
-	UAnimMontage* Action02_Montage;
+	UAnimMontage* BeamMontage;
 
 
 

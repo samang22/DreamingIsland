@@ -177,10 +177,10 @@ void ANPC::PlayMontage(NPC_MONTAGE _InEnum, bool bIsLoop)
 	switch (_InEnum)
 	{
 	case NPC_MONTAGE::BEAM_ST:
-		//tempMontage = NPCData->BeamStMontage;
+		tempMontage = NPCData->BeamStMontage;
 		break;
 	case NPC_MONTAGE::BEAM:
-		//tempMontage = NPCData->BeamMontage;
+		tempMontage = NPCData->BeamMontage;
 		break;
 	case NPC_MONTAGE::END:
 		break;
@@ -188,7 +188,7 @@ void ANPC::PlayMontage(NPC_MONTAGE _InEnum, bool bIsLoop)
 		break;
 	}
 
-	if (tempMontage && !AnimInstance->Montage_IsPlaying(tempMontage))
+	if (tempMontage/* && !AnimInstance->Montage_IsPlaying(tempMontage)*/)
 	{
 		if (bIsLoop)
 		{
