@@ -57,6 +57,6 @@ protected:
 	bool bIsItemCatched = false;
 	AActor* CatchingItemActor = nullptr;
 public:
-	void SetItemCatched(bool _bIsItemCatched) { bIsItemCatched = _bIsItemCatched; }
+	void SetItemCatched(bool _bIsItemCatched);
 	void SetCatchingItemActor(AActor* _CatchingItemActor) { CatchingItemActor = _CatchingItemActor;	}
 };

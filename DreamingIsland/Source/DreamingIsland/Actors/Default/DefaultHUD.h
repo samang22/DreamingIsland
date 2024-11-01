@@ -29,11 +29,20 @@ public:
 	void OnShowChooseWidget();
 	void OnShowRupeeWidget();
 public:
+	UFUNCTION()
 	void OnHideConversationWidget();
+	UFUNCTION()
 	void OnHideChooseWidget();
+	UFUNCTION()
 	void OnHideRupeeWidget();
+public:
+	void OnDelayHideConversationWidget(float Seconds);
+	void OnDelayHideChooseWidget(float Seconds);
+	void OnDelayHideRupeeWidget(float Seconds);
+
+
 public:
 	void OnSetStringToConversation(FString Speaker, FString String);
 	void OnSetRupeeNum(int RupeeNum);
-
+	void OnSetSelection(bool bSelection);
 };

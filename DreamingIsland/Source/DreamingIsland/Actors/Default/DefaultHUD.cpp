@@ -6,6 +6,7 @@
 #include "UI/RupeeWidget.h"
 #include "UI/ChooseWidget.h"
 #include "Blueprint/UserWidget.h"
+#include "Kismet/GameplayStatics.h"
 
 
 ADefaultHUD::ADefaultHUD()
@@ -49,6 +50,11 @@ void ADefaultHUD::OnSetRupeeNum(int RupeeNum)
 	RupeeWidget->OnSetRupeeNum(RupeeNum);
 }
 
+void ADefaultHUD::OnSetSelection(bool bSelection)
+{
+	ChooseWidget->OnSetChoose(bSelection);
+}
+
 void ADefaultHUD::OnShowRupeeWidget()
 {
 	RupeeWidget->OnShow();
@@ -67,4 +73,19 @@ void ADefaultHUD::OnHideChooseWidget()
 void ADefaultHUD::OnHideRupeeWidget()
 {
 	RupeeWidget->OnHidden();
+}
+
+void ADefaultHUD::OnDelayHideConversationWidget(float Seconds)
+{
+	UKismetSystemLibrary::K2_SetTimer(this, TEXT("OnHideConversationWidget"), Seconds, false);
+}
+
+void ADefaultHUD::OnDelayHideChooseWidget(float Seconds)
+{
+	UKismetSystemLibrary::K2_SetTimer(this, TEXT("OnHideChooseWidget"), Seconds, false);
+}
+
+void ADefaultHUD::OnDelayHideRupeeWidget(float Seconds)
+{
+	UKismetSystemLibrary::K2_SetTimer(this, TEXT("OnHideRupeeWidget"), Seconds, false);
 }

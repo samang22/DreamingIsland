@@ -28,6 +28,8 @@ class DREAMINGISLAND_API ULinkStatusComponent : public UStatusComponent
 	
 public:
 	ULinkStatusComponent();
+public:
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 protected:
 	UPROPERTY()
@@ -70,4 +72,10 @@ protected:
 public:
 	void AddRupee(int _Rupee) { Rupee = _Rupee; }
 	int GetRupee() const { return Rupee; }
+
+protected:
+	bool bIsConversation = false;;
+public:
+	void SetIsConversation(bool _bIsConversation) { bIsConversation = _bIsConversation; }
+	bool GetIsConversation() const { return bIsConversation; }
 };

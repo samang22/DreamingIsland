@@ -134,6 +134,8 @@ void AToolShopKeeper::Tick_LineTrace(float DeltaTime)
 					APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 					ADefaultHUD* DefaultHUD = Cast<ADefaultHUD>(PlayerController->GetHUD());
 					DefaultHUD->OnSetStringToConversation(GetNPCName().ToString(), ConversationComponent->GetScript(TEXT("Blame")));
+					DefaultHUD->OnShowConversationWidget();
+					DefaultHUD->OnDelayHideConversationWidget(1.f);
 					UKismetSystemLibrary::K2_SetTimer(this, TEXT("SetLinkResetPosition"), 1.f, false);
 
 					OnLinkCaught.Broadcast(GetActorLocation(), GetActorForwardVector());

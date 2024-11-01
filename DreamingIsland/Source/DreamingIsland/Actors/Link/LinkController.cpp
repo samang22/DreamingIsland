@@ -45,6 +45,7 @@ void ALinkController::SetupInputComponent()
 	{
 		EnhancedInputComponent->BindAction(InputAction, ETriggerEvent::Triggered, this, &ThisClass::OnWalk);
 		EnhancedInputComponent->BindAction(InputAction, ETriggerEvent::Completed, this, &ThisClass::OnWalkOff);
+		EnhancedInputComponent->BindAction(InputAction, ETriggerEvent::Triggered, this, &ThisClass::OnChoose);
 	}
 	else
 	{
@@ -130,10 +131,15 @@ void ALinkController::Tick(float DeltaTime)
 	}
 
 	MoveAutoSequence(DeltaTime);
+
+	ADefaultHUD* DefaultHUD = Cast<ADefaultHUD>(GetHUD());
+	DefaultHUD->OnSetRupeeNum(StatusComponent->GetRupee());
 }
 
 void ALinkController::OnWalk(const FInputActionValue& InputActionValue)
 {
+	if (StatusComponent->GetIsConversation()) return;
+
 	StatusComponent->SetOnAnimationStatus(LINK_BIT_WALK);
 
 	const FVector2D ActionValue = InputActionValue.Get<FVector2D>();
@@ -188,6 +194,8 @@ void ALinkController::OnInteract(const FInputActionValue& InputActionValue)
 		// @TODO
 		
 		OnLinkTalk.Broadcast(Link->GetActorLocation(), -1 * Link->GetActorRightVector(), Link->GetActorForwardVector());
+		StatusComponent->SetIsConversation(true);
+
 		ADefaultHUD* DefaultHUD = Cast<ADefaultHUD>(GetHUD());
 		
 		const ANPC* NPC = Cast<ANPC>(Link->GetOverlappedNPC());
@@ -232,6 +240,7 @@ void ALinkController::OnLay(const FInputActionValue& InputActionValue)
 	if (Link->IsOverlappedNPC())
 	{
 		OnLinkTalkEnd.Broadcast();
+		StatusComponent->SetIsConversation(false);
 		ADefaultHUD* DefaultHUD = Cast<ADefaultHUD>(GetHUD());
 		DefaultHUD->OnHideChooseWidget();
 		DefaultHUD->OnHideConversationWidget();
@@ -253,6 +262,15 @@ void ALinkController::OnLay(const FInputActionValue& InputActionValue)
 
 void ALinkController::OnZoomWheel(const FInputActionValue& InputActionValue)
 {
+}
+
+void ALinkController::OnChoose(const FInputActionValue& InputActionValue)
+{
+	if (!StatusComponent->GetIsConversation()) return;
+
+	const FVector2D ActionValue = InputActionValue.Get<FVector2D>();
+	ADefaultHUD* DefaultHUD = Cast<ADefaultHUD>(GetHUD());
+	DefaultHUD->OnSetSelection(ActionValue.Y < 0 ? true : false);
 }
 
 void ALinkController::OnSlashAttackMontageEnd(UAnimMontage* Montage, bool bInterrupted)

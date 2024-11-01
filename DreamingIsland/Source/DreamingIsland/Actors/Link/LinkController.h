@@ -36,6 +36,7 @@ protected:
 	void OnInteract(const FInputActionValue& InputActionValue);
 	void OnLay(const FInputActionValue& InputActionValue);
 	void OnZoomWheel(const FInputActionValue& InputActionValue);
+	void OnChoose(const FInputActionValue& InputActionValue);
 
 protected:
 	UFUNCTION()
@@ -70,6 +71,4 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnLinkTalkEnd OnLinkTalkEnd;
 
-	UPROPERTY(BlueprintAssignable)
-	FOnConversation OnConversation;
 };
