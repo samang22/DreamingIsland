@@ -59,4 +59,10 @@ protected:
 public:
 	void SetItemCatched(bool _bIsItemCatched);
 	void SetCatchingItemActor(AActor* _CatchingItemActor) { CatchingItemActor = _CatchingItemActor;	}
+
+protected:
+	bool bIsPurchased;
+public:
+	void SetIsPurchased(bool _bIsPurchased) { bIsPurchased = _bIsPurchased; }
+	bool GetIsPurchased() const { return bIsPurchased; }
 };

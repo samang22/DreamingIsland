@@ -292,12 +292,13 @@ void ALinkController::OnCheck(const FInputActionValue& InputActionValue)
 		const ANPC* NPC = Cast<ANPC>(OverlappedNPC);
 		if (NPC_Name_Korean::ToolShopKeeper == NPC->GetNPCName())
 		{
-			const AItem* Item = Cast<AItem>(Link->GetCatchingItem());
+			AItem* Item = Cast<AItem>(Link->GetCatchingItem());
 			if (StatusComponent->GetRupee() >= Item->GetItemValue())
 			{
 				StatusComponent->AddRupee(Item->GetItemValue() * -1);
 				DefaultHUD->OnSetStringToConversation(NPC->GetNPCName().ToString(), NPC->GetScript(TSK_ConversationKey::BuySucceeded));
 				DefaultHUD->OnHideChooseWidget();
+				Item->SetIsPurchased(true);
 			}
 			else
 			{

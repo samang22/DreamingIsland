@@ -115,7 +115,7 @@ public:
 	void LayItem();
 	bool IsCatchingItem();
 	const AActor* GetOverlappedNPC() { return OverlappedNPC; }
-	const AActor* GetCatchingItem() { return CatchingItem; }
+	AActor* GetCatchingItem() { return CatchingItem; }
 
 protected:
 	UAnimMontage* SlashMontage = nullptr;

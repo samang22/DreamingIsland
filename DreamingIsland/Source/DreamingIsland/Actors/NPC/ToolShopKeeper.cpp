@@ -12,6 +12,7 @@
 #include "Actors/Default/DefaultHUD.h"
 #include "GameFramework/PlayerController.h"
 #include "Actors/House/HouseCamera.h"
+#include "Actors/Items/Item.h"
 
 
 
@@ -129,7 +130,8 @@ void AToolShopKeeper::Tick_LineTrace(float DeltaTime)
 			if (Link->IsCatchingItem())
 			{
 				float Distance = FVector::Dist(Link->GetActorLocation(), GetActorLocation());
-				if (Distance > TSK_SAFE_LENGTH)
+				if (Distance > TSK_SAFE_LENGTH
+					&& !Cast<AItem>(Link->GetCatchingItem())->GetIsPurchased())
 				{
 					APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 					ADefaultHUD* DefaultHUD = Cast<ADefaultHUD>(PlayerController->GetHUD());
@@ -153,6 +155,7 @@ void AToolShopKeeper::SetLinkResetPosition()
 	if (TSK_Link)
 	{
 		TSK_Link->SetActorLocation(TSK_LINK_RESET_POSITION);
+		TSK_Link = nullptr;
 	}
 }
 

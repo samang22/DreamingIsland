@@ -43,7 +43,6 @@ protected:
 protected:
 	UFUNCTION()
 	void SetLinkResetPosition();
-protected:
 	AActor* TSK_Link = nullptr;
 
 public:
