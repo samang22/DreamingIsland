@@ -39,8 +39,4 @@ void UConversationWidget::OnSetStringToConversation(FString _Speaker, FString St
 
 	tempText = FText::FromString(_Speaker);
 	Speaker->SetText(tempText);
-
-
-	SetVisibility(ESlateVisibility::Visible);
-	UKismetSystemLibrary::K2_SetTimer(this, TEXT("OnHiddenUI"), 2.f, false);
 }

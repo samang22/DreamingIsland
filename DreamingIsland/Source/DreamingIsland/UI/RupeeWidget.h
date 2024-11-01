@@ -4,8 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "UI/UserWidgetBase.h"
-#include "Components/Image.h"
-#include "Components/TextBlock.h"
 #include "RupeeWidget.generated.h"
 
 /**
@@ -21,19 +19,15 @@ protected:
 	virtual void NativeConstruct();
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime);
 
-	UFUNCTION()
-	void OnHiddenUI();
 public:
 	UFUNCTION()
 	void OnSetRupeeNum(int RupeeNum);
-	UFUNCTION()
-	void OnShowRupeeNum();
 
 protected:
 	UPROPERTY(VisibleAnywhere, meta = (BindWidget))
-	UImage* RupeeImage;
+	class UImage* RupeeImage;
 	UPROPERTY(VisibleAnywhere, meta = (BindWidget))
-	UTextBlock* RupeeNumText;
+	class UTextBlock* RupeeNumText;
 
 protected:
 	int DesiredRupeeNum = 0;

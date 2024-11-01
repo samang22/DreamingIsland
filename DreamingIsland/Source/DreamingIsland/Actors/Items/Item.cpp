@@ -7,7 +7,7 @@
 #include "Data/ItemTableRow.h"
 #include "Actors/Link/Link.h"
 #include "GameFramework/CharacterMovementComponent.h"
-//#include "PhysicalMaterials/PhysicalMaterial.h"
+#include "PhysicalMaterials/PhysicalMaterial.h"
 
 
 #define LINK_LOCATION_OFFSET 70.f
@@ -17,8 +17,6 @@ AItem::AItem(const FObjectInitializer& ObjectInitializer)
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-
-
 	CollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("CollisionComponent"));
 	CollisionComponent->SetCollisionProfileName(CollisionProfileName::Item);
 	CollisionComponent->SetCanEverAffectNavigation(false);
@@ -26,8 +24,8 @@ AItem::AItem(const FObjectInitializer& ObjectInitializer)
 	CollisionComponent->SetMassOverrideInKg(NAME_None, 10.0f, true);
 	CollisionComponent->BodyInstance.bSimulatePhysics = true;
 	RootComponent = CollisionComponent;
-	//static ConstructorHelpers::FObjectFinder<UPhysicalMaterial> PhysMaterial(TEXT("/Script/PhysicsCore.PhysicalMaterial'/Game/Assets/Item/PM_Item.PM_Item'"));
-	//CollisionComponent->SetPhysMaterialOverride(PhysMaterial.Object);
+	static ConstructorHelpers::FObjectFinder<UPhysicalMaterial> PhysMaterial(TEXT("/Script/PhysicsCore.PhysicalMaterial'/Game/Assets/Item/PM_Item.PM_Item'"));
+	CollisionComponent->SetPhysMaterialOverride(PhysMaterial.Object);
 
 	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
 	StaticMeshComponent->SetupAttachment(RootComponent);

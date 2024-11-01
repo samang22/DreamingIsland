@@ -2,6 +2,7 @@
 
 
 #include "UI/UserWidgetBase.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 void UUserWidgetBase::NativeOnInitialized()
 {
@@ -16,5 +17,19 @@ void UUserWidgetBase::NativePreConstruct()
 void UUserWidgetBase::NativeConstruct()
 {
 	Super::NativeConstruct();
-	//ensure(OwningPawn);
+}
+
+void UUserWidgetBase::OnShow()
+{
+	SetVisibility(ESlateVisibility::Visible);
+}
+
+void UUserWidgetBase::OnHidden()
+{
+	SetVisibility(ESlateVisibility::Hidden);
+}
+
+void UUserWidgetBase::OnDealyHidden(float Seconds)
+{
+	UKismetSystemLibrary::K2_SetTimer(this, TEXT("OnHiddenUI"), Seconds, false);
 }

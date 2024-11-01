@@ -23,8 +23,17 @@ protected:
 protected:
 	class UConversationWidget* Widget;
 	class URupeeWidget* RupeeWidget;
+	class UChooseWidget* ChooseWidget;
+public:
+	void OnShowConversationWidget();
+	void OnShowChooseWidget();
+	void OnShowRupeeWidget();
+public:
+	void OnHideConversationWidget();
+	void OnHideChooseWidget();
+	void OnHideRupeeWidget();
 public:
 	void OnSetStringToConversation(FString Speaker, FString String);
 	void OnSetRupeeNum(int RupeeNum);
-	void OnShowRupeeNum();
+
 };

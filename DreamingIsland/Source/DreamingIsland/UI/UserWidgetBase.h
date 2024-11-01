@@ -22,4 +22,13 @@ public:
 protected:
 	UPROPERTY()
 	APawn* OwningPawn = nullptr;
+
+public:
+	UFUNCTION()
+	void OnShow();
+	UFUNCTION()
+	void OnHidden();
+	UFUNCTION()
+	void OnDealyHidden(float Seconds);
+
 };

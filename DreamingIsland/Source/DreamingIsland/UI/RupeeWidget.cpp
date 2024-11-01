@@ -3,6 +3,8 @@
 
 #include "UI/RupeeWidget.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Components/Image.h"
+#include "Components/TextBlock.h"
 
 #define INCREASE_DECREASE_NUM 3
 
@@ -53,25 +55,12 @@ void URupeeWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 	if (bShowWidget == true)
 	{
 		SetVisibility(ESlateVisibility::Visible);
-		UKismetSystemLibrary::K2_SetTimer(this, TEXT("OnHiddenUI"), 2.f, false);
+		OnDealyHidden(2.f);
 	}
-}
-
-void URupeeWidget::OnHiddenUI()
-{
-	SetVisibility(ESlateVisibility::Hidden);
 }
 
 void URupeeWidget::OnSetRupeeNum(int RupeeNum)
 {
 	DesiredRupeeNum = RupeeNum;
-
-	SetVisibility(ESlateVisibility::Visible);
-	UKismetSystemLibrary::K2_SetTimer(this, TEXT("OnHiddenUI"), 2.f, false);
 }
 
-void URupeeWidget::OnShowRupeeNum()
-{
-	SetVisibility(ESlateVisibility::Visible);
-	UKismetSystemLibrary::K2_SetTimer(this, TEXT("OnHiddenUI"), 2.f, false);
-}

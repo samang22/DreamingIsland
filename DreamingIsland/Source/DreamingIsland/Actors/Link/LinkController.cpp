@@ -201,13 +201,16 @@ void ALinkController::OnInteract(const FInputActionValue& InputActionValue)
 			FString Script2 = NPC->GetScript(TEXT("Buy2")); // 루피입니다!
 			FString Result = ItemName + Script1 + ItemValue + Script2;
 			DefaultHUD->OnSetStringToConversation(NPC->GetNPCName().ToString(), Result);
-			DefaultHUD->OnShowRupeeNum();
+			DefaultHUD->OnShowConversationWidget();
+			DefaultHUD->OnShowRupeeWidget();
+			DefaultHUD->OnShowChooseWidget();
 
 		}
 		else if (!Link->IsCatchingItem())
 		{
 			FString Script = NPC->GetScript(TEXT("Greeting"));
 			DefaultHUD->OnSetStringToConversation(NPC->GetNPCName().ToString(), Script);
+			DefaultHUD->OnShowConversationWidget();
 		}
 
 
@@ -229,6 +232,10 @@ void ALinkController::OnLay(const FInputActionValue& InputActionValue)
 	if (Link->IsOverlappedNPC())
 	{
 		OnLinkTalkEnd.Broadcast();
+		ADefaultHUD* DefaultHUD = Cast<ADefaultHUD>(GetHUD());
+		DefaultHUD->OnHideChooseWidget();
+		DefaultHUD->OnHideConversationWidget();
+		DefaultHUD->OnHideRupeeWidget();
 		return;
 	}
 
@@ -237,6 +244,9 @@ void ALinkController::OnLay(const FInputActionValue& InputActionValue)
 	{
 		Link->LayItem();
 	}
+
+
+	
 
 
 }
