@@ -45,4 +45,8 @@ public:
 	void OnSetStringToConversation(FString Speaker, FString String);
 	void OnSetRupeeNum(int RupeeNum);
 	void OnSetSelection(bool bSelection);
+	bool GetSelection();
+
+public:
+	bool GetIsChooseWidgetVisible();
 };

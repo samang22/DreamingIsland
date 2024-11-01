@@ -74,7 +74,21 @@ namespace ProjectileName
 	static inline FName Bomber_Bomb = TEXT("Bomber_Bomb");
 }
 
+namespace TSK_ConversationKey
+{
+	static inline FString Greeting = TEXT("Greeting");
+	static inline FString Blame = TEXT("Blame");
+	static inline FString Bye = TEXT("Bye");
+	static inline FString Buy1 = TEXT("Buy1");
+	static inline FString Buy2 = TEXT("Buy2");
+	static inline FString BuySucceeded = TEXT("BuySuceeded");
+	static inline FString BuyFailed = TEXT("BuyFailed");
+}
 
+namespace NPC_Name_Korean
+{
+	static inline FName ToolShopKeeper = TEXT("도구 상점 주인");
+}
 
 
 #define TRACE_CHANNEL_LINKCHANNEL						ECC_GameTraceChannel1

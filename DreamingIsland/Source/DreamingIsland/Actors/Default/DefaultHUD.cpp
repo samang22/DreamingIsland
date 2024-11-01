@@ -55,6 +55,16 @@ void ADefaultHUD::OnSetSelection(bool bSelection)
 	ChooseWidget->OnSetChoose(bSelection);
 }
 
+bool ADefaultHUD::GetSelection()
+{
+	return ChooseWidget->GetIsYes();
+}
+
+bool ADefaultHUD::GetIsChooseWidgetVisible()
+{
+	return ChooseWidget->GetIsVisible();
+}
+
 void ADefaultHUD::OnShowRupeeWidget()
 {
 	RupeeWidget->OnShow();

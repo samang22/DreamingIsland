@@ -70,7 +70,7 @@ public:
 protected:
 	int Rupee = 0;
 public:
-	void AddRupee(int _Rupee) { Rupee = _Rupee; }
+	void AddRupee(int _Rupee) { Rupee += _Rupee; }
 	int GetRupee() const { return Rupee; }
 
 protected:

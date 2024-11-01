@@ -65,6 +65,7 @@ void ALinkController::SetupInputComponent()
 	if (const UInputAction* InputAction = FUtils::GetInputActionFromName(IMC_Default, TEXT("IA_Attack")))
 	{
 		EnhancedInputComponent->BindAction(InputAction, ETriggerEvent::Triggered, this, &ThisClass::OnAttack);
+		EnhancedInputComponent->BindAction(InputAction, ETriggerEvent::Completed, this, &ThisClass::OnCheck);
 	}
 	else
 	{
@@ -182,6 +183,7 @@ void ALinkController::OnRunOff(const FInputActionValue& InputActionValue)
 
 void ALinkController::OnAttack(const FInputActionValue& InputActionValue)
 {
+	if (StatusComponent->GetIsConversation()) return;
 	AnimInstance->PlayAttackMontage();
 }
 
@@ -271,6 +273,48 @@ void ALinkController::OnChoose(const FInputActionValue& InputActionValue)
 	const FVector2D ActionValue = InputActionValue.Get<FVector2D>();
 	ADefaultHUD* DefaultHUD = Cast<ADefaultHUD>(GetHUD());
 	DefaultHUD->OnSetSelection(ActionValue.Y < 0 ? true : false);
+}
+
+void ALinkController::OnCheck(const FInputActionValue& InputActionValue)
+{
+	if (!StatusComponent->GetIsConversation()) return;
+
+	ADefaultHUD* DefaultHUD = Cast<ADefaultHUD>(GetHUD());
+	if (!DefaultHUD->GetIsChooseWidgetVisible()) return;
+
+
+
+	if (DefaultHUD->GetSelection())
+	{
+		// now check which one is talking with
+		ALink* Link = Cast<ALink>(GetPawn());
+		const AActor* OverlappedNPC = Link->GetOverlappedNPC();
+		const ANPC* NPC = Cast<ANPC>(OverlappedNPC);
+		if (NPC_Name_Korean::ToolShopKeeper == NPC->GetNPCName())
+		{
+			const AItem* Item = Cast<AItem>(Link->GetCatchingItem());
+			if (StatusComponent->GetRupee() >= Item->GetItemValue())
+			{
+				StatusComponent->AddRupee(Item->GetItemValue() * -1);
+				DefaultHUD->OnSetStringToConversation(NPC->GetNPCName().ToString(), NPC->GetScript(TSK_ConversationKey::BuySucceeded));
+				DefaultHUD->OnHideChooseWidget();
+			}
+			else
+			{
+				DefaultHUD->OnSetStringToConversation(NPC->GetNPCName().ToString(), NPC->GetScript(TSK_ConversationKey::BuyFailed));
+				DefaultHUD->OnHideChooseWidget();
+			}
+		}
+	}
+	else
+	{
+		OnLinkTalkEnd.Broadcast();
+		StatusComponent->SetIsConversation(false);
+		DefaultHUD->OnHideChooseWidget();
+		DefaultHUD->OnHideConversationWidget();
+		DefaultHUD->OnHideRupeeWidget();
+	}
+
 }
 
 void ALinkController::OnSlashAttackMontageEnd(UAnimMontage* Montage, bool bInterrupted)

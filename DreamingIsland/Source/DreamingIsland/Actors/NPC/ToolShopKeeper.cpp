@@ -31,7 +31,7 @@ AToolShopKeeper::AToolShopKeeper(const FObjectInitializer& ObjectInitializer)
 
 	ConversationComponent = CreateDefaultSubobject<UTSKConversationComponent>(TEXT("ConversationComponent"));
 
-	Name = TEXT("도구 상점 주인");
+	NPCName = NPC_Name_Korean::ToolShopKeeper;
 }
 
 void AToolShopKeeper::Tick(float DeltaTime)

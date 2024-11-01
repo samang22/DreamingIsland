@@ -216,7 +216,7 @@ void ANPC::SetIsTalking(bool _bIsTalking, FVector _LinkLocation)
 
 void ANPC::OnConversation(FString Key)
 {
-	ConversationComponent->Conversation(Name.ToString(), Key);
+	ConversationComponent->Conversation(NPCName.ToString(), Key);
 }
 
 FString ANPC::GetScript(FString Key) const

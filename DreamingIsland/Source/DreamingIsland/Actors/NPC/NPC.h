@@ -71,9 +71,9 @@ protected:
 	UConversationComponent* ConversationComponent;
 
 	UPROPERTY(VisibleAnywhere)
-	FName Name;
+	FName NPCName;
 public:
-	FName GetNPCName() const { return Name; }
+	FName GetNPCName() const { return NPCName; }
 public:
 	UNPCStatusComponent* GetStatusComponent() { return StatusComponent; }
 protected:

@@ -37,6 +37,7 @@ protected:
 	void OnLay(const FInputActionValue& InputActionValue);
 	void OnZoomWheel(const FInputActionValue& InputActionValue);
 	void OnChoose(const FInputActionValue& InputActionValue);
+	void OnCheck(const FInputActionValue& InputActionValue);
 
 protected:
 	UFUNCTION()

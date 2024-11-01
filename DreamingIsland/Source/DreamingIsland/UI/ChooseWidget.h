@@ -24,6 +24,8 @@ public:
 
 protected:
 	bool bIsYes = true;
+public:
+	bool GetIsYes() const { return bIsYes; }
 
 protected:
 	UPROPERTY(VisibleAnywhere, meta = (BindWidget))
