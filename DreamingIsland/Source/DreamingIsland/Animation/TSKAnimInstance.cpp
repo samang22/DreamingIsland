@@ -1,11 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Animation/NPCAnimInstance.h"
+#include "Animation/TSKAnimInstance.h"
 #include "Actors/NPC/NPC.h"
 #include "Components/StatusComponent/NPCStatusComponent.h"
 
-void UNPCAnimInstance::NativeInitializeAnimation()
+void UTSKAnimInstance::NativeInitializeAnimation()
 {
 	Super::NativeInitializeAnimation();
 
@@ -18,7 +18,7 @@ void UNPCAnimInstance::NativeInitializeAnimation()
 	StatusComponent = NPC->GetStatusComponent();
 }
 
-void UNPCAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
+void UTSKAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
 	Super::NativeUpdateAnimation(DeltaSeconds);
 	if (StatusComponent)

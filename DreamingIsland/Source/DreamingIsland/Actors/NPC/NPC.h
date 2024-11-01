@@ -10,6 +10,13 @@
 #define NPC_AISENSECONFIG_SIGHT_LOSESIGHTRADIUS									500.f
 #define NPC_AISENSECONFIG_SIGHT_LOSESIGHTRADIUS_PERIPHERALVISIONANGLEDEGREES	120.f
 
+enum class NPC_MONTAGE : uint8
+{
+	BEAM_ST = 0,
+	BEAM,
+	END,
+};
+
 
 class UAdvancedFloatingPawnMovement;
 class APatrolPath;
@@ -86,8 +93,9 @@ public:
 	void SetSenseLinkCollisionProfileName(FName CollisionProfile);
 
 public:
-	void PlayMontage_Action01();
-	void PlayMontage_Action02();
+	void PlayMontage(NPC_MONTAGE _InEnum, bool bIsLoop = false);
+	bool IsMontage(NPC_MONTAGE _InEnum);
+	bool IsPlayingMontage(NPC_MONTAGE _InEnum);
 
 public:
 	FVector GetSocketLocation(FName SocketName);

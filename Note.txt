@@ -19,7 +19,7 @@ X : 90, Y : 0, Z : 0 회전
 PostProcessVolume을 추가하고 Exposure 값의 최소, 최대값을 0으로 한다.
 
 
-
+링크와 NPC,몬스터의 AnimMontage 구조가 다른 것은, NPC, Monster는 데이터테이블로 AnimMontage를 관리하기 때문이다.
 
 
 

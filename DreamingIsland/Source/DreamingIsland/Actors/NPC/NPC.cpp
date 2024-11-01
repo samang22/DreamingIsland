@@ -167,22 +167,73 @@ void ANPC::SetSenseLinkCollisionProfileName(FName CollisionProfile)
 	SenseLinkCollisionComponent->SetCollisionProfileName(CollisionProfile);
 }
 
-void ANPC::PlayMontage_Action01()
+void ANPC::PlayMontage(NPC_MONTAGE _InEnum, bool bIsLoop)
 {
 	UAnimInstance* AnimInstance = SkeletalMeshComponent->GetAnimInstance();
-	if (NPCData->Action01_Montage && !AnimInstance->Montage_IsPlaying(NPCData->Action01_Montage))
+
+	UAnimMontage* tempMontage = nullptr;
+	// NPC_MONTAGE
+
+	switch (_InEnum)
 	{
-		AnimInstance->Montage_Play(NPCData->Action01_Montage);
+	case NPC_MONTAGE::BEAM_ST:
+		//tempMontage = NPCData->BeamStMontage;
+		break;
+	case NPC_MONTAGE::BEAM:
+		//tempMontage = NPCData->BeamMontage;
+		break;
+	case NPC_MONTAGE::END:
+		break;
+	default:
+		break;
+	}
+
+	if (tempMontage && !AnimInstance->Montage_IsPlaying(tempMontage))
+	{
+		if (bIsLoop)
+		{
+			AnimInstance->Montage_Play(tempMontage, 1.0f, EMontagePlayReturnType::MontageLength, 0.0f, true);
+		}
+		else
+		{
+			AnimInstance->Montage_Play(tempMontage);
+		}
 	}
 }
 
-void ANPC::PlayMontage_Action02()
+bool ANPC::IsMontage(NPC_MONTAGE _InEnum)
 {
-	UAnimInstance* AnimInstance = SkeletalMeshComponent->GetAnimInstance();
-	if (NPCData->Action02_Montage && !AnimInstance->Montage_IsPlaying(NPCData->Action02_Montage))
+	if (!NPCData) return false;
+	switch (_InEnum)
 	{
-		AnimInstance->Montage_Play(NPCData->Action02_Montage);
+	case NPC_MONTAGE::BEAM_ST:
+		//return NPCData->BeamStMontage ? true : false;
+	case NPC_MONTAGE::BEAM:
+		//return NPCData->BeamMontage ? true : false;
+	case NPC_MONTAGE::END:
+	default:
+		return false;
 	}
+}
+
+bool ANPC::IsPlayingMontage(NPC_MONTAGE _InEnum)
+{
+	if (!NPCData) return false;
+	UAnimInstance* AnimInstance = SkeletalMeshComponent->GetAnimInstance();
+
+	switch (_InEnum)
+	{
+	case NPC_MONTAGE::BEAM_ST:
+		//return AnimInstance->Montage_IsPlaying(NPCData->BeamStMontage);
+		break;
+	case NPC_MONTAGE::BEAM:
+		//return AnimInstance->Montage_IsPlaying(NPCData->BeamMontage);
+		break;
+	case NPC_MONTAGE::END:
+	default:
+		return AnimInstance->Montage_IsPlaying(nullptr);
+	}
+	return AnimInstance->Montage_IsPlaying(nullptr);
 }
 
 FVector ANPC::GetSocketLocation(FName SocketName)

@@ -249,37 +249,28 @@ void AMonster::PlayMontage(MONSTER_MONTAGE _InEnum, bool bIsLoop)
 }
 bool AMonster::IsMontage(MONSTER_MONTAGE _InEnum)
 {
+	if (!MonsterData) return false;
 	switch (_InEnum)
 	{
 	case MONSTER_MONTAGE::ATTACK:
-		if (!MonsterData) return false;
 		return MonsterData->AttackMontage ? true : false;
 	case MONSTER_MONTAGE::DEAD:
-		if (!MonsterData) return false;
 		return MonsterData->DeadMontage ? true : false;
 	case MONSTER_MONTAGE::DAMAGE:
-		if (!MonsterData) return false;
 		return MonsterData->DamageMontage ? true : false;
 	case MONSTER_MONTAGE::RUSH:
-		if (!MonsterData) return false;
 		return MonsterData->RushMontage ? true : false;
 	case MONSTER_MONTAGE::FIND:
-		if (!MonsterData) return false;
 		return MonsterData->FindMontage ? true : false;
 	case MONSTER_MONTAGE::KYOROKYORO:
-		if (!MonsterData) return false;
 		return MonsterData->KyoroKyoroMontage ? true : false;
 	case MONSTER_MONTAGE::GUARD:
-		if (!MonsterData) return false;
 		return MonsterData->GuardMontage ? true : false;
 	case MONSTER_MONTAGE::LAUGH:
-		if (!MonsterData) return false;
 		return MonsterData->LaughMontage ? true : false;
 	case MONSTER_MONTAGE::CATCH_NO:
-		if (!MonsterData) return false;
 		return MonsterData->CatchNoMontage ? true : false;
 	case MONSTER_MONTAGE::THROW:
-		if (!MonsterData) return false;
 		return MonsterData->ThrowMontage ? true : false;
 	default:
 		return false;
