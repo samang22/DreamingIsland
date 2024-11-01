@@ -48,6 +48,10 @@ public:
 	void OnLinkCaught(FVector TSKLocation, FVector ForwardVector);
 	UFUNCTION()
 	void OnLinkCaughtEnd();
+	UFUNCTION()
+	void OnLinkItemGet(FVector LinkLocation, FVector ForwardVector);
+	UFUNCTION()
+	void OnLinkItemGetEnded();
 
 protected:
 	AToolShopKeeper* ToolShopKeeper = nullptr;

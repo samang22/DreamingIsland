@@ -14,8 +14,15 @@
 #define TSK_FOWARD_OFFSET 100.f
 #define TSK_UP_OFFSET 30.f
 
+#define LINK_ITEM_GET_FOWARD_OFFSET 150.f
+#define LINK_ITEM_GET_UP_OFFSET 150.f
+
 #define DEFAULT_HOUSE_CAMERA_POSITION FVector(0., 670., 730.)
 #define DEFAULT_HOUSE_CAMERA_ROTATION FRotator(-50., -89.99, 0)
+
+#define HOUSE_CAMERA_CONVERSATION_LERP_ALPHA 0.03f
+#define HOUSE_CAMERA_ITEM_GET_LERP_ALPHA 0.1f
+
 
 // Sets default values
 AHouseCamera::AHouseCamera()
@@ -36,7 +43,9 @@ void AHouseCamera::BeginPlay()
 	LinkController->SetViewTarget(this);
 	LinkController->OnLinkTalk.AddDynamic(this, &ThisClass::OnLinkTalk);
 	LinkController->OnLinkTalkEnd.AddDynamic(this, &ThisClass::OnLinkTalkEnd);
-
+	LinkController->OnLinkItemGet.AddDynamic(this, &ThisClass::OnLinkItemGet);
+	LinkController->OnLinkItemGetEnd.AddDynamic(this, &ThisClass::OnLinkItemGetEnded);
+	// @TODO : do this same in field level
 
 
 	DefaultLocation = DEFAULT_HOUSE_CAMERA_POSITION;
@@ -51,11 +60,11 @@ void AHouseCamera::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	FVector CurrentLocation = GetActorLocation();
-	CurrentLocation = FMath::Lerp(CurrentLocation, DesiredLocation, 0.03f);
+	CurrentLocation = FMath::Lerp(CurrentLocation, DesiredLocation, HOUSE_CAMERA_ITEM_GET_LERP_ALPHA);
 	SetActorLocation(CurrentLocation);
 
 	FRotator CurrentRotator = GetActorRotation();
-	CurrentRotator = FMath::Lerp(CurrentRotator, DesiredRotator, 0.03f);
+	CurrentRotator = FMath::Lerp(CurrentRotator, DesiredRotator, HOUSE_CAMERA_ITEM_GET_LERP_ALPHA);
 	SetActorRotation(CurrentRotator);
 }
 
@@ -101,6 +110,28 @@ void AHouseCamera::OnLinkCaught(FVector TSKLocation, FVector ForwardVector)
 }
 
 void AHouseCamera::OnLinkCaughtEnd()
+{
+	DesiredLocation = DefaultLocation;
+	DesiredRotator = DefaultRotator;
+}
+
+void AHouseCamera::OnLinkItemGet(FVector LinkLocation, FVector ForwardVector)
+{
+	FVector tempLocation = LinkLocation;
+	tempLocation += ForwardVector * LINK_ITEM_GET_FOWARD_OFFSET;
+	tempLocation += FVector(0., 0., 1.) * LINK_ITEM_GET_UP_OFFSET;
+
+	DesiredLocation = tempLocation;
+
+	FVector NewVector = LinkLocation - DesiredLocation;
+	NewVector.Normalize();
+	
+	float Pitch = FMath::Asin(NewVector.Z) * (180.0f / PI);
+	float Yaw = FMath::Atan2(NewVector.Y, NewVector.X) * (180.0f / PI);
+	DesiredRotator = FRotator(Pitch, Yaw, 0.f);
+}
+
+void AHouseCamera::OnLinkItemGetEnded()
 {
 	DesiredLocation = DefaultLocation;
 	DesiredRotator = DefaultRotator;

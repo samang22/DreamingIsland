@@ -11,6 +11,8 @@
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnLinkTalk, FVector, LinkLocation, FVector, LinkLeftVector, FVector, LinkForwardVector);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLinkTalkEnd);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnConversation, FString, Key);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnLinkItemGet, FVector, LinkLocation, FVector, LinkForwardVector);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLinkItemGetEnd);
 
 UCLASS()
 class DREAMINGISLAND_API ALinkController : public APlayerController
@@ -72,5 +74,11 @@ public:
 	FOnLinkTalk OnLinkTalk;
 	UPROPERTY(BlueprintAssignable)
 	FOnLinkTalkEnd OnLinkTalkEnd;
-
+	UPROPERTY(BlueprintAssignable)
+	FOnLinkItemGet OnLinkItemGet;
+	UPROPERTY(BlueprintAssignable)
+	FOnLinkItemGetEnd OnLinkItemGetEnd;
+protected:
+	UFUNCTION()
+	void CallOnLinkItemGetEnd();
 };

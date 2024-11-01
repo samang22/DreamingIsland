@@ -119,8 +119,8 @@ void AItem::ItemCatchedSequence(float DeltaTime)
 				FVector LinkLocation = Link->GetActorLocation();
 				//UE_LOG(LogTemp, Warning, TEXT("Item Height : %f"), LinkLocation.Z);
 
-
 				LinkLocation.Z += LINK_LOCATION_OFFSET;
+
 				SetActorLocation(LinkLocation);
 				SetActorRotation(Link->GetActorRotation());
 			}

@@ -107,6 +107,8 @@ public:
 	bool IsCatchingItem();
 	const AActor* GetOverlappedNPC() { return OverlappedNPC; }
 	AActor* GetCatchingItem() { return CatchingItem; }
+	void DestoryCatchingItem();
+	void SetOffAnimStatus(uint8 Bit);
 
 protected:
 	UAnimMontage* SlashMontage = nullptr;

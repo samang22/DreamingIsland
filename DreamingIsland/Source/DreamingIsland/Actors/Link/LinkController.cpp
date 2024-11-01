@@ -13,6 +13,7 @@
 #include "Actors/Default/DefaultHUD.h"
 #include "Actors/NPC/NPC.h"
 #include "Actors/Items/Item.h"
+#include "Kismet/GameplayStatics.h"
 
 ALinkController::ALinkController()
 {
@@ -360,11 +361,11 @@ void ALinkController::OnGet(const FInputActionValue& InputActionValue)
 		{
 			StatusComponent->SetOnToolEquipStatus(LINK_TOOL_BIT_SWORD);
 		}
-		Item->Destroy();
 		// @TODO : maybe TSK should know this
-
 		Link->PlayMontage(LINK_MONTAGE::ITEM_GET);
-		Link->LayItem();
+		Link->SetOffAnimStatus(LINK_BIT_CARRY);
+		OnLinkItemGet.Broadcast(Link->GetActorLocation(), Link->GetActorForwardVector());
+		UKismetSystemLibrary::K2_SetTimer(this, TEXT("CallOnLinkItemGetEnd"), 1.f, false);
 	}
 
 }
@@ -390,5 +391,12 @@ void ALinkController::SetMoveAuto(bool bFlag, FVector Direction)
 {
 	bIsMoveAuto = bFlag;
 	MoveAutoDirection = Direction;
+}
+
+void ALinkController::CallOnLinkItemGetEnd()
+{
+	OnLinkItemGetEnd.Broadcast();
+	ALink* Link = Cast<ALink>(GetPawn());
+	Link->DestoryCatchingItem();
 }
 

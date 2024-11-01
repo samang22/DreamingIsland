@@ -269,6 +269,19 @@ bool ALink::IsCatchingItem()
 	return false;
 }
 
+void ALink::DestoryCatchingItem()
+{
+	if (!CatchingItem) return;
+	StatusComponent->SetOffAnimationStatus(LINK_BIT_CARRY);
+	CatchingItem->Destroy();
+	CatchingItem = nullptr;
+}
+
+void ALink::SetOffAnimStatus(uint8 Bit)
+{
+	StatusComponent->SetOffAnimationStatus(Bit);
+}
+
 void ALink::PlayMontage(LINK_MONTAGE _InEnum, bool bIsLoop)
 {
 	ULinkAnimInstance* LinkAnimInstance = Cast<ULinkAnimInstance>(GetMesh()->GetAnimInstance());
