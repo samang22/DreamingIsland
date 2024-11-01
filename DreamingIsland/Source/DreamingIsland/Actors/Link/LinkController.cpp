@@ -339,6 +339,7 @@ void ALinkController::OnGet(const FInputActionValue& InputActionValue)
 	if (Link->IsCatchingItem())
 	{
 		AItem* Item = Cast<AItem>(Link->GetCatchingItem());
+		Link->SetIsThief(!Item->GetIsPurchased());
 		FName ItemName = Item->GetItemName();
 
 		if (Item_Name::Bomb == ItemName)
@@ -367,7 +368,6 @@ void ALinkController::OnGet(const FInputActionValue& InputActionValue)
 		OnLinkItemGet.Broadcast(Link->GetActorLocation(), Link->GetActorForwardVector());
 		UKismetSystemLibrary::K2_SetTimer(this, TEXT("CallOnLinkItemGetEnd"), 1.f, false);
 	}
-
 }
 
 void ALinkController::OnSlashAttackMontageEnd(UAnimMontage* Montage, bool bInterrupted)

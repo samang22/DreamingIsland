@@ -92,6 +92,9 @@ public:
 	void SetIsConversation(bool _bIsConversation) { bIsConversation = _bIsConversation; }
 	bool GetIsConversation() const { return bIsConversation; }
 
-
-
+protected:
+	bool bIsThief = false;
+public:
+	void SetIsThief(bool bFlag) { bIsThief = bFlag; }
+	bool GetIsThief() { return bIsThief; }
 };

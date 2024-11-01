@@ -18,7 +18,11 @@
 
 #define TOOLSHOPKEEPER_SPOTLIGHT_INTENSITY			12000.f
 #define TSK_SAFE_LENGTH								400.f
-#define TSK_LINK_RESET_POSITION						FVector(0.f, 0.f, 50.f)
+#define TSK_LINK_RESET_POSITION						FVector(0.f, 0.f, 48.f)
+#define TSK_LINK_EXECUTION_POSITION					FVector(0.f, 280.f, 48.f)
+#define TSK_MAD_LOCATION FVector(0., -120., 96.)
+#define TSK_DEFAULT_LOCATION FVector(0., -270., 66.)
+
 AToolShopKeeper::AToolShopKeeper(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
@@ -39,7 +43,7 @@ void AToolShopKeeper::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (bIsWatching && !bIsTalking)
+	if (bIsWatching && !bIsTalking && !bIsMadOrExecution)
 	{
 		Tick_Watching(DeltaTime);
 	}
@@ -135,15 +139,32 @@ void AToolShopKeeper::Tick_LineTrace(float DeltaTime)
 				{
 					APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 					ADefaultHUD* DefaultHUD = Cast<ADefaultHUD>(PlayerController->GetHUD());
-					DefaultHUD->OnSetStringToConversation(GetNPCName().ToString(), ConversationComponent->GetScript(TEXT("Blame")));
+					DefaultHUD->OnSetStringToConversation(GetNPCName().ToString(), ConversationComponent->GetScript(TSK_ConversationKey::Blame));
 					DefaultHUD->OnShowConversationWidget();
 					DefaultHUD->OnDelayHideConversationWidget(1.f);
 					UKismetSystemLibrary::K2_SetTimer(this, TEXT("SetLinkResetPosition"), 1.f, false);
+					UKismetSystemLibrary::K2_SetTimer(this, TEXT("CallOnLinkCaughtEnd"), 1.f, false);
 
 					OnLinkCaught.Broadcast(GetActorLocation(), GetActorForwardVector());
 					bIsWatching = false;
 
-					UKismetSystemLibrary::K2_SetTimer(this, TEXT("CallOnLinkCaughtEnd"), 1.f, false);
+				}
+			}
+			else
+			{
+				if (Link->GetIsThief())
+				{
+					APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+					ADefaultHUD* DefaultHUD = Cast<ADefaultHUD>(PlayerController->GetHUD());
+					DefaultHUD->OnSetStringToConversation(GetNPCName().ToString(), ConversationComponent->GetScript(TSK_ConversationKey::Mad));
+					DefaultHUD->OnShowConversationWidget();
+					DefaultHUD->OnDelayHideConversationWidget(1.f);
+					UKismetSystemLibrary::K2_SetTimer(this, TEXT("SetLinkExecutionPosition"), 0.5f, false);
+					UKismetSystemLibrary::K2_SetTimer(this, TEXT("CallOnMadEnd"), 1.f, false);
+
+					OnMad.Broadcast(GetActorLocation(), GetActorForwardVector());
+					bIsMadOrExecution = true;
+					bIsWatching = false;
 				}
 			}
 		}
@@ -159,8 +180,28 @@ void AToolShopKeeper::SetLinkResetPosition()
 	}
 }
 
+void AToolShopKeeper::SetLinkExecutionPosition()
+{
+	if (TSK_Link)
+	{
+		TSK_Link->SetActorLocation(TSK_LINK_EXECUTION_POSITION);
+		TSK_Link = nullptr;
+	}
+}
+
 void AToolShopKeeper::CallOnLinkCaughtEnd()
 {
 	OnLinkCaughtEnd.Broadcast();
 	bIsWatching = true;
+}
+
+void AToolShopKeeper::CallOnExecutionEnd()
+{
+	bIsMadOrExecution = false;
+}
+
+void AToolShopKeeper::CallOnMadEnd()
+{
+	OnMadEnd.Broadcast();
+	SetActorLocation(TSK_MAD_LOCATION);
 }

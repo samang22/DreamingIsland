@@ -131,4 +131,8 @@ public:
 	UFUNCTION()
 	void OnLinkTalkEnd();
 
+public:
+	void SetIsThief(bool bFlag);
+	bool GetIsThief();
+
 };

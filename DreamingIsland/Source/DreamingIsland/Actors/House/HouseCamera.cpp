@@ -8,13 +8,13 @@
 #include "Actors/NPC/ToolShopKeeper.h"
 
 #define LINK_LEFT_OFFSET 200.f
-#define LINK_FOWARD_OFFSET -40.f
+#define LINK_FORWARD_OFFSET -40.f
 #define LINK_UP_OFFSET 50.f
 
-#define TSK_FOWARD_OFFSET 100.f
-#define TSK_UP_OFFSET 30.f
+#define TSK_FORWARD_OFFSET 130.f
+#define TSK_UP_OFFSET 50.f
 
-#define LINK_ITEM_GET_FOWARD_OFFSET 150.f
+#define LINK_ITEM_GET_FORWARD_OFFSET 150.f
 #define LINK_ITEM_GET_UP_OFFSET 150.f
 
 #define DEFAULT_HOUSE_CAMERA_POSITION FVector(0., 670., 730.)
@@ -24,7 +24,7 @@
 #define HOUSE_CAMERA_ITEM_GET_LERP_ALPHA 0.1f
 
 
-// Sets default values
+
 AHouseCamera::AHouseCamera()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -72,7 +72,7 @@ void AHouseCamera::OnLinkTalk(FVector LinkLocation, FVector LinkLeftVector, FVec
 {
 	FVector TempLocation = LinkLocation;
 	TempLocation += LinkLeftVector * LINK_LEFT_OFFSET;
-	TempLocation += LinkForwardVector * LINK_FOWARD_OFFSET;
+	TempLocation += LinkForwardVector * LINK_FORWARD_OFFSET;
 	TempLocation += FVector(0., 0., 1.) * LINK_UP_OFFSET;
 	DesiredLocation = TempLocation;
 
@@ -96,7 +96,7 @@ void AHouseCamera::OnLinkTalkEnd()
 void AHouseCamera::OnLinkCaught(FVector TSKLocation, FVector ForwardVector)
 {
 	FVector TempLocation = TSKLocation;
-	TempLocation += ForwardVector * TSK_FOWARD_OFFSET;
+	TempLocation += ForwardVector * TSK_FORWARD_OFFSET;
 	TempLocation += FVector(0., 0., 1.) * TSK_UP_OFFSET;
 	DesiredLocation = TempLocation;
 
@@ -118,7 +118,7 @@ void AHouseCamera::OnLinkCaughtEnd()
 void AHouseCamera::OnLinkItemGet(FVector LinkLocation, FVector ForwardVector)
 {
 	FVector tempLocation = LinkLocation;
-	tempLocation += ForwardVector * LINK_ITEM_GET_FOWARD_OFFSET;
+	tempLocation += ForwardVector * LINK_ITEM_GET_FORWARD_OFFSET;
 	tempLocation += FVector(0., 0., 1.) * LINK_ITEM_GET_UP_OFFSET;
 
 	DesiredLocation = tempLocation;
@@ -137,10 +137,34 @@ void AHouseCamera::OnLinkItemGetEnded()
 	DesiredRotator = DefaultRotator;
 }
 
+void AHouseCamera::OnMad(FVector TSKLocation, FVector ForwardVector)
+{
+	FVector TempLocation = TSKLocation;
+	TempLocation += ForwardVector * TSK_FORWARD_OFFSET;
+	TempLocation += FVector(0., 0., 1.) * TSK_UP_OFFSET;
+	DesiredLocation = TempLocation;
+
+	FVector LinkRightVector = TSKLocation * -1;
+	FVector NewVector = TSKLocation - DesiredLocation;
+	NewVector.Normalize();
+
+	float Pitch = FMath::Asin(NewVector.Z) * (180.0f / PI);
+	float Yaw = FMath::Atan2(NewVector.Y, NewVector.X) * (180.0f / PI);
+	DesiredRotator = FRotator(Pitch, Yaw, 0.f);
+}
+
+void AHouseCamera::OnMadEnd()
+{
+	DesiredLocation = DefaultLocation;
+	DesiredRotator = DefaultRotator;
+}
+
 void AHouseCamera::SetTSKDelgateBind(AToolShopKeeper* _Keeper)
 {
 	ToolShopKeeper = _Keeper;
 	ToolShopKeeper->OnLinkCaught.AddDynamic(this, &ThisClass::OnLinkCaught);
 	ToolShopKeeper->OnLinkCaughtEnd.AddDynamic(this, &ThisClass::OnLinkCaughtEnd);
+	ToolShopKeeper->OnMad.AddDynamic(this, &ThisClass::OnMad);
+	ToolShopKeeper->OnMadEnd.AddDynamic(this, &ThisClass::OnMadEnd);
 }
 

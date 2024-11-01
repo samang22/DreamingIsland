@@ -321,3 +321,13 @@ void ALink::OnLinkTalkEnd()
 		Cast<ANPC>(OverlappedNPC)->SetIsTalking(false, GetActorLocation());
 	}
 }
+
+void ALink::SetIsThief(bool bFlag)
+{
+	StatusComponent->SetIsThief(bFlag);
+}
+
+bool ALink::GetIsThief()
+{
+	return StatusComponent->GetIsThief();
+}

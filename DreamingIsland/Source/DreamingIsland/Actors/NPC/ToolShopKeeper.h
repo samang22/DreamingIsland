@@ -11,6 +11,8 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnLinkCaught, FVector, TSKLocation, FVector, ForwardVector);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLinkCaughtEnd);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnMad, FVector, TSKLocation, FVector, ForwardVector);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnMadEnd);
 
 class USpotLightComponent;
 UCLASS()
@@ -43,17 +45,32 @@ protected:
 protected:
 	UFUNCTION()
 	void SetLinkResetPosition();
+	UFUNCTION()
+	void SetLinkExecutionPosition();
 	AActor* TSK_Link = nullptr;
+
+
 
 public:
 	UPROPERTY(BlueprintAssignable)
 	FOnLinkCaught OnLinkCaught;
 	UPROPERTY(BlueprintAssignable)
 	FOnLinkCaughtEnd OnLinkCaughtEnd;
+	UPROPERTY(BlueprintAssignable)
+	FOnMad OnMad;
+	UPROPERTY(BlueprintAssignable)
+	FOnMadEnd OnMadEnd;
+
+
+	
 protected:
 	UFUNCTION()
 	void CallOnLinkCaughtEnd();
+	UFUNCTION()
+	void CallOnExecutionEnd();
+	UFUNCTION()
+	void CallOnMadEnd();
 
-
-
+protected:
+	bool bIsMadOrExecution = false;
 };

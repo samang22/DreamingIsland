@@ -1,7 +1,7 @@
 ---,SkeletalMesh,MeshTransform,CollisionSphereRadius,ItemValue
 Bomb,"/Script/Engine.StaticMesh'/Game/Assets/Item/Bomb/Bomb.Bomb'","(Rotation=(X=0.000000,Y=-0.000000,Z=0.000000,W=1.000000),Translation=(X=0.000000,Y=0.000000,Z=0.000000),Scale3D=(X=90.000000,Y=90.000000,Z=90.000000))","32.000000","50"
 Sword,"/Script/Engine.StaticMesh'/Game/Assets/Item/Sword/Sword.Sword'","(Rotation=(X=0.000000,Y=-0.000000,Z=0.000000,W=1.000000),Translation=(X=0.000000,Y=0.000000,Z=0.000000),Scale3D=(X=90.000000,Y=90.000000,Z=90.000000))","32.000000","100"
-Shield,"/Script/Engine.StaticMesh'/Game/Assets/Item/Shield/Shield.Shield'","(Rotation=(X=0.000000,Y=-0.000000,Z=0.000000,W=1.000000),Translation=(X=0.000000,Y=0.000000,Z=0.000000),Scale3D=(X=90.000000,Y=90.000000,Z=90.000000))","32.000000","150"
+Shield,"/Script/Engine.StaticMesh'/Game/Assets/Item/Shield/Shield.Shield'","(Rotation=(X=0.000000,Y=0.000000,Z=0.707107,W=-0.707107),Translation=(X=0.000000,Y=0.000000,Z=0.000000),Scale3D=(X=90.000000,Y=90.000000,Z=90.000000))","32.000000","150"
 Arrow,"/Script/Engine.StaticMesh'/Game/Assets/Item/Arrow/Arrow.Arrow'","(Rotation=(X=0.000000,Y=-0.000000,Z=0.000000,W=1.000000),Translation=(X=0.000000,Y=0.000000,Z=0.000000),Scale3D=(X=90.000000,Y=90.000000,Z=90.000000))","32.000000","20"
 Bow,"/Script/Engine.StaticMesh'/Game/Assets/Item/Bow/Bow.Bow'","(Rotation=(X=0.000000,Y=-0.000000,Z=0.000000,W=1.000000),Translation=(X=0.000000,Y=0.000000,Z=0.000000),Scale3D=(X=90.000000,Y=90.000000,Z=90.000000))","32.000000","50"
 RupeeGreen,"/Script/Engine.StaticMesh'/Game/Assets/Item/RupeeGreen/RupeeGreen.RupeeGreen'","(Rotation=(X=0.000000,Y=-0.000000,Z=0.000000,W=1.000000),Translation=(X=0.000000,Y=0.000000,Z=0.000000),Scale3D=(X=90.000000,Y=90.000000,Z=90.000000))","32.000000","10"

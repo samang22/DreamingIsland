@@ -14,6 +14,7 @@ void UTSKConversationComponent::BeginPlay()
 	ScriptMap.Add(TSK_ConversationKey::Buy2, TEXT("루피입니다!"));
 	ScriptMap.Add(TSK_ConversationKey::BuySucceeded, TEXT("감사합니다!"));
 	ScriptMap.Add(TSK_ConversationKey::BuyFailed, TEXT("잔액이 부족합니다..."));
+	ScriptMap.Add(TSK_ConversationKey::Mad, TEXT("분명히 돈 주고 사라고 했을텐데!"));
 }
 
 void UTSKConversationComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)

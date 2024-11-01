@@ -83,6 +83,7 @@ namespace TSK_ConversationKey
 	static inline FString Buy2 = TEXT("Buy2");
 	static inline FString BuySucceeded = TEXT("BuySuceeded");
 	static inline FString BuyFailed = TEXT("BuyFailed");
+	static inline FString Mad = TEXT("Mad");
 }
 
 namespace NPC_Name_Korean
