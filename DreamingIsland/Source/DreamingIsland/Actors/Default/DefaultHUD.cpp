@@ -34,3 +34,8 @@ void ADefaultHUD::OnSetRupeeNum(int RupeeNum)
 {
 	RupeeWidget->OnSetRupeeNum(RupeeNum);
 }
+
+void ADefaultHUD::OnShowRupeeNum()
+{
+	RupeeWidget->OnShowRupeeNum();
+}

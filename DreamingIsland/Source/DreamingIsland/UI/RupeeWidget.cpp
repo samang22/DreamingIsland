@@ -27,9 +27,10 @@ void URupeeWidget::NativeConstruct()
 void URupeeWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
 	Super::NativeTick(MyGeometry, InDeltaTime);
-
+	bool bShowWidget = false;
 	if (DesiredRupeeNum < CurrentRupeeNum)
 	{
+		bShowWidget = true;
 		CurrentRupeeNum -= INCREASE_DECREASE_NUM;
 		if (DesiredRupeeNum > CurrentRupeeNum)
 		{
@@ -38,6 +39,7 @@ void URupeeWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 	}
 	else if (DesiredRupeeNum > CurrentRupeeNum)
 	{
+		bShowWidget = true;
 		CurrentRupeeNum += INCREASE_DECREASE_NUM;
 		if (DesiredRupeeNum < CurrentRupeeNum)
 		{
@@ -47,6 +49,12 @@ void URupeeWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 
 	FText RupeeText = FText::AsNumber(CurrentRupeeNum);
 	RupeeNumText->SetText(RupeeText);
+
+	if (bShowWidget == true)
+	{
+		SetVisibility(ESlateVisibility::Visible);
+		UKismetSystemLibrary::K2_SetTimer(this, TEXT("OnHiddenUI"), 2.f, false);
+	}
 }
 
 void URupeeWidget::OnHiddenUI()
@@ -58,6 +66,12 @@ void URupeeWidget::OnSetRupeeNum(int RupeeNum)
 {
 	DesiredRupeeNum = RupeeNum;
 
+	SetVisibility(ESlateVisibility::Visible);
+	UKismetSystemLibrary::K2_SetTimer(this, TEXT("OnHiddenUI"), 2.f, false);
+}
+
+void URupeeWidget::OnShowRupeeNum()
+{
 	SetVisibility(ESlateVisibility::Visible);
 	UKismetSystemLibrary::K2_SetTimer(this, TEXT("OnHiddenUI"), 2.f, false);
 }

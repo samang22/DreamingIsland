@@ -26,4 +26,5 @@ protected:
 public:
 	void OnSetStringToConversation(FString Speaker, FString String);
 	void OnSetRupeeNum(int RupeeNum);
+	void OnShowRupeeNum();
 };

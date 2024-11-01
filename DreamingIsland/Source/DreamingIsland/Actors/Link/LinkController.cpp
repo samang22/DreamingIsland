@@ -201,6 +201,8 @@ void ALinkController::OnInteract(const FInputActionValue& InputActionValue)
 			FString Script2 = NPC->GetScript(TEXT("Buy2")); // 루피입니다!
 			FString Result = ItemName + Script1 + ItemValue + Script2;
 			DefaultHUD->OnSetStringToConversation(NPC->GetNPCName().ToString(), Result);
+			DefaultHUD->OnShowRupeeNum();
+
 		}
 		else if (!Link->IsCatchingItem())
 		{

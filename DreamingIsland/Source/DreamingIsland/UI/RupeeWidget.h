@@ -26,6 +26,8 @@ protected:
 public:
 	UFUNCTION()
 	void OnSetRupeeNum(int RupeeNum);
+	UFUNCTION()
+	void OnShowRupeeNum();
 
 protected:
 	UPROPERTY(VisibleAnywhere, meta = (BindWidget))
