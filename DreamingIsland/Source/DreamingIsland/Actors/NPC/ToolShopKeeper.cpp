@@ -14,6 +14,8 @@
 #include "Actors/House/HouseCamera.h"
 #include "Actors/Items/Item.h"
 #include "Data/NPCTableRow.h"
+#include "Actors/Link/Link.h"
+#include "GameInstance/DreamingIsland_GIS.h"
 
 
 
@@ -177,7 +179,6 @@ void AToolShopKeeper::SetLinkResetPosition()
 	if (TSK_Link)
 	{
 		TSK_Link->SetActorLocation(TSK_LINK_RESET_POSITION);
-		TSK_Link = nullptr;
 	}
 }
 
@@ -186,7 +187,6 @@ void AToolShopKeeper::SetLinkExecutionPosition()
 	if (TSK_Link)
 	{
 		TSK_Link->SetActorLocation(TSK_LINK_EXECUTION_POSITION);
-		TSK_Link = nullptr;
 	}
 }
 
@@ -205,14 +205,20 @@ void AToolShopKeeper::CallOnMadEnd()
 {
 	OnMadEnd.Broadcast();
 	SetActorLocation(TSK_MAD_LOCATION);
+	FVector YVector(0., 1., 0.);
+	SetActorRotation(YVector.Rotation().Quaternion());
 	SkeletalMeshComponent->GetAnimInstance()->Montage_Play(NPCData->BeamStMontage);
 
 	SetIsShootBeam(true);
-	UKismetSystemLibrary::K2_SetTimer(this, TEXT("EndShootBeam"), 3.f, false);
+	UKismetSystemLibrary::K2_SetTimer(this, TEXT("EndShootBeam"), 5.f, false);
 }
 
 void AToolShopKeeper::EndShootBeam()
 {
 	SetIsShootBeam(false);
+
+	UDreamingIsland_GIS* Subsystem = GetGameInstance()->GetSubsystem<UDreamingIsland_GIS>();
+	Subsystem->SaveLinkData();
+
 	UGameplayStatics::OpenLevel(GetWorld(), TEXT("Field"));
 }

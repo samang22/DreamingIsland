@@ -11,11 +11,7 @@ UAnimNotify_TSK_BeamEnd::UAnimNotify_TSK_BeamEnd()
 
 void UAnimNotify_TSK_BeamEnd::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
 {
-	if (!TSK)
-	{
-		TSK = Cast<AToolShopKeeper>(MeshComp->GetOwner());
-	}
-
+	AToolShopKeeper* TSK = Cast<AToolShopKeeper>(MeshComp->GetOwner());
 	if (TSK && TSK->GetIsShootBeam())
 	{
 		TSK->PlayMontage(NPC_MONTAGE::BEAM);

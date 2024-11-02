@@ -73,7 +73,7 @@ public:
 	void SetSpeedRun();
 
 public:
-	const class ULinkStatusComponent* GetStatusComponent() const;
+	class ULinkStatusComponent* GetStatusComponent() const;
 	
 protected:
 	bool bIsCatched = false;
@@ -109,6 +109,9 @@ public:
 	AActor* GetCatchingItem() { return CatchingItem; }
 	void DestoryCatchingItem();
 	void SetOffAnimStatus(uint8 Bit);
+
+protected:
+	void SetDataFromGIS();
 
 protected:
 	UAnimMontage* SlashMontage = nullptr;

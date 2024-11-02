@@ -12,8 +12,6 @@ UCLASS()
 class DREAMINGISLAND_API UAnimNotify_TSK_BeamEnd : public UAnimNotify
 {
 	GENERATED_BODY()
-protected:
-	AToolShopKeeper* TSK = nullptr;
 
 public:
 	UAnimNotify_TSK_BeamEnd();

@@ -17,6 +17,7 @@
 #include "Actors/Items/Item.h"
 #include "Actors/Link/LinkController.h"
 #include "Animation/LinkAnimInstance.h"
+#include "GameInstance/DreamingIsland_GIS.h"
 
 #define PROBE_SIZE										5.0
 #define COLLISION_SPHERE_RADIUS							24.f
@@ -91,7 +92,6 @@ void ALink::OnDie()
 {
 }
 
-// Called when the game starts or when spawned
 void ALink::BeginPlay()
 {
 	Super::BeginPlay();
@@ -108,6 +108,7 @@ void ALink::BeginPlay()
 	LinkController->OnLinkTalk.AddDynamic(this, &ThisClass::OnLinkTalk);
 	LinkController->OnLinkTalkEnd.AddDynamic(this, &ThisClass::OnLinkTalkEnd);
 
+	SetDataFromGIS();
 }
 
 void ALink::OnConstruction(const FTransform& Transform)
@@ -174,7 +175,7 @@ void ALink::SetSpeedRun()
 	Movement->MaxWalkSpeed = LINK_RUN_SPEED;
 }
 
-const ULinkStatusComponent* ALink::GetStatusComponent() const
+ULinkStatusComponent* ALink::GetStatusComponent() const
 {
 	return dynamic_cast<ULinkStatusComponent*>(StatusComponent);
 }
@@ -280,6 +281,12 @@ void ALink::DestoryCatchingItem()
 void ALink::SetOffAnimStatus(uint8 Bit)
 {
 	StatusComponent->SetOffAnimationStatus(Bit);
+}
+
+void ALink::SetDataFromGIS()
+{
+	UDreamingIsland_GIS* Subsystem = GetGameInstance()->GetSubsystem<UDreamingIsland_GIS>();
+	Subsystem->LoadLinkData(this);
 }
 
 void ALink::PlayMontage(LINK_MONTAGE _InEnum, bool bIsLoop)

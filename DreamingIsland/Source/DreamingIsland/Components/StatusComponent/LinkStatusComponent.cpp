@@ -55,8 +55,11 @@ bool ULinkStatusComponent::GetAnimStatus(uint8 InBit) const
 //{
 //	return LinkToolOwnStatus & InBit;
 //}
-
 bool ULinkStatusComponent::GetToolEquipStatus(uint8 InBit) const
 {
 	return LinkToolEquipStatus & InBit;
+}
+uint8 ULinkStatusComponent::GetEntireToolEquipStatus() const
+{
+	return LinkToolEquipStatus;
 }

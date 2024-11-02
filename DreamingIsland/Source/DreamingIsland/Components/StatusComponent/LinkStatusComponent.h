@@ -47,6 +47,8 @@ public:
 	//bool GetToolOwnStatus(uint8 InBit) const;
 	UFUNCTION()
 	bool GetToolEquipStatus(uint8 InBit) const;
+	UFUNCTION()
+	uint8 GetEntireToolEquipStatus() const;
 
 protected:
 	bool bIsCatched = false;
@@ -58,18 +60,21 @@ public:
 protected:
 	int Rupee = 0;
 public:
+	void SetRupee(int _Rupee) { Rupee = _Rupee; }
 	void AddRupee(int _Rupee) { Rupee += _Rupee; }
 	int GetRupee() const { return Rupee; }
 
 protected:
 	int Bomb = 0;
 public:
+	void SetBomb(int _Bomb) { Bomb = _Bomb; }
 	void AddBomb(int _Bomb) { Bomb += _Bomb; }
 	int GetBomb() const { return Bomb; }
 
 protected:
 	int Arrow = 0;
 public:
+	void SetArrow(int _Arrow) { Arrow = _Arrow; }
 	void AddArrow(int _Arrow) { Arrow += _Arrow; }
 	int GetArrow() const { return Arrow; }
 

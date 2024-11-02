@@ -8,6 +8,7 @@
 
 #include "DreamingIsland_GIS.generated.h"
 
+class ALink;
 UCLASS()
 class DREAMINGISLAND_API UDreamingIsland_GIS : public UGameInstanceSubsystem
 {
@@ -20,6 +21,6 @@ public:
 protected:
 	FLinkData LinkData;
 public:
-	void SetLinkData(FLinkData _Data) { LinkData = _Data; }
-	FLinkData GetLinkData() const { return LinkData; }
+	void SaveLinkData();
+	void LoadLinkData(ALink* Link) const;
 };

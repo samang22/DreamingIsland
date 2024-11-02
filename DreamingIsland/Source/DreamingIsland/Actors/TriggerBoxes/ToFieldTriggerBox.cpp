@@ -7,6 +7,8 @@
 #include "Misc/Utils.h"
 #include "Actors/Link/Link.h"
 #include "Kismet/GameplayStatics.h"
+#include "GameInstance/DreamingIsland_GIS.h"
+#include "Components/StatusComponent/LinkStatusComponent.h"
 
 AToFieldTriggerBox::AToFieldTriggerBox(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -53,5 +55,8 @@ void AToFieldTriggerBox::OnTrigger(UPrimitiveComponent* OverlappedComponent, AAc
 	// Change Level
 
 	Link->SetMoveAuto(false);
+	UDreamingIsland_GIS* Subsystem = GetGameInstance()->GetSubsystem<UDreamingIsland_GIS>();
+	Subsystem->SaveLinkData();
+
 	UGameplayStatics::OpenLevel(GetWorld(), TEXT("Field"));
 }

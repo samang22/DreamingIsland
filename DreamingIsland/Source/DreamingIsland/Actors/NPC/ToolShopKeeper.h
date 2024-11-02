@@ -77,6 +77,7 @@ protected:
 
 public:
 	void SetIsShootBeam(bool bFlag) { bIsShootBeam = bFlag; }
+	UFUNCTION()
 	void EndShootBeam();
 	bool GetIsShootBeam() { return bIsShootBeam; }
 };
