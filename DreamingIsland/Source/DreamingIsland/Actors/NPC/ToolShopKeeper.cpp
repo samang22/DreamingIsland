@@ -214,5 +214,5 @@ void AToolShopKeeper::CallOnMadEnd()
 void AToolShopKeeper::EndShootBeam()
 {
 	SetIsShootBeam(false);
-	// TODO : LevelChange
+	UGameplayStatics::OpenLevel(GetWorld(), TEXT("Field"));
 }

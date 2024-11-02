@@ -2,6 +2,7 @@
 
 
 #include "Components/StatusComponent/LinkStatusComponent.h"
+#include "Misc/Utils.h"
 
 ULinkStatusComponent::ULinkStatusComponent()
 {
@@ -25,15 +26,15 @@ void ULinkStatusComponent::SetOffAnimationStatus(uint8 InBit)
 	LinkAnimationStatus &= ~(InBit);
 }
 
-void ULinkStatusComponent::SetOnToolOwnStatus(uint8 InBit)
-{
-	LinkToolOwnStatus |= InBit;
-}
-
-void ULinkStatusComponent::SetOffToolOwnStatus(uint8 InBit)
-{
-	LinkToolOwnStatus &= ~(InBit);
-}
+//void ULinkStatusComponent::SetOnToolOwnStatus(uint8 InBit)
+//{
+//	LinkToolOwnStatus |= InBit;
+//}
+//
+//void ULinkStatusComponent::SetOffToolOwnStatus(uint8 InBit)
+//{
+//	LinkToolOwnStatus &= ~(InBit);
+//}
 
 void ULinkStatusComponent::SetOnToolEquipStatus(uint8 InBit)
 {
@@ -50,10 +51,10 @@ bool ULinkStatusComponent::GetAnimStatus(uint8 InBit) const
 	return LinkAnimationStatus & InBit;
 }
 
-bool ULinkStatusComponent::GetToolOwnStatus(uint8 InBit) const
-{
-	return LinkToolOwnStatus & InBit;
-}
+//bool ULinkStatusComponent::GetToolOwnStatus(uint8 InBit) const
+//{
+//	return LinkToolOwnStatus & InBit;
+//}
 
 bool ULinkStatusComponent::GetToolEquipStatus(uint8 InBit) const
 {

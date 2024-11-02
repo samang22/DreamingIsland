@@ -6,19 +6,6 @@
 #include "Components/StatusComponent/StatusComponent.h"
 #include "LinkStatusComponent.generated.h"
 
-#define	LINK_BIT_WAIT			0x00000001
-#define	LINK_BIT_WALK			0x00000002
-#define	LINK_BIT_RUN			0x00000004
-#define	LINK_BIT_CARRY			0x00000008
-
-#define LINK_TOOL_BIT_SWORD				0x00000001
-#define LINK_TOOL_BIT_SHIELD			0x00000002
-#define LINK_TOOL_BIT_MIRRORSHIELD		0x00000004
-#define LINK_TOOL_BIT_FLIPPER			0x00000008
-#define LINK_TOOL_BIT_OCARINA			0x00000010
-#define LINK_TOOL_BIT_BOW				0x00000011
-
-
 /**
  * 
  */
@@ -35,8 +22,8 @@ public:
 protected:
 	UPROPERTY()
 	uint8 LinkAnimationStatus;
-	UPROPERTY()
-	uint8 LinkToolOwnStatus;
+	//UPROPERTY()
+	//uint8 LinkToolOwnStatus;
 	UPROPERTY()
 	uint8 LinkToolEquipStatus;
 
@@ -44,9 +31,9 @@ public:
 	void SetOnAnimationStatus(uint8 InBit);
 	void SetOffAnimationStatus(uint8 InBit);
 
-public:
-	void SetOnToolOwnStatus(uint8 InBit);
-	void SetOffToolOwnStatus(uint8 InBit);
+//public:
+//	void SetOnToolOwnStatus(uint8 InBit);
+//	void SetOffToolOwnStatus(uint8 InBit);
 
 public:
 	void SetOnToolEquipStatus(uint8 InBit);
@@ -56,8 +43,8 @@ public:
 public:
 	UFUNCTION()
 	bool GetAnimStatus(uint8 InBit) const;
-	UFUNCTION()
-	bool GetToolOwnStatus(uint8 InBit) const;
+	//UFUNCTION()
+	//bool GetToolOwnStatus(uint8 InBit) const;
 	UFUNCTION()
 	bool GetToolEquipStatus(uint8 InBit) const;
 
