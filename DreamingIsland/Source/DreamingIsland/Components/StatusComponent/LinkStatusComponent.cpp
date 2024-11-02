@@ -3,6 +3,8 @@
 
 #include "Components/StatusComponent/LinkStatusComponent.h"
 #include "Misc/Utils.h"
+#include "Actors/Default/DefaultHUD.h"
+#include "Actors/Link/LinkController.h"
 
 ULinkStatusComponent::ULinkStatusComponent()
 {
@@ -62,4 +64,114 @@ bool ULinkStatusComponent::GetToolEquipStatus(uint8 InBit) const
 uint8 ULinkStatusComponent::GetEntireToolEquipStatus() const
 {
 	return LinkToolEquipStatus;
+}
+
+void ULinkStatusComponent::SetRupee(int _Rupee)
+{
+	Rupee = _Rupee;
+
+	if (GetWorld() && GetWorld()->IsGameWorld())
+	{
+		APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+		ADefaultHUD* DefaultHUD = Cast<ADefaultHUD>(PlayerController->GetHUD());
+		if (DefaultHUD)
+		{
+			DefaultHUD->OnShowRupeeWidget();
+		}
+	}
+}
+
+void ULinkStatusComponent::AddRupee(int _Rupee)
+{
+	Rupee += _Rupee;
+
+	if (GetWorld() && GetWorld()->IsGameWorld())
+	{
+
+		APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+		ADefaultHUD* DefaultHUD = Cast<ADefaultHUD>(PlayerController->GetHUD());
+		if (DefaultHUD)
+		{
+			DefaultHUD->OnShowRupeeWidget();
+		}
+	}
+}
+
+int ULinkStatusComponent::GetRupee() const
+{
+	return Rupee;
+}
+
+void ULinkStatusComponent::SetBomb(int _Bomb)
+{
+	Bomb = _Bomb;
+
+	if (GetWorld() && GetWorld()->IsGameWorld())
+	{
+
+		APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+		ADefaultHUD* DefaultHUD = Cast<ADefaultHUD>(PlayerController->GetHUD());
+		if (DefaultHUD)
+		{
+			DefaultHUD->OnShowBombWidget();
+		}
+	}
+}
+
+void ULinkStatusComponent::AddBomb(int _Bomb)
+{
+	Bomb += _Bomb;
+
+	if (GetWorld() && GetWorld()->IsGameWorld())
+	{
+
+		APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+		ADefaultHUD* DefaultHUD = Cast<ADefaultHUD>(PlayerController->GetHUD());
+		if (DefaultHUD)
+		{
+			DefaultHUD->OnShowBombWidget();
+		}
+	}
+}
+
+int ULinkStatusComponent::GetBomb() const
+{
+	return Bomb;
+}
+
+void ULinkStatusComponent::SetArrow(int _Arrow)
+{
+	Arrow = _Arrow;
+	
+	if (GetWorld() && GetWorld()->IsGameWorld())
+	{
+
+		APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+		ADefaultHUD* DefaultHUD = Cast<ADefaultHUD>(PlayerController->GetHUD());
+		if (DefaultHUD)
+		{
+			DefaultHUD->OnShowArrowWidget();
+		}
+	}
+}
+
+void ULinkStatusComponent::AddArrow(int _Arrow)
+{
+	Arrow += _Arrow;
+
+	if (GetWorld() && GetWorld()->IsGameWorld())
+	{
+
+		APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+		ADefaultHUD* DefaultHUD = Cast<ADefaultHUD>(PlayerController->GetHUD());
+		if (DefaultHUD)
+		{
+			DefaultHUD->OnShowArrowWidget();
+		}
+	}
+}
+
+int ULinkStatusComponent::GetArrow() const
+{
+	return Arrow;
 }

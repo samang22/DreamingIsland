@@ -14,6 +14,7 @@
 #include "Actors/NPC/NPC.h"
 #include "Actors/Items/Item.h"
 #include "Kismet/GameplayStatics.h"
+#include "Actors/Default/DefaultHUD.h"
 
 ALinkController::ALinkController()
 {
@@ -149,6 +150,8 @@ void ALinkController::Tick(float DeltaTime)
 	if (DefaultHUD)
 	{
 		DefaultHUD->OnSetRupeeNum(StatusComponent->GetRupee());
+		DefaultHUD->OnSetArrowNum(StatusComponent->GetArrow());
+		DefaultHUD->OnSetBombNum(StatusComponent->GetBomb());
 	}
 }
 
@@ -344,11 +347,15 @@ void ALinkController::OnGet(const FInputActionValue& InputActionValue)
 
 		if (Item_Name::Bomb == ItemName)
 		{
-			StatusComponent->AddBomb(1);
+			StatusComponent->AddBomb(5);
+			ADefaultHUD* DefaultHUD = Cast<ADefaultHUD>(GetHUD());
+			DefaultHUD->OnSetBombNum(StatusComponent->GetBomb());
 		}
 		else if (Item_Name::Arrow == ItemName)
 		{
-			StatusComponent->AddArrow(1);
+			StatusComponent->AddArrow(5);
+			ADefaultHUD* DefaultHUD = Cast<ADefaultHUD>(GetHUD());
+			DefaultHUD->OnSetArrowNum(StatusComponent->GetArrow());
 		}
 		else if (Item_Name::Bow == ItemName)
 		{

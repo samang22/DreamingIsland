@@ -22,12 +22,16 @@ protected:
 
 protected:
 	class UConversationWidget* Widget;
-	class URupeeWidget* RupeeWidget;
 	class UChooseWidget* ChooseWidget;
+	class URupeeWidget* RupeeWidget;
+	class UArrowWidget* ArrowWidget;
+	class UBombWidget* BombWidget;
 public:
 	void OnShowConversationWidget();
 	void OnShowChooseWidget();
 	void OnShowRupeeWidget();
+	void OnShowArrowWidget();
+	void OnShowBombWidget();
 public:
 	UFUNCTION()
 	void OnHideConversationWidget();
@@ -35,15 +39,23 @@ public:
 	void OnHideChooseWidget();
 	UFUNCTION()
 	void OnHideRupeeWidget();
+	UFUNCTION()
+	void OnHideArrowWidget();
+	UFUNCTION()
+	void OnHideBombWidget();
 public:
 	void OnDelayHideConversationWidget(float Seconds);
 	void OnDelayHideChooseWidget(float Seconds);
 	void OnDelayHideRupeeWidget(float Seconds);
+	void OnDelayHideArrowWidget(float Seconds);
+	void OnDelayHideBombWidget(float Seconds);
 
 
 public:
 	void OnSetStringToConversation(FString Speaker, FString String);
 	void OnSetRupeeNum(int RupeeNum);
+	void OnSetArrowNum(int RupeeNum);
+	void OnSetBombNum(int RupeeNum);
 	void OnSetSelection(bool bSelection);
 	bool GetSelection();
 

@@ -60,23 +60,23 @@ public:
 protected:
 	int Rupee = 0;
 public:
-	void SetRupee(int _Rupee) { Rupee = _Rupee; }
-	void AddRupee(int _Rupee) { Rupee += _Rupee; }
-	int GetRupee() const { return Rupee; }
+	void SetRupee(int _Rupee);
+	void AddRupee(int _Rupee);
+	int GetRupee() const;
 
 protected:
 	int Bomb = 0;
 public:
-	void SetBomb(int _Bomb) { Bomb = _Bomb; }
-	void AddBomb(int _Bomb) { Bomb += _Bomb; }
-	int GetBomb() const { return Bomb; }
+	void SetBomb(int _Bomb);
+	void AddBomb(int _Bomb);
+	int GetBomb() const;
 
 protected:
 	int Arrow = 0;
 public:
-	void SetArrow(int _Arrow) { Arrow = _Arrow; }
-	void AddArrow(int _Arrow) { Arrow += _Arrow; }
-	int GetArrow() const { return Arrow; }
+	void SetArrow(int _Arrow);
+	void AddArrow(int _Arrow);
+	int GetArrow() const;
 
 protected:
 	bool bIsConversation = false;;

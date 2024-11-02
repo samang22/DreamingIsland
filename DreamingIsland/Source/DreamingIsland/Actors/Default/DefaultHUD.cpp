@@ -3,8 +3,10 @@
 
 #include "Actors/Default/DefaultHUD.h"
 #include "UI/ConversationWidget.h"
-#include "UI/RupeeWidget.h"
 #include "UI/ChooseWidget.h"
+#include "UI/RupeeWidget.h"
+#include "UI/ArrowWidget.h"
+#include "UI/BombWidget.h"
 #include "Blueprint/UserWidget.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -20,69 +22,106 @@ void ADefaultHUD::BeginPlay()
 	Widget = CreateWidget<UConversationWidget>(GetWorld(), WidgetClass);
 	Widget->AddToViewport();
 
+	WidgetClass = LoadClass<UUserWidget>(nullptr, TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/UI_YesOrNo.UI_YesOrNo_C'"));
+	ChooseWidget = CreateWidget<UChooseWidget>(GetWorld(), WidgetClass);
+	ChooseWidget->AddToViewport();
+
 	WidgetClass = LoadClass<UUserWidget>(nullptr, TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/UI_Rupee.UI_Rupee_C'"));
 	RupeeWidget = CreateWidget<URupeeWidget>(GetWorld(), WidgetClass);
 	RupeeWidget->AddToViewport();
 
-	// 
-	WidgetClass = LoadClass<UUserWidget>(nullptr, TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/UI_YesOrNo.UI_YesOrNo_C'"));
-	ChooseWidget = CreateWidget<UChooseWidget>(GetWorld(), WidgetClass);
-	ChooseWidget->AddToViewport();
+	WidgetClass = LoadClass<UUserWidget>(nullptr, TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/UI_Arrow.UI_Arrow_C'"));
+	ArrowWidget = CreateWidget<UArrowWidget>(GetWorld(), WidgetClass);
+	ArrowWidget->AddToViewport();
+
+	WidgetClass = LoadClass<UUserWidget>(nullptr, TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/UI_Bomb.UI_Bomb_C'"));
+	BombWidget = CreateWidget<UBombWidget>(GetWorld(), WidgetClass);
+	BombWidget->AddToViewport();
 }
 
 void ADefaultHUD::OnSetStringToConversation(FString Speaker, FString String)
 {
-	Widget->OnSetStringToConversation(Speaker, String);
+	if (Widget)	Widget->OnSetStringToConversation(Speaker, String);
 }
 
 void ADefaultHUD::OnShowConversationWidget()
 {
-	Widget->OnShow();
+	if (Widget)	Widget->OnShow();
 }
 
 void ADefaultHUD::OnShowChooseWidget()
 {
-	ChooseWidget->OnShow();
+	if (ChooseWidget)	ChooseWidget->OnShow();
 }
 
 void ADefaultHUD::OnSetRupeeNum(int RupeeNum)
 {
-	RupeeWidget->OnSetRupeeNum(RupeeNum);
+	if (RupeeWidget)	RupeeWidget->OnSetRupeeNum(RupeeNum);
+}
+
+void ADefaultHUD::OnSetArrowNum(int ArrowNum)
+{
+	if (ArrowWidget)	ArrowWidget->OnSetArrowNum(ArrowNum);
+}
+
+void ADefaultHUD::OnSetBombNum(int BombNum)
+{
+	if (BombWidget)	BombWidget->OnSetBombNum(BombNum);
 }
 
 void ADefaultHUD::OnSetSelection(bool bSelection)
 {
-	ChooseWidget->OnSetChoose(bSelection);
+	if (ChooseWidget)	ChooseWidget->OnSetChoose(bSelection);
 }
 
 bool ADefaultHUD::GetSelection()
 {
-	return ChooseWidget->GetIsYes();
+	return ChooseWidget ? ChooseWidget->GetIsYes() : false;
 }
 
 bool ADefaultHUD::GetIsChooseWidgetVisible()
 {
-	return ChooseWidget->GetIsVisible();
+	return ChooseWidget ? ChooseWidget->GetIsVisible() : false;
 }
 
 void ADefaultHUD::OnShowRupeeWidget()
 {
-	RupeeWidget->OnShow();
+	if (RupeeWidget)	RupeeWidget->OnShow();
+}
+
+void ADefaultHUD::OnShowArrowWidget()
+{
+	if (ArrowWidget)	ArrowWidget->OnShow();
+}
+
+void ADefaultHUD::OnShowBombWidget()
+{
+	if (BombWidget)	BombWidget->OnShow();
 }
 
 void ADefaultHUD::OnHideConversationWidget()
 {
-	Widget->OnHidden();
+	if (Widget)	Widget->OnHidden();
 }
 
 void ADefaultHUD::OnHideChooseWidget()
 {
-	ChooseWidget->OnHidden();
+	if (ChooseWidget)	ChooseWidget->OnHidden();
 }
 
 void ADefaultHUD::OnHideRupeeWidget()
 {
-	RupeeWidget->OnHidden();
+	if (RupeeWidget)	RupeeWidget->OnHidden();
+}
+
+void ADefaultHUD::OnHideArrowWidget()
+{
+	if (ArrowWidget)	ArrowWidget->OnHidden();
+}
+
+void ADefaultHUD::OnHideBombWidget()
+{
+	if (BombWidget)	BombWidget->OnHidden();
 }
 
 void ADefaultHUD::OnDelayHideConversationWidget(float Seconds)
@@ -98,4 +137,14 @@ void ADefaultHUD::OnDelayHideChooseWidget(float Seconds)
 void ADefaultHUD::OnDelayHideRupeeWidget(float Seconds)
 {
 	UKismetSystemLibrary::K2_SetTimer(this, TEXT("OnHideRupeeWidget"), Seconds, false);
+}
+
+void ADefaultHUD::OnDelayHideArrowWidget(float Seconds)
+{
+	UKismetSystemLibrary::K2_SetTimer(this, TEXT("OnHideArrowWidget"), Seconds, false);
+}
+
+void ADefaultHUD::OnDelayHideBombWidget(float Seconds)
+{
+	UKismetSystemLibrary::K2_SetTimer(this, TEXT("OnHideHideWidget"), Seconds, false);
 }
