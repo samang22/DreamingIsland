@@ -4,15 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "Actors/AI/NPC/NPCAIController.h"
-#include "ToolShopKeeperAIController.generated.h"
+#include "GameShopOwnerAIController.generated.h"
 
 UCLASS()
-class DREAMINGISLAND_API AToolShopKeeperAIController : public ANPCAIController
+class DREAMINGISLAND_API AGameShopOwnerAIController : public ANPCAIController
 {
 	GENERATED_BODY()
 public:
 	virtual void BeginPlay() override;
 	virtual void OnPossess(APawn* InPawn) override;
 	virtual void Tick(float DeltaTime) override;
-
 };

@@ -27,6 +27,7 @@ void AHouse::BeginPlay()
 {
 	Super::BeginPlay();
 	SetData(DataTableRowHandle);
+	StaticMeshComponent->Mobility = EComponentMobility::Static;
 }
 
 void AHouse::OnConstruction(const FTransform& Transform)

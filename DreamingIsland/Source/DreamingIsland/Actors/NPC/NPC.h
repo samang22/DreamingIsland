@@ -14,6 +14,9 @@ enum class NPC_MONTAGE : uint8
 {
 	BEAM_ST = 0,
 	BEAM,
+	RAGE,
+	ACTION01,
+	ACTION02,
 	END,
 };
 

@@ -61,7 +61,7 @@ void ADefaultHUD::OnSetRupeeNum(int RupeeNum)
 
 void ADefaultHUD::OnSetArrowNum(int ArrowNum)
 {
-	if (ArrowWidget)	ArrowWidget->OnSetArrowNum(ArrowNum);
+	if (ArrowWidget) ArrowWidget->OnSetArrowNum(ArrowNum);
 }
 
 void ADefaultHUD::OnSetBombNum(int BombNum)

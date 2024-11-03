@@ -67,6 +67,12 @@ public: // Animation
 	UAnimMontage* BeamStMontage;
 	UPROPERTY(EditAnywhere, Category = "NPC|Animation")
 	UAnimMontage* BeamMontage;
+	UPROPERTY(EditAnywhere, Category = "NPC|Animation")
+	UAnimMontage* RageMontage;
+	UPROPERTY(EditAnywhere, Category = "NPC|Animation")
+	UAnimMontage* Action01_Montage;
+	UPROPERTY(EditAnywhere, Category = "NPC|Animation")
+	UAnimMontage* Action02_Montage;
 
 
 

@@ -89,6 +89,8 @@ namespace TSK_ConversationKey
 namespace NPC_Name_Korean
 {
 	static inline FName ToolShopKeeper = TEXT("도구 상점 주인");
+	static inline FName GameShopOwner = TEXT("게임샵 주인");
+	static inline FName CraneButton = TEXT("크레인 버튼");
 }
 
 

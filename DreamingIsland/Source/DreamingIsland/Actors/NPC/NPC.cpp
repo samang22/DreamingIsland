@@ -182,6 +182,15 @@ void ANPC::PlayMontage(NPC_MONTAGE _InEnum, bool bIsLoop)
 	case NPC_MONTAGE::BEAM:
 		tempMontage = NPCData->BeamMontage;
 		break;
+	case NPC_MONTAGE::RAGE:
+		tempMontage = NPCData->RageMontage;
+		break;
+	case NPC_MONTAGE::ACTION01:
+		tempMontage = NPCData->Action01_Montage;
+		break;
+	case NPC_MONTAGE::ACTION02:
+		tempMontage = NPCData->Action02_Montage;
+		break;
 	case NPC_MONTAGE::END:
 		break;
 	default:
@@ -207,9 +216,15 @@ bool ANPC::IsMontage(NPC_MONTAGE _InEnum)
 	switch (_InEnum)
 	{
 	case NPC_MONTAGE::BEAM_ST:
-		//return NPCData->BeamStMontage ? true : false;
+		return NPCData->BeamStMontage ? true : false;
 	case NPC_MONTAGE::BEAM:
-		//return NPCData->BeamMontage ? true : false;
+		return NPCData->BeamMontage ? true : false;
+	case NPC_MONTAGE::RAGE:
+		return NPCData->RageMontage ? true : false;
+	case NPC_MONTAGE::ACTION01:
+		return NPCData->Action01_Montage ? true : false;
+	case NPC_MONTAGE::ACTION02:
+		return NPCData->Action02_Montage ? true : false;
 	case NPC_MONTAGE::END:
 	default:
 		return false;
@@ -224,11 +239,15 @@ bool ANPC::IsPlayingMontage(NPC_MONTAGE _InEnum)
 	switch (_InEnum)
 	{
 	case NPC_MONTAGE::BEAM_ST:
-		//return AnimInstance->Montage_IsPlaying(NPCData->BeamStMontage);
-		break;
+		return AnimInstance->Montage_IsPlaying(NPCData->BeamStMontage);
 	case NPC_MONTAGE::BEAM:
-		//return AnimInstance->Montage_IsPlaying(NPCData->BeamMontage);
-		break;
+		return AnimInstance->Montage_IsPlaying(NPCData->BeamMontage);
+	case NPC_MONTAGE::RAGE:
+		return AnimInstance->Montage_IsPlaying(NPCData->BeamMontage);
+	case NPC_MONTAGE::ACTION01:
+		return AnimInstance->Montage_IsPlaying(NPCData->Action01_Montage);
+	case NPC_MONTAGE::ACTION02:
+		return AnimInstance->Montage_IsPlaying(NPCData->Action02_Montage);
 	case NPC_MONTAGE::END:
 	default:
 		return AnimInstance->Montage_IsPlaying(nullptr);
