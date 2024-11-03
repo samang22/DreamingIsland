@@ -4,10 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "Components/ConversationComponent/ConversationComponent.h"
-#include "TSKConversationComponent.generated.h"
+#include "GSOConversationComponent.generated.h"
 
 UCLASS()
-class DREAMINGISLAND_API UTSKConversationComponent : public UConversationComponent
+class DREAMINGISLAND_API UGSOConversationComponent : public UConversationComponent
 {
 	GENERATED_BODY()
 protected:

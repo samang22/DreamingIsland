@@ -23,4 +23,5 @@ protected:
 public:
 	void SaveLinkData();
 	void LoadLinkData(ALink* Link) const;
+	void LoadPersistentLevel(UWorld* World, const FString& LevelName);
 };

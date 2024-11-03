@@ -135,6 +135,7 @@ void ANPC::BeginPlay()
 {
 	Super::BeginPlay();
 	SetData(DataTableRowHandle);
+	SkeletalMeshComponent->BoundsScale = 10.f;
 }
 
 void ANPC::OnConstruction(const FTransform& Transform)

@@ -109,6 +109,8 @@ void ALink::BeginPlay()
 	LinkController->OnLinkTalkEnd.AddDynamic(this, &ThisClass::OnLinkTalkEnd);
 
 	SetDataFromGIS();
+
+	GetMesh()->BoundsScale = 10.f;
 }
 
 void ALink::OnConstruction(const FTransform& Transform)

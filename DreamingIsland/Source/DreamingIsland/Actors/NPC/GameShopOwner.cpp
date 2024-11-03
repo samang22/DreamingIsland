@@ -5,10 +5,12 @@
 #include "Components/SphereComponent.h"
 #include "Misc/Utils.h"
 #include "Animation/NPCAnimInstance.h"
+#include "Components/ConversationComponent/GSOConversationComponent.h"
 AGameShopOwner::AGameShopOwner(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
 	NPCName = NPC_Name_Korean::GameShopOwner;
+	ConversationComponent = CreateDefaultSubobject<UGSOConversationComponent>(TEXT("ConversationComponent"));
 }
 
 void AGameShopOwner::Tick(float DeltaTime)

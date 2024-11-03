@@ -86,6 +86,14 @@ namespace TSK_ConversationKey
 	static inline FString Mad = TEXT("Mad");
 }
 
+namespace GSO_ConversationKey
+{
+	static inline FString Greeting = TEXT("Greeting");
+	static inline FString Try = TEXT("Try");
+	static inline FString End = TEXT("End");
+	static inline FString Rage = TEXT("Rage");
+}
+
 namespace NPC_Name_Korean
 {
 	static inline FName ToolShopKeeper = TEXT("도구 상점 주인");
