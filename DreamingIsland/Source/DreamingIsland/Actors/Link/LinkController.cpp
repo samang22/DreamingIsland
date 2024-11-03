@@ -12,6 +12,8 @@
 #include "Animation/LinkAnimInstance.h"
 #include "Actors/Default/DefaultHUD.h"
 #include "Actors/NPC/NPC.h"
+#include "Actors/NPC/ToolShopKeeper.h"
+#include "Actors/NPC/GameShopOwner.h"
 #include "Actors/Items/Item.h"
 #include "Kismet/GameplayStatics.h"
 #include "Actors/Default/DefaultHUD.h"
@@ -220,26 +222,37 @@ void ALinkController::OnInteract(const FInputActionValue& InputActionValue)
 		
 		const ANPC* NPC = Cast<ANPC>(Link->GetOverlappedNPC());
 
-		if (Link->IsCatchingItem())
+		if (NPC->GetNPCName() == NPC_Name_Korean::ToolShopKeeper)
 		{
-			const AItem* Item = Cast<AItem>(Link->GetCatchingItem());
-			FString ItemName = Item->GetItemName().ToString();
-			FString Script1 = NPC->GetScript(TEXT("Buy1")); // 은
-			FString ItemValue = FString::FormatAsNumber(Item->GetItemValue());
-			FString Script2 = NPC->GetScript(TEXT("Buy2")); // 루피입니다!
-			FString Result = ItemName + Script1 + ItemValue + Script2;
-			DefaultHUD->OnSetStringToConversation(NPC->GetNPCName().ToString(), Result);
-			DefaultHUD->OnShowConversationWidget();
-			DefaultHUD->OnShowRupeeWidget();
-			DefaultHUD->OnShowChooseWidget();
-
+			if (Link->IsCatchingItem())
+			{
+				const AItem* Item = Cast<AItem>(Link->GetCatchingItem());
+				FString ItemName = Item->GetItemName().ToString();
+				FString Script1 = NPC->GetScript(TEXT("Buy1")); // 은
+				FString ItemValue = FString::FormatAsNumber(Item->GetItemValue());
+				FString Script2 = NPC->GetScript(TEXT("Buy2")); // 루피입니다!
+				FString Result = ItemName + Script1 + ItemValue + Script2;
+			
+				DefaultHUD->OnSetStringToConversation(NPC->GetNPCName().ToString(), Result);
+				DefaultHUD->OnShowConversationWidget();
+				DefaultHUD->OnShowRupeeWidget();
+				DefaultHUD->OnShowChooseWidget();
+			}
+			else if (!Link->IsCatchingItem())
+			{
+				FString Script = NPC->GetScript(TEXT("Greeting"));
+				DefaultHUD->OnSetStringToConversation(NPC->GetNPCName().ToString(), Script);
+				DefaultHUD->OnShowConversationWidget();
+			}
 		}
-		else if (!Link->IsCatchingItem())
+		else if (NPC->GetNPCName() == NPC_Name_Korean::GameShopOwner)
 		{
-			FString Script = NPC->GetScript(TEXT("Greeting"));
+			FString Script = NPC->GetScript(TEXT("Try"));
 			DefaultHUD->OnSetStringToConversation(NPC->GetNPCName().ToString(), Script);
 			DefaultHUD->OnShowConversationWidget();
+			DefaultHUD->OnShowChooseWidget();
 		}
+
 
 
 	}
