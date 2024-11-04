@@ -4,6 +4,7 @@
 #include "Actors/Link/Link.h"
 #include "Components/StatusComponent/LinkStatusComponent.h"
 #include "Engine/LevelStreamingDynamic.h"
+#include "GameInstance/Conversation_GIS.h"
 
 void UDreamingIsland_GIS::Initialize(FSubsystemCollectionBase& Collection)
 {
@@ -48,26 +49,4 @@ void UDreamingIsland_GIS::LoadLinkData(ALink* Link) const
 	StatusComponent->SetRupee(LinkData.Rupee);
 	StatusComponent->SetArrow(LinkData.Arrow);
 	StatusComponent->SetBomb(LinkData.Bomb);
-}
-
-void UDreamingIsland_GIS::LoadPersistentLevel(UWorld* World, const FString& LevelName)
-{
-    if (!World) return;
-
-    FVector Location = FVector::ZeroVector;
-    FRotator Rotation = FRotator::ZeroRotator;
-
-    //UMyLevelStreamingDynamic* LoadedLevel = UMyLevelStreamingDynamic::LoadLevelInstance(
-    //    World,
-    //    LevelName,
-    //    Location,
-    //    Rotation,
-    //    true  
-    //);
-
-    //if (LoadedLevel)
-    //{
-    //    LoadedLevel->bShouldBeLoaded = true;   
-    //    LoadedLevel->bShouldBeVisible = true;  
-    //}
 }

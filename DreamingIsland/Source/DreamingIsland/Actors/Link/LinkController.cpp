@@ -17,6 +17,8 @@
 #include "Actors/Items/Item.h"
 #include "Kismet/GameplayStatics.h"
 #include "Actors/Default/DefaultHUD.h"
+#include "GameInstance/DreamingIsland_GIS.h"
+#include "GameInstance/Conversation_GIS.h"
 
 ALinkController::ALinkController()
 {
@@ -210,51 +212,13 @@ void ALinkController::OnAttack(const FInputActionValue& InputActionValue)
 void ALinkController::OnInteract(const FInputActionValue& InputActionValue)
 {
 	ALink* Link = Cast<ALink>(GetPawn());
-
 	if (Link->IsOverlappedNPC())
 	{
-		// @TODO
-		
-		OnLinkTalk.Broadcast(Link->GetActorLocation(), -1 * Link->GetActorRightVector(), Link->GetActorForwardVector());
-		StatusComponent->SetIsConversation(true);
-
-		ADefaultHUD* DefaultHUD = Cast<ADefaultHUD>(GetHUD());
-		
 		const ANPC* NPC = Cast<ANPC>(Link->GetOverlappedNPC());
 
-		if (NPC->GetNPCName() == NPC_Name_Korean::ToolShopKeeper)
-		{
-			if (Link->IsCatchingItem())
-			{
-				const AItem* Item = Cast<AItem>(Link->GetCatchingItem());
-				FString ItemName = Item->GetItemName().ToString();
-				FString Script1 = NPC->GetScript(TEXT("Buy1")); // 은
-				FString ItemValue = FString::FormatAsNumber(Item->GetItemValue());
-				FString Script2 = NPC->GetScript(TEXT("Buy2")); // 루피입니다!
-				FString Result = ItemName + Script1 + ItemValue + Script2;
-			
-				DefaultHUD->OnSetStringToConversation(NPC->GetNPCName().ToString(), Result);
-				DefaultHUD->OnShowConversationWidget();
-				DefaultHUD->OnShowRupeeWidget();
-				DefaultHUD->OnShowChooseWidget();
-			}
-			else if (!Link->IsCatchingItem())
-			{
-				FString Script = NPC->GetScript(TEXT("Greeting"));
-				DefaultHUD->OnSetStringToConversation(NPC->GetNPCName().ToString(), Script);
-				DefaultHUD->OnShowConversationWidget();
-			}
-		}
-		else if (NPC->GetNPCName() == NPC_Name_Korean::GameShopOwner)
-		{
-			FString Script = NPC->GetScript(TEXT("Try"));
-			DefaultHUD->OnSetStringToConversation(NPC->GetNPCName().ToString(), Script);
-			DefaultHUD->OnShowConversationWidget();
-			DefaultHUD->OnShowChooseWidget();
-		}
-
-
-
+		OnLinkTalk.Broadcast(Link->GetActorLocation(), -1 * Link->GetActorRightVector(), Link->GetActorForwardVector());
+		UConversation_GIS* Conversation_GIS = GetGameInstance()->GetSubsystem<UConversation_GIS>();
+		Conversation_GIS->Conversation(Link, NPC);
 	}
 	else if (Link->IsOverlappedItem()
 		&& !Link->IsCatchingItem()
