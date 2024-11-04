@@ -17,7 +17,7 @@ void UConversation_GIS::Deinitialize()
 {
 }
 
-void UConversation_GIS::Conversation(ALink* Link, const ANPC* NPC)
+void UConversation_GIS::Conversation(ALink* Link, const ANPC* NPC, bool& InbIsBroadCast)
 {
 	if (!Link || !NPC) return;
 
@@ -48,12 +48,23 @@ void UConversation_GIS::Conversation(ALink* Link, const ANPC* NPC)
 			DefaultHUD->OnSetStringToConversation(NPC->GetNPCName().ToString(), Script);
 			DefaultHUD->OnShowConversationWidget();
 		}
+		InbIsBroadCast = true;
 	}
 	else if (NPC->GetNPCName() == NPC_Name_Korean::GameShopOwner)
 	{
-		FString Script = NPC->GetScript(TEXT("Try"));
+		FString Script = NPC->GetScript(TEXT("Greeting"));
 		DefaultHUD->OnSetStringToConversation(NPC->GetNPCName().ToString(), Script);
 		DefaultHUD->OnShowConversationWidget();
+
+		InbIsBroadCast = true;
+	}
+	else if (NPC->GetNPCName() == NPC_Name_Korean::CraneButton)
+	{
+		FString Script = NPC->GetScript(TEXT("Try"));
+		DefaultHUD->OnSetStringToConversation(NPC_Name_Korean::GameShopOwner.ToString(), Script);
+		DefaultHUD->OnShowConversationWidget();
 		DefaultHUD->OnShowChooseWidget();
+		DefaultHUD->OnShowRupeeWidget();
+		InbIsBroadCast = false;
 	}
 }

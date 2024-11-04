@@ -5,18 +5,21 @@
 #include "Components/SphereComponent.h"
 #include "Misc/Utils.h"
 #include "Animation/CraneButtonAnimInstance.h"
+#include "Components/ConversationComponent/GSOConversationComponent.h"
 
 // Sets default values
 ACraneButton::ACraneButton(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
-	NPCName = NPC_Name_Korean::CraneButton;
+	// UGSOConversationComponent is meant to be
+	ConversationComponent = CreateDefaultSubobject<UGSOConversationComponent>(TEXT("ConversationComponent"));
 }
 
 void ACraneButton::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	NPCName = NPC_Name_Korean::CraneButton;
+
 }
 
 

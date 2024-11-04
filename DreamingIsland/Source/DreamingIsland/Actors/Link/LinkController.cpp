@@ -216,9 +216,13 @@ void ALinkController::OnInteract(const FInputActionValue& InputActionValue)
 	{
 		const ANPC* NPC = Cast<ANPC>(Link->GetOverlappedNPC());
 
-		OnLinkTalk.Broadcast(Link->GetActorLocation(), -1 * Link->GetActorRightVector(), Link->GetActorForwardVector());
 		UConversation_GIS* Conversation_GIS = GetGameInstance()->GetSubsystem<UConversation_GIS>();
-		Conversation_GIS->Conversation(Link, NPC);
+		bool bCheckBroadcast = false;
+		Conversation_GIS->Conversation(Link, NPC, bCheckBroadcast);
+		if (bCheckBroadcast)
+		{
+			OnLinkTalk.Broadcast(Link->GetActorLocation(), -1 * Link->GetActorRightVector(), Link->GetActorForwardVector());
+		}
 	}
 	else if (Link->IsOverlappedItem()
 		&& !Link->IsCatchingItem()
