@@ -6,9 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "CraneFence.generated.h"
 
-/**
- * 
- */
+class USplineComponent;
 UCLASS()
 class DREAMINGISLAND_API ACraneFence : public AActor
 {
@@ -23,5 +21,14 @@ protected:
 protected:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UStaticMeshComponent> StaticMeshComponent;
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<USplineComponent> SplineComponent;
 
+protected:
+	bool bMove = false;
+	bool bMoveUp = true;
+	float fDistanceAlongSpline = 0.f;
+
+public:
+	void SetMove(bool bFlag) { bMove = bFlag; }
 };
