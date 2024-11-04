@@ -313,8 +313,6 @@ void ALinkController::OnCheck(const FInputActionValue& InputActionValue)
 	ADefaultHUD* DefaultHUD = Cast<ADefaultHUD>(GetHUD());
 	if (!DefaultHUD->GetIsChooseWidgetVisible()) return;
 
-
-
 	if (DefaultHUD->GetSelection())
 	{
 		// now check which one is talking with
@@ -324,6 +322,7 @@ void ALinkController::OnCheck(const FInputActionValue& InputActionValue)
 		if (NPC_Name_Korean::ToolShopKeeper == NPC->GetNPCName())
 		{
 			AItem* Item = Cast<AItem>(Link->GetCatchingItem());
+			if (!Item) return;
 			if (StatusComponent->GetRupee() >= Item->GetItemValue())
 			{
 				StatusComponent->AddRupee(Item->GetItemValue() * -1);

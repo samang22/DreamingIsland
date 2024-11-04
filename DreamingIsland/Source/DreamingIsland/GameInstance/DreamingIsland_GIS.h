@@ -23,5 +23,13 @@ protected:
 public:
 	void SaveLinkData();
 	void LoadLinkData(ALink* Link) const;
+
+protected:
+	FVector LinkFieldLocation = FVector::Zero();
+public:
+	void SetLinkFieldLocation(FVector _Location) { LinkFieldLocation = _Location; }
+	FVector GetLinkFieldLocation() const { return LinkFieldLocation; }
+
+public:
 	void LoadPersistentLevel(UWorld* World, const FString& LevelName);
 };

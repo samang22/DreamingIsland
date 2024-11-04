@@ -81,9 +81,6 @@ ALink::ALink(const FObjectInitializer& ObjectInitializer)
 	USkeletalMeshComponent* SkeletalMeshComponent = GetMesh();
 	SkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshComponent"));
 	SkeletalMeshComponent->SetupAttachment(RootComponent);
-
-
-
 }
 
 
@@ -103,12 +100,32 @@ void ALink::BeginPlay()
 	SenseInteractCollisionComponent->SetRelativeLocation(GetActorForwardVector() * LINK_SENSE_COLLISION_OFFSET);
 	SenseInteractCollisionComponent->SetSphereRadius(LINK_SENSEINTERACTIVE_COLLISION_SPHERE_RADIUS);
 	SenseInteractCollisionComponent->SetCollisionProfileName(CollisionProfileName::SenseInteractive);
+	SenseInteractCollisionComponent->bHiddenInGame = COLLISION_HIDDEN_IN_GAME;
 
 	ALinkController* LinkController = Cast<ALinkController>(Controller);
 	LinkController->OnLinkTalk.AddDynamic(this, &ThisClass::OnLinkTalk);
 	LinkController->OnLinkTalkEnd.AddDynamic(this, &ThisClass::OnLinkTalkEnd);
 
+
 	SetDataFromGIS();
+
+	UWorld* World = GetWorld();
+	if (World)
+	{
+		// Get the current level name
+		FString LevelName = World->GetName();
+		if (LevelName.Equals(TEXT("Field")))
+		{
+			UDreamingIsland_GIS* Subsystem = GetGameInstance()->GetSubsystem<UDreamingIsland_GIS>();
+
+			FVector LinkLocation = Subsystem->GetLinkFieldLocation();
+			if (LinkLocation != FVector::Zero())
+			{
+				SetActorLocation(LinkLocation);
+			}
+		}
+	}
+
 
 	GetMesh()->BoundsScale = 10.f;
 }

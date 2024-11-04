@@ -9,7 +9,7 @@
 #include "EnhancedInputComponent.h"
 
 
-#define COLLISION_HIDDEN_IN_GAME						false
+#define COLLISION_HIDDEN_IN_GAME						true
 
 
 class FUtils

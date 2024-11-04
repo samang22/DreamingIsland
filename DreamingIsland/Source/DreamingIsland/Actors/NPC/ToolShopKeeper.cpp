@@ -125,7 +125,11 @@ void AToolShopKeeper::Tick_LineTrace(float DeltaTime)
 	FCollisionQueryParams CollisionParams;
 
 	GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, TRACE_CHANNEL_LINKCHANNEL, CollisionParams);
-	DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 0.02f);
+
+	if (COLLISION_HIDDEN_IN_GAME)
+	{
+		DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 0.02f);
+	}
 
 	static int iCount = 0;
 	if (HitResult.bBlockingHit)

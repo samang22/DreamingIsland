@@ -7,6 +7,7 @@
 
 void UDreamingIsland_GIS::Initialize(FSubsystemCollectionBase& Collection)
 {
+    LinkData.Rupee = 200;
 }
 
 void UDreamingIsland_GIS::Deinitialize()
@@ -18,11 +19,11 @@ void UDreamingIsland_GIS::SaveLinkData()
     UWorld* World = GetWorld();
     if (World)
     {
-        // 첫 번째 PlayerController 가져오기
+        // PlayerController 
         APlayerController* PlayerController = World->GetFirstPlayerController();
         if (PlayerController)
         {
-            // PlayerController에서 Pawn 가져오기
+            // PlayerController
             ALink* Link = Cast<ALink>(PlayerController->GetPawn());
             if (Link)
             {
@@ -53,7 +54,6 @@ void UDreamingIsland_GIS::LoadPersistentLevel(UWorld* World, const FString& Leve
 {
     if (!World) return;
 
-    // 레벨 로드 위치와 회전을 설정합니다.
     FVector Location = FVector::ZeroVector;
     FRotator Rotation = FRotator::ZeroRotator;
 
@@ -62,12 +62,12 @@ void UDreamingIsland_GIS::LoadPersistentLevel(UWorld* World, const FString& Leve
     //    LevelName,
     //    Location,
     //    Rotation,
-    //    true  // Blocking load를 설정할지 여부, 여기서는 비동기로 로드하도록 설정
+    //    true  
     //);
 
     //if (LoadedLevel)
     //{
-    //    LoadedLevel->bShouldBeLoaded = true;   // 항상 로드 상태 유지
-    //    LoadedLevel->bShouldBeVisible = true;  // 가시성 설정
+    //    LoadedLevel->bShouldBeLoaded = true;   
+    //    LoadedLevel->bShouldBeVisible = true;  
     //}
 }

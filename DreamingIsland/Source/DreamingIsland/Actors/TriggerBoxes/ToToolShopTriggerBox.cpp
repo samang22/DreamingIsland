@@ -7,6 +7,7 @@
 #include "Misc/Utils.h"
 #include "Actors/Link/Link.h"
 #include "Kismet/GameplayStatics.h"
+#include "GameInstance/DreamingIsland_GIS.h"
 
 AToToolShopTriggerBox::AToToolShopTriggerBox(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -53,5 +54,11 @@ void AToToolShopTriggerBox::OnTrigger(UPrimitiveComponent* OverlappedComponent, 
 	// Change Level
 
 	Link->SetMoveAuto(false);
+
+	UDreamingIsland_GIS* Subsystem = GetGameInstance()->GetSubsystem<UDreamingIsland_GIS>();
+	FVector LinkLocation = Link->GetActorLocation();
+	LinkLocation.Y += 100.f;
+	Subsystem->SetLinkFieldLocation(LinkLocation);
+
 	UGameplayStatics::OpenLevel(GetWorld(), TEXT("ToolShop"));
 }

@@ -16,6 +16,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Data/PawnTableRow.h"
 
+
 void ARangedMonsterAIController::BeginPlay()
 {
 	Super::BeginPlay();

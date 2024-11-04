@@ -27,7 +27,6 @@ protected:
 
 	UFUNCTION()
 	void ResetOnDamaged();
-
 	void FindPlayerByPerception();
 
 public:
