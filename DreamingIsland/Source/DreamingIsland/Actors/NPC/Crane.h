@@ -20,13 +20,7 @@ protected:
 
 protected:
 	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UStaticMeshComponent> Arm01_StaticMeshComponent;
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UStaticMeshComponent> Arm02_StaticMeshComponent;
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UStaticMeshComponent> Arm03_StaticMeshComponent;
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UStaticMeshComponent> Arm04_StaticMeshComponent;
+	TObjectPtr<UStaticMeshComponent> Magnet_StaticMeshComponent;
 
 public:
 	void Grab();
