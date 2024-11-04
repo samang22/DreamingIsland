@@ -17,32 +17,10 @@
 #include "Data/PawnTableRow.h"
 
 
+
 void ARangedMonsterAIController::BeginPlay()
 {
 	Super::BeginPlay();
-	if (!IsValid(PatrolPath))
-	{
-		//checkf(false, TEXT("PatrolPath not valid"));
-		return;
-	}
-
-	UBehaviorTree* BehaviorTree = nullptr;
-	if (!IsValid(BrainComponent))
-	{
-		BehaviorTree = LoadObject<UBehaviorTree>(nullptr, TEXT("/Script/AIModule.BehaviorTree'/Game/Blueprint/AI/Monster/BT_RangedMonster.BT_RangedMonster'"));
-		check(BehaviorTree);
-		RunBehaviorTree(BehaviorTree);
-	}
-
-
-	AMonster* Monster = Cast<AMonster>(GetPawn());
-	const FPawnTableRow* Data = nullptr;
-	if (Monster)
-	{
-		Data = Monster->GetMonsterData();
-	}
-
-	Blackboard->SetValueAsObject(TEXT("SplineComponent"), PatrolPath);
 }
 
 void ARangedMonsterAIController::OnPossess(APawn* InPawn)
@@ -110,4 +88,33 @@ void ARangedMonsterAIController::FindPlayerByPerception()
 			Blackboard->ClearValue(TEXT("DetectedPlayer"));
 		}
 	}
+}
+
+void ARangedMonsterAIController::SetPatrolPath(TObjectPtr<USplineComponent> NewPatrolPath)
+{
+	PatrolPath = NewPatrolPath;
+
+	if (!IsValid(PatrolPath))
+	{
+		//checkf(false, TEXT("PatrolPath not valid"));
+		return;
+	}
+	
+	UBehaviorTree* BehaviorTree = nullptr;
+	if (!IsValid(BrainComponent))
+	{
+		BehaviorTree = LoadObject<UBehaviorTree>(nullptr, TEXT("/Script/AIModule.BehaviorTree'/Game/Blueprint/AI/Monster/BT_RangedMonster.BT_RangedMonster'"));
+		check(BehaviorTree);
+		RunBehaviorTree(BehaviorTree);
+	}
+	
+	
+	AMonster* Monster = Cast<AMonster>(GetPawn());
+	const FPawnTableRow* Data = nullptr;
+	if (Monster)
+	{
+		Data = Monster->GetMonsterData();
+	}
+	
+	Blackboard->SetValueAsObject(TEXT("SplineComponent"), PatrolPath);
 }

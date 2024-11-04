@@ -18,11 +18,6 @@
 void ABomberAIController::BeginPlay()
 {
 	Super::BeginPlay();
-	//if (!IsValid(PatrolPath))
-	//{
-	//	//checkf(false, TEXT("PatrolPath not valid"));
-	//	return;
-	//}
 
 	UBehaviorTree* BehaviorTree = nullptr;
 	if (!IsValid(BrainComponent))
@@ -108,4 +103,9 @@ void ABomberAIController::FindPlayerByPerception()
 			Blackboard->ClearValue(TEXT("DetectedPlayer"));
 		}
 	}
+}
+
+void ABomberAIController::SetPatrolPath(TObjectPtr<USplineComponent> NewPatrolPath)
+{
+	PatrolPath = NewPatrolPath;
 }

@@ -3,14 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AIController.h"
+#include "Actors/AI/BaseAIController.h"
 
 #include "MoblinAIController.generated.h"
 
-class UStatusComponent;
-class USplineComponent;
 UCLASS()
-class DREAMINGISLAND_API AMoblinAIController : public AAIController
+class DREAMINGISLAND_API AMoblinAIController : public ABaseAIController
 {
 	GENERATED_BODY()
 public:
@@ -24,20 +22,11 @@ protected:
 
 	UFUNCTION()
 	void ResetOnDamaged();
-
 	void FindPlayerByPerception();
 
 public:
-	void SetPatrolPath(TObjectPtr<USplineComponent> NewPatrolPath) { PatrolPath = NewPatrolPath; }
-
-protected:
-	UPROPERTY()
-	TObjectPtr<USplineComponent> PatrolPath;
+	void SetPatrolPath(TObjectPtr<USplineComponent> NewPatrolPath);
 
 protected:
 	bool bDamaged = false;
-
-	UPROPERTY()
-	UStatusComponent* StatusComponentRef;
-
 };

@@ -19,21 +19,6 @@
 void ABasicMonsterAIController::BeginPlay()
 {
 	Super::BeginPlay();
-	if (!IsValid(PatrolPath))
-	{
-		//checkf(false, TEXT("PatrolPath not valid"));
-		return;
-	}
-
-	UBehaviorTree* BehaviorTree = nullptr;
-	if (!IsValid(BrainComponent))
-	{
-		BehaviorTree = LoadObject<UBehaviorTree>(nullptr, TEXT("/Script/AIModule.BehaviorTree'/Game/Blueprint/AI/Monster/BT_BasicMonster.BT_BasicMonster'"));
-		check(BehaviorTree);
-		RunBehaviorTree(BehaviorTree);
-	}
-
-	Blackboard->SetValueAsObject(TEXT("SplineComponent"), PatrolPath);
 }
 
 void ABasicMonsterAIController::OnPossess(APawn* InPawn)
@@ -106,3 +91,25 @@ void ABasicMonsterAIController::FindPlayerByPerception()
 		}
 	}
 }
+
+void ABasicMonsterAIController::SetPatrolPath(TObjectPtr<USplineComponent> NewPatrolPath)
+{
+	PatrolPath = NewPatrolPath;
+
+	if (!IsValid(PatrolPath))
+	{
+		//checkf(false, TEXT("PatrolPath not valid"));
+		return;
+	}
+
+	UBehaviorTree* BehaviorTree = nullptr;
+	if (!IsValid(BrainComponent))
+	{
+		BehaviorTree = LoadObject<UBehaviorTree>(nullptr, TEXT("/Script/AIModule.BehaviorTree'/Game/Blueprint/AI/Monster/BT_BasicMonster.BT_BasicMonster'"));
+		check(BehaviorTree);
+		RunBehaviorTree(BehaviorTree);
+	}
+
+	Blackboard->SetValueAsObject(TEXT("SplineComponent"), PatrolPath);
+}
+

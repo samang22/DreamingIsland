@@ -19,29 +19,6 @@
 void AMoriblinAIController::BeginPlay()
 {
 	Super::BeginPlay();
-	if (!IsValid(PatrolPath))
-	{
-		//checkf(false, TEXT("PatrolPath not valid"));
-		return;
-	}
-
-	UBehaviorTree* BehaviorTree = nullptr;
-	if (!IsValid(BrainComponent))
-	{
-		BehaviorTree = LoadObject<UBehaviorTree>(nullptr, TEXT("/Script/AIModule.BehaviorTree'/Game/Blueprint/AI/Monster/BT_Moriblin.BT_Moriblin'"));
-		check(BehaviorTree);
-		RunBehaviorTree(BehaviorTree);
-	}
-
-
-	AMonster* Monster = Cast<AMonster>(GetPawn());
-	const FPawnTableRow* Data = nullptr;
-	if (Monster)
-	{
-		Data = Monster->GetMonsterData();
-	}
-
-	Blackboard->SetValueAsObject(TEXT("SplineComponent"), PatrolPath);
 }
 
 void AMoriblinAIController::OnPossess(APawn* InPawn)
@@ -110,3 +87,32 @@ void AMoriblinAIController::FindPlayerByPerception()
 		}
 	}
 }
+
+void AMoriblinAIController::SetPatrolPath(TObjectPtr<USplineComponent> NewPatrolPath)
+{
+	PatrolPath = NewPatrolPath;
+
+	if (!IsValid(PatrolPath))
+	{
+		return;
+	}
+
+	UBehaviorTree* BehaviorTree = nullptr;
+	if (!IsValid(BrainComponent))
+	{
+		BehaviorTree = LoadObject<UBehaviorTree>(nullptr, TEXT("/Script/AIModule.BehaviorTree'/Game/Blueprint/AI/Monster/BT_Moriblin.BT_Moriblin'"));
+		check(BehaviorTree);
+		RunBehaviorTree(BehaviorTree);
+	}
+
+
+	AMonster* Monster = Cast<AMonster>(GetPawn());
+	const FPawnTableRow* Data = nullptr;
+	if (Monster)
+	{
+		Data = Monster->GetMonsterData();
+	}
+
+	Blackboard->SetValueAsObject(TEXT("SplineComponent"), PatrolPath);
+}
+
