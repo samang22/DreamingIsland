@@ -27,7 +27,6 @@ void ABomber::BeginPlay()
 {
 	Super::BeginPlay();
 	MaterialInterface = SkeletalMeshComponent->GetMaterial(1);
-	MaterialInterface->GetMaterial();
 	DynamicMaterialInstance = UMaterialInstanceDynamic::Create(MaterialInterface, this);
 	DynamicMaterialInstance->SetTextureParameterValue(TEXT("TextureParameter"), Texture_Default);
 	SkeletalMeshComponent->SetMaterial(1, DynamicMaterialInstance);

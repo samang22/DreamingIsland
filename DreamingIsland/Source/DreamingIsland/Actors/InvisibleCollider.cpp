@@ -3,7 +3,7 @@
 
 #include "Actors/InvisibleCollider.h"
 #include "Data/InvisibleColliderTableRow.h"
-
+#include "Misc/Utils.h"
 
 // Sets default values
 AInvisibleCollider::AInvisibleCollider(const FObjectInitializer& ObjectInitializer)
@@ -82,6 +82,7 @@ void AInvisibleCollider::BeginPlay()
 	Super::BeginPlay();
 	SetData(DataTableRowHandle);
 	CollisionComponent->SetCollisionResponseToChannel(TRACE_CHANNEL_INVISIBLECOLLIDER, ECR_Block);
+	CollisionComponent->SetVisibility(COLLISION_HIDDEN_IN_GAME);
 }
 
 void AInvisibleCollider::OnConstruction(const FTransform& Transform)

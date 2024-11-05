@@ -11,12 +11,12 @@
 #define CRANE_SPEED							3.f
 #define CRANE_SPOTLIGHT_ANGLE				10.f
 #define CRANE_SPOTLIGHT_INTENSITY			12000.f
-#define CRANE_DEFAULT_LOCATION				FVector(-340.0, 10.0, 340.0)
+#define CRANE_DEFAULT_LOCATION				FVector(-480.000000, -140.000000, 342.000000)
 
-#define CRANE_Y_MAX							0.f
-#define CRANE_Y_MIN							-280.f
-#define CRANE_X_MAX							410.f
-#define CRANE_X_MIN							-410.f
+#define CRANE_Y_MAX							-140.f
+#define CRANE_Y_MIN							-400.f
+#define CRANE_X_MAX							280.f
+#define CRANE_X_MIN							-540.f
 
 ACrane::ACrane(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)

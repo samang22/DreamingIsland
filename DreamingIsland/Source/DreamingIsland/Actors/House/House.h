@@ -15,11 +15,9 @@ class DREAMINGISLAND_API AHouse : public AActor
 	GENERATED_BODY()
 	
 public:	
-	// Sets default values for this actor's properties
 	AHouse(const FObjectInitializer& ObjectInitializer);
 
 public:	
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetData(const FDataTableRowHandle& InDataTableRowHandle);
 
@@ -35,6 +33,8 @@ protected:
 
 
 protected:
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USceneComponent> DefaultSceneRoot;
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UStaticMeshComponent> StaticMeshComponent;
 protected:

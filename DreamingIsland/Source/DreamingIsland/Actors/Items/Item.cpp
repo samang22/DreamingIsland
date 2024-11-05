@@ -56,7 +56,7 @@ void AItem::SetData(const FDataTableRowHandle& InDataTableRowHandle)
 		SetRootComponent(CollisionComponent);
 		DefaultSceneRoot->SetRelativeTransform(FTransform::Identity);
 		DefaultSceneRoot->AttachToComponent(CollisionComponent, FAttachmentTransformRules::KeepRelativeTransform);
-		CollisionComponent->SetPhysMaterialOverride(PhysicalMaterial);
+   		CollisionComponent->SetPhysMaterialOverride(PhysicalMaterial);
 		CollisionComponent->SetEnableGravity(true);
 		CollisionComponent->SetSimulatePhysics(true);
 		if (USphereComponent* SphereComponent = Cast<USphereComponent>(CollisionComponent))

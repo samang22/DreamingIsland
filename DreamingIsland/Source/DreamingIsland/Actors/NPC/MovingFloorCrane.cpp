@@ -3,6 +3,7 @@
 
 #include "Actors/NPC/MovingFloorCrane.h"
 #include "Components/SplineComponent.h"
+#include "Misc/Utils.h"
 
 #define MFC_MOVING_SPEED 40.f
 AMovingFloorCrane::AMovingFloorCrane()
@@ -14,6 +15,7 @@ AMovingFloorCrane::AMovingFloorCrane()
 
 	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
 	StaticMeshComponent->SetStaticMesh(Asset.Object);
+	StaticMeshComponent->SetCollisionProfileName(CollisionProfileName::MapMesh);
 	RootComponent = StaticMeshComponent;
 
 	SplineComponent = CreateDefaultSubobject<USplineComponent>(TEXT("SplineComponent"));
