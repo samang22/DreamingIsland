@@ -304,6 +304,7 @@ void ALinkController::OnCheck(const FInputActionValue& InputActionValue)
 		UConversation_GIS* Conversation_GIS = GetGameInstance()->GetSubsystem<UConversation_GIS>();
 		bool bCheckBroadcast = false;
 		Conversation_GIS->Purchase(Link, NPC, bCheckBroadcast);
+		StatusComponent->SetIsConversation(false);
 	}
 	else
 	{

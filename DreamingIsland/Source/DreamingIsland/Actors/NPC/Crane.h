@@ -6,6 +6,7 @@
 #include "Actors/NPC/NPC.h"
 #include "Crane.generated.h"
 
+class USpotLightComponent;
 UCLASS()
 class DREAMINGISLAND_API ACrane : public ANPC
 {
@@ -21,6 +22,19 @@ protected:
 protected:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UStaticMeshComponent> Magnet_StaticMeshComponent;
+
+protected:
+	bool bIsGoDefault = false;
+public:
+	void SetIsGoDefault(bool bFlag) { bIsGoDefault = bFlag; }
+
+protected:
+	UPROPERTY(VisibleAnywhere)
+	USpotLightComponent* SpotLightComponent;
+public:
+	void SetSpotLightActive();
+	void SetSpotLightDeActive();
+
 
 public:
 	void Grab();

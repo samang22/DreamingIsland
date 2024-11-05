@@ -25,6 +25,9 @@
 #define TSK_LINK_EXECUTION_POSITION					FVector(0.f, 280.f, 48.f)
 #define TSK_MAD_LOCATION FVector(0., -120., 96.)
 #define TSK_DEFAULT_LOCATION FVector(0., -270., 66.)
+#define TSK_TURN_SPEED 3.f
+#define TSK_SPOTLIGHT_ANGLE 10.f
+
 
 AToolShopKeeper::AToolShopKeeper(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)

@@ -367,3 +367,9 @@ void ALink::ClearCrane()
 {
 	StatusComponent->ClearCrane();
 }
+
+bool ALink::IsCrane()
+{
+	if (StatusComponent->GetCrane()) return true;
+	return false;
+}

@@ -20,9 +20,18 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Item")
 	FTransform MeshTransform = FTransform::Identity;
 
+
 public:
 	UPROPERTY(EditAnywhere, Category = "Item|Collision")
+	TSubclassOf<UShapeComponent> CollisionClass;
+	UPROPERTY(EditAnywhere, Category = "NPC|Collision")
 	float CollisionSphereRadius = 32.f;
+	UPROPERTY(EditAnywhere, Category = "Item|Collision")
+	FVector CollisionBoxExtent = FVector(32.0, 32.0, 32.0);
+	UPROPERTY(EditAnywhere, Category = "Item|Collision")
+	float CollisionCapsuleRadius = 22.f;
+	UPROPERTY(EditAnywhere, Category = "Item|Collision")
+	float CollisionCapsuleHalfHeight = 44.f;
 
 public:
 	UPROPERTY(EditAnywhere, Category = "Item|Value")

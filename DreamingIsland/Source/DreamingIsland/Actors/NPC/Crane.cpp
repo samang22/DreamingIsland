@@ -2,30 +2,49 @@
 
 
 #include "Actors/NPC/Crane.h"
+#include "Misc/Utils.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/AdvancedFloatingPawnMovement.h"
 #include "Components/SphereComponent.h"
-#include "Misc/Utils.h"
+#include "Components/SpotLightComponent.h"
 
-#define CRANE_SPEED 10.f
+#define CRANE_SPEED							3.f
+#define CRANE_SPOTLIGHT_ANGLE				10.f
+#define CRANE_SPOTLIGHT_INTENSITY			12000.f
+#define CRANE_DEFAULT_LOCATION				FVector(-340.0, 10.0, 340.0)
+
+#define CRANE_Y_MAX							0.f
+#define CRANE_Y_MIN							-280.f
+#define CRANE_X_MAX							410.f
+#define CRANE_X_MIN							-410.f
 
 ACrane::ACrane(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> Asset(TEXT("/Script/Engine.StaticMesh'/Game/Assets/Obj/Crane/Magnet/Magnet.Magnet'"));
 	check(Asset.Object);
-	SkeletalMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	CollisionComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	SenseLinkCollisionComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	Magnet_StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Magnet_StaticMeshComponent"));
 	Magnet_StaticMeshComponent->SetStaticMesh(Asset.Object);
-	Magnet_StaticMeshComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	Magnet_StaticMeshComponent->SetRelativeLocation(FVector(0.0, 0.125, 0.5));
 	Magnet_StaticMeshComponent->SetWorldScale3D(FVector(0.002, 0.002, 0.0015));
 	Magnet_StaticMeshComponent->SetRelativeRotation(FVector(180.f, 0.f, 0.f).Rotation());
 	Magnet_StaticMeshComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	Magnet_StaticMeshComponent->SetCollisionProfileName(CollisionProfileName::BlockAllDynamic);
+	Magnet_StaticMeshComponent->SetCollisionProfileName(CollisionProfileName::BlockAll);
+	RootComponent = Magnet_StaticMeshComponent;
+
+	SkeletalMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	SkeletalMeshComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	CollisionComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	SenseLinkCollisionComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+
+
+	SpotLightComponent = CreateDefaultSubobject<USpotLightComponent>(TEXT("SpotLightComponent"));
+	SpotLightComponent->SetupAttachment(RootComponent);
+	SpotLightComponent->SetInnerConeAngle(0.f);
+	SpotLightComponent->SetOuterConeAngle(CRANE_SPOTLIGHT_ANGLE);
+	SpotLightComponent->Intensity = CRANE_SPOTLIGHT_INTENSITY;
 }
 
 void ACrane::BeginPlay()
@@ -42,20 +61,41 @@ void ACrane::BeginPlay()
 	BoneName = TEXT("arm_04");
 	SkeletalMeshComponent->HideBoneByName(BoneName, EPhysBodyOp::PBO_None);
 
-	SkeletalMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	SenseLinkCollisionComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	CollisionComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
+	SkeletalMeshComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	SkeletalMeshComponent->SetCollisionProfileName(CollisionProfileName::BlockAll);
 
 	Magnet_StaticMeshComponent->SetRelativeLocation(FVector(0.0, 0.125, 0.5));
 	Magnet_StaticMeshComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	Magnet_StaticMeshComponent->SetCollisionProfileName(CollisionProfileName::BlockAllDynamic);
+	Magnet_StaticMeshComponent->SetCollisionProfileName(CollisionProfileName::BlockAll);
+	//SpotLightComponent->SetWorldRotation(FVector(270.f, 0.f, 0.f).Rotation());
+
+
+	SetActorLocation(CRANE_DEFAULT_LOCATION);
 }
 
 void ACrane::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (bIsGoDefault)
+	{
+		FVector CurrentLocation = GetActorLocation();
+		CurrentLocation = FMath::Lerp(CurrentLocation, CRANE_DEFAULT_LOCATION, 0.1f);
+		SetActorLocation(CurrentLocation);
+	}
+}
+
+void ACrane::SetSpotLightActive()
+{
+	SpotLightComponent->SetActive(true);
+}
+
+void ACrane::SetSpotLightDeActive()
+{
+	SpotLightComponent->SetActive(false);
 }
 
 void ACrane::Grab()
@@ -78,6 +118,9 @@ void ACrane::Move(FVector vDir, float ScaleValue)
 {
 	FVector CurrentLocation = GetActorLocation();
 	CurrentLocation += vDir * ScaleValue * CRANE_SPEED;
+	CurrentLocation.X = FMath::Clamp(CurrentLocation.X, CRANE_X_MIN, CRANE_X_MAX);
+	CurrentLocation.Y = FMath::Clamp(CurrentLocation.Y, CRANE_Y_MIN, CRANE_Y_MAX);
+
 	SetActorLocation(CurrentLocation);
 }
 

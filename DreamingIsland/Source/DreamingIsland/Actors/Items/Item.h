@@ -7,7 +7,7 @@
 #include "Item.generated.h"
 
 struct FItemTableRow;
-class USphereComponent;
+class UShapeComponent;
 class UCharacterMovementComponent;
 
 UCLASS()
@@ -34,8 +34,12 @@ public:
 
 
 protected:
+protected:
 	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<USphereComponent> CollisionComponent;
+	TObjectPtr<USceneComponent> DefaultSceneRoot;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UShapeComponent> CollisionComponent;
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UStaticMeshComponent> StaticMeshComponent;
@@ -47,6 +51,9 @@ protected:
 
 protected:
 	int ItemValue = 0;
+
+protected:
+	UPhysicalMaterial* PhysicalMaterial = nullptr;
 
 public:
 	FName GetItemName() const { return DataTableRowHandle.RowName; }

@@ -6,12 +6,12 @@
 #include "Actors/Link/LinkController.h"
 #include "Actors/NPC/NPC.h"
 #include "Components/StatusComponent/LinkStatusComponent.h"
-#include "Components/StatusComponent/GSOStatusComponent.h"
 #include "Actors/Default/DefaultHUD.h"
 #include "Actors/Items/Item.h"
 #include "Actors/NPC/Crane.h"
 #include "Actors/NPC/CraneButton.h"
 #include "Misc/Utils.h"
+
 void UConversation_GIS::Initialize(FSubsystemCollectionBase& Collection)
 {
 }
@@ -98,18 +98,21 @@ void UConversation_GIS::Purchase(ALink* Link, ANPC* NPC, bool& InbIsBroadCast)
 	else if (NPC_Name_Korean::GameShopOwner == NPC->GetNPCName()
 		|| NPC_Name_Korean::CraneButton == NPC->GetNPCName())
 	{
-		if (StatusComponent->GetRupee() >= CRANEGAME_COST)
+		if (StatusComponent->GetRupee() >= CRANEGAME_COST
+			&& !Link->IsCrane())
 		{
 			StatusComponent->AddRupee(CRANEGAME_COST * -1);
 			DefaultHUD->OnSetStringToConversation(NPC->GetNPCName().ToString(), NPC->GetScript(GSO_ConversationKey::BuySucceeded));
 			DefaultHUD->OnHideChooseWidget();
 			ACraneButton* CraneButton = Cast<ACraneButton>(NPC);
 			Link->SetCrane(CraneButton->GetCrane());
+			DefaultHUD->OnDelayHideConversationWidget(1.f);
 		}
 		else
 		{
 			DefaultHUD->OnSetStringToConversation(NPC->GetNPCName().ToString(), NPC->GetScript(GSO_ConversationKey::BuyFailed));
 			DefaultHUD->OnHideChooseWidget();
+			DefaultHUD->OnDelayHideConversationWidget(1.f);
 		}
 	}
 }

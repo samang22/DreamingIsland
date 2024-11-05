@@ -3,6 +3,8 @@
 
 #include "Actors/Items/Item.h"
 #include "Components/SphereComponent.h"
+#include "Components/CapsuleComponent.h"
+#include "Components/BoxComponent.h"
 #include "Misc/Utils.h"
 #include "Data/ItemTableRow.h"
 #include "Actors/Link/Link.h"
@@ -17,18 +19,22 @@ AItem::AItem(const FObjectInitializer& ObjectInitializer)
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	CollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("CollisionComponent"));
-	CollisionComponent->SetCollisionProfileName(CollisionProfileName::Item);
-	CollisionComponent->SetCanEverAffectNavigation(false);
-	CollisionComponent->SetEnableGravity(true);
-	CollisionComponent->SetMassOverrideInKg(NAME_None, 10.0f, true);
-	CollisionComponent->BodyInstance.bSimulatePhysics = true;
-	RootComponent = CollisionComponent;
+	DefaultSceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("DefaultSceneRoot"));
+	RootComponent = DefaultSceneRoot;
 	static ConstructorHelpers::FObjectFinder<UPhysicalMaterial> PhysMaterial(TEXT("/Script/PhysicsCore.PhysicalMaterial'/Game/Assets/Item/PM_Item.PM_Item'"));
-	CollisionComponent->SetPhysMaterialOverride(PhysMaterial.Object);
+	PhysicalMaterial = PhysMaterial.Object;
+
+	//CollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("CollisionComponent"));
+	//CollisionComponent->SetCollisionProfileName(CollisionProfileName::Item);
+	//CollisionComponent->SetCanEverAffectNavigation(false);
+	//CollisionComponent->SetEnableGravity(true);
+	//CollisionComponent->SetMassOverrideInKg(NAME_None, 10.0f, true);
+	//CollisionComponent->BodyInstance.bSimulatePhysics = true;
+
+
 
 	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
-	StaticMeshComponent->SetupAttachment(RootComponent);
+	//StaticMeshComponent->SetupAttachment(RootComponent);
 
 }
 
@@ -39,21 +45,37 @@ void AItem::SetData(const FDataTableRowHandle& InDataTableRowHandle)
 	FItemTableRow* Data = DataTableRowHandle.GetRow<FItemTableRow>(DataTableRowHandle.RowName.ToString());
 	if (!Data) { return; }
 	ItemData = Data;
-	
-	if (IsValid(CollisionComponent))
-	{
-		USphereComponent* SphereComponent = Cast<USphereComponent>(CollisionComponent);
-		SphereComponent->SetSphereRadius(ItemData->CollisionSphereRadius);
-		CollisionComponent->SetCollisionProfileName(CollisionProfileName::Item);
-		CollisionComponent->bHiddenInGame = COLLISION_HIDDEN_IN_GAME;
-		CollisionComponent->RegisterComponent();
-		CollisionComponent->BodyInstance.bSimulatePhysics = true;
 
+	if (!IsValid(CollisionComponent) && ItemData->CollisionClass)
+	{
+		EObjectFlags SubobjectFlags = GetMaskedFlags(RF_PropagateToSubObjects) | RF_DefaultSubObject;
+		CollisionComponent = NewObject<UShapeComponent>(this, ItemData->CollisionClass, TEXT("CollisionComponent"), SubobjectFlags);
+		CollisionComponent->RegisterComponent();
+		CollisionComponent->SetCollisionProfileName(CollisionProfileName::Item);
+		CollisionComponent->SetCanEverAffectNavigation(false);
+		SetRootComponent(CollisionComponent);
+		DefaultSceneRoot->SetRelativeTransform(FTransform::Identity);
+		DefaultSceneRoot->AttachToComponent(CollisionComponent, FAttachmentTransformRules::KeepRelativeTransform);
+		CollisionComponent->SetPhysMaterialOverride(PhysicalMaterial);
+		CollisionComponent->SetEnableGravity(true);
+		CollisionComponent->SetSimulatePhysics(true);
+		if (USphereComponent* SphereComponent = Cast<USphereComponent>(CollisionComponent))
+		{
+			SphereComponent->SetSphereRadius(ItemData->CollisionSphereRadius);
+		}
+		else if (UBoxComponent* BoxComponent = Cast<UBoxComponent>(CollisionComponent))
+		{
+			BoxComponent->SetBoxExtent(ItemData->CollisionBoxExtent);
+		}
+		else if (UCapsuleComponent* CapsuleComponent = Cast<UCapsuleComponent>(CollisionComponent))
+		{
+			CapsuleComponent->SetCapsuleSize(ItemData->CollisionCapsuleRadius, ItemData->CollisionCapsuleHalfHeight);
+		}
 	}
 
 	StaticMeshComponent->SetStaticMesh(ItemData->SkeletalMesh);
 	StaticMeshComponent->SetRelativeTransform(ItemData->MeshTransform);
-
+	StaticMeshComponent->AttachToComponent(CollisionComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	ItemValue = ItemData->ItemValue;
 }
 
@@ -89,8 +111,8 @@ void AItem::PostInitializeComponents()
 void AItem::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
-	SetActorTransform(Transform);
 	SetData(DataTableRowHandle);
+	SetActorTransform(Transform);
 }
 
 // Called when the game starts or when spawned
@@ -98,7 +120,7 @@ void AItem::BeginPlay()
 {
 	Super::BeginPlay();
 	SetData(DataTableRowHandle);
-	CollisionComponent->BodyInstance.bSimulatePhysics = true;
+	CollisionComponent->SetSimulatePhysics(true);
 }
 
 // Called every frame

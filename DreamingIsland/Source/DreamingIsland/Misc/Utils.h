@@ -9,7 +9,7 @@
 #include "EnhancedInputComponent.h"
 
 
-#define COLLISION_HIDDEN_IN_GAME						true
+#define COLLISION_HIDDEN_IN_GAME						false
 #define CRANEGAME_COST									10
 
 class FUtils
@@ -49,6 +49,7 @@ namespace NPC_SocketName
 namespace CollisionProfileName
 {
 	static inline FName BlockAllDynamic = TEXT("BlockAllDynamic");
+	static inline FName BlockAll = TEXT("BlockAll");
 	static inline FName Link = TEXT("Link");
 	static inline FName Monster = TEXT("Monster");
 	static inline FName LinkProjectile = TEXT("LinkProjectile");

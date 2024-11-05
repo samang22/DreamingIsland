@@ -142,5 +142,6 @@ public:
 public:
 	void SetCrane(ACrane* Crane);
 	void ClearCrane();
+	bool IsCrane();
 
 };

@@ -6,8 +6,6 @@
 #include "Actors/NPC/NPC.h"
 #include "ToolShopKeeper.generated.h"
 
-#define TSK_TURN_SPEED 3.f
-#define TSK_SPOTLIGHT_ANGLE 10.f
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnLinkCaught, FVector, TSKLocation, FVector, ForwardVector);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLinkCaughtEnd);
