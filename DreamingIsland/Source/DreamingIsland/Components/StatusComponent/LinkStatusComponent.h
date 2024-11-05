@@ -6,9 +6,7 @@
 #include "Components/StatusComponent/StatusComponent.h"
 #include "LinkStatusComponent.generated.h"
 
-/**
- * 
- */
+class ACrane;
 UCLASS()
 class DREAMINGISLAND_API ULinkStatusComponent : public UStatusComponent
 {
@@ -89,4 +87,11 @@ protected:
 public:
 	void SetIsThief(bool bFlag) { bIsThief = bFlag; }
 	bool GetIsThief() { return bIsThief; }
+
+protected:
+	ACrane* Crane = nullptr;
+public:
+	void SetCrane(ACrane* _Crane) { Crane = _Crane; }
+	void ClearCrane() { Crane = nullptr; }
+	ACrane* GetCrane() const { return Crane; }
 };

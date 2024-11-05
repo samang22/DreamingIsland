@@ -17,5 +17,6 @@ public:
 	virtual void Deinitialize() override;
 
 public:
-	void Conversation(ALink* Link, const ANPC* NPC, bool& InbIsBroadCast);
+	void Conversation(ALink* Link, ANPC* NPC, bool& InbIsBroadCast);
+	void Purchase(ALink* Link, ANPC* NPC, bool& InbIsBroadCast);
 };

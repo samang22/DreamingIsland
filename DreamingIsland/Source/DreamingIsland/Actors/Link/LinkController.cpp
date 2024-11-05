@@ -19,6 +19,7 @@
 #include "Actors/Default/DefaultHUD.h"
 #include "GameInstance/DreamingIsland_GIS.h"
 #include "GameInstance/Conversation_GIS.h"
+#include "Actors/NPC/Crane.h"
 
 ALinkController::ALinkController()
 {
@@ -163,13 +164,23 @@ void ALinkController::OnWalk(const FInputActionValue& InputActionValue)
 {
 	if (StatusComponent->GetIsConversation()) return;
 
-	StatusComponent->SetOnAnimationStatus(LINK_BIT_WALK);
-
+	const FVector ForwardVector = FVector(1.0, 0.0, 0.0);
+	const FVector RightVector = FVector(0.0, 1.0, 0.0);
 	const FVector2D ActionValue = InputActionValue.Get<FVector2D>();
 	const FRotator Rotation = K2_GetActorRotation();
 	const FRotator RotationYaw = FRotator(0.0, Rotation.Yaw, 0.0);
-	const FVector ForwardVector = FVector(1.0, 0.0, 0.0);
-	const FVector RightVector = FVector(0.0, 1.0, 0.0);
+
+	ACrane* Crane = StatusComponent->GetCrane();
+	if (Crane)
+	{
+		Crane->Move(ForwardVector, ActionValue.X);
+		Crane->Move(RightVector, ActionValue.Y);
+		return;
+	}
+
+
+	StatusComponent->SetOnAnimationStatus(LINK_BIT_WALK);
+
 
 	APawn* ControlledPawn = GetPawn();
 	if (bRun)
@@ -214,7 +225,7 @@ void ALinkController::OnInteract(const FInputActionValue& InputActionValue)
 	ALink* Link = Cast<ALink>(GetPawn());
 	if (Link->IsOverlappedNPC())
 	{
-		const ANPC* NPC = Cast<ANPC>(Link->GetOverlappedNPC());
+		ANPC* NPC = Cast<ANPC>(Link->GetOverlappedNPC());
 
 		UConversation_GIS* Conversation_GIS = GetGameInstance()->GetSubsystem<UConversation_GIS>();
 		bool bCheckBroadcast = false;
@@ -265,6 +276,7 @@ void ALinkController::OnZoomWheel(const FInputActionValue& InputActionValue)
 {
 }
 
+// Change Selection
 void ALinkController::OnChoose(const FInputActionValue& InputActionValue)
 {
 	if (!StatusComponent->GetIsConversation()) return;
@@ -274,6 +286,7 @@ void ALinkController::OnChoose(const FInputActionValue& InputActionValue)
 	DefaultHUD->OnSetSelection(ActionValue.Y < 0 ? true : false);
 }
 
+// Decide Selection
 void ALinkController::OnCheck(const FInputActionValue& InputActionValue)
 {
 	if (!StatusComponent->GetIsConversation()) return;
@@ -285,25 +298,12 @@ void ALinkController::OnCheck(const FInputActionValue& InputActionValue)
 	{
 		// now check which one is talking with
 		ALink* Link = Cast<ALink>(GetPawn());
-		const AActor* OverlappedNPC = Link->GetOverlappedNPC();
-		const ANPC* NPC = Cast<ANPC>(OverlappedNPC);
-		if (NPC_Name_Korean::ToolShopKeeper == NPC->GetNPCName())
-		{
-			AItem* Item = Cast<AItem>(Link->GetCatchingItem());
-			if (!Item) return;
-			if (StatusComponent->GetRupee() >= Item->GetItemValue())
-			{
-				StatusComponent->AddRupee(Item->GetItemValue() * -1);
-				DefaultHUD->OnSetStringToConversation(NPC->GetNPCName().ToString(), NPC->GetScript(TSK_ConversationKey::BuySucceeded));
-				DefaultHUD->OnHideChooseWidget();
-				Item->SetIsPurchased(true);
-			}
-			else
-			{
-				DefaultHUD->OnSetStringToConversation(NPC->GetNPCName().ToString(), NPC->GetScript(TSK_ConversationKey::BuyFailed));
-				DefaultHUD->OnHideChooseWidget();
-			}
-		}
+		AActor* OverlappedNPC = Link->GetOverlappedNPC();
+		ANPC* NPC = Cast<ANPC>(OverlappedNPC);
+
+		UConversation_GIS* Conversation_GIS = GetGameInstance()->GetSubsystem<UConversation_GIS>();
+		bool bCheckBroadcast = false;
+		Conversation_GIS->Purchase(Link, NPC, bCheckBroadcast);
 	}
 	else
 	{
@@ -349,7 +349,6 @@ void ALinkController::OnGet(const FInputActionValue& InputActionValue)
 		{
 			StatusComponent->SetOnToolEquipStatus(LINK_TOOL_BIT_SWORD);
 		}
-		// @TODO : maybe TSK should know this
 		Link->PlayMontage(LINK_MONTAGE::ITEM_GET);
 		Link->SetOffAnimStatus(LINK_BIT_CARRY);
 		OnLinkItemGet.Broadcast(Link->GetActorLocation(), Link->GetActorForwardVector());

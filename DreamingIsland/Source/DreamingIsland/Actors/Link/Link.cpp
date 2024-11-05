@@ -357,3 +357,13 @@ bool ALink::GetIsThief()
 {
 	return StatusComponent->GetIsThief();
 }
+
+void ALink::SetCrane(ACrane* Crane)
+{
+	StatusComponent->SetCrane(Crane);
+}
+
+void ALink::ClearCrane()
+{
+	StatusComponent->ClearCrane();
+}

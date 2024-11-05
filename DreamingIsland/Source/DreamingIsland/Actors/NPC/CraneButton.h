@@ -6,6 +6,7 @@
 #include "Actors/NPC/NPC.h"
 #include "CraneButton.generated.h"
 
+class ACrane;
 UCLASS()
 class DREAMINGISLAND_API ACraneButton : public ANPC
 {
@@ -17,5 +18,11 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+
+protected:
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<ACrane> Crane;
+public:
+	ACrane* GetCrane() { return Crane; }
 
 };

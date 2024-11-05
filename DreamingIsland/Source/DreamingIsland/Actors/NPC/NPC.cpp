@@ -52,8 +52,11 @@ ANPC::ANPC(const FObjectInitializer& ObjectInitializer)
 	AISenseConfig_Sight->PeripheralVisionAngleDegrees = NPC_AISENSECONFIG_SIGHT_LOSESIGHTRADIUS_PERIPHERALVISIONANGLEDEGREES;
 	AIPerceptionComponent->ConfigureSense(*AISenseConfig_Sight);
 
-	StatusComponent = CreateDefaultSubobject<UNPCStatusComponent>(TEXT("StatusComponent"));
-
+	// it could be created in Subclasses
+	if (!StatusComponent)
+	{
+		StatusComponent = CreateDefaultSubobject<UNPCStatusComponent>(TEXT("StatusComponent"));
+	}
 	// Conversation Status will be Created in Subclass
 
 }

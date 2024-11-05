@@ -27,6 +27,6 @@ public:
 	void Release();
 	void Down();
 	void Up();
-	void Move(FVector vDir);
+	void Move(FVector vDir, float ScaleValue);
 
 };

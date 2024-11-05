@@ -10,7 +10,7 @@
 
 
 #define COLLISION_HIDDEN_IN_GAME						true
-
+#define CRANEGAME_COST									10
 
 class FUtils
 {
@@ -48,6 +48,7 @@ namespace NPC_SocketName
 
 namespace CollisionProfileName
 {
+	static inline FName BlockAllDynamic = TEXT("BlockAllDynamic");
 	static inline FName Link = TEXT("Link");
 	static inline FName Monster = TEXT("Monster");
 	static inline FName LinkProjectile = TEXT("LinkProjectile");
@@ -92,6 +93,8 @@ namespace GSO_ConversationKey
 	static inline FString Try = TEXT("Try");
 	static inline FString End = TEXT("End");
 	static inline FString Rage = TEXT("Rage");
+	static inline FString BuySucceeded = TEXT("BuySuceeded");
+	static inline FString BuyFailed = TEXT("BuyFailed");
 }
 
 namespace NPC_Name_Korean

@@ -11,7 +11,7 @@
 ACraneButton::ACraneButton(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
-	// UGSOConversationComponent is meant to be
+	NPCName = NPC_Name_Korean::CraneButton;
 	ConversationComponent = CreateDefaultSubobject<UGSOConversationComponent>(TEXT("ConversationComponent"));
 }
 
@@ -19,14 +19,12 @@ void ACraneButton::BeginPlay()
 {
 	Super::BeginPlay();
 	NPCName = NPC_Name_Korean::CraneButton;
-
 }
 
 
 void ACraneButton::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 

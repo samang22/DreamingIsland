@@ -12,6 +12,7 @@
 
 class USphereComponent;
 class ULinkStatusComponent;
+class ACrane;
 UCLASS()
 class DREAMINGISLAND_API ALink : public ACharacter
 {
@@ -105,7 +106,7 @@ public:
 	void CatchItem();
 	void LayItem();
 	bool IsCatchingItem();
-	const AActor* GetOverlappedNPC() { return OverlappedNPC; }
+	AActor* GetOverlappedNPC() { return OverlappedNPC; }
 	AActor* GetCatchingItem() { return CatchingItem; }
 	void DestoryCatchingItem();
 	void SetOffAnimStatus(uint8 Bit);
@@ -137,5 +138,9 @@ public:
 public:
 	void SetIsThief(bool bFlag);
 	bool GetIsThief();
+
+public:
+	void SetCrane(ACrane* Crane);
+	void ClearCrane();
 
 };

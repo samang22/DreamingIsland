@@ -6,9 +6,12 @@
 #include "Actors/Link/LinkController.h"
 #include "Actors/NPC/NPC.h"
 #include "Components/StatusComponent/LinkStatusComponent.h"
+#include "Components/StatusComponent/GSOStatusComponent.h"
 #include "Actors/Default/DefaultHUD.h"
 #include "Actors/Items/Item.h"
-
+#include "Actors/NPC/Crane.h"
+#include "Actors/NPC/CraneButton.h"
+#include "Misc/Utils.h"
 void UConversation_GIS::Initialize(FSubsystemCollectionBase& Collection)
 {
 }
@@ -17,7 +20,7 @@ void UConversation_GIS::Deinitialize()
 {
 }
 
-void UConversation_GIS::Conversation(ALink* Link, const ANPC* NPC, bool& InbIsBroadCast)
+void UConversation_GIS::Conversation(ALink* Link, ANPC* NPC, bool& InbIsBroadCast)
 {
 	if (!Link || !NPC) return;
 
@@ -63,8 +66,50 @@ void UConversation_GIS::Conversation(ALink* Link, const ANPC* NPC, bool& InbIsBr
 		FString Script = NPC->GetScript(TEXT("Try"));
 		DefaultHUD->OnSetStringToConversation(NPC_Name_Korean::GameShopOwner.ToString(), Script);
 		DefaultHUD->OnShowConversationWidget();
-		DefaultHUD->OnShowChooseWidget();
 		DefaultHUD->OnShowRupeeWidget();
+		DefaultHUD->OnShowChooseWidget();
 		InbIsBroadCast = false;
+	}
+}
+
+void UConversation_GIS::Purchase(ALink* Link, ANPC* NPC, bool& InbIsBroadCast)
+{
+	ULinkStatusComponent* StatusComponent = Link->GetStatusComponent();
+	ALinkController* LinkController = Cast<ALinkController>(Link->GetController());
+	ADefaultHUD* DefaultHUD = Cast<ADefaultHUD>(LinkController->GetHUD());
+
+	if (NPC_Name_Korean::ToolShopKeeper == NPC->GetNPCName())
+	{
+		AItem* Item = Cast<AItem>(Link->GetCatchingItem());
+		if (!Item) return;
+		if (StatusComponent->GetRupee() >= Item->GetItemValue())
+		{
+			StatusComponent->AddRupee(Item->GetItemValue() * -1);
+			DefaultHUD->OnSetStringToConversation(NPC->GetNPCName().ToString(), NPC->GetScript(TSK_ConversationKey::BuySucceeded));
+			DefaultHUD->OnHideChooseWidget();
+			Item->SetIsPurchased(true);
+		}
+		else
+		{
+			DefaultHUD->OnSetStringToConversation(NPC->GetNPCName().ToString(), NPC->GetScript(TSK_ConversationKey::BuyFailed));
+			DefaultHUD->OnHideChooseWidget();
+		}
+	}
+	else if (NPC_Name_Korean::GameShopOwner == NPC->GetNPCName()
+		|| NPC_Name_Korean::CraneButton == NPC->GetNPCName())
+	{
+		if (StatusComponent->GetRupee() >= CRANEGAME_COST)
+		{
+			StatusComponent->AddRupee(CRANEGAME_COST * -1);
+			DefaultHUD->OnSetStringToConversation(NPC->GetNPCName().ToString(), NPC->GetScript(GSO_ConversationKey::BuySucceeded));
+			DefaultHUD->OnHideChooseWidget();
+			ACraneButton* CraneButton = Cast<ACraneButton>(NPC);
+			Link->SetCrane(CraneButton->GetCrane());
+		}
+		else
+		{
+			DefaultHUD->OnSetStringToConversation(NPC->GetNPCName().ToString(), NPC->GetScript(GSO_ConversationKey::BuyFailed));
+			DefaultHUD->OnHideChooseWidget();
+		}
 	}
 }
