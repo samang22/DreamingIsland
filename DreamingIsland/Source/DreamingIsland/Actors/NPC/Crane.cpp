@@ -18,6 +18,10 @@
 #define CRANE_X_MAX							280.f
 #define CRANE_X_MIN							-540.f
 
+#define CRANE_SENSE_ITEM_SPHERE_RADIUS		1024.f
+
+#define CRANE_MAGNETIC_SPEED				3500.f
+
 ACrane::ACrane(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
@@ -45,6 +49,13 @@ ACrane::ACrane(const FObjectInitializer& ObjectInitializer)
 	SpotLightComponent->SetInnerConeAngle(0.f);
 	SpotLightComponent->SetOuterConeAngle(CRANE_SPOTLIGHT_ANGLE);
 	SpotLightComponent->Intensity = CRANE_SPOTLIGHT_INTENSITY;
+
+	SenseItemCollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("SenseItemCollisionComponent"));
+	SenseItemCollisionComponent->AttachToComponent(Magnet_StaticMeshComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	SenseItemCollisionComponent->SetRelativeLocation(FVector(0.0, 100.0, 400.0));
+	SenseItemCollisionComponent->SetSphereRadius(CRANE_SENSE_ITEM_SPHERE_RADIUS);
+	SenseItemCollisionComponent->SetCollisionProfileName(CollisionProfileName::SenseInteractive);
+	SenseItemCollisionComponent->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::OnSenseItemBeginOverlap);
 }
 
 void ACrane::BeginPlay()
@@ -72,8 +83,12 @@ void ACrane::BeginPlay()
 	Magnet_StaticMeshComponent->SetCollisionProfileName(CollisionProfileName::BlockAll);
 	//SpotLightComponent->SetWorldRotation(FVector(270.f, 0.f, 0.f).Rotation());
 
+	SenseItemCollisionComponent->SetRelativeLocation(FVector(0.0, 100.0, 400.0));
+	SenseItemCollisionComponent->SetSphereRadius(CRANE_SENSE_ITEM_SPHERE_RADIUS);
 
 	SetActorLocation(CRANE_DEFAULT_LOCATION);
+
+	bIsMagnet = true;
 }
 
 void ACrane::Tick(float DeltaTime)
@@ -85,6 +100,20 @@ void ACrane::Tick(float DeltaTime)
 		FVector CurrentLocation = GetActorLocation();
 		CurrentLocation = FMath::Lerp(CurrentLocation, CRANE_DEFAULT_LOCATION, 0.1f);
 		SetActorLocation(CurrentLocation);
+	}
+}
+
+void ACrane::OnSenseItemBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (bIsMagnet)
+	{
+		FVector ItemLocation = OtherActor->GetActorLocation();
+		FVector MagnetLocation = GetActorLocation();
+		FVector Direction = MagnetLocation - ItemLocation;
+		Direction.Normalize();
+
+		ItemLocation += CRANE_MAGNETIC_SPEED * Direction;
+		OtherActor->SetActorLocation(ItemLocation);
 	}
 }
 

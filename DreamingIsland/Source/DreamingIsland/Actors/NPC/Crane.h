@@ -7,6 +7,7 @@
 #include "Crane.generated.h"
 
 class USpotLightComponent;
+class USphereComponent;
 UCLASS()
 class DREAMINGISLAND_API ACrane : public ANPC
 {
@@ -22,6 +23,8 @@ protected:
 protected:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UStaticMeshComponent> Magnet_StaticMeshComponent;
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USphereComponent> SenseItemCollisionComponent;
 
 protected:
 	bool bIsGoDefault = false;
@@ -31,6 +34,17 @@ public:
 protected:
 	UPROPERTY(VisibleAnywhere)
 	USpotLightComponent* SpotLightComponent;
+
+protected:
+	bool bIsMagnet = true;
+public:
+	void SetIsMagnet(bool bFlag) { bIsMagnet = bFlag; }
+	bool GetIsMagnet() const { return bIsMagnet; }
+protected:
+	UFUNCTION()
+	virtual void OnSenseItemBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
 public:
 	void SetSpotLightActive();
 	void SetSpotLightDeActive();
