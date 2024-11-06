@@ -223,6 +223,8 @@ void ALinkController::OnAttack(const FInputActionValue& InputActionValue)
 
 void ALinkController::OnInteract(const FInputActionValue& InputActionValue)
 {
+	if (StatusComponent->GetCrane()) return;
+
 	ALink* Link = Cast<ALink>(GetPawn());
 	if (Link->IsOverlappedNPC())
 	{
@@ -248,6 +250,8 @@ void ALinkController::OnInteract(const FInputActionValue& InputActionValue)
 
 void ALinkController::OnLay(const FInputActionValue& InputActionValue)
 {
+	if (StatusComponent->GetCrane()) return;
+
 	ALink* Link = Cast<ALink>(GetPawn());
 
 	if (Link->IsOverlappedNPC())
