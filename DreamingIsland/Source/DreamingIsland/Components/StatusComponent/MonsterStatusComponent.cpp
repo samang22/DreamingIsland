@@ -3,6 +3,8 @@
 
 #include "Components/StatusComponent/MonsterStatusComponent.h"
 
+#include "Misc/Utils.h"
+
 UMonsterStatusComponent::UMonsterStatusComponent()
 {
 	SetOnAnimationStatus(MONSTER_BIT_WAIT);

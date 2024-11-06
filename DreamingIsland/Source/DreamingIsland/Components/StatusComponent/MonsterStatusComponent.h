@@ -6,11 +6,7 @@
 #include "Components/StatusComponent/StatusComponent.h"
 #include "MonsterStatusComponent.generated.h"
 
-#define MONSTER_BIT_WAIT			0x00000001
-#define MONSTER_BIT_WALK			0x00000002
-#define MONSTER_BIT_RUN				0x00000004
-#define MONSTER_BIT_RUSH			0x00000008
-#define MONSTER_BIT_HOLDING_WEAPON	0x00000010
+
 
 
 

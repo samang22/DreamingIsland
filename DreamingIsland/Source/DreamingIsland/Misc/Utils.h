@@ -115,6 +115,7 @@ namespace NPC_Name_Korean
 	static inline FName GameShopOwner = TEXT("게임샵 주인");
 	static inline FName CraneButton = TEXT("크레인 버튼");
 	static inline FName CuccoKeeper = TEXT("닭장 주인");
+	static inline FName Cucco = TEXT("닭");
 }
 
 
@@ -171,6 +172,25 @@ enum class LINK_MONTAGE : uint8
 #define LINK_TOOL_BIT_FLIPPER			0x00000008
 #define LINK_TOOL_BIT_OCARINA			0x00000010
 #define LINK_TOOL_BIT_BOW				0x00000011
+
+#define LINK_LOCATION_OFFSET 70.f
+
+#define MONSTER_BIT_WAIT			0x00000001
+#define MONSTER_BIT_WALK			0x00000002
+#define MONSTER_BIT_RUN				0x00000004
+#define MONSTER_BIT_RUSH			0x00000008
+#define MONSTER_BIT_HOLDING_WEAPON	0x00000010
+
+#define CUCCO_BIT_WAIT			0x00000001
+#define CUCCO_BIT_WALK			0x00000002
+
+
+#define NPC_BIT_WAIT			0x00000001
+#define NPC_BIT_WALK			0x00000002
+#define NPC_BIT_TALK			0x00000004
+#define NPC_BIT_RUN				0x00000008
+#define NPC_BIT_LIFTED			0x00000010
+#define NPC_BIT_THROWN			0x00000020
 
 namespace MonsterName
 {

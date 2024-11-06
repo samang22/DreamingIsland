@@ -87,6 +87,7 @@ public:
 public:
 	UNPCStatusComponent* GetStatusComponent() { return StatusComponent; }
 	UConversationComponent* GetConversationComponent() { return ConversationComponent; }
+	UAdvancedFloatingPawnMovement* GetMovementComponent() { return MovementComponent; }
 
 protected:
 	UPROPERTY(EditAnywhere)

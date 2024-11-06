@@ -2,6 +2,7 @@
 
 
 #include "Components/StatusComponent/NPCStatusComponent.h"
+#include "Misc/Utils.h"
 
 UNPCStatusComponent::UNPCStatusComponent()
 {

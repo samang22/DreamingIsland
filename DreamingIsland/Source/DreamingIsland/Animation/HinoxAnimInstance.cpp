@@ -3,6 +3,7 @@
 
 #include "Animation/HinoxAnimInstance.h"
 #include "Components/StatusComponent/MonsterStatusComponent.h"
+#include "Misc/Utils.h"
 
 UHinoxAnimInstance::UHinoxAnimInstance()
 {

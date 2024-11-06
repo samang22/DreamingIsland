@@ -6,9 +6,6 @@
 #include "Components/StatusComponent/StatusComponent.h"
 #include "NPCStatusComponent.generated.h"
 
-#define NPC_BIT_WAIT			0x00000001
-#define NPC_BIT_WALK			0x00000002
-#define NPC_BIT_TALK			0x00000004
 
 /**
  * 

@@ -12,7 +12,7 @@
 #include "PhysicalMaterials/PhysicalMaterial.h"
 #include "Actors/NPC/Crane.h"
 
-#define LINK_LOCATION_OFFSET 70.f
+
 // Sets default values
 AItem::AItem(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
