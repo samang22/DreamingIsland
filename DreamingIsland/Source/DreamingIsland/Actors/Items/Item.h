@@ -72,4 +72,9 @@ protected:
 public:
 	void SetIsPurchased(bool _bIsPurchased) { bIsPurchased = _bIsPurchased; }
 	bool GetIsPurchased() const { return bIsPurchased; }
+
+protected:
+	AActor* Magnet = nullptr;
+public:
+	void SetMagnet(AActor* _Magnet) { Magnet = _Magnet; }
 };

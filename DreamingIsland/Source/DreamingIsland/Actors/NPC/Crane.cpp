@@ -7,6 +7,7 @@
 #include "Components/AdvancedFloatingPawnMovement.h"
 #include "Components/SphereComponent.h"
 #include "Components/SpotLightComponent.h"
+#include "Actors/Items/Item.h"
 
 #define CRANE_SPEED							3.f
 #define CRANE_SPOTLIGHT_ANGLE				10.f
@@ -20,7 +21,7 @@
 
 #define CRANE_SENSE_ITEM_SPHERE_RADIUS		1024.f
 
-#define CRANE_MAGNETIC_SPEED				3500.f
+#define CRANE_MAGNETIC_SPEED				35000.f
 
 ACrane::ACrane(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -30,15 +31,22 @@ ACrane::ACrane(const FObjectInitializer& ObjectInitializer)
 
 	Magnet_StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Magnet_StaticMeshComponent"));
 	Magnet_StaticMeshComponent->SetStaticMesh(Asset.Object);
-	Magnet_StaticMeshComponent->SetRelativeLocation(FVector(0.0, 0.125, 0.5));
-	Magnet_StaticMeshComponent->SetWorldScale3D(FVector(0.002, 0.002, 0.0015));
-	Magnet_StaticMeshComponent->SetRelativeRotation(FVector(180.f, 0.f, 0.f).Rotation());
+	Magnet_StaticMeshComponent->SetWorldScale3D(FVector(0.1, 0.1, 0.1));
+
+	FRotator CurrentRotation = Magnet_StaticMeshComponent->GetRelativeRotation();
+	FRotator NewRotation = FRotator(CurrentRotation.Pitch + 180.0f, CurrentRotation.Yaw, CurrentRotation.Roll);
+	Magnet_StaticMeshComponent->SetRelativeRotation(NewRotation);
+
 	Magnet_StaticMeshComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	Magnet_StaticMeshComponent->SetCollisionProfileName(CollisionProfileName::BlockAll);
 	RootComponent = Magnet_StaticMeshComponent;
 
+	static ConstructorHelpers::FObjectFinder<UPhysicalMaterial> PhysMaterial(TEXT("/Script/PhysicsCore.PhysicalMaterial'/Game/Assets/Item/PM_Item.PM_Item'"));
+	PhysicalMaterial = PhysMaterial.Object;
+
 	SkeletalMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	SkeletalMeshComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	
 	CollisionComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	SenseLinkCollisionComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
@@ -49,13 +57,20 @@ ACrane::ACrane(const FObjectInitializer& ObjectInitializer)
 	SpotLightComponent->SetInnerConeAngle(0.f);
 	SpotLightComponent->SetOuterConeAngle(CRANE_SPOTLIGHT_ANGLE);
 	SpotLightComponent->Intensity = CRANE_SPOTLIGHT_INTENSITY;
+	CurrentRotation = SpotLightComponent->GetRelativeRotation();
+	NewRotation = FRotator(CurrentRotation.Pitch + 90.f, CurrentRotation.Yaw, CurrentRotation.Roll);
+	SpotLightComponent->SetRelativeRotation(NewRotation);
+
+
 
 	SenseItemCollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("SenseItemCollisionComponent"));
-	SenseItemCollisionComponent->AttachToComponent(Magnet_StaticMeshComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	SenseItemCollisionComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	SenseItemCollisionComponent->SetRelativeLocation(FVector(0.0, 100.0, 400.0));
 	SenseItemCollisionComponent->SetSphereRadius(CRANE_SENSE_ITEM_SPHERE_RADIUS);
 	SenseItemCollisionComponent->SetCollisionProfileName(CollisionProfileName::SenseInteractive);
 	SenseItemCollisionComponent->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::OnSenseItemBeginOverlap);
+	SenseItemCollisionComponent->OnComponentEndOverlap.AddDynamic(this, &ThisClass::OnSenseItemEndOverlap);
+
 }
 
 void ACrane::BeginPlay()
@@ -74,19 +89,21 @@ void ACrane::BeginPlay()
 
 	SenseLinkCollisionComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	CollisionComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	SkeletalMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
-	SkeletalMeshComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	SkeletalMeshComponent->SetCollisionProfileName(CollisionProfileName::BlockAll);
-
-	Magnet_StaticMeshComponent->SetRelativeLocation(FVector(0.0, 0.125, 0.5));
-	Magnet_StaticMeshComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	Magnet_StaticMeshComponent->SetCollisionProfileName(CollisionProfileName::BlockAll);
+	Magnet_StaticMeshComponent->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
+	Magnet_StaticMeshComponent->SetCollisionProfileName(CollisionProfileName::Magnet);
+	Magnet_StaticMeshComponent->SetEnableGravity(false);
+	//Magnet_StaticMeshComponent->SetPhysMaterialOverride(PhysicalMaterial);
+	//Magnet_StaticMeshComponent->SetSimulatePhysics(true);
 	//SpotLightComponent->SetWorldRotation(FVector(270.f, 0.f, 0.f).Rotation());
 
 	SenseItemCollisionComponent->SetRelativeLocation(FVector(0.0, 100.0, 400.0));
 	SenseItemCollisionComponent->SetSphereRadius(CRANE_SENSE_ITEM_SPHERE_RADIUS);
-
-	SetActorLocation(CRANE_DEFAULT_LOCATION);
+	SenseItemCollisionComponent->SetCollisionProfileName(CollisionProfileName::SenseInteractive);
+	SenseItemCollisionComponent->bHiddenInGame = COLLISION_HIDDEN_IN_GAME;
+	SenseItemCollisionComponent->RegisterComponent();
+	//SetActorLocation(CRANE_DEFAULT_LOCATION);
 
 	bIsMagnet = true;
 }
@@ -107,13 +124,18 @@ void ACrane::OnSenseItemBeginOverlap(UPrimitiveComponent* OverlappedComponent, A
 {
 	if (bIsMagnet)
 	{
-		FVector ItemLocation = OtherActor->GetActorLocation();
-		FVector MagnetLocation = GetActorLocation();
-		FVector Direction = MagnetLocation - ItemLocation;
-		Direction.Normalize();
+		if (AItem* Item = Cast<AItem>(OtherActor))
+		{
+			Item->SetMagnet(this);
+		}
+	}
+}
 
-		ItemLocation += CRANE_MAGNETIC_SPEED * Direction;
-		OtherActor->SetActorLocation(ItemLocation);
+void ACrane::OnSenseItemEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	if (AItem* Item = Cast<AItem>(OtherActor))
+	{
+		Item->SetMagnet(nullptr);
 	}
 }
 

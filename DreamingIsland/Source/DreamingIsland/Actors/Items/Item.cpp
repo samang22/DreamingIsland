@@ -128,6 +128,15 @@ void AItem::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	ItemCatchedSequence(DeltaTime);
+	if (Magnet)
+	{
+		FVector MagnetLocation = Magnet->GetActorLocation();
+		FVector ItemLocation = GetActorLocation();
+		FVector Direction = MagnetLocation - ItemLocation;
+		Direction.Normalize();
+
+		CollisionComponent->AddForce(200000.f * Direction);
+	}
 }
 
 void AItem::ItemCatchedSequence(float DeltaTime)
