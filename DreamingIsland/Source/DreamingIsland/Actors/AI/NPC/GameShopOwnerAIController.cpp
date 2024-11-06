@@ -9,14 +9,6 @@
 void AGameShopOwnerAIController::BeginPlay()
 {
 	Super::BeginPlay();
-
-	UBehaviorTree* BehaviorTree = nullptr;
-	if (!IsValid(BrainComponent))
-	{
-		BehaviorTree = LoadObject<UBehaviorTree>(nullptr, TEXT("/Script/AIModule.BehaviorTree'/Game/Blueprint/AI/NPC/BT_ToolShopKeeper.BT_ToolShopKeeper'"));
-		check(BehaviorTree);
-		RunBehaviorTree(BehaviorTree);
-	}
 }
 
 void AGameShopOwnerAIController::OnPossess(APawn* InPawn)

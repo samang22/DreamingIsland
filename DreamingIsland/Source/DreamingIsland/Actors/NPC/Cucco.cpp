@@ -7,6 +7,10 @@
 #include "Components/AdvancedFloatingPawnMovement.h"
 #include "Data/NPCTableRow.h"
 #include "Actors/Link/Link.h"
+#include "Actors/AI/PatrolPath.h"
+#include "Perception/AIPerceptionComponent.h"
+#include "Perception/AISenseConfig_Sight.h"
+
 ACucco::ACucco(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {

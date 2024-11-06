@@ -20,6 +20,7 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+
 protected:
 	bool bIsCatched = false;
 	AActor* CatchingCuccoActor = nullptr;
@@ -34,9 +35,4 @@ public:
 
 protected:
 	void CuccoCatchedSequence(float DeltaTime);
-
-
-protected:
-	float fMaxSpeed = 0.f;
-	float fRushMaxSpeed = 0.f;
 };

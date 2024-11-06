@@ -13,9 +13,6 @@ UCuccoAnimInstance::UCuccoAnimInstance()
 void UCuccoAnimInstance::NativeInitializeAnimation()
 {
 	Super::NativeInitializeAnimation();
-	APawn* Pawn = TryGetPawnOwner();
-	ACucco* Cucco = Cast<ACucco>(Pawn);
-	StatusComponent = Cast<UNPCStatusComponent>(Cucco->GetStatusComponent());
 }
 
 void UCuccoAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
