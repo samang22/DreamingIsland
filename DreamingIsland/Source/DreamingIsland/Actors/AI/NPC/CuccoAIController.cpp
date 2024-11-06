@@ -25,6 +25,7 @@ void ACuccoAIController::OnPossess(APawn* InPawn)
 void ACuccoAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	FindPlayerByPerception();
 }
 
 void ACuccoAIController::SetPatrolPath(TObjectPtr<USplineComponent> NewPatrolPath)
@@ -46,4 +47,29 @@ void ACuccoAIController::SetPatrolPath(TObjectPtr<USplineComponent> NewPatrolPat
 	}
 
 	Blackboard->SetValueAsObject(TEXT("SplineComponent"), PatrolPath);
+}
+
+void ACuccoAIController::FindPlayerByPerception()
+{
+	APawn* OwningPawn = GetPawn();
+	if (UAIPerceptionComponent* AIPerceptionComponent = OwningPawn->GetComponentByClass<UAIPerceptionComponent>())
+	{
+		TArray<AActor*> OutActors;
+		AIPerceptionComponent->GetCurrentlyPerceivedActors(UAISenseConfig_Sight::StaticClass(), OutActors);
+
+		bool bFound = false;
+		for (AActor* It : OutActors)
+		{
+			if (ACharacter* DetectedPlayer = Cast<ACharacter>(It))
+			{
+				bFound = true;
+				Blackboard->SetValueAsObject(TEXT("DetectedPlayer"), Cast<UObject>(DetectedPlayer));
+				break;
+			}
+		}
+		if (!bFound)
+		{
+			Blackboard->ClearValue(TEXT("DetectedPlayer"));
+		}
+	}
 }

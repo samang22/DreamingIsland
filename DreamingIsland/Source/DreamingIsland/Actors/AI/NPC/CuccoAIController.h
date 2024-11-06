@@ -18,5 +18,6 @@ public:
 
 public:
 	virtual void SetPatrolPath(TObjectPtr<USplineComponent> NewPatrolPath);
-
+protected:
+	void FindPlayerByPerception();
 };

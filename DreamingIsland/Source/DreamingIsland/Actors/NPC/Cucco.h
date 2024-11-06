@@ -35,4 +35,11 @@ public:
 
 protected:
 	void CuccoCatchedSequence(float DeltaTime);
+
+protected:
+	bool bIsRun = false;
+	FVector RunDirection = FVector::Zero();
+public:
+	void SetCuccoRunWithDirection(FVector _Direction);
+	void SetCuccoRunEnd();
 };

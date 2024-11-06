@@ -16,29 +16,6 @@ UBTTask_RangedMonsterAttack::UBTTask_RangedMonsterAttack()
 
 EBTNodeResult::Type UBTTask_RangedMonsterAttack::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-	//BehaviorTreeComponent = &OwnerComp;
-	//BlackboardComponent = OwnerComp.GetBlackboardComponent();
-
-	//AMonster* Monster = Cast<AMonster>(AIOwner->GetPawn());
-
-	//// Rotate to Link
-	//ACharacter* Character = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
-	//if (!Character || !Monster)
-	//{
-	//	return EBTNodeResult::Failed;
-	//}
-
-	//FVector Dir = Character->GetActorLocation() - Monster->GetActorLocation();
-	//Dir.Z = 0.f;
-	//Dir.Normalize();
-
-	//if (!Monster->IsPlayingMontage(MONSTER_MONTAGE::DAMAGE))
-	//{
-	//	Monster->SetActorRotation(Dir.Rotation().Quaternion());
-	//	Monster->PlayMontage(MONSTER_MONTAGE::ATTACK);
-	//}
-	//return EBTNodeResult::InProgress;
-
 	BehaviorTreeComponent = &OwnerComp;
 	BlackboardComponent = OwnerComp.GetBlackboardComponent();
 

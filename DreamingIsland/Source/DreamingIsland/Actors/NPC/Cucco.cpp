@@ -20,6 +20,17 @@ ACucco::ACucco(const FObjectInitializer& ObjectInitializer)
 void ACucco::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (bIsRun)
+	{
+		StatusComponent->SetOnAnimationStatus(NPC_BIT_RUN);
+		AddMovementInput(RunDirection, 1.f);
+	}
+	else
+	{
+		StatusComponent->SetOffAnimationStatus(NPC_BIT_RUN);
+	}
+
 	CuccoCatchedSequence(DeltaTime);
 }
 
@@ -61,4 +72,15 @@ void ACucco::CuccoCatchedSequence(float DeltaTime)
 			}
 		}
 	}
+}
+
+void ACucco::SetCuccoRunWithDirection(FVector _Direction)
+{
+	bIsRun = true;
+	RunDirection = _Direction;
+}
+
+void ACucco::SetCuccoRunEnd()
+{
+	bIsRun = false;
 }
