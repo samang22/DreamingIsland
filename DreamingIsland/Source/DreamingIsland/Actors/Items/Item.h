@@ -9,7 +9,7 @@
 struct FItemTableRow;
 class UShapeComponent;
 class UCharacterMovementComponent;
-
+class ACrane;
 UCLASS()
 class DREAMINGISLAND_API AItem : public AActor
 {
@@ -74,7 +74,7 @@ public:
 	bool GetIsPurchased() const { return bIsPurchased; }
 
 protected:
-	AActor* Magnet = nullptr;
+	ACrane* Magnet = nullptr;
 public:
-	void SetMagnet(AActor* _Magnet) { Magnet = _Magnet; }
+	void SetMagnet(ACrane* _Magnet) { Magnet = _Magnet; }
 };

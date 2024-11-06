@@ -91,7 +91,7 @@ public:
 protected:
 	ACrane* Crane = nullptr;
 public:
-	void SetCrane(ACrane* _Crane) { Crane = _Crane; }
-	void ClearCrane() { Crane = nullptr; }
+	void SetCrane(ACrane* _Crane);
+	void ClearCrane();
 	ACrane* GetCrane() const { return Crane; }
 };

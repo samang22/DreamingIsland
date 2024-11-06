@@ -10,7 +10,7 @@
 #include "Actors/Link/Link.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "PhysicalMaterials/PhysicalMaterial.h"
-
+#include "Actors/NPC/Crane.h"
 
 #define LINK_LOCATION_OFFSET 70.f
 // Sets default values
@@ -128,14 +128,14 @@ void AItem::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	ItemCatchedSequence(DeltaTime);
-	if (Magnet)
+	if (Magnet && Magnet->GetIsMagnetic())
 	{
 		FVector MagnetLocation = Magnet->GetActorLocation();
 		FVector ItemLocation = GetActorLocation();
 		FVector Direction = MagnetLocation - ItemLocation;
 		Direction.Normalize();
 
-		CollisionComponent->AddForce(200000.f * Direction);
+		CollisionComponent->AddForce(MAGNET_FORCE * Direction);
 	}
 }
 

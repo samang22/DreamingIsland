@@ -8,20 +8,25 @@
 #include "Components/SphereComponent.h"
 #include "Components/SpotLightComponent.h"
 #include "Actors/Items/Item.h"
+#include "Kismet/KismetSystemLibrary.h"
+#include "Actors/NPC/CraneFence.h"
 
 #define CRANE_SPEED							3.f
+#define CRANE_DELTA_SPEED					80.f
 #define CRANE_SPOTLIGHT_ANGLE				10.f
 #define CRANE_SPOTLIGHT_INTENSITY			12000.f
-#define CRANE_DEFAULT_LOCATION				FVector(-480.000000, -140.000000, 342.000000)
+#define CRANE_DEFAULT_LOCATION				FVector(-480.000000, -140.000000, 340.000000)
 
 #define CRANE_Y_MAX							-140.f
 #define CRANE_Y_MIN							-400.f
 #define CRANE_X_MAX							280.f
 #define CRANE_X_MIN							-540.f
+#define CRANE_Z_MAX							340.f
+#define CRANE_Z_MIN							110.f
 
 #define CRANE_SENSE_ITEM_SPHERE_RADIUS		1024.f
 
-#define CRANE_MAGNETIC_SPEED				35000.f
+
 
 ACrane::ACrane(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -103,9 +108,9 @@ void ACrane::BeginPlay()
 	SenseItemCollisionComponent->SetCollisionProfileName(CollisionProfileName::SenseInteractive);
 	SenseItemCollisionComponent->bHiddenInGame = COLLISION_HIDDEN_IN_GAME;
 	SenseItemCollisionComponent->RegisterComponent();
-	//SetActorLocation(CRANE_DEFAULT_LOCATION);
+	SetActorLocation(CRANE_DEFAULT_LOCATION);
 
-	bIsMagnet = true;
+	bIsMagnetic = false;
 }
 
 void ACrane::Tick(float DeltaTime)
@@ -115,14 +120,49 @@ void ACrane::Tick(float DeltaTime)
 	if (bIsGoDefault)
 	{
 		FVector CurrentLocation = GetActorLocation();
-		CurrentLocation = FMath::Lerp(CurrentLocation, CRANE_DEFAULT_LOCATION, 0.1f);
+		FVector Direction = CRANE_DEFAULT_LOCATION - CurrentLocation;
+		Direction.Normalize();
+		CurrentLocation += Direction * CRANE_DELTA_SPEED * DeltaTime;
+
+		if (FVector::Dist(CurrentLocation, CRANE_DEFAULT_LOCATION) < 3.f)
+		{
+			CurrentLocation = CRANE_DEFAULT_LOCATION;
+			bIsGoDefault = false;
+			CraneFence->SetMoveUp(false);
+			UKismetSystemLibrary::K2_SetTimer(this, TEXT("SetMagneticOff"), 1.f, false);
+		}
+		SetActorLocation(CurrentLocation);
+	}
+	else if (bIsUpDownMove)
+	{
+		FVector CurrentLocation = GetActorLocation();
+		if (bIsDown)
+		{
+			CurrentLocation.Z += -1 * CRANE_DELTA_SPEED * DeltaTime;
+			if (CurrentLocation.Z < CRANE_Z_MIN)
+			{
+				bIsUpDownMove = false;
+				CurrentLocation.Z = CRANE_Z_MIN;
+				UKismetSystemLibrary::K2_SetTimer(this, TEXT("Up"), 1.f, false);
+			}
+		}
+		else                     
+		{
+			CurrentLocation.Z += +1 * CRANE_DELTA_SPEED * DeltaTime;
+			if (CurrentLocation.Z > CRANE_Z_MAX)
+			{
+				CurrentLocation.Z = CRANE_Z_MAX;
+				bIsUpDownMove = false;
+				UKismetSystemLibrary::K2_SetTimer(this, TEXT("GoDefault"), 1.f, false);
+			}
+		}
 		SetActorLocation(CurrentLocation);
 	}
 }
 
 void ACrane::OnSenseItemBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (bIsMagnet)
+	if (bIsMagnetic)
 	{
 		if (AItem* Item = Cast<AItem>(OtherActor))
 		{
@@ -149,20 +189,18 @@ void ACrane::SetSpotLightDeActive()
 	SpotLightComponent->SetActive(false);
 }
 
-void ACrane::Grab()
-{
-}
-
-void ACrane::Release()
-{
-}
-
 void ACrane::Down()
 {
+	bIsUpDownMove = true;
+	bIsDown = true;
+	bIsMagnetic = true;
+	bIsStart = false;
 }
 
 void ACrane::Up()
 {
+	bIsUpDownMove = true;
+	bIsDown = false;
 }
 
 void ACrane::Move(FVector vDir, float ScaleValue)
@@ -173,5 +211,27 @@ void ACrane::Move(FVector vDir, float ScaleValue)
 	CurrentLocation.Y = FMath::Clamp(CurrentLocation.Y, CRANE_Y_MIN, CRANE_Y_MAX);
 
 	SetActorLocation(CurrentLocation);
+	bIsStart = true;
+	//CraneFence->SetMoveUp(true);
+}
+
+void ACrane::GoDefault()
+{
+	bIsGoDefault = true;
+}
+
+bool ACrane::GetIsStart()
+{
+	return bIsStart;
+}
+
+void ACrane::OpenCraneFence()
+{
+	CraneFence->SetMoveUp(true);
+}
+
+void ACrane::SetMagneticOff()
+{
+	bIsMagnetic = false;
 }
 

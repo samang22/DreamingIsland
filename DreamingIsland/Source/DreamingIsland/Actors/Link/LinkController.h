@@ -41,6 +41,7 @@ protected:
 	void OnChoose(const FInputActionValue& InputActionValue);
 	void OnCheck(const FInputActionValue& InputActionValue);
 	void OnGet(const FInputActionValue& InputActionValue);
+	void OnCraneDown(const FInputActionValue& InputActionValue);
 
 protected:
 	UFUNCTION()

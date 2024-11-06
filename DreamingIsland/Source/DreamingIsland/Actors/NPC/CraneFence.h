@@ -25,10 +25,9 @@ protected:
 	TObjectPtr<USplineComponent> SplineComponent;
 
 protected:
-	bool bMove = false;
 	bool bMoveUp = true;
 	float fDistanceAlongSpline = 0.f;
 
 public:
-	void SetMove(bool bFlag) { bMove = bFlag; }
+	void SetMoveUp(bool bFlag) { bMoveUp = bFlag; }
 };

@@ -175,3 +175,13 @@ int ULinkStatusComponent::GetArrow() const
 {
 	return Arrow;
 }
+
+void ULinkStatusComponent::SetCrane(ACrane* _Crane)
+{
+	Crane = _Crane;
+}
+
+void ULinkStatusComponent::ClearCrane()
+{
+	Crane = nullptr;
+}

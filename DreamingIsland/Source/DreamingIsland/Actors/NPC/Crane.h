@@ -8,6 +8,7 @@
 
 class USpotLightComponent;
 class USphereComponent;
+class ACraneFence;
 UCLASS()
 class DREAMINGISLAND_API ACrane : public ANPC
 {
@@ -38,10 +39,10 @@ protected:
 	UPhysicalMaterial* PhysicalMaterial = nullptr;
 
 protected:
-	bool bIsMagnet = true;
+	bool bIsMagnetic = true;
 public:
-	void SetIsMagnet(bool bFlag) { bIsMagnet = bFlag; }
-	bool GetIsMagnet() const { return bIsMagnet; }
+	void SetIsMagnetic(bool bFlag) { bIsMagnetic = bFlag; }
+	bool GetIsMagnetic() const { return bIsMagnetic; }
 protected:
 	UFUNCTION()
 	virtual void OnSenseItemBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
@@ -54,12 +55,26 @@ public:
 	void SetSpotLightActive();
 	void SetSpotLightDeActive();
 
-
+protected:
+	bool bIsUpDownMove = false;
+	bool bIsDown = false;
+	bool bIsStart = false;
 public:
-	void Grab();
-	void Release();
-	void Down();
+	UFUNCTION()
 	void Up();
+	void Down();
 	void Move(FVector vDir, float ScaleValue);
+	UFUNCTION()
+	void GoDefault();
+	bool GetIsStart();
+	UFUNCTION()
+	void OpenCraneFence();
+	UFUNCTION()
+	void SetMagneticOff();
+protected:
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<ACraneFence> CraneFence;
+public:
+	ACraneFence* GetCraneFence() { return CraneFence; }
 
 };

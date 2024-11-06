@@ -10,6 +10,7 @@
 #include "Actors/Items/Item.h"
 #include "Actors/NPC/Crane.h"
 #include "Actors/NPC/CraneButton.h"
+#include "Actors/NPC/CraneFence.h"
 #include "Misc/Utils.h"
 
 void UConversation_GIS::Initialize(FSubsystemCollectionBase& Collection)
@@ -105,6 +106,7 @@ void UConversation_GIS::Purchase(ALink* Link, ANPC* NPC, bool& InbIsBroadCast)
 			DefaultHUD->OnSetStringToConversation(NPC->GetNPCName().ToString(), NPC->GetScript(GSO_ConversationKey::BuySucceeded));
 			DefaultHUD->OnHideChooseWidget();
 			ACraneButton* CraneButton = Cast<ACraneButton>(NPC);
+			CraneButton->GetCrane()->GetCraneFence()->SetMoveUp(true);
 			Link->SetCrane(CraneButton->GetCrane());
 			DefaultHUD->OnDelayHideConversationWidget(1.f);
 		}

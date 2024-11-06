@@ -73,6 +73,7 @@ void ALinkController::SetupInputComponent()
 	{
 		EnhancedInputComponent->BindAction(InputAction, ETriggerEvent::Triggered, this, &ThisClass::OnAttack);
 		EnhancedInputComponent->BindAction(InputAction, ETriggerEvent::Completed, this, &ThisClass::OnCheck);
+		EnhancedInputComponent->BindAction(InputAction, ETriggerEvent::Completed, this, &ThisClass::OnCraneDown);
 	}
 	else
 	{
@@ -216,7 +217,7 @@ void ALinkController::OnRunOff(const FInputActionValue& InputActionValue)
 
 void ALinkController::OnAttack(const FInputActionValue& InputActionValue)
 {
-	if (StatusComponent->GetIsConversation()) return;
+	if (StatusComponent->GetIsConversation() || StatusComponent->GetCrane()) return;
 	Cast<ALink>(GetPawn())->PlayMontage(LINK_MONTAGE::SLASH);
 }
 
@@ -289,7 +290,7 @@ void ALinkController::OnChoose(const FInputActionValue& InputActionValue)
 // Decide Selection
 void ALinkController::OnCheck(const FInputActionValue& InputActionValue)
 {
-	if (!StatusComponent->GetIsConversation()) return;
+	if (!StatusComponent->GetIsConversation() || StatusComponent->GetCrane()) return;
 
 	ADefaultHUD* DefaultHUD = Cast<ADefaultHUD>(GetHUD());
 	if (!DefaultHUD->GetIsChooseWidgetVisible()) return;
@@ -350,11 +351,29 @@ void ALinkController::OnGet(const FInputActionValue& InputActionValue)
 		{
 			StatusComponent->SetOnToolEquipStatus(LINK_TOOL_BIT_SWORD);
 		}
+		else if (Item_Name::RupeeGreen == ItemName
+			|| Item_Name::RupeeBlue == ItemName
+			|| Item_Name::RupeeGold == ItemName)
+		{
+			StatusComponent->AddRupee(Item->GetItemValue());
+			ADefaultHUD* DefaultHUD = Cast<ADefaultHUD>(GetHUD());
+			DefaultHUD->OnSetArrowNum(StatusComponent->GetRupee());
+		}
+
 		Link->PlayMontage(LINK_MONTAGE::ITEM_GET);
 		Link->SetOffAnimStatus(LINK_BIT_CARRY);
 		OnLinkItemGet.Broadcast(Link->GetActorLocation(), Link->GetActorForwardVector());
 		UKismetSystemLibrary::K2_SetTimer(this, TEXT("CallOnLinkItemGetEnd"), 1.f, false);
 	}
+}
+
+void ALinkController::OnCraneDown(const FInputActionValue& InputActionValue)
+{
+	if (!StatusComponent->GetCrane()) return;
+	ACrane* Crane = StatusComponent->GetCrane();
+	if (!Crane->GetIsStart()) return;
+	Crane->Down();
+	StatusComponent->ClearCrane();
 }
 
 void ALinkController::OnSlashAttackMontageEnd(UAnimMontage* Montage, bool bInterrupted)

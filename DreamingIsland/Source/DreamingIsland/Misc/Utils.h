@@ -11,7 +11,7 @@
 
 #define COLLISION_HIDDEN_IN_GAME						false
 #define CRANEGAME_COST									10
-
+#define MAGNET_FORCE									200000.f
 class FUtils
 {
 public:
