@@ -36,9 +36,9 @@ void UConversation_GIS::Conversation(ALink* Link, ANPC* NPC, bool& InbIsBroadCas
 		{
 			const AItem* Item = Cast<AItem>(Link->GetCatchingItem());
 			FString ItemName = Item->GetItemName().ToString();
-			FString Script1 = NPC->GetScript(TEXT("Buy1")); // 은
+			FString Script1 = NPC->GetScript(TSK_ConversationKey::Buy1); // 은
 			FString ItemValue = FString::FormatAsNumber(Item->GetItemValue());
-			FString Script2 = NPC->GetScript(TEXT("Buy2")); // 루피입니다!
+			FString Script2 = NPC->GetScript(TSK_ConversationKey::Buy2); // 루피입니다!
 			FString Result = ItemName + Script1 + ItemValue + Script2;
 
 			DefaultHUD->OnSetStringToConversation(NPC->GetNPCName().ToString(), Result);
@@ -48,7 +48,7 @@ void UConversation_GIS::Conversation(ALink* Link, ANPC* NPC, bool& InbIsBroadCas
 		}
 		else if (!Link->IsCatchingItem())
 		{
-			FString Script = NPC->GetScript(TEXT("Greeting"));
+			FString Script = NPC->GetScript(TSK_ConversationKey::Greeting);
 			DefaultHUD->OnSetStringToConversation(NPC->GetNPCName().ToString(), Script);
 			DefaultHUD->OnShowConversationWidget();
 		}
@@ -56,7 +56,7 @@ void UConversation_GIS::Conversation(ALink* Link, ANPC* NPC, bool& InbIsBroadCas
 	}
 	else if (NPC->GetNPCName() == NPC_Name_Korean::GameShopOwner)
 	{
-		FString Script = NPC->GetScript(TEXT("Greeting"));
+		FString Script = NPC->GetScript(GSO_ConversationKey::Greeting);
 		DefaultHUD->OnSetStringToConversation(NPC->GetNPCName().ToString(), Script);
 		DefaultHUD->OnShowConversationWidget();
 
@@ -64,7 +64,7 @@ void UConversation_GIS::Conversation(ALink* Link, ANPC* NPC, bool& InbIsBroadCas
 	}
 	else if (NPC->GetNPCName() == NPC_Name_Korean::CraneButton)
 	{
-		FString Script = NPC->GetScript(TEXT("Try"));
+		FString Script = NPC->GetScript(GSO_ConversationKey::Try);
 		DefaultHUD->OnSetStringToConversation(NPC_Name_Korean::GameShopOwner.ToString(), Script);
 		DefaultHUD->OnShowConversationWidget();
 		DefaultHUD->OnShowRupeeWidget();
@@ -73,11 +73,27 @@ void UConversation_GIS::Conversation(ALink* Link, ANPC* NPC, bool& InbIsBroadCas
 	}
 	else if (NPC_Name_Korean::CuccoKeeper == NPC->GetNPCName())
 	{
-		NPC->GetConversationComponent();
-		FString Script = NPC->GetScript(TEXT("Request"));
+		UCKConversationComponent* ConversationComponent = Cast<UCKConversationComponent>(NPC->GetConversationComponent());
+		FString Script;
+		switch (ConversationComponent->GetQuestStatus())
+		{
+		case NOT_ACCEPTED:
+			Script = NPC->GetScript(CK_ConversationKey::Request);
+			DefaultHUD->OnShowChooseWidget();
+			break;
+		case ACCEPTED:
+			Script = NPC->GetScript(CK_ConversationKey::Accept);
+			break;
+		case SUCCEEDED:
+			Script = NPC->GetScript(CK_ConversationKey::Greeting);
+			break;
+		default:
+			break;
+
+		}
+
 		DefaultHUD->OnSetStringToConversation(NPC_Name_Korean::CuccoKeeper.ToString(), Script);
 		DefaultHUD->OnShowConversationWidget();
-		DefaultHUD->OnShowChooseWidget();
 		InbIsBroadCast = true;
 	}
 }
@@ -121,6 +137,9 @@ void UConversation_GIS::Check(ALink* Link, ANPC* NPC, bool& InbIsEndTalk, bool b
 	{
 		if (bCheck)
 		{
+			UCKConversationComponent* ConversationComponent = Cast<UCKConversationComponent>(NPC->GetConversationComponent());
+			ConversationComponent->SetQuestStatus(EQuestStatus::ACCEPTED);
+
 			bool bCheckBroadcast = false;
 			Purchase(Link, NPC, bCheckBroadcast);
 			StatusComponent->SetIsConversation(false);
@@ -129,7 +148,6 @@ void UConversation_GIS::Check(ALink* Link, ANPC* NPC, bool& InbIsEndTalk, bool b
 		{
 			//InbIsEndTalk = true;
 			//StatusComponent->SetIsConversation(false);
-
 			ALinkController* LinkController = Cast<ALinkController>(Link->GetController());
 			ADefaultHUD* DefaultHUD = Cast<ADefaultHUD>(LinkController->GetHUD());
 			DefaultHUD->OnSetStringToConversation(NPC->GetNPCName().ToString(), NPC->GetScript(CK_ConversationKey::Bad));

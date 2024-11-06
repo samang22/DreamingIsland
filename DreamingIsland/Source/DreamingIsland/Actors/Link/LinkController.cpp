@@ -235,6 +235,7 @@ void ALinkController::OnInteract(const FInputActionValue& InputActionValue)
 		Conversation_GIS->Conversation(Link, NPC, bCheckBroadcast);
 		if (bCheckBroadcast)
 		{
+			//Link->DeActiveSpringArm();
 			OnLinkTalk.Broadcast(Link->GetActorLocation(), -1 * Link->GetActorRightVector(), Link->GetActorForwardVector());
 		}
 	}

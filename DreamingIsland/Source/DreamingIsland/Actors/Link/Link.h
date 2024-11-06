@@ -61,6 +61,9 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USphereComponent> SenseInteractCollisionComponent;
 
+public:
+	void ActiveSpringArm();
+	void DeActiveSpringArm();
 
 protected:
 	UPROPERTY(EditAnywhere, Category = "Projectile")

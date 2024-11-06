@@ -183,6 +183,18 @@ void ALink::OnSenseInteractiveEndOverlap(UPrimitiveComponent* OverlappedComponen
 	}
 }
 
+void ALink::ActiveSpringArm()
+{
+	SpringArm->bEnableCameraLag = true;
+	SpringArm->bUsePawnControlRotation = true;
+}
+
+void ALink::DeActiveSpringArm()
+{
+	SpringArm->bEnableCameraLag = false;
+	SpringArm->bUsePawnControlRotation = false;
+}
+
 void ALink::SetSpeedWalk()
 {
 	UCharacterMovementComponent* Movement = GetCharacterMovement();
