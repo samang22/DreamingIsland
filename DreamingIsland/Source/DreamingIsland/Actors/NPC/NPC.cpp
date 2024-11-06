@@ -19,6 +19,7 @@
 #include "Actors/AI/PatrolPath.h"
 #include "GameFramework/Character.h"
 #include "Kismet/GameplayStatics.h"
+#include "Actors/AI/NPC/CuccoAIController.h"
 
 ANPC::ANPC(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -129,6 +130,10 @@ void ANPC::PostInitializeComponents()
 		if (ANPCAIController* NPCAIController = Cast<ANPCAIController>(Controller))
 		{
 			NPCAIController->SetPatrolPath(PatrolPathRef->GetPath());
+		}
+		else if (ACuccoAIController* CuccoAIController = Cast<ACuccoAIController>(Controller))
+		{
+			CuccoAIController->SetPatrolPath(PatrolPathRef->GetPath());
 		}
 	}
 }

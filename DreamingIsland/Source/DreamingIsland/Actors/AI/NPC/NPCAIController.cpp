@@ -19,7 +19,7 @@ void ANPCAIController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (PatrolPath)
+	if (PatrolPath && Blackboard)
 	{
 		Blackboard->SetValueAsObject(TEXT("SplineComponent"), PatrolPath);
 	}
