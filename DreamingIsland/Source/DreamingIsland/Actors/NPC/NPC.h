@@ -86,6 +86,8 @@ public:
 	FName GetNPCName() const { return NPCName; }
 public:
 	UNPCStatusComponent* GetStatusComponent() { return StatusComponent; }
+	UConversationComponent* GetConversationComponent() { return ConversationComponent; }
+
 protected:
 	UPROPERTY(EditAnywhere)
 	FDataTableRowHandle DataTableRowHandle;

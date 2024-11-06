@@ -97,7 +97,7 @@ void ALink::BeginPlay()
 	tempCapsuleComponent->bHiddenInGame = COLLISION_HIDDEN_IN_GAME;
 	tempCapsuleComponent->SetCollisionResponseToChannel(TRACE_CHANNEL_LINKCHANNEL, ECR_Block);
 
-	SenseInteractCollisionComponent->SetRelativeLocation(GetActorForwardVector() * LINK_SENSE_COLLISION_OFFSET);
+	//SenseInteractCollisionComponent->SetRelativeLocation(GetActorForwardVector() * LINK_SENSE_COLLISION_OFFSET);
 	SenseInteractCollisionComponent->SetSphereRadius(LINK_SENSEINTERACTIVE_COLLISION_SPHERE_RADIUS);
 	SenseInteractCollisionComponent->SetCollisionProfileName(CollisionProfileName::SenseInteractive);
 	SenseInteractCollisionComponent->bHiddenInGame = COLLISION_HIDDEN_IN_GAME;
@@ -139,6 +139,7 @@ void ALink::OnConstruction(const FTransform& Transform)
 void ALink::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
 	LinkCatchedSequence(DeltaTime);
 }
 

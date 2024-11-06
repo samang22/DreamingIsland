@@ -3,6 +3,7 @@
 
 #include "Actors/Default/DreamingIslandGameModeBase.h"
 #include "Actors/Link/LinkController.h"
+#include "Actors/Default/DefaultHUD.h"
 
 ADreamingIslandGameModeBase::ADreamingIslandGameModeBase()
 {
@@ -12,4 +13,6 @@ ADreamingIslandGameModeBase::ADreamingIslandGameModeBase()
 		check(ClassFinder.Class);
 		DefaultPawnClass = ClassFinder.Class;
 	}
+
+	HUDClass = ADefaultHUD::StaticClass();
 }

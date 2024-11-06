@@ -299,26 +299,43 @@ void ALinkController::OnCheck(const FInputActionValue& InputActionValue)
 	ADefaultHUD* DefaultHUD = Cast<ADefaultHUD>(GetHUD());
 	if (!DefaultHUD->GetIsChooseWidgetVisible()) return;
 
-	if (DefaultHUD->GetSelection())
-	{
-		// now check which one is talking with
-		ALink* Link = Cast<ALink>(GetPawn());
-		AActor* OverlappedNPC = Link->GetOverlappedNPC();
-		ANPC* NPC = Cast<ANPC>(OverlappedNPC);
+	ALink* Link = Cast<ALink>(GetPawn());
+	AActor* OverlappedNPC = Link->GetOverlappedNPC();
+	ANPC* NPC = Cast<ANPC>(OverlappedNPC);
 
-		UConversation_GIS* Conversation_GIS = GetGameInstance()->GetSubsystem<UConversation_GIS>();
-		bool bCheckBroadcast = false;
-		Conversation_GIS->Purchase(Link, NPC, bCheckBroadcast);
-		StatusComponent->SetIsConversation(false);
-	}
-	else
+	UConversation_GIS* Conversation_GIS = GetGameInstance()->GetSubsystem<UConversation_GIS>();
+	bool bCheckEndTalk = false;
+	Conversation_GIS->Check(Link, NPC, bCheckEndTalk, DefaultHUD->GetSelection());
+
+	if (bCheckEndTalk)
 	{
-		OnLinkTalkEnd.Broadcast();
-		StatusComponent->SetIsConversation(false);
 		DefaultHUD->OnHideChooseWidget();
 		DefaultHUD->OnHideConversationWidget();
 		DefaultHUD->OnHideRupeeWidget();
+		OnLinkTalkEnd.Broadcast();
 	}
+
+
+
+	//if (DefaultHUD->GetSelection())
+	//{
+	//	// now check which one is talking with
+	//	ALink* Link = Cast<ALink>(GetPawn());
+	//	AActor* OverlappedNPC = Link->GetOverlappedNPC();
+	//	ANPC* NPC = Cast<ANPC>(OverlappedNPC);
+	//	UConversation_GIS* Conversation_GIS = GetGameInstance()->GetSubsystem<UConversation_GIS>();
+	//	bool bCheckBroadcast = false;
+	//	Conversation_GIS->Purchase(Link, NPC, bCheckBroadcast);
+	//	StatusComponent->SetIsConversation(false);
+	//}
+	//else
+	//{
+	//	OnLinkTalkEnd.Broadcast();
+	//	StatusComponent->SetIsConversation(false);
+	//	DefaultHUD->OnHideChooseWidget();
+	//	DefaultHUD->OnHideConversationWidget();
+	//	DefaultHUD->OnHideRupeeWidget();
+	//}
 
 }
 

@@ -18,5 +18,6 @@ public:
 
 public:
 	void Conversation(ALink* Link, ANPC* NPC, bool& InbIsBroadCast);
+	void Check(ALink* Link, ANPC* NPC, bool& InbIsTalkEnd, bool bCheck);
 	void Purchase(ALink* Link, ANPC* NPC, bool& InbIsBroadCast);
 };

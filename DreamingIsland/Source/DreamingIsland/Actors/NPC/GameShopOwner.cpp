@@ -2,10 +2,9 @@
 
 
 #include "Actors/NPC/GameShopOwner.h"
-#include "Components/SphereComponent.h"
 #include "Misc/Utils.h"
-#include "Animation/NPCAnimInstance.h"
 #include "Components/ConversationComponent/GSOConversationComponent.h"
+
 AGameShopOwner::AGameShopOwner(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {

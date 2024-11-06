@@ -99,11 +99,22 @@ namespace GSO_ConversationKey
 	static inline FString BuyFailed = TEXT("BuyFailed");
 }
 
+namespace CK_ConversationKey
+{
+	static inline FString Greeting = TEXT("Greeting");
+	static inline FString Request = TEXT("Request");
+	static inline FString Accept = TEXT("Accept");
+	static inline FString Thanks = TEXT("Thanks");
+	static inline FString Bad = TEXT("Bad");
+	static inline FString NotYet = TEXT("NotYet");
+}
+
 namespace NPC_Name_Korean
 {
 	static inline FName ToolShopKeeper = TEXT("도구 상점 주인");
 	static inline FName GameShopOwner = TEXT("게임샵 주인");
 	static inline FName CraneButton = TEXT("크레인 버튼");
+	static inline FName CuccoKeeper = TEXT("닭장 주인");
 }
 
 

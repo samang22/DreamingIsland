@@ -2,17 +2,17 @@
 
 
 #include "GameInstance/Conversation_GIS.h"
+#include "Misc/Utils.h"
 #include "Actors/Link/Link.h"
 #include "Actors/Link/LinkController.h"
-#include "Actors/NPC/NPC.h"
-#include "Components/StatusComponent/LinkStatusComponent.h"
 #include "Actors/Default/DefaultHUD.h"
 #include "Actors/Items/Item.h"
+#include "Actors/NPC/NPC.h"
 #include "Actors/NPC/Crane.h"
 #include "Actors/NPC/CraneButton.h"
 #include "Actors/NPC/CraneFence.h"
-#include "Misc/Utils.h"
-
+#include "Components/StatusComponent/LinkStatusComponent.h"
+#include "Components/ConversationComponent/CKConversationComponent.h"
 void UConversation_GIS::Initialize(FSubsystemCollectionBase& Collection)
 {
 }
@@ -71,6 +71,72 @@ void UConversation_GIS::Conversation(ALink* Link, ANPC* NPC, bool& InbIsBroadCas
 		DefaultHUD->OnShowChooseWidget();
 		InbIsBroadCast = false;
 	}
+	else if (NPC_Name_Korean::CuccoKeeper == NPC->GetNPCName())
+	{
+		NPC->GetConversationComponent();
+		FString Script = NPC->GetScript(TEXT("Request"));
+		DefaultHUD->OnSetStringToConversation(NPC_Name_Korean::CuccoKeeper.ToString(), Script);
+		DefaultHUD->OnShowConversationWidget();
+		DefaultHUD->OnShowChooseWidget();
+		InbIsBroadCast = true;
+	}
+}
+
+void UConversation_GIS::Check(ALink* Link, ANPC* NPC, bool& InbIsEndTalk, bool bCheck)
+{
+	ULinkStatusComponent* StatusComponent = Link->GetStatusComponent();
+
+	if (NPC_Name_Korean::ToolShopKeeper == NPC->GetNPCName())
+	{
+		if (bCheck)
+		{
+			bool bCheckBroadcast = false;
+			Purchase(Link, NPC, bCheckBroadcast);
+			StatusComponent->SetIsConversation(false);
+		}
+		else
+		{
+			InbIsEndTalk = true;
+			StatusComponent->SetIsConversation(false);
+		}
+	}
+	else if (NPC_Name_Korean::GameShopOwner == NPC->GetNPCName()
+		|| NPC_Name_Korean::CraneButton == NPC->GetNPCName())
+	{
+		if (bCheck)
+		{
+			bool bCheckBroadcast = false;
+			Purchase(Link, NPC, bCheckBroadcast);
+			StatusComponent->SetIsConversation(false);
+		}
+		else
+		{
+			InbIsEndTalk = true;
+			StatusComponent->SetIsConversation(false);
+
+		}
+	}
+	// Quest from CuccoKeeper
+	else if (NPC_Name_Korean::CuccoKeeper == NPC->GetNPCName())
+	{
+		if (bCheck)
+		{
+			bool bCheckBroadcast = false;
+			Purchase(Link, NPC, bCheckBroadcast);
+			StatusComponent->SetIsConversation(false);
+		}
+		else
+		{
+			//InbIsEndTalk = true;
+			//StatusComponent->SetIsConversation(false);
+
+			ALinkController* LinkController = Cast<ALinkController>(Link->GetController());
+			ADefaultHUD* DefaultHUD = Cast<ADefaultHUD>(LinkController->GetHUD());
+			DefaultHUD->OnSetStringToConversation(NPC->GetNPCName().ToString(), NPC->GetScript(CK_ConversationKey::Bad));
+			DefaultHUD->OnHideChooseWidget();
+		}
+	}
+
 }
 
 void UConversation_GIS::Purchase(ALink* Link, ANPC* NPC, bool& InbIsBroadCast)
@@ -78,7 +144,6 @@ void UConversation_GIS::Purchase(ALink* Link, ANPC* NPC, bool& InbIsBroadCast)
 	ULinkStatusComponent* StatusComponent = Link->GetStatusComponent();
 	ALinkController* LinkController = Cast<ALinkController>(Link->GetController());
 	ADefaultHUD* DefaultHUD = Cast<ADefaultHUD>(LinkController->GetHUD());
-
 	if (NPC_Name_Korean::ToolShopKeeper == NPC->GetNPCName())
 	{
 		AItem* Item = Cast<AItem>(Link->GetCatchingItem());
@@ -117,4 +182,12 @@ void UConversation_GIS::Purchase(ALink* Link, ANPC* NPC, bool& InbIsBroadCast)
 			DefaultHUD->OnDelayHideConversationWidget(1.f);
 		}
 	}
+	// Quest from CuccoKeeper
+	else if (NPC_Name_Korean::CuccoKeeper == NPC->GetNPCName())
+	{
+		DefaultHUD->OnSetStringToConversation(NPC->GetNPCName().ToString(), NPC->GetScript(CK_ConversationKey::Accept));
+		DefaultHUD->OnHideChooseWidget();
+	}
+
+
 }

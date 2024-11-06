@@ -5,9 +5,6 @@
 #include "Actors/Link/LinkController.h"
 #include "Actors/Default/DefaultHUD.h"
 
-
-
-
 AHouseGameModeBase::AHouseGameModeBase()
 {
 	PlayerControllerClass = ALinkController::StaticClass();
