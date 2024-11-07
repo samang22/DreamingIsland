@@ -22,7 +22,6 @@ void URupeeWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	APawn* Pawn = GetOwningPawn();
 	SetVisibility(ESlateVisibility::Hidden);
 }
 

@@ -87,6 +87,7 @@ void UConversation_GIS::Conversation(ALink* Link, ANPC* NPC, bool& InbIsBroadCas
 		case SUCCEEDED:
 			Script = NPC->GetScript(CK_ConversationKey::Thanks);
 			ConversationComponent->SetQuestStatus(EQuestStatus::GREETING);
+			DefaultHUD->OnHideCuccoQuestWidget();
 			break;
 		case GREETING:
 			Script = NPC->GetScript(CK_ConversationKey::Greeting);
@@ -213,6 +214,7 @@ void UConversation_GIS::Purchase(ALink* Link, ANPC* NPC, bool& InbIsBroadCast)
 			DefaultHUD->OnSetStringToConversation(NPC->GetNPCName().ToString(), NPC->GetScript(CK_ConversationKey::Accept));
 		}
 		DefaultHUD->OnHideChooseWidget();
+		DefaultHUD->OnShowCuccoQuestWidget();
 	}
 
 

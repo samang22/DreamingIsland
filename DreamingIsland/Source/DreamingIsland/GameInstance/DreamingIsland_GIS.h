@@ -34,4 +34,5 @@ protected:
 public:
 	void SetCuccoCount(int _iCount) { CuccoCount = _iCount; }
 	int GetCuccoCount() const { return CuccoCount; }
+
 };

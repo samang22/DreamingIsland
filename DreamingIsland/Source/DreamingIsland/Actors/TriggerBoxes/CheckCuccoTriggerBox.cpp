@@ -5,6 +5,8 @@
 #include "Misc/Utils.h"
 #include "Components/ShapeComponent.h"
 #include "Actors/NPC/Cucco.h"
+#include "Kismet/GameplayStatics.h"
+#include "Actors/Default/DefaultHUD.h"
 #include "GameInstance/DreamingIsland_GIS.h"
 
 ACheckCuccoTriggerBox::ACheckCuccoTriggerBox(const FObjectInitializer& ObjectInitializer)
@@ -38,6 +40,13 @@ void ACheckCuccoTriggerBox::OnTrigger(UPrimitiveComponent* OverlappedComponent, 
 	if (!Cucco) return;
 	Cucco->SetCatchingCuccoActor(nullptr);
 	Cucco->SetIsCatched(false);
-	UDreamingIsland_GIS* Subsystem = GetGameInstance()->GetSubsystem<UDreamingIsland_GIS>();
-	Subsystem->SetCuccoCount(Subsystem->GetCuccoCount() + 1);
+
+	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	if (ADefaultHUD* DefaultHUD = Cast<ADefaultHUD>(PlayerController->GetHUD()))
+	{
+		DefaultHUD->OnSetCuccoNum(++CuccoNum);
+	}
+
+	UDreamingIsland_GIS* GIS = GetGameInstance()->GetSubsystem<UDreamingIsland_GIS>();
+	GIS->SetCuccoCount(CuccoNum);
 }

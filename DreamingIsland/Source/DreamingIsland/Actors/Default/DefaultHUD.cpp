@@ -7,6 +7,7 @@
 #include "UI/RupeeWidget.h"
 #include "UI/ArrowWidget.h"
 #include "UI/BombWidget.h"
+#include "UI/CuccoQuestWidget.h"
 #include "Blueprint/UserWidget.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -37,6 +38,10 @@ void ADefaultHUD::BeginPlay()
 	WidgetClass = LoadClass<UUserWidget>(nullptr, TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/UI_Bomb.UI_Bomb_C'"));
 	BombWidget = CreateWidget<UBombWidget>(GetWorld(), WidgetClass);
 	BombWidget->AddToViewport();
+
+	WidgetClass = LoadClass<UUserWidget>(nullptr, TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/UI_CuccoQuest.UI_CuccoQuest_C'"));
+	CuccoQuestWidget = CreateWidget<UCuccoQuestWidget>(GetWorld(), WidgetClass);
+	CuccoQuestWidget->AddToViewport();
 }
 
 void ADefaultHUD::OnSetStringToConversation(FString Speaker, FString String)
@@ -69,6 +74,11 @@ void ADefaultHUD::OnSetBombNum(int BombNum)
 	if (BombWidget)	BombWidget->OnSetBombNum(BombNum);
 }
 
+void ADefaultHUD::OnSetCuccoNum(int CuccoNum)
+{
+	if (CuccoQuestWidget) CuccoQuestWidget->OnSetCuccoNum(CuccoNum);
+}
+
 void ADefaultHUD::OnSetSelection(bool bSelection)
 {
 	if (ChooseWidget)	ChooseWidget->OnSetChoose(bSelection);
@@ -99,6 +109,11 @@ void ADefaultHUD::OnShowBombWidget()
 	if (BombWidget)	BombWidget->OnShow();
 }
 
+void ADefaultHUD::OnShowCuccoQuestWidget()
+{
+	if (CuccoQuestWidget)	CuccoQuestWidget->OnShow();
+}
+
 void ADefaultHUD::OnHideConversationWidget()
 {
 	if (Widget)	Widget->OnHidden();
@@ -124,6 +139,11 @@ void ADefaultHUD::OnHideBombWidget()
 	if (BombWidget)	BombWidget->OnHidden();
 }
 
+void ADefaultHUD::OnHideCuccoQuestWidget()
+{
+	if (CuccoQuestWidget)	CuccoQuestWidget->OnHidden();
+}
+
 void ADefaultHUD::OnDelayHideConversationWidget(float Seconds)
 {
 	UKismetSystemLibrary::K2_SetTimer(this, TEXT("OnHideConversationWidget"), Seconds, false);
@@ -147,4 +167,8 @@ void ADefaultHUD::OnDelayHideArrowWidget(float Seconds)
 void ADefaultHUD::OnDelayHideBombWidget(float Seconds)
 {
 	UKismetSystemLibrary::K2_SetTimer(this, TEXT("OnHideHideWidget"), Seconds, false);
+}
+
+void ADefaultHUD::OnDelayHideCuccoQuestWidget(float Seconds)
+{
 }
