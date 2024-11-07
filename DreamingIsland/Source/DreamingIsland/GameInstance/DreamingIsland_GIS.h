@@ -28,4 +28,10 @@ protected:
 public:
 	void SetLinkFieldLocation(FVector _Location) { LinkFieldLocation = _Location; }
 	FVector GetLinkFieldLocation() const { return LinkFieldLocation; }
+
+protected:
+	int CuccoCount = 0;
+public:
+	void SetCuccoCount(int _iCount) { CuccoCount = _iCount; }
+	int GetCuccoCount() const { return CuccoCount; }
 };
