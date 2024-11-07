@@ -78,7 +78,7 @@ public:
 
 public:
 	class ULinkStatusComponent* GetStatusComponent() const;
-	
+
 protected:
 	bool bIsCatched = false;
 	AActor* CatchingLinkActor = nullptr;
@@ -153,4 +153,21 @@ public:
 	void ClearCrane();
 	bool IsCrane();
 
+protected:
+	UPROPERTY(EditAnywhere, Category = "Niagara")
+	class UNiagaraSystem* NiagaraEffect; // Niagara 시스템 에셋을 에디터에서 할당할 수 있습니다.
+
+	UPROPERTY()
+	class UNiagaraComponent* NiagaraComponent01;
+	UPROPERTY()
+	class UNiagaraComponent* NiagaraComponent02;
+	UPROPERTY()
+	class UNiagaraComponent* NiagaraComponent03;
+	int SlashIndex = 0;
+
+public:
+	void ActivateSlashEffect();
+public:
+	//UFUNCTION()
+	//void OnSlashEnd(UNiagaraComponent* _NiagaraComponent);
 };

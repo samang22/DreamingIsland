@@ -226,7 +226,9 @@ void ALinkController::OnRunOff(const FInputActionValue& InputActionValue)
 void ALinkController::OnAttack(const FInputActionValue& InputActionValue)
 {
 	if (StatusComponent->GetIsConversation() || StatusComponent->GetCrane()) return;
-	Cast<ALink>(GetPawn())->PlayMontage(LINK_MONTAGE::SLASH);
+	ALink* Link = Cast<ALink>(GetPawn());
+	Link->PlayMontage(LINK_MONTAGE::SLASH);
+	Link->ActivateSlashEffect();
 }
 
 void ALinkController::OnInteract(const FInputActionValue& InputActionValue)
