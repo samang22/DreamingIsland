@@ -37,10 +37,10 @@ protected:
 protected:
 	void SpawnProjectileAndDestory();
 
-protected:
-	UPROPERTY()
-	TObjectPtr<UParticleSystemComponent> ExplosionEffectComponent;
-	TObjectPtr<UParticleSystem> ExplosionParticleAsset;
+//protected:
+//	UPROPERTY()
+//	TObjectPtr<UParticleSystemComponent> ExplosionEffectComponent;
+//	TObjectPtr<UParticleSystem> ExplosionParticleAsset;
 public:
-	void ActivateExplosionEffect();
+	void SpawnExplosionEffect();
 };

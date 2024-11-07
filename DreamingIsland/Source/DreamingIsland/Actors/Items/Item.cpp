@@ -24,18 +24,7 @@ AItem::AItem(const FObjectInitializer& ObjectInitializer)
 	static ConstructorHelpers::FObjectFinder<UPhysicalMaterial> PhysMaterial(TEXT("/Script/PhysicsCore.PhysicalMaterial'/Game/Assets/Item/PM_Item.PM_Item'"));
 	PhysicalMaterial = PhysMaterial.Object;
 
-	//CollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("CollisionComponent"));
-	//CollisionComponent->SetCollisionProfileName(CollisionProfileName::Item);
-	//CollisionComponent->SetCanEverAffectNavigation(false);
-	//CollisionComponent->SetEnableGravity(true);
-	//CollisionComponent->SetMassOverrideInKg(NAME_None, 10.0f, true);
-	//CollisionComponent->BodyInstance.bSimulatePhysics = true;
-
-
-
 	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
-	//StaticMeshComponent->SetupAttachment(RootComponent);
-
 }
 
 void AItem::SetData(const FDataTableRowHandle& InDataTableRowHandle)

@@ -8,6 +8,9 @@
 #include "Misc/Utils.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "Particles/ParticleSystem.h"
+#include "Actors/Effect/ParticleEffect.h"
+#include "Data/PawnTableRow.h"
+
 
 ABomber::ABomber(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -24,14 +27,14 @@ ABomber::ABomber(const FObjectInitializer& ObjectInitializer)
 	Texture_2 = TextureObject_2.Object;
 	Texture_3 = TextureObject_3.Object;
 
-	static ConstructorHelpers::FObjectFinder<UParticleSystem> ParticleAsset(TEXT("/Script/Engine.ParticleSystem'/Game/Assets/Realistic_Starter_VFX_Pack_Vol2/Particles/Explosion/P_Explosion_Big_A.P_Explosion_Big_A'"));
-	ExplosionEffectComponent = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("ExplosionEffectComponent"));
-	ExplosionEffectComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
-	if (ParticleAsset.Object)
-	{
-		ExplosionEffectComponent->SetTemplate(ParticleAsset.Object);
-	}
-	ExplosionEffectComponent->bAutoActivate = false;
+	//static ConstructorHelpers::FObjectFinder<UParticleSystem> ParticleAsset(TEXT("/Script/Engine.ParticleSystem'/Game/Assets/Realistic_Starter_VFX_Pack_Vol2/Particles/Explosion/P_Explosion_Big_A.P_Explosion_Big_A'"));
+	//ExplosionEffectComponent = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("ExplosionEffectComponent"));
+	//ExplosionEffectComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	//if (ParticleAsset.Object)
+	//{
+	//	ExplosionEffectComponent->SetTemplate(ParticleAsset.Object);
+	//}
+	//ExplosionEffectComponent->bAutoActivate = false;
 }
   
 void ABomber::BeginPlay()
@@ -72,7 +75,7 @@ void ABomber::Tick(float DeltaTime)
 	}
 	else
 	{
-		ActivateExplosionEffect();
+		SpawnExplosionEffect();
 		SpawnProjectileAndDestory();
 	}
 }
@@ -89,10 +92,19 @@ void ABomber::SpawnProjectileAndDestory()
 	NewTransform.SetLocation(GetActorLocation());
 	NewTransform.SetRotation(FRotator::ZeroRotator.Quaternion());
 	Projectile->FinishSpawning(NewTransform);
-	//Destroy();
+	Destroy();
 }
 
-void ABomber::ActivateExplosionEffect()
+void ABomber::SpawnExplosionEffect()
 {
-	ExplosionEffectComponent->ActivateSystem();
+	UWorld* World = this->GetWorld();
+
+	AParticleEffect* Effect = World->SpawnActorDeferred<AParticleEffect>(AParticleEffect::StaticClass(),
+		FTransform::Identity, nullptr, nullptr, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
+
+	FTransform NewTransform;
+	Effect->SetData(MonsterData->ParticleEffectTableRowHandle);
+	NewTransform.SetLocation(GetActorLocation());
+	NewTransform.SetRotation(FRotator::ZeroRotator.Quaternion());
+	Effect->FinishSpawning(NewTransform);
 }

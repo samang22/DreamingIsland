@@ -94,4 +94,11 @@ public:
 	FDataTableRowHandle WeaponTableRowHandle;
 	UPROPERTY(EditAnywhere, Category = "Weapon")
 	bool bUseWeapon = false;
+
+public:
+	UPROPERTY(EditAnywhere, Category = "ParticleEffect", meta = (RowType = "ParticleEffectTableRow"))
+	FDataTableRowHandle ParticleEffectTableRowHandle;
+	UPROPERTY(EditAnywhere, Category = "ParticleEffect")
+	bool bUseParticleEffect = false;
+
 };
