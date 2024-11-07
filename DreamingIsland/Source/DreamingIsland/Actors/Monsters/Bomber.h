@@ -8,7 +8,8 @@
 
 class UMaterialInterface;
 class UTexture;
-
+class UParticleSystemComponent;
+class UParticleSystem;
 UCLASS()
 class DREAMINGISLAND_API ABomber : public AMonster
 {
@@ -35,4 +36,11 @@ protected:
 
 protected:
 	void SpawnProjectileAndDestory();
+
+protected:
+	UPROPERTY()
+	TObjectPtr<UParticleSystemComponent> ExplosionEffectComponent;
+	TObjectPtr<UParticleSystem> ExplosionParticleAsset;
+public:
+	void ActivateExplosionEffect();
 };

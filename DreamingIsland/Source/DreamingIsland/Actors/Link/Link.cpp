@@ -101,7 +101,7 @@ ALink::ALink(const FObjectInitializer& ObjectInitializer)
 		FRotator NewRotation = FRotator(CurrentRotation.Pitch + 90.0f, CurrentRotation.Yaw + 180.f, CurrentRotation.Roll);
 		SlashEffectComponent_Array[i]->SetRelativeRotation(NewRotation);
 		SlashEffectComponent_Array[i]->SetRelativeLocation(GetActorForwardVector() * SLASH_EFFECT_OFFSET);
-
+		SlashEffectComponent_Array[i]->SetAutoActivate(false);
 	}
 
 
