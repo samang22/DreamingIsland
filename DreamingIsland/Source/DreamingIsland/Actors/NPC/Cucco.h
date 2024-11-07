@@ -31,7 +31,7 @@ public:
 	void StopMovement();
 	void ResumeMovement();
 	void SetCatchingCuccoActor(AActor* _CatchingCuccoActor) { CatchingCuccoActor = _CatchingCuccoActor; }
-	void StopCatchingLink() { CatchingCuccoActor = nullptr; }
+	void ClearCatchingCuccoActor() { CatchingCuccoActor = nullptr; }
 
 protected:
 	void CuccoCatchedSequence(float DeltaTime);
@@ -42,4 +42,6 @@ protected:
 public:
 	void SetCuccoRunWithDirection(FVector _Direction);
 	void SetCuccoRunEnd();
+	void Thrown();
+	void Landed();
 };

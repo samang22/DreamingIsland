@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Animation/AnimInstance.h"
+#include "Animation/NPCAnimInstance.h"
 #include "CuccoAnimInstance.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class DREAMINGISLAND_API UCuccoAnimInstance : public UAnimInstance
+class DREAMINGISLAND_API UCuccoAnimInstance : public UNPCAnimInstance
 {
 	GENERATED_BODY()
 public:
@@ -19,21 +19,4 @@ public:
 public:
 	virtual void NativeInitializeAnimation() override;
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
-
-protected:
-	UPROPERTY()
-	const class UNPCStatusComponent* StatusComponent;
-
-protected:
-	UPROPERTY(BlueprintReadOnly)
-	bool bIsWalk = false;
-	UPROPERTY(BlueprintReadOnly)
-	bool bIsWait = true;
-	UPROPERTY(BlueprintReadOnly)
-	bool bIsRun = false;
-	UPROPERTY(BlueprintReadOnly)
-	bool bIsLifted = false;
-	UPROPERTY(BlueprintReadOnly)
-	bool bIsThrown = false;
-
 };

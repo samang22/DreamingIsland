@@ -4,18 +4,19 @@
 #include "Actors/Link/Link.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Camera/CameraComponent.h"
-#include "Components/SoftWheelSpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Components/SoftWheelSpringArmComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SoftWheelSpringArmComponent.h"
 #include "Components/StatusComponent/LinkStatusComponent.h"
-#include "Actors/Projectile/ProjectileTableRow.h"
 #include "Components/SphereComponent.h"
-#include "Misc/Utils.h"
+#include "Actors/Projectile/ProjectileTableRow.h"
 #include "Actors/Monsters/Hinox.h"
 #include "Actors/NPC/NPC.h"
 #include "Actors/Items/Item.h"
 #include "Actors/Link/LinkController.h"
+#include "Actors/NPC/Cucco.h"
+#include "Misc/Utils.h"
 #include "Animation/LinkAnimInstance.h"
 #include "GameInstance/DreamingIsland_GIS.h"
 
@@ -293,6 +294,13 @@ void ALink::LayItem()
 	StatusComponent->SetOffAnimationStatus(LINK_BIT_CARRY);
 }
 
+void ALink::ThrewItem()
+{
+	if (!CatchingItem) return;
+	CatchingItem = nullptr;
+	StatusComponent->SetOffAnimationStatus(LINK_BIT_CARRY);
+}
+
 bool ALink::IsCatchingItem()
 {
 	if (CatchingItem)
@@ -313,6 +321,43 @@ void ALink::DestoryCatchingItem()
 void ALink::SetOffAnimStatus(uint8 Bit)
 {
 	StatusComponent->SetOffAnimationStatus(Bit);
+}
+
+void ALink::CatchCucco()
+{
+	if (!OverlappedNPC) return;
+	
+	ACucco* Cucco = Cast<ACucco>(OverlappedNPC);
+	Cucco->SetCatchingCuccoActor(this);
+	Cucco->SetIsCatched(true);
+	CatchingCucco = OverlappedNPC;
+	OverlappedNPC = nullptr;
+	StatusComponent->SetOnAnimationStatus(LINK_BIT_CARRY);
+}
+
+void ALink::LayCucco()
+{
+	if (!CatchingCucco) return;
+	ACucco* Cucco = Cast<ACucco>(CatchingCucco);
+	if (Cucco)
+	{
+		Cucco->SetIsCatched(false);
+		Cucco->ClearCatchingCuccoActor();
+	}
+	CatchingCucco = nullptr;
+	StatusComponent->SetOffAnimationStatus(LINK_BIT_CARRY);
+}
+
+void ALink::ThrewCucco()
+{
+	if (!CatchingCucco) return;
+	CatchingCucco = nullptr;
+	StatusComponent->SetOffAnimationStatus(LINK_BIT_CARRY);
+}
+
+bool ALink::IsCatchingCucco()
+{
+	return CatchingCucco ? true : false;
 }
 
 void ALink::SetDataFromGIS()

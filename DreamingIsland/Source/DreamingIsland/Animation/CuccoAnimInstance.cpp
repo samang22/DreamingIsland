@@ -18,12 +18,4 @@ void UCuccoAnimInstance::NativeInitializeAnimation()
 void UCuccoAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
 	Super::NativeUpdateAnimation(DeltaSeconds);
-	if (StatusComponent)
-	{
-		bIsWait = StatusComponent->GetAnimStatus(NPC_BIT_WAIT);
-		bIsWalk = StatusComponent->GetAnimStatus(NPC_BIT_WALK);
-		bIsRun = StatusComponent->GetAnimStatus(NPC_BIT_RUN);
-		bIsLifted = StatusComponent->GetAnimStatus(NPC_BIT_LIFTED);
-		bIsThrown = StatusComponent->GetAnimStatus(NPC_BIT_THROWN);
-	}
 }

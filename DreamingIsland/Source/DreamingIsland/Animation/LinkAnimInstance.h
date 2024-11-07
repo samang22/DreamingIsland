@@ -51,6 +51,7 @@ protected:
 	UAnimMontage* DieMontage;
 	UAnimMontage* ItemCarryMontage;
 	UAnimMontage* ItemGetMontage;
+	UAnimMontage* ThrowMontage;
 
 public:
 	void PlayMontage(LINK_MONTAGE _InEnum, bool bIsLoop = false);

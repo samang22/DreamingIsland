@@ -35,4 +35,10 @@ protected:
 	bool bIsWait = true;
 	UPROPERTY(BlueprintReadOnly)
 	bool bIsTalk = true;
+	UPROPERTY(BlueprintReadOnly)
+	bool bIsRun = false;
+	UPROPERTY(BlueprintReadOnly)
+	bool bIsLifted = false;
+	UPROPERTY(BlueprintReadOnly)
+	bool bIsThrown = false;
 };

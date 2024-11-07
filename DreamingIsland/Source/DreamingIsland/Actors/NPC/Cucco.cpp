@@ -14,7 +14,7 @@
 ACucco::ACucco(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
-	NPCName = NPC_Name_Korean::GameShopOwner;
+	NPCName = NPC_Name_Korean::Cucco;
 }
 
 void ACucco::Tick(float DeltaTime)
@@ -23,8 +23,9 @@ void ACucco::Tick(float DeltaTime)
 
 	if (bIsRun)
 	{
+		MovementComponent->RequestDirectMove(RunDirection * MovementComponent->GetMaxSpeed(), true);
 		StatusComponent->SetOnAnimationStatus(NPC_BIT_RUN);
-		AddMovementInput(RunDirection, 1.f);
+		//AddMovementInput(RunDirection, 100.f);
 	}
 	else
 	{
@@ -53,13 +54,14 @@ void ACucco::CuccoCatchedSequence(float DeltaTime)
 {
 	if (bIsCatched)
 	{
+		StatusComponent->SetOnAnimationStatus(NPC_BIT_LIFTED);
 		if (CatchingCuccoActor)
 		{
 			ALink* Link = Cast<ALink>(CatchingCuccoActor);
 			if (Link)
 			{
 				FVector NewLocation = Link->GetActorLocation();
-				NewLocation.Z += LINK_LOCATION_OFFSET;
+				NewLocation.Z += LINK_LOCATION_OFFSET * 1.5;
 				SetActorLocation(NewLocation);
 			}
 			// Unvisible dummy projectile
@@ -70,7 +72,12 @@ void ACucco::CuccoCatchedSequence(float DeltaTime)
 				OffsetVector.Z += 20.f;
 				SetActorLocation(OffsetVector);
 			}
+
 		}
+	}
+	else
+	{
+		StatusComponent->SetOffAnimationStatus(NPC_BIT_LIFTED);
 	}
 }
 
@@ -83,4 +90,15 @@ void ACucco::SetCuccoRunWithDirection(FVector _Direction)
 void ACucco::SetCuccoRunEnd()
 {
 	bIsRun = false;
+}
+
+void ACucco::Thrown()
+{
+	StatusComponent->SetOnAnimationStatus(NPC_BIT_THROWN);
+	StatusComponent->SetOffAnimationStatus(NPC_BIT_LIFTED);
+}
+
+void ACucco::Landed()
+{
+	StatusComponent->SetOffAnimationStatus(NPC_BIT_THROWN);
 }

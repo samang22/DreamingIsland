@@ -13,6 +13,9 @@
 #include "Actors/Monsters/Bomber.h"
 #include "Actors/Monsters/Hinox.h"
 #include "Actors/Link/Link.h"
+#include "Actors/Items/Item.h"
+#include "Actors/NPC/Cucco.h"
+
 #include "Components/StatusComponent/HinoxStatusComponent.h"
 
 // Sets default values
@@ -147,6 +150,27 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, U
 				Link->ResumeMovement();
 				Link->SetCatchingLinkActor(nullptr);
 				Link->SetIsCatched(false);
+			}
+		}
+	}
+	else if (DataTableRowHandle.RowName == ProjectileName::Link_Throw)
+	{
+		if (CatchingActor)
+		{
+			if (ACucco* Cucco = Cast<ACucco>(CatchingActor))
+			{
+				Cucco->ResumeMovement();
+				Cucco->ClearCatchingCuccoActor();
+				Cucco->SetIsCatched(false);
+				Cucco->Landed();
+			}
+			else if (AItem* Item = Cast<AItem>(CatchingActor))
+			{
+				if (Item)
+				{
+					Item->SetItemCatched(false);
+					Item->SetCatchingItemActor(nullptr);
+				}
 			}
 		}
 	}

@@ -102,17 +102,23 @@ protected:
 	AActor* OverlappedNPC = nullptr;
 	AActor* OverlappedItem = nullptr;
 	AActor* CatchingItem = nullptr;
-
+	AActor* CatchingCucco = nullptr;
 public:
 	bool IsOverlappedNPC();
 	bool IsOverlappedItem();
 	void CatchItem();
 	void LayItem();
+	void ThrewItem();
 	bool IsCatchingItem();
 	AActor* GetOverlappedNPC() { return OverlappedNPC; }
 	AActor* GetCatchingItem() { return CatchingItem; }
 	void DestoryCatchingItem();
 	void SetOffAnimStatus(uint8 Bit);
+	void CatchCucco();
+	void LayCucco();
+	void ThrewCucco();
+	bool IsCatchingCucco();
+	AActor* GetCatchingCucco() { return CatchingCucco; }
 
 protected:
 	void SetDataFromGIS();

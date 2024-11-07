@@ -20,6 +20,7 @@
 #include "GameInstance/DreamingIsland_GIS.h"
 #include "GameInstance/Conversation_GIS.h"
 #include "Actors/NPC/Crane.h"
+#include "Actors/NPC/Cucco.h"
 
 ALinkController::ALinkController()
 {
@@ -107,7 +108,14 @@ void ALinkController::SetupInputComponent()
 		UE_LOG(LogTemp, Warning, TEXT("IA_Get is disabled"));
 	}
 
-
+	if (const UInputAction* InputAction = FUtils::GetInputActionFromName(IMC_Default, TEXT("IA_Throw")))
+	{
+		EnhancedInputComponent->BindAction(InputAction, ETriggerEvent::Completed, this, &ThisClass::OnThrow);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("IA_Throw is disabled"));
+	}
 
 	if (bZoomWheel)
 	{
@@ -230,13 +238,21 @@ void ALinkController::OnInteract(const FInputActionValue& InputActionValue)
 	{
 		ANPC* NPC = Cast<ANPC>(Link->GetOverlappedNPC());
 
-		UConversation_GIS* Conversation_GIS = GetGameInstance()->GetSubsystem<UConversation_GIS>();
-		bool bCheckBroadcast = false;
-		Conversation_GIS->Conversation(Link, NPC, bCheckBroadcast);
-		if (bCheckBroadcast)
+		if (ACucco* Cucco = Cast<ACucco>(NPC))
 		{
-			//Link->DeActiveSpringArm();
-			OnLinkTalk.Broadcast(Link->GetActorLocation(), -1 * Link->GetActorRightVector(), Link->GetActorForwardVector());
+			Cucco->SetCatchingCuccoActor(Link);
+			Link->CatchCucco();
+		}
+		else
+		{
+			UConversation_GIS* Conversation_GIS = GetGameInstance()->GetSubsystem<UConversation_GIS>();
+			bool bCheckBroadcast = false;
+			Conversation_GIS->Conversation(Link, NPC, bCheckBroadcast);
+			if (bCheckBroadcast)
+			{
+				//Link->DeActiveSpringArm();
+				OnLinkTalk.Broadcast(Link->GetActorLocation(), -1 * Link->GetActorRightVector(), Link->GetActorForwardVector());
+			}
 		}
 	}
 	else if (Link->IsOverlappedItem()
@@ -396,6 +412,16 @@ void ALinkController::OnCraneDown(const FInputActionValue& InputActionValue)
 	if (!Crane->GetIsStart()) return;
 	Crane->Down();
 	StatusComponent->ClearCrane();
+}
+
+void ALinkController::OnThrow(const FInputActionValue& InputActionValue)
+{
+	if (StatusComponent->GetIsConversation() || StatusComponent->GetCrane()) return;
+	ALink* Link = Cast<ALink>(GetPawn());
+	if (Link->IsCatchingItem() || Link->IsCatchingCucco())
+	{
+		Cast<ALink>(GetPawn())->PlayMontage(LINK_MONTAGE::THROW);
+	}
 }
 
 void ALinkController::OnSlashAttackMontageEnd(UAnimMontage* Montage, bool bInterrupted)

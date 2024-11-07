@@ -50,4 +50,8 @@ protected:
 protected:
 	ECollisionChannel MyCollisionChannel;
 
+protected:
+	AActor* CatchingActor = nullptr;
+public:
+	void SetCatchingActor(AActor* Actor) { CatchingActor = Actor; }
 };

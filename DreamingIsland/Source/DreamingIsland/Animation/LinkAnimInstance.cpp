@@ -13,9 +13,11 @@ ULinkAnimInstance::ULinkAnimInstance()
 	static ConstructorHelpers::FObjectFinder<UAnimMontage> MtgSlash(TEXT("/Script/Engine.AnimMontage'/Game/Assets/Link/Animation/MTG_Link_Slash.MTG_Link_Slash'"));
 	static ConstructorHelpers::FObjectFinder<UAnimMontage> MtgItemCarry(TEXT("/Script/Engine.AnimMontage'/Game/Assets/Link/Animation/MTG_Link_Item_Carry.MTG_Link_Item_Carry'"));
 	static ConstructorHelpers::FObjectFinder<UAnimMontage> MtgItemGet(TEXT("/Script/Engine.AnimMontage'/Game/Assets/Link/Animation/MTG_Link_Item_Get.MTG_Link_Item_Get'"));
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> MtgThrow(TEXT("/Script/Engine.AnimMontage'/Game/Assets/Link/Animation/MTG_Link_Throw.MTG_Link_Throw'"));
 	if (MtgSlash.Object) { SlashMontage = MtgSlash.Object; }
 	if (MtgItemCarry.Object) { ItemCarryMontage = MtgItemCarry.Object; }
 	if (MtgItemGet.Object) { ItemGetMontage = MtgItemGet.Object; }
+	if (MtgThrow.Object) { ThrowMontage = MtgThrow.Object; }
 }
 
 void ULinkAnimInstance::NativeInitializeAnimation()
@@ -67,6 +69,9 @@ void ULinkAnimInstance::PlayMontage(LINK_MONTAGE _InEnum, bool bIsLoop)
 	case LINK_MONTAGE::ITEM_GET:
 		tempMontage = ItemGetMontage;
 		break;
+	case LINK_MONTAGE::THROW:
+		tempMontage = ThrowMontage;
+		break;
 	case LINK_MONTAGE::DEAD:
 		break;
 	case LINK_MONTAGE::DAMAGE:
@@ -101,6 +106,9 @@ bool ULinkAnimInstance::IsMontage(LINK_MONTAGE _InEnum)
 	case LINK_MONTAGE::ITEM_GET:
 		return ItemGetMontage ? true : false;
 		break;
+	case LINK_MONTAGE::THROW:
+		return ThrowMontage ? true : false;
+		break;
 	case LINK_MONTAGE::DEAD:
 	case LINK_MONTAGE::DAMAGE:
 	case LINK_MONTAGE::GUARD:
@@ -124,6 +132,9 @@ bool ULinkAnimInstance::IsPlayingMontage(LINK_MONTAGE _InEnum)
 		break;
 	case LINK_MONTAGE::ITEM_GET:
 		tempMontage = ItemGetMontage;
+		break;
+	case LINK_MONTAGE::THROW:
+		tempMontage = ThrowMontage;
 		break;
 	case LINK_MONTAGE::END:
 		tempMontage = nullptr;
