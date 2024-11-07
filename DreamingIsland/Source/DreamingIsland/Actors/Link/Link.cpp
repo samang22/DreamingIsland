@@ -31,7 +31,7 @@
 #define LINK_CAPSULE_HALF_HEIGHT						200.f
 
 #define SLASH_EFFECT_OFFSET								10.f
-
+#define SLASH_EFFECT_NUM								3
 // Sets default values
 ALink::ALink(const FObjectInitializer& ObjectInitializer)
 {
@@ -87,32 +87,25 @@ ALink::ALink(const FObjectInitializer& ObjectInitializer)
 	SkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshComponent"));
 	SkeletalMeshComponent->SetupAttachment(RootComponent);
 
-	NiagaraComponent01 = CreateDefaultSubobject<UNiagaraComponent>(TEXT("NiagaraComponent01"));
-	NiagaraComponent01->SetupAttachment(RootComponent); // 액터의 루트 컴포넌트에 붙임
-
-	NiagaraComponent02 = CreateDefaultSubobject<UNiagaraComponent>(TEXT("NiagaraComponent02"));
-	NiagaraComponent02->SetupAttachment(RootComponent); // 액터의 루트 컴포넌트에 붙임
-
-	NiagaraComponent03 = CreateDefaultSubobject<UNiagaraComponent>(TEXT("NiagaraComponent03"));
-	NiagaraComponent03->SetupAttachment(RootComponent); // 액터의 루트 컴포넌트에 붙임
-
 	static ConstructorHelpers::FObjectFinder<UNiagaraSystem> NiagaraAsset(TEXT("/Script/Niagara.NiagaraSystem'/Game/Assets/FxER_StylizedSlash/Niagara/Fantasy/NS_sm01_Fantasy_Slash_03_G.NS_sm01_Fantasy_Slash_03_G'"));
-	if (NiagaraAsset.Object)
+	for (int i = 0; i < SLASH_EFFECT_NUM; ++i)
 	{
-		NiagaraEffect = NiagaraAsset.Object;
-		NiagaraComponent01->SetAsset(NiagaraEffect);
-		NiagaraComponent02->SetAsset(NiagaraEffect);
-		NiagaraComponent03->SetAsset(NiagaraEffect);
+		FString ComponentName = FString::Printf(TEXT("NiagaraComponent_%d"), i);
+		SlashEffectComponent_Array.Push(CreateDefaultSubobject<UNiagaraComponent>(*ComponentName));
+		SlashEffectComponent_Array[i]->SetupAttachment(RootComponent);
+		if (NiagaraAsset.Object)
+		{
+			SlashEffectComponent_Array[i]->SetAsset(NiagaraAsset.Object);
+		}
+		FRotator CurrentRotation = SlashEffectComponent_Array[i]->GetRelativeRotation();
+		FRotator NewRotation = FRotator(CurrentRotation.Pitch + 90.0f, CurrentRotation.Yaw + 180.f, CurrentRotation.Roll);
+		SlashEffectComponent_Array[i]->SetRelativeRotation(NewRotation);
+		SlashEffectComponent_Array[i]->SetRelativeLocation(GetActorForwardVector() * SLASH_EFFECT_OFFSET);
+
 	}
 
-	FRotator CurrentRotation = NiagaraComponent01->GetRelativeRotation();
-	FRotator NewRotation = FRotator(CurrentRotation.Pitch + 90.0f, CurrentRotation.Yaw + 180.f, CurrentRotation.Roll);
-	NiagaraComponent01->SetRelativeRotation(NewRotation);
-	NiagaraComponent01->SetRelativeLocation(GetActorForwardVector() * SLASH_EFFECT_OFFSET);
-	NiagaraComponent02->SetRelativeRotation(NewRotation);
-	NiagaraComponent02->SetRelativeLocation(GetActorForwardVector() * SLASH_EFFECT_OFFSET);
-	NiagaraComponent03->SetRelativeRotation(NewRotation);
-	NiagaraComponent03->SetRelativeLocation(GetActorForwardVector() * SLASH_EFFECT_OFFSET);
+
+
 }
 
 
@@ -161,12 +154,7 @@ void ALink::BeginPlay()
 
 	GetMesh()->BoundsScale = 10.f;
 
-	if (NiagaraEffect)
-	{
-		NiagaraComponent01->Deactivate();
-	}
-
-
+	//SlashEffectComponent->Deactivate();
 }
 
 void ALink::OnConstruction(const FTransform& Transform)
@@ -472,28 +460,8 @@ bool ALink::IsCrane()
 
 void ALink::ActivateSlashEffect()
 {
-	if (!NiagaraComponent01 || !NiagaraComponent02 || !NiagaraComponent03) return;
-
-	switch (SlashIndex)
-	{
-	case 0:
-		NiagaraComponent01->Activate();
-		break;
-	case 1:
-		NiagaraComponent02->Activate();
-		break;
-	case 2:
-		NiagaraComponent03->Activate();
-		break;
-	default:
-		break;
-	}
-
-	SlashIndex = (SlashIndex + 1) % 3;
-	//NiagaraComponent01->OnSystemFinished.AddDynamic(this, &ALink::OnSlashEnd);
-
-	UE_LOG(LogTemp, Warning, TEXT("SlashEffect"));
-
+	SlashEffectComponent_Array[SlashEffectIndex]->Activate();
+	SlashEffectIndex = (SlashEffectIndex + 1) % SLASH_EFFECT_NUM;
 }
 
 //void ALink::OnSlashEnd(UNiagaraComponent* _NiagaraComponent)

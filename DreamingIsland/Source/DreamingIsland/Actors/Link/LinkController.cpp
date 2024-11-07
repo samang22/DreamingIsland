@@ -72,7 +72,7 @@ void ALinkController::SetupInputComponent()
 
 	if (const UInputAction* InputAction = FUtils::GetInputActionFromName(IMC_Default, TEXT("IA_Attack")))
 	{
-		EnhancedInputComponent->BindAction(InputAction, ETriggerEvent::Triggered, this, &ThisClass::OnAttack);
+		EnhancedInputComponent->BindAction(InputAction, ETriggerEvent::Started, this, &ThisClass::OnAttack);
 		EnhancedInputComponent->BindAction(InputAction, ETriggerEvent::Completed, this, &ThisClass::OnCheck);
 		EnhancedInputComponent->BindAction(InputAction, ETriggerEvent::Completed, this, &ThisClass::OnCraneDown);
 	}
@@ -228,7 +228,6 @@ void ALinkController::OnAttack(const FInputActionValue& InputActionValue)
 	if (StatusComponent->GetIsConversation() || StatusComponent->GetCrane()) return;
 	ALink* Link = Cast<ALink>(GetPawn());
 	Link->PlayMontage(LINK_MONTAGE::SLASH);
-	Link->ActivateSlashEffect();
 }
 
 void ALinkController::OnInteract(const FInputActionValue& InputActionValue)

@@ -13,6 +13,7 @@
 class USphereComponent;
 class ULinkStatusComponent;
 class ACrane;
+class UNiagaraComponent;
 UCLASS()
 class DREAMINGISLAND_API ALink : public ACharacter
 {
@@ -154,17 +155,9 @@ public:
 	bool IsCrane();
 
 protected:
-	UPROPERTY(EditAnywhere, Category = "Niagara")
-	class UNiagaraSystem* NiagaraEffect; // Niagara 시스템 에셋을 에디터에서 할당할 수 있습니다.
-
 	UPROPERTY()
-	class UNiagaraComponent* NiagaraComponent01;
-	UPROPERTY()
-	class UNiagaraComponent* NiagaraComponent02;
-	UPROPERTY()
-	class UNiagaraComponent* NiagaraComponent03;
-	int SlashIndex = 0;
-
+	TArray<TObjectPtr<UNiagaraComponent>> SlashEffectComponent_Array;
+	int SlashEffectIndex = 0;
 public:
 	void ActivateSlashEffect();
 public:

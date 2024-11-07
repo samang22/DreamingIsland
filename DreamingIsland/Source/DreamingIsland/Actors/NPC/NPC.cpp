@@ -166,6 +166,11 @@ void ANPC::Tick(float DeltaTime)
 	}
 }
 
+UAdvancedFloatingPawnMovement* ANPC::GetMovementComponent()
+{
+	return MovementComponent;
+}
+
 void ANPC::SetCollisionProfileName(FName CollisionProfile)
 {
 	CollisionComponent->SetCollisionProfileName(CollisionProfile);
