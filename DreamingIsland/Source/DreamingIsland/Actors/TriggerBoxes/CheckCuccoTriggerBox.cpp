@@ -36,7 +36,8 @@ void ACheckCuccoTriggerBox::OnTrigger(UPrimitiveComponent* OverlappedComponent, 
 {
 	ACucco* Cucco = Cast<ACucco>(OtherActor);
 	if (!Cucco) return;
-
+	Cucco->SetCatchingCuccoActor(nullptr);
+	Cucco->SetIsCatched(false);
 	UDreamingIsland_GIS* Subsystem = GetGameInstance()->GetSubsystem<UDreamingIsland_GIS>();
 	Subsystem->SetCuccoCount(Subsystem->GetCuccoCount() + 1);
 }

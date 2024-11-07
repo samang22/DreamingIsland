@@ -19,4 +19,9 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+
+protected:
+	bool bIsCuccoReturned = false;
+public:
+	bool GetIsCuccoReturned() const { return bIsCuccoReturned; }
 };

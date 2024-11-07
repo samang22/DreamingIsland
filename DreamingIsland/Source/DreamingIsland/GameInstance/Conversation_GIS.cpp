@@ -85,6 +85,10 @@ void UConversation_GIS::Conversation(ALink* Link, ANPC* NPC, bool& InbIsBroadCas
 			Script = NPC->GetScript(CK_ConversationKey::Accept);
 			break;
 		case SUCCEEDED:
+			Script = NPC->GetScript(CK_ConversationKey::Thanks);
+			ConversationComponent->SetQuestStatus(EQuestStatus::GREETING);
+			break;
+		case GREETING:
 			Script = NPC->GetScript(CK_ConversationKey::Greeting);
 			break;
 		default:
@@ -203,7 +207,11 @@ void UConversation_GIS::Purchase(ALink* Link, ANPC* NPC, bool& InbIsBroadCast)
 	// Quest from CuccoKeeper
 	else if (NPC_Name_Korean::CuccoKeeper == NPC->GetNPCName())
 	{
-		DefaultHUD->OnSetStringToConversation(NPC->GetNPCName().ToString(), NPC->GetScript(CK_ConversationKey::Accept));
+		UCKConversationComponent* ConversationComponent = Cast<UCKConversationComponent>(NPC->GetConversationComponent());
+		if (ConversationComponent->GetQuestStatus() == EQuestStatus::ACCEPTED)
+		{
+			DefaultHUD->OnSetStringToConversation(NPC->GetNPCName().ToString(), NPC->GetScript(CK_ConversationKey::Accept));
+		}
 		DefaultHUD->OnHideChooseWidget();
 	}
 

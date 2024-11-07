@@ -12,6 +12,9 @@
 #define COLLISION_HIDDEN_IN_GAME						false
 #define CRANEGAME_COST									10
 #define MAGNET_FORCE									200000.f
+
+#define CUCCO_MAX_NUM									8
+
 class FUtils
 {
 public:

@@ -12,6 +12,8 @@ enum EQuestStatus : int
 	NOT_ACCEPTED = 0,
 	ACCEPTED,
 	SUCCEEDED,
+	GREETING,
+	END,
 };
 UCLASS()
 class DREAMINGISLAND_API UCKConversationComponent : public UConversationComponent
