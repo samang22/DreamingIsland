@@ -1,2 +1,3 @@
 ---,EffectParticleSystem,LifeTime,bIsLifeTime
 Bomb_Explosion,"/Script/Engine.ParticleSystem'/Game/Assets/Realistic_Starter_VFX_Pack_Vol2/Particles/Explosion/P_Explosion_Big_A.P_Explosion_Big_A'","1.000000","True"
+MonsterDie_Purple,"/Script/Engine.ParticleSystem'/Game/Assets/FXVarietyPack/Particles/MonsterDie_Purple.MonsterDie_Purple'","2.000000","True"

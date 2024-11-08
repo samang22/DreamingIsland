@@ -12,7 +12,7 @@ struct DREAMINGISLAND_API FHouseTableRow : public FTableRowBase
 	GENERATED_BODY()
 public:
 	UPROPERTY(EditAnywhere, Category = "Mesh")
-	UStaticMesh* StaticMesh = nullptr;
+	TObjectPtr<UStaticMesh> StaticMesh = nullptr;
 
 	UPROPERTY(EditAnywhere, Category = "Mesh")
 	FTransform MeshTransform = FTransform::Identity;
