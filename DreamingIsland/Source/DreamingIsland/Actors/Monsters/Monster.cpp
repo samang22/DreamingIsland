@@ -26,6 +26,9 @@
 #include "Actors/AI/Monsters/HinoxAIController.h"
 #include "Actors/AI/Monsters/BomberAIController.h"
 #include "Actors/Weapon/Weapon.h"
+#include "Actors/Effect/ParticleEffect.h"
+#include "Actors/Effect/NiagaraEffect.h"
+
 
 UMonsterDataAsset::UMonsterDataAsset()
 	: AnimClass(UMonsterAnimInstance::StaticClass())
@@ -66,8 +69,6 @@ AMonster::AMonster(const FObjectInitializer& ObjectInitializer)
 	StatusComponent = CreateDefaultSubobject<UMonsterStatusComponent>(TEXT("StatusComponent"));
 	Weapon = CreateDefaultSubobject<UWeaponChildActorComponent>(TEXT("Weapon"));
 	Weapon->SetupAttachment(SkeletalMeshComponent, Monster_SocketName::Weapon);
-
-
 }
 
 void AMonster::SetData(const FDataTableRowHandle& InDataTableRowHandle)
@@ -347,7 +348,35 @@ float AMonster::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AContr
 
 void AMonster::OnDie()
 {
-	// @TODO : Die Effect
+	if (MonsterData->bUseParticleEffect)
+	{
+		UWorld* World = this->GetWorld();
+
+		AParticleEffect* Effect = World->SpawnActorDeferred<AParticleEffect>(AParticleEffect::StaticClass(),
+			FTransform::Identity, nullptr, nullptr, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
+
+		FTransform NewTransform;
+		Effect->SetData(MonsterData->ParticleEffectTableRowHandle);
+		NewTransform.SetLocation(GetActorLocation());
+		NewTransform.SetRotation(FRotator::ZeroRotator.Quaternion());
+		Effect->FinishSpawning(NewTransform);
+	}
+
+	if (MonsterData->bUseNiagaraEffect)
+	{
+		UWorld* World = this->GetWorld();
+
+		ANiagaraEffect* Effect = World->SpawnActorDeferred<ANiagaraEffect>(ANiagaraEffect::StaticClass(),
+			FTransform::Identity, nullptr, nullptr, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
+
+		FTransform NewTransform;
+		Effect->SetData(MonsterData->NiagaraEffectTableRowHandle);
+		NewTransform.SetLocation(GetActorLocation());
+		NewTransform.SetRotation(FRotator::ZeroRotator.Quaternion());
+		Effect->FinishSpawning(NewTransform);
+	}
+
+
 	Destroy();
 }
 

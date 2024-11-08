@@ -35,12 +35,11 @@ protected:
 	float ElapsedTime = 0.f;
 
 protected:
-	void SpawnProjectileAndDestory();
+	void SpawnProjectile();
 
 //protected:
 //	UPROPERTY()
 //	TObjectPtr<UParticleSystemComponent> ExplosionEffectComponent;
 //	TObjectPtr<UParticleSystem> ExplosionParticleAsset;
 public:
-	void SpawnExplosionEffect();
 };

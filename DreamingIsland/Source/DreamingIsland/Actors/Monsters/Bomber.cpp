@@ -75,12 +75,12 @@ void ABomber::Tick(float DeltaTime)
 	}
 	else
 	{
-		SpawnExplosionEffect();
-		SpawnProjectileAndDestory();
+		SpawnProjectile();
+		OnDie();
 	}
 }
 
-void ABomber::SpawnProjectileAndDestory()
+void ABomber::SpawnProjectile()
 {
 	UWorld* World = GetWorld();
 
@@ -92,19 +92,5 @@ void ABomber::SpawnProjectileAndDestory()
 	NewTransform.SetLocation(GetActorLocation());
 	NewTransform.SetRotation(FRotator::ZeroRotator.Quaternion());
 	Projectile->FinishSpawning(NewTransform);
-	Destroy();
 }
 
-void ABomber::SpawnExplosionEffect()
-{
-	UWorld* World = this->GetWorld();
-
-	AParticleEffect* Effect = World->SpawnActorDeferred<AParticleEffect>(AParticleEffect::StaticClass(),
-		FTransform::Identity, nullptr, nullptr, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
-
-	FTransform NewTransform;
-	Effect->SetData(MonsterData->ParticleEffectTableRowHandle);
-	NewTransform.SetLocation(GetActorLocation());
-	NewTransform.SetRotation(FRotator::ZeroRotator.Quaternion());
-	Effect->FinishSpawning(NewTransform);
-}

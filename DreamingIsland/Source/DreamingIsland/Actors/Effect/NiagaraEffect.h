@@ -4,16 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "ParticleEffect.generated.h"
+#include "NiagaraEffect.generated.h"
 
-struct FParticleEffectTableRow;
+class UNiagaraComponent;
+struct FNiagaraEffectTableRow;
 UCLASS()
-class DREAMINGISLAND_API AParticleEffect : public AActor
+class DREAMINGISLAND_API ANiagaraEffect : public AActor
 {
 	GENERATED_BODY()
 	
-public:	
-	AParticleEffect(const FObjectInitializer& ObjectInitializer);
+public:
+	ANiagaraEffect(const FObjectInitializer& ObjectInitializer);
 	virtual void SetData(const FDataTableRowHandle& InDataTableRowHandle);
 
 protected:
@@ -24,21 +25,21 @@ protected:
 	virtual void OnConstruction(const FTransform& Transform);
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 protected:
 	UPROPERTY(EditAnywhere)
 	FDataTableRowHandle DataTableRowHandle;
-	TObjectPtr<FParticleEffectTableRow> ParticleEffectData;
+	TObjectPtr<FNiagaraEffectTableRow> NiagaraEffectData;
 
 protected:
 	UPROPERTY()
 	TObjectPtr<USceneComponent> DefaultSceneComponent;
 	UPROPERTY()
-	TObjectPtr<UParticleSystemComponent> ParticleEffectComponent;
+	TObjectPtr<UNiagaraComponent> NiagaraEffectComponent;
 
 protected:
-	float fLifeTime;
+	float fLifeTime = 0;
 };

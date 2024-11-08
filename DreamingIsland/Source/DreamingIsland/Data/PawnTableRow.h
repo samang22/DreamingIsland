@@ -13,6 +13,8 @@
 #include "Misc/Utils.h"
 #include "Animation/MonsterAnimInstance.h"
 #include "AIController.h"
+#include "NiagaraSystem.h"
+
 
 #include "PawnTableRow.generated.h"
 
@@ -100,5 +102,11 @@ public:
 	FDataTableRowHandle ParticleEffectTableRowHandle;
 	UPROPERTY(EditAnywhere, Category = "ParticleEffect")
 	bool bUseParticleEffect = false;
+
+public:
+	UPROPERTY(EditAnywhere, Category = "NiagaraEffect", meta = (RowType = "NiagaraEffectTableRow"))
+	FDataTableRowHandle NiagaraEffectTableRowHandle;
+	UPROPERTY(EditAnywhere, Category = "NiagaraEffect")
+	bool bUseNiagaraEffect = false;
 
 };
