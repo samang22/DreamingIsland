@@ -8,7 +8,7 @@
 #define DARKFOREST_COLOR FLinearColor(1.0, 0.7, 0.3)
 #define FOREST_COLOR FLinearColor(1.0, 1.0, 1.0)
 
-#define DARKFOREST_LIGHT_INTENSITY 100.f
+#define DARKFOREST_LIGHT_INTENSITY 50.f
 #define FOREST_LIGHT_INTENSITY 500.f
 
 AMyDirectionalLight::AMyDirectionalLight()

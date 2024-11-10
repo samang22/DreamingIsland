@@ -3,6 +3,7 @@
 
 #include "GameInstance/Light_GIS.h"
 #include "Actors/Lights/MyDirectionalLight.h"
+#include "Actors/ShaderEffect/MyExponentialHeightFog.h"
 #include "Components/DirectionalLightComponent.h"
 
 void ULight_GIS::Initialize(FSubsystemCollectionBase& Collection)
@@ -15,14 +16,26 @@ void ULight_GIS::Deinitialize()
 
 void ULight_GIS::SetDarkForest()
 {
-	if (!DirectionalLight) return;
+	if (DirectionalLight)
+	{
+		DirectionalLight->ToDarkForest();
+	}
 
-	DirectionalLight->ToDarkForest();
+	if (HeightFog)
+	{
+		HeightFog->SetHeightFogActive();
+	}
 }
 
 void ULight_GIS::SetForest()
 {
-	if (!DirectionalLight) return;
+	if (DirectionalLight)
+	{
+		DirectionalLight->ToForest();
+	}
 
-	DirectionalLight->ToForest();
+	if (HeightFog)
+	{
+		HeightFog->SetHeightFogActive();
+	}
 }
