@@ -47,7 +47,7 @@ void AConveyorBelt::BeginPlay()
 	for (int i = 0; i < CONVEYORBELT_FLOOR_NUM; ++i)
 	{
 		fDistanceAlongSpline_Array[i] = SplineComponent->GetSplineLength() / CONVEYORBELT_FLOOR_NUM * i;
-		CollisionComponent_Array[i]->SetVisibility(COLLISION_HIDDEN_IN_GAME);
+		CollisionComponent_Array[i]->bHiddenInGame = COLLISION_HIDDEN_IN_GAME;
 	}
 	bMove = true;
 }
