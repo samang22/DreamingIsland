@@ -6,9 +6,6 @@
 #include "GameFramework/HUD.h"
 #include "DefaultHUD.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class DREAMINGISLAND_API ADefaultHUD : public AHUD
 {
@@ -21,12 +18,12 @@ protected:
 	virtual void BeginPlay() override;
 
 protected:
-	class UConversationWidget* Widget;
-	class UChooseWidget* ChooseWidget;
-	class URupeeWidget* RupeeWidget;
-	class UArrowWidget* ArrowWidget;
-	class UBombWidget* BombWidget;
-	class UCuccoQuestWidget* CuccoQuestWidget;
+	TObjectPtr<class UConversationWidget> Widget;
+	TObjectPtr<class UChooseWidget> ChooseWidget;
+	TObjectPtr<class URupeeWidget> RupeeWidget;
+	TObjectPtr<class UArrowWidget> ArrowWidget;
+	TObjectPtr<class UBombWidget> BombWidget;
+	TObjectPtr<class UCuccoQuestWidget> CuccoQuestWidget;
 public:
 	void OnShowConversationWidget();
 	void OnShowChooseWidget();
