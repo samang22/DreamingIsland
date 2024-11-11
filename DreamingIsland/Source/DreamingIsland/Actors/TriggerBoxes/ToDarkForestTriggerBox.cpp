@@ -35,6 +35,8 @@ void AToDarkForestTriggerBox::OnTrigger(UPrimitiveComponent* OverlappedComponent
 {
 	ALink* Link = Cast<ALink>(OtherActor);
 	if (!Link) return;
+	Link->SetSpotLightActive(true);
+
 
 	ULight_GIS* GIS = GetGameInstance()->GetSubsystem<ULight_GIS>();
 	GIS->SetDarkForest();

@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Misc/Utils.h"
+
 #include "WaterTableRow.generated.h"
 
 USTRUCT()

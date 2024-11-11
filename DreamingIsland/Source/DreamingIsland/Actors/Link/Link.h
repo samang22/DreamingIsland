@@ -14,6 +14,8 @@ class USphereComponent;
 class ULinkStatusComponent;
 class ACrane;
 class UNiagaraComponent;
+class USpotLightComponent;
+
 UCLASS()
 class DREAMINGISLAND_API ALink : public ACharacter
 {
@@ -160,7 +162,9 @@ protected:
 	int SlashEffectIndex = 0;
 public:
 	void ActivateSlashEffect();
+
+protected:
+	TObjectPtr<USpotLightComponent> SpotLightComponent = nullptr;
 public:
-	//UFUNCTION()
-	//void OnSlashEnd(UNiagaraComponent* _NiagaraComponent);
+	void SetSpotLightActive(bool bFlag);
 };

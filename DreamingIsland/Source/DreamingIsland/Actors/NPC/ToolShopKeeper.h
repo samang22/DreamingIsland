@@ -38,7 +38,7 @@ protected:
 	void Tick_Rotation(float DeltaTime);
 	void Tick_LineTrace(float DeltaTime);
 protected:
-	USpotLightComponent* SpotLightComponent;
+	TObjectPtr<USpotLightComponent> SpotLightComponent;
 
 protected:
 	UFUNCTION()

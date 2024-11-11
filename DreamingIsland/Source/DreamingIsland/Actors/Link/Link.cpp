@@ -10,6 +10,7 @@
 #include "Components/SoftWheelSpringArmComponent.h"
 #include "Components/StatusComponent/LinkStatusComponent.h"
 #include "Components/SphereComponent.h"
+#include "Components/SpotLightComponent.h"
 #include "Actors/Projectile/ProjectileTableRow.h"
 #include "Actors/Monsters/Hinox.h"
 #include "Actors/NPC/NPC.h"
@@ -32,7 +33,11 @@
 
 #define SLASH_EFFECT_OFFSET								10.f
 #define SLASH_EFFECT_NUM								3
-// Sets default values
+
+#define LINK_SPOTLIGHT_ANGLE							20.f
+#define LINK_SPOTLIGHT_INTENSITY						10000.f
+
+
 ALink::ALink(const FObjectInitializer& ObjectInitializer)
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -105,7 +110,13 @@ ALink::ALink(const FObjectInitializer& ObjectInitializer)
 	}
 
 
+	SpotLightComponent = CreateDefaultSubobject<USpotLightComponent>(TEXT("SpotLightComponent"));
+	SpotLightComponent->SetupAttachment(RootComponent);
+	SpotLightComponent->SetInnerConeAngle(0.f);
+	SpotLightComponent->SetOuterConeAngle(LINK_SPOTLIGHT_ANGLE);
 
+	SpotLightComponent->Intensity = LINK_SPOTLIGHT_INTENSITY;
+	SpotLightComponent->SetActive(false);
 }
 
 
@@ -154,7 +165,7 @@ void ALink::BeginPlay()
 
 	GetMesh()->BoundsScale = 10.f;
 
-	//SlashEffectComponent->Deactivate();
+	SetSpotLightActive(false);
 }
 
 void ALink::OnConstruction(const FTransform& Transform)
@@ -462,6 +473,19 @@ void ALink::ActivateSlashEffect()
 {
 	SlashEffectComponent_Array[SlashEffectIndex]->Activate();
 	SlashEffectIndex = (SlashEffectIndex + 1) % SLASH_EFFECT_NUM;
+}
+
+void ALink::SetSpotLightActive(bool bFlag)
+{
+	SpotLightComponent->SetVisibility(bFlag);
+	//if (bFlag)
+	//{
+	//	SpotLightComponent->SetLightBrightness(LINK_SPOTLIGHT_INTENSITY);
+	//}
+	//else
+	//{
+	//	SpotLightComponent->SetLightBrightness(0.f);
+	//}
 }
 
 //void ALink::OnSlashEnd(UNiagaraComponent* _NiagaraComponent)
