@@ -7,7 +7,7 @@
 
 #include "Light_GIS.generated.h"
 
-class AMyExponentialHeightFog;
+class AExponentialHeightFog;
 class AMyDirectionalLight;
 UCLASS()
 class DREAMINGISLAND_API ULight_GIS : public UGameInstanceSubsystem
@@ -16,7 +16,7 @@ class DREAMINGISLAND_API ULight_GIS : public UGameInstanceSubsystem
 
 protected:
 	TObjectPtr<AMyDirectionalLight> DirectionalLight;
-	TObjectPtr<AMyExponentialHeightFog> HeightFog;
+	TObjectPtr<AExponentialHeightFog> HeightFog;
 
 public:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
@@ -24,7 +24,7 @@ public:
 
 public:
 	void RegistDirectionalLight(AMyDirectionalLight* _DirectionalLight) { DirectionalLight = _DirectionalLight; };
-	void RegistExponentialHeightFog(AMyExponentialHeightFog* _ExponentialHeightFog) { HeightFog = _ExponentialHeightFog; };
+//	void RegistExponentialHeightFog(AMyExponentialHeightFog* _ExponentialHeightFog) { HeightFog = _ExponentialHeightFog; };
 
 public:
 	void SetDarkForest(); 

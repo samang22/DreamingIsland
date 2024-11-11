@@ -8,8 +8,8 @@
 #define DARKFOREST_COLOR FLinearColor(1.0, 0.7, 0.3)
 #define FOREST_COLOR FLinearColor(1.0, 1.0, 1.0)
 
-#define DARKFOREST_LIGHT_INTENSITY 50.f
-#define FOREST_LIGHT_INTENSITY 500.f
+#define DARKFOREST_LIGHT_INTENSITY 1.f
+#define FOREST_LIGHT_INTENSITY 10.f
 
 AMyDirectionalLight::AMyDirectionalLight()
 {
@@ -17,9 +17,9 @@ AMyDirectionalLight::AMyDirectionalLight()
 
 	DirectionalLightComponent = CreateDefaultSubobject<UDirectionalLightComponent>(TEXT("DirectionalLightComponent"));
 	DirectionalLightComponent->SetLightColor(FColor::White);
-	DirectionalLightComponent->SetIntensity(500.f);
-	DirectionalLightComponent->SetVisibility(true);  // 라이트가 보이도록 설정
-	DirectionalLightComponent->SetActive(true);  // 라이트가 활성화되었는지 확인
+	DirectionalLightComponent->SetIntensity(FOREST_LIGHT_INTENSITY);
+	DirectionalLightComponent->SetVisibility(true); 
+	DirectionalLightComponent->SetActive(true); 
 	FRotator Rotator = FRotator(-90., 0., 0.);
 	DirectionalLightComponent->SetRelativeRotation(Rotator.Quaternion());
 }

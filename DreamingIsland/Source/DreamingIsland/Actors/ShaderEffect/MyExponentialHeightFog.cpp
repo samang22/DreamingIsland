@@ -21,11 +21,11 @@ void AMyExponentialHeightFog::BeginPlay()
 {
 	Super::BeginPlay();
 	ULight_GIS* Light_GIS = GetGameInstance()->GetSubsystem<ULight_GIS>();
-	Light_GIS->RegistExponentialHeightFog(this);
-	HeightFogComponent->SetFogDensity(10.0f);
-	HeightFogComponent->SetStartDistance(1000.0f);
-	HeightFogComponent->SetFogMaxOpacity(0.8f);
-	HeightFogComponent->SetFogHeightFalloff(0.1f);
+	//Light_GIS->RegistExponentialHeightFog(this);
+	//HeightFogComponent->SetFogDensity(10.0f);
+	//HeightFogComponent->SetStartDistance(1000.0f);
+	//HeightFogComponent->SetFogMaxOpacity(0.8f);
+	//HeightFogComponent->SetFogHeightFalloff(0.1f);
 }
 
 // Called every frame
