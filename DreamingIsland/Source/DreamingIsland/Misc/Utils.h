@@ -141,6 +141,8 @@ namespace NPC_Name_Korean
 	static inline FName CuccoKeeper = TEXT("닭장 주인");
 	static inline FName Cucco = TEXT("닭");
 	static inline FName FisherMan = TEXT("낚시꾼");
+	static inline FName SmallFish = TEXT("작은 물고기");
+	static inline FName BigFish = TEXT("큰 물고기");
 }
 
 
