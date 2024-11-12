@@ -6,7 +6,7 @@
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
 
-#define INCREASE_DECREASE_NUM 3
+#define RUPEE_INCREASE_DECREASE_NUM 1
 
 void URupeeWidget::NativeOnInitialized()
 {
@@ -32,7 +32,7 @@ void URupeeWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 	if (DesiredRupeeNum < CurrentRupeeNum)
 	{
 		bShowWidget = true;
-		CurrentRupeeNum -= INCREASE_DECREASE_NUM;
+		CurrentRupeeNum -= RUPEE_INCREASE_DECREASE_NUM;
 		if (DesiredRupeeNum > CurrentRupeeNum)
 		{
 			CurrentRupeeNum = DesiredRupeeNum;
@@ -41,7 +41,7 @@ void URupeeWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 	else if (DesiredRupeeNum > CurrentRupeeNum)
 	{
 		bShowWidget = true;
-		CurrentRupeeNum += INCREASE_DECREASE_NUM;
+		CurrentRupeeNum += RUPEE_INCREASE_DECREASE_NUM;
 		if (DesiredRupeeNum < CurrentRupeeNum)
 		{
 			CurrentRupeeNum = DesiredRupeeNum;

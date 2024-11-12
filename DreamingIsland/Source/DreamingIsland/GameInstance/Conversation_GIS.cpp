@@ -11,8 +11,11 @@
 #include "Actors/NPC/Crane.h"
 #include "Actors/NPC/CraneButton.h"
 #include "Actors/NPC/CraneFence.h"
+#include "GameInstance/DreamingIsland_GIS.h"
 #include "Components/StatusComponent/LinkStatusComponent.h"
 #include "Components/ConversationComponent/CKConversationComponent.h"
+#include "Kismet/GameplayStatics.h"
+
 void UConversation_GIS::Initialize(FSubsystemCollectionBase& Collection)
 {
 }
@@ -68,6 +71,14 @@ void UConversation_GIS::Conversation(ALink* Link, ANPC* NPC, bool& InbIsBroadCas
 		DefaultHUD->OnSetStringToConversation(NPC_Name_Korean::GameShopOwner.ToString(), Script);
 		DefaultHUD->OnShowConversationWidget();
 		DefaultHUD->OnShowRupeeWidget();
+		DefaultHUD->OnShowChooseWidget();
+		InbIsBroadCast = false;
+	}
+	else if (NPC->GetNPCName() == NPC_Name_Korean::FisherMan)
+	{
+		FString Script = NPC->GetScript(FM_ConversationKey::Try);
+		DefaultHUD->OnSetStringToConversation(NPC_Name_Korean::GameShopOwner.ToString(), Script);
+		DefaultHUD->OnShowConversationWidget();
 		DefaultHUD->OnShowChooseWidget();
 		InbIsBroadCast = false;
 	}
@@ -129,6 +140,26 @@ void UConversation_GIS::Check(ALink* Link, ANPC* NPC, bool& InbIsEndTalk, bool b
 			bool bCheckBroadcast = false;
 			Purchase(Link, NPC, bCheckBroadcast);
 			StatusComponent->SetIsConversation(false);
+		}
+		else
+		{
+			InbIsEndTalk = true;
+			StatusComponent->SetIsConversation(false);
+
+		}
+	}
+	else if (NPC_Name_Korean::FisherMan == NPC->GetNPCName())
+	{
+		if (bCheck)
+		{
+			bool bCheckBroadcast = false;
+			StatusComponent->SetIsConversation(false);
+
+			UDreamingIsland_GIS* DreamingIsland_GIS = GetGameInstance()->GetSubsystem<UDreamingIsland_GIS>();
+			DreamingIsland_GIS->SaveLinkData();
+			FVector LinkLocation = Link->GetActorLocation();
+			DreamingIsland_GIS->SetLinkFieldLocation(LinkLocation);
+			UGameplayStatics::OpenLevel(GetWorld(), TEXT("FishingPond"));
 		}
 		else
 		{

@@ -9,7 +9,6 @@
 ULinkStatusComponent::ULinkStatusComponent()
 {
 	SetOnAnimationStatus(LINK_BIT_WAIT);
-	AddRupee(100);
 }
 
 void ULinkStatusComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)

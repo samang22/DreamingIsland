@@ -18,8 +18,6 @@
 #define LINK_ITEM_GET_UP_OFFSET 150.f
 
 #define DEFAULT_HOUSE_CAMERA_POSITION FVector(-140.0, 530.0, 810.0)
-
-
 #define DEFAULT_HOUSE_CAMERA_ROTATION FRotator(-50., -89.99, 0)
 
 #define HOUSE_CAMERA_CONVERSATION_LERP_ALPHA 0.03f
@@ -40,15 +38,14 @@ void AHouseCamera::BeginPlay()
 	Super::BeginPlay();
 
 	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-	ALinkController* LinkController = Cast<ALinkController>(PlayerController);
-
-	LinkController->SetViewTarget(this);
-	LinkController->OnLinkTalk.AddDynamic(this, &ThisClass::OnLinkTalk);
-	LinkController->OnLinkTalkEnd.AddDynamic(this, &ThisClass::OnLinkTalkEnd);
-	LinkController->OnLinkItemGet.AddDynamic(this, &ThisClass::OnLinkItemGet);
-	LinkController->OnLinkItemGetEnd.AddDynamic(this, &ThisClass::OnLinkItemGetEnded);
-	// @TODO : do this same in field level
-
+	if (ALinkController* LinkController = Cast<ALinkController>(PlayerController))
+	{
+		LinkController->SetViewTarget(this);
+		LinkController->OnLinkTalk.AddDynamic(this, &ThisClass::OnLinkTalk);
+		LinkController->OnLinkTalkEnd.AddDynamic(this, &ThisClass::OnLinkTalkEnd);
+		LinkController->OnLinkItemGet.AddDynamic(this, &ThisClass::OnLinkItemGet);
+		LinkController->OnLinkItemGetEnd.AddDynamic(this, &ThisClass::OnLinkItemGetEnded);
+	}
 
 	DefaultLocation = DEFAULT_HOUSE_CAMERA_POSITION;
 	DefaultRotator = DEFAULT_HOUSE_CAMERA_ROTATION;
