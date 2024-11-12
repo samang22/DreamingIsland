@@ -113,6 +113,14 @@ namespace CK_ConversationKey
 	static inline FString NotYet = TEXT("NotYet");
 }
 
+namespace FM_ConversationKey
+{
+	static inline FString Greeting = TEXT("Greeting");
+	static inline FString Try = TEXT("Try");
+	static inline FString Accept = TEXT("Accept");
+	static inline FString Bad = TEXT("Bad");
+}
+
 namespace NPC_Name_Korean
 {
 	static inline FName ToolShopKeeper = TEXT("도구 상점 주인");
@@ -120,6 +128,7 @@ namespace NPC_Name_Korean
 	static inline FName CraneButton = TEXT("크레인 버튼");
 	static inline FName CuccoKeeper = TEXT("닭장 주인");
 	static inline FName Cucco = TEXT("닭");
+	static inline FName FisherMan = TEXT("낚시꾼");
 }
 
 

@@ -4,15 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "Actors/NPC/NPC.h"
-#include "GameShopOwner.generated.h"
+#include "FisherMan.generated.h"
 
 UCLASS()
-class DREAMINGISLAND_API AGameShopOwner : public ANPC
+class DREAMINGISLAND_API AFisherMan : public ANPC
 {
 	GENERATED_BODY()
-
 public:
-	AGameShopOwner(const FObjectInitializer& ObjectInitializer);
+	AFisherMan(const FObjectInitializer& ObjectInitializer);
 	virtual void Tick(float DeltaTime) override;
 
 protected:
