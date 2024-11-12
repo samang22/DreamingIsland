@@ -7,6 +7,7 @@
 #include "Actors/Link/Link.h"
 #include "GameInstance/Light_GIS.h"
 
+
 AToDarkForestTriggerBox::AToDarkForestTriggerBox(const FObjectInitializer& ObjectInitializer)
 {
 	bGenerateOverlapEventsDuringLevelStreaming = true;
@@ -36,6 +37,7 @@ void AToDarkForestTriggerBox::OnTrigger(UPrimitiveComponent* OverlappedComponent
 	ALink* Link = Cast<ALink>(OtherActor);
 	if (!Link) return;
 	Link->SetSpotLightActive(true);
+	//Link->SetRectLightActive(true);
 
 
 	ULight_GIS* GIS = GetGameInstance()->GetSubsystem<ULight_GIS>();

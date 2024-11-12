@@ -15,6 +15,7 @@ class ULinkStatusComponent;
 class ACrane;
 class UNiagaraComponent;
 class USpotLightComponent;
+class URectLightComponent;
 
 UCLASS()
 class DREAMINGISLAND_API ALink : public ACharacter
@@ -164,7 +165,14 @@ public:
 	void ActivateSlashEffect();
 
 protected:
+	UPROPERTY(EditAnywhere)
 	TObjectPtr<USpotLightComponent> SpotLightComponent = nullptr;
 public:
 	void SetSpotLightActive(bool bFlag);
+
+protected:
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<URectLightComponent> RectLightComponent = nullptr;
+public:
+	void SetRectLightActive(bool bFlag);
 };

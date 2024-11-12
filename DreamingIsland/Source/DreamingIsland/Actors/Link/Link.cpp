@@ -11,6 +11,7 @@
 #include "Components/StatusComponent/LinkStatusComponent.h"
 #include "Components/SphereComponent.h"
 #include "Components/SpotLightComponent.h"
+#include "Components/RectLightComponent.h"
 #include "Actors/Projectile/ProjectileTableRow.h"
 #include "Actors/Monsters/Hinox.h"
 #include "Actors/NPC/NPC.h"
@@ -34,8 +35,8 @@
 #define SLASH_EFFECT_OFFSET								10.f
 #define SLASH_EFFECT_NUM								3
 
-#define LINK_SPOTLIGHT_ANGLE							20.f
-#define LINK_SPOTLIGHT_INTENSITY						10000.f
+#define LINK_SPOTLIGHT_ANGLE							45.f
+#define LINK_SPOTLIGHT_INTENSITY						100000.f
 
 
 ALink::ALink(const FObjectInitializer& ObjectInitializer)
@@ -114,9 +115,19 @@ ALink::ALink(const FObjectInitializer& ObjectInitializer)
 	SpotLightComponent->SetupAttachment(RootComponent);
 	SpotLightComponent->SetInnerConeAngle(0.f);
 	SpotLightComponent->SetOuterConeAngle(LINK_SPOTLIGHT_ANGLE);
-
+	SpotLightComponent->SetRelativeLocation(FVector(0.0, 0.0, 200.0));
+	FRotator CurrentSpotLightRotator = SpotLightComponent->GetRelativeRotation();
+	CurrentSpotLightRotator.Pitch += 270.0;
+	SpotLightComponent->SetRelativeRotation(CurrentSpotLightRotator);
 	SpotLightComponent->Intensity = LINK_SPOTLIGHT_INTENSITY;
 	SpotLightComponent->SetActive(false);
+
+
+	//RectLightComponent = CreateDefaultSubobject<URectLightComponent>(TEXT("RectLightComponent"));
+	//RectLightComponent->SetupAttachment(RootComponent);
+	//RectLightComponent->SetRelativeLocation(FVector(0.0, 0.0, 300.0));
+	//RectLightComponent->Intensity = LINK_SPOTLIGHT_INTENSITY;
+	//RectLightComponent->SetActive(false);
 }
 
 
@@ -486,6 +497,11 @@ void ALink::SetSpotLightActive(bool bFlag)
 	//{
 	//	SpotLightComponent->SetLightBrightness(0.f);
 	//}
+}
+
+void ALink::SetRectLightActive(bool bFlag)
+{
+	RectLightComponent->SetVisibility(bFlag);
 }
 
 //void ALink::OnSlashEnd(UNiagaraComponent* _NiagaraComponent)

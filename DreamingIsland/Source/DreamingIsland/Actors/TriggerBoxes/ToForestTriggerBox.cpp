@@ -36,6 +36,7 @@ void AToForestTriggerBox::OnTrigger(UPrimitiveComponent* OverlappedComponent, AA
 	ALink* Link = Cast<ALink>(OtherActor);
 	if (!Link) return;
 	Link->SetSpotLightActive(false);
+	//Link->SetRectLightActive(false);
 
 	ULight_GIS* GIS = GetGameInstance()->GetSubsystem<ULight_GIS>();
 	GIS->SetForest();

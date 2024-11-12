@@ -5,10 +5,10 @@
 #include "GameInstance/Light_GIS.h"
 #include "Components/DirectionalLightComponent.h"
 
-#define DARKFOREST_COLOR FLinearColor(1.0, 0.7, 0.3)
+#define DARKFOREST_COLOR FLinearColor(1.0, 0.5, 0.2)
 #define FOREST_COLOR FLinearColor(1.0, 1.0, 1.0)
 
-#define DARKFOREST_LIGHT_INTENSITY 1.f
+#define DARKFOREST_LIGHT_INTENSITY 5.f
 #define FOREST_LIGHT_INTENSITY 10.f
 
 AMyDirectionalLight::AMyDirectionalLight()
@@ -43,7 +43,7 @@ void AMyDirectionalLight::Tick(float DeltaTime)
 		DirectionalLightComponent->SetLightColor(CurrentLightColor);
 
 		float LightIntensity = DirectionalLightComponent->Intensity;
-		LightIntensity = FMath::Lerp(LightIntensity, DARKFOREST_LIGHT_INTENSITY, 0.1f);
+		LightIntensity = FMath::Lerp(LightIntensity, DARKFOREST_LIGHT_INTENSITY, 0.01f);
 		DirectionalLightComponent->SetIntensity(LightIntensity);
 	}
 	else
@@ -53,7 +53,7 @@ void AMyDirectionalLight::Tick(float DeltaTime)
 		DirectionalLightComponent->SetLightColor(CurrentLightColor);
 
 		float LightIntensity = DirectionalLightComponent->Intensity;
-		LightIntensity = FMath::Lerp(LightIntensity, FOREST_LIGHT_INTENSITY, 0.1f);
+		LightIntensity = FMath::Lerp(LightIntensity, FOREST_LIGHT_INTENSITY, 0.01f);
 		DirectionalLightComponent->SetIntensity(LightIntensity);
 	}
 }

@@ -6,20 +6,25 @@
 #include "Components/DirectionalLightComponent.h"
 #include "Engine/ExponentialHeightFog.h"
 #include "Kismet/GameplayStatics.h"
+#include "Components/ExponentialHeightFogComponent.h"
+#include "Actors/ShaderEffect/ExponentialHeightFogHolder.h"
+
+#define FOG_DENSITY 5.f
 
 void ULight_GIS::Initialize(FSubsystemCollectionBase& Collection)
 {
-	// 특정 클래스를 상속한 첫 번째 액터를 찾기
-	HeightFog = Cast<AExponentialHeightFog>(UGameplayStatics::GetActorOfClass(GetWorld(), AExponentialHeightFog::StaticClass()));
-	if (HeightFog)
+	AExponentialHeightFog* HeightFog = Cast<AExponentialHeightFog>(UGameplayStatics::GetActorOfClass(GetWorld(), AExponentialHeightFog::StaticClass()));
+	if (HeightFog && HeightFogHolder)
 	{
-		HeightFog->SetActorHiddenInGame(true);
+		HeightFogHolder->SetHeightFog(HeightFog);
 	}
 }
 
 void ULight_GIS::Deinitialize()
 {
 }
+
+
 
 void ULight_GIS::SetDarkForest()
 {
@@ -28,18 +33,9 @@ void ULight_GIS::SetDarkForest()
 		DirectionalLight->ToDarkForest();
 	}
 
-	if (HeightFog)
+	if (HeightFogHolder)
 	{
-		HeightFog->SetActorHiddenInGame(false);
-	}
-	else
-	{
-		HeightFog = Cast<AExponentialHeightFog>(UGameplayStatics::GetActorOfClass(GetWorld(), AExponentialHeightFog::StaticClass()));
-		if (HeightFog)
-		{
-			HeightFog->SetActorHiddenInGame(false);
-		}
-
+		HeightFogHolder->SetGoalFogDensity(FOG_DENSITY);
 	}
 }
 
@@ -50,17 +46,8 @@ void ULight_GIS::SetForest()
 		DirectionalLight->ToForest();
 	}
 
-	if (HeightFog)
+	if (HeightFogHolder)
 	{
-		HeightFog->SetActorHiddenInGame(true);
-	}
-	else
-	{
-		HeightFog = Cast<AExponentialHeightFog>(UGameplayStatics::GetActorOfClass(GetWorld(), AExponentialHeightFog::StaticClass()));
-		if (HeightFog)
-		{
-			HeightFog->SetActorHiddenInGame(true);
-		}
-
+		HeightFogHolder->SetGoalFogDensity(0.f);
 	}
 }
