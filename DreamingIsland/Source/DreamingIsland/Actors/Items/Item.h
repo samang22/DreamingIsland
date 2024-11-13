@@ -51,7 +51,7 @@ protected:
 	int ItemValue = 0;
 
 protected:
-	UPhysicalMaterial* PhysicalMaterial = nullptr;
+	TObjectPtr<UPhysicalMaterial> PhysicalMaterial = nullptr;
 
 public:
 	FName GetItemName() const { return DataTableRowHandle.RowName; }

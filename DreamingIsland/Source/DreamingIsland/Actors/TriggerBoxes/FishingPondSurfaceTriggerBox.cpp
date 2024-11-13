@@ -39,5 +39,5 @@ void AFishingPondSurfaceTriggerBox::OnTrigger(UPrimitiveComponent* OverlappedCom
 	if (!Lure) return;
 	AActor* Projectile = Lure->GetFollowingActor();
 	Lure->SetFollowingActor(nullptr);
-	Projectile->Destroy();
+	//Projectile->Destroy();
 }

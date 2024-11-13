@@ -10,11 +10,11 @@
 #include "Actors/Link/FishingLink.h"
 #include "Kismet/GameplayStatics.h"
 
-#define FISHINGLURE_SPEED					5.f
+#define FISHINGLURE_SPEED					30000.f
 
 #define FISHINGLURE_X_MAX					260.f
 #define FISHINGLURE_X_MIN					-1320.f
-#define FISHINGLURE_Z_MAX					630.f
+#define FISHINGLURE_Z_MAX					800.f
 #define FISHINGLURE_Z_MIN					80.f
 
 
@@ -41,6 +41,15 @@ AFishingLure::AFishingLure()
 	CurrentRotator.Pitch += 180.f;
 	StaticMeshComponent->SetRelativeRotation(CurrentRotator);
 	StaticMeshComponent->SetRelativeLocation(FVector(0.0, 0.0, 24.0));
+
+	static ConstructorHelpers::FObjectFinder<UPhysicalMaterial> PhysMaterial(TEXT("/Script/PhysicsCore.PhysicalMaterial'/Game/Blueprint/NPC/FishingLure/PM_FishingLure.PM_FishingLure'"));
+	PhysicalMaterial = PhysMaterial.Object;
+
+	CollisionComponent->SetPhysMaterialOverride(PhysicalMaterial);
+	CollisionComponent->SetEnableGravity(false);
+	CollisionComponent->SetSimulatePhysics(true);
+	CollisionComponent->SetLinearDamping(0.8f);
+
 }
 
 void AFishingLure::Tick(float DeltaTime)
@@ -50,6 +59,13 @@ void AFishingLure::Tick(float DeltaTime)
 	if (FollowingActor)
 	{
 		SetActorLocation(FollowingActor->GetActorLocation());
+	}
+	else
+	{
+		FVector CurrentLocation = GetActorLocation();
+		CurrentLocation.X = FMath::Clamp(CurrentLocation.X, FISHINGLURE_X_MIN, FISHINGLURE_X_MAX);
+		CurrentLocation.Z = FMath::Clamp(CurrentLocation.Z, FISHINGLURE_Z_MIN, FISHINGLURE_Z_MAX);
+		SetActorLocation(CurrentLocation);
 	}
 }
 
@@ -65,9 +81,14 @@ void AFishingLure::BeginPlay()
 
 void AFishingLure::Move(FVector vDir, float ScaleValue)
 {
-	FVector CurrentLocation = GetActorLocation();
-	CurrentLocation += vDir * ScaleValue * FISHINGLURE_SPEED;
-	CurrentLocation.X = FMath::Clamp(CurrentLocation.X, FISHINGLURE_X_MIN, FISHINGLURE_X_MAX);
-	CurrentLocation.Z = FMath::Clamp(CurrentLocation.Z, FISHINGLURE_Z_MIN, FISHINGLURE_Z_MAX);
-	SetActorLocation(CurrentLocation);
+	CollisionComponent->AddForce(vDir * ScaleValue * FISHINGLURE_SPEED);
+}
+
+void AFishingLure::SetFollowingActor(AActor* FA)
+{
+	FollowingActor = FA;
+	if (FollowingActor == nullptr)
+	{
+		CollisionComponent->AddForce(FVector::ZeroVector, NAME_None, true);
+	}
 }

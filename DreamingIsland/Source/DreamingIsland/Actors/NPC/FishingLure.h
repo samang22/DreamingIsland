@@ -20,7 +20,9 @@ protected:
 	virtual void BeginPlay() override;
 
 protected:
+	UPROPERTY()
 	TObjectPtr<UStaticMeshComponent> StaticMeshComponent;
+	UPROPERTY()
 	TObjectPtr<USphereComponent> CollisionComponent;
 
 public:
@@ -29,6 +31,9 @@ public:
 protected:
 	TObjectPtr<AActor> FollowingActor;
 public:
-	void SetFollowingActor(AActor* FA) { FollowingActor = FA; }
+	void SetFollowingActor(AActor* FA);
 	AActor* GetFollowingActor() const { return FollowingActor; }
+
+protected:
+	TObjectPtr<UPhysicalMaterial> PhysicalMaterial = nullptr;
 };
