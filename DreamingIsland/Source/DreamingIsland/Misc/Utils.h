@@ -9,7 +9,7 @@
 #include "EnhancedInputComponent.h"
 
 
-#define COLLISION_HIDDEN_IN_GAME						true
+#define COLLISION_HIDDEN_IN_GAME						false
 #define CRANEGAME_COST									10
 #define MAGNET_FORCE									200000.f
 
@@ -78,6 +78,7 @@ namespace CollisionProfileName
 	static inline FName SenseInteractive = TEXT("SenseInteractive");
 	static inline FName MyTrigger = TEXT("MyTrigger");
 	static inline FName Magnet = TEXT("Magnet");
+	static inline FName Lure = TEXT("Lure");
 }
 
 namespace ProjectileName
@@ -91,6 +92,7 @@ namespace ProjectileName
 	static inline FName Hinox_Link = TEXT("Hinox_Link");
 	static inline FName Bomber_Bomb = TEXT("Bomber_Bomb");
 	static inline FName Link_Throw = TEXT("Link_Throw");
+	static inline FName Link_Lure = TEXT("Link_Lure");
 }
 
 namespace TSK_ConversationKey
@@ -222,6 +224,10 @@ enum class LINK_MATERIAL : uint8
 #define	LINK_BIT_WALK			0x00000002
 #define	LINK_BIT_RUN			0x00000004
 #define	LINK_BIT_CARRY			0x00000008
+
+#define LINK_BIT_CASTING_IDLE	0x00000010
+#define LINK_BIT_CASTING_REEL	0x00000020
+
 
 #define LINK_TOOL_BIT_SWORD				0x00000001
 #define LINK_TOOL_BIT_SHIELD			0x00000002

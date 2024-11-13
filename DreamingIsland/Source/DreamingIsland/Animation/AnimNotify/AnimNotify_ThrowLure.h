@@ -4,14 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimNotifies/AnimNotify.h"
-#include "AnimNotify_Throw.generated.h"
+#include "AnimNotify_ThrowLure.generated.h"
 
 UCLASS()
-class DREAMINGISLAND_API UAnimNotify_Throw : public UAnimNotify
+class DREAMINGISLAND_API UAnimNotify_ThrowLure : public UAnimNotify
 {
 	GENERATED_BODY()
 public:
-	UAnimNotify_Throw();
+	UAnimNotify_ThrowLure();
 
 	virtual void Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference) override;
 

@@ -36,6 +36,8 @@ void UFishingLinkAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	if (StatusComponent)
 	{
 		bIsWait = StatusComponent->GetAnimStatus(LINK_BIT_WAIT);
+		bIsCastingIdle = StatusComponent->GetAnimStatus(LINK_BIT_CASTING_IDLE);
+		bIsCastingReel = StatusComponent->GetAnimStatus(LINK_BIT_CASTING_REEL);
 	}
 }
 

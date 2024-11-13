@@ -3,7 +3,9 @@
 
 #include "Actors/Link/FishingLink.h"
 #include "Components/StatusComponent/FishingLinkStatusComponent.h"
+#include "Animation/FishingLinkAnimInstance.h"
 #include "Components/CapsuleComponent.h"
+
 
 AFishingLink::AFishingLink(const FObjectInitializer& ObjectInitializer)
 {
@@ -42,7 +44,7 @@ void AFishingLink::BeginPlay()
 
 	SkeletalMeshComponent->BoundsScale = 10.f;
 
-	// CreateDynamicMaterialInstance must called in BeginPlay not Constructor
+	// CreateDynamicMaterialInstance func must called in BeginPlay not Constructor
 	for (uint8 i = 0; i < static_cast<uint8>(LINK_MATERIAL::END); ++i)
 	{
 		MID_Array.Push(SkeletalMeshComponent->CreateDynamicMaterialInstance(i));
@@ -95,20 +97,31 @@ void AFishingLink::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 UFishingLinkStatusComponent* AFishingLink::GetStatusComponent() const
 {
-	return nullptr;
+	return StatusComponent;
 }
 
-void AFishingLink::PlayMontage(LINK_MONTAGE _InEnum, bool bIsLoop)
+void AFishingLink::PlayMontage(FISHINGLINK_MONTAGE _InEnum, bool bIsLoop)
 {
+	UFishingLinkAnimInstance* LinkAnimInstance = Cast<UFishingLinkAnimInstance>(GetMesh()->GetAnimInstance());
+	LinkAnimInstance->PlayMontage(_InEnum, bIsLoop);
 }
 
-bool AFishingLink::IsMontage(LINK_MONTAGE _InEnum)
+bool AFishingLink::IsMontage(FISHINGLINK_MONTAGE  _InEnum)
 {
-	return false;
+	UFishingLinkAnimInstance* LinkAnimInstance = Cast<UFishingLinkAnimInstance>(GetMesh()->GetAnimInstance());
+	return LinkAnimInstance->IsMontage(_InEnum);
 }
 
-bool AFishingLink::IsPlayingMontage(LINK_MONTAGE _InEnum)
+bool AFishingLink::IsPlayingMontage(FISHINGLINK_MONTAGE  _InEnum)
 {
-	return false;
+	UFishingLinkAnimInstance* LinkAnimInstance = Cast<UFishingLinkAnimInstance>(GetMesh()->GetAnimInstance());
+	return LinkAnimInstance->IsPlayingMontage(_InEnum);
+}
+
+void AFishingLink::ThrewLure()
+{
+	StatusComponent->SetIsFishing(true);
+	StatusComponent->SetOnAnimationStatus(LINK_BIT_CASTING_IDLE);
+	StatusComponent->SetOffAnimationStatus(LINK_BIT_WAIT);
 }
 

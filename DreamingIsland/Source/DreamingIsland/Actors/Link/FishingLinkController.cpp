@@ -5,6 +5,9 @@
 #include "Actors/Link/LinkCameraManager.h"
 #include "Components/StatusComponent/FishingLinkStatusComponent.h"
 #include "Animation/FishingLinkAnimInstance.h"
+#include "Actors/Link/FishingLink.h"
+#include "Actors/NPC/FishingLure.h"
+
 
 AFishingLinkController::AFishingLinkController()
 {
@@ -44,7 +47,7 @@ void AFishingLinkController::SetupInputComponent()
 
 	if (const UInputAction* InputAction = FUtils::GetInputActionFromName(IMC_Default, TEXT("IA_Attack")))
 	{
-		EnhancedInputComponent->BindAction(InputAction, ETriggerEvent::Completed, this, &ThisClass::OnPull);
+		EnhancedInputComponent->BindAction(InputAction, ETriggerEvent::Completed, this, &ThisClass::OnThrowOrPull);
 	}
 	else
 	{
@@ -80,10 +83,31 @@ void AFishingLinkController::Tick(float DeltaTime)
 
 void AFishingLinkController::OnMove(const FInputActionValue& InputActionValue)
 {
+	if (!StatusComponent->GetIsFishing()) return;
+
+	const FVector ForwardVector = FVector(0.0, 0.0, 1.0);
+	const FVector RightVector = FVector(1.0, 0.0, 0.0);
+	const FVector2D ActionValue = InputActionValue.Get<FVector2D>();
+
+	AFishingLure* FishingLure = Cast<AFishingLink>(GetPawn())->GetFishingLure();
+	if (FishingLure)
+	{
+		FishingLure->Move(RightVector, ActionValue.X);
+		FishingLure->Move(ForwardVector, -1.0 * ActionValue.Y);
+	}
 }
 
-void AFishingLinkController::OnPull(const FInputActionValue& InputActionValue)
+void AFishingLinkController::OnThrowOrPull(const FInputActionValue& InputActionValue)
 {
+	AFishingLink* Link = Cast<AFishingLink>(GetPawn());
+	if (!StatusComponent->GetIsFishing())
+	{
+		Link->PlayMontage(FISHINGLINK_MONTAGE::THROW_LURE);
+	}
+	else
+	{
+
+	}
 }
 
 void AFishingLinkController::OnShake(const FInputActionValue& InputActionValue)

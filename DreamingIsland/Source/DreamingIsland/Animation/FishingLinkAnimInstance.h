@@ -26,6 +26,8 @@ protected:
 	UPROPERTY(BlueprintReadOnly)
 	bool bIsWait = false;
 	UPROPERTY(BlueprintReadOnly)
+	bool bIsCastingIdle = false;
+	UPROPERTY(BlueprintReadOnly)
 	bool bIsCastingReel = false;
 
 protected:

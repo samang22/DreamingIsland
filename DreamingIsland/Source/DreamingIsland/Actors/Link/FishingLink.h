@@ -7,6 +7,7 @@
 #include "Misc/Utils.h"
 #include "FishingLink.generated.h"
 
+class AFishingLure;
 class UFishingLinkStatusComponent;
 UCLASS()
 class DREAMINGISLAND_API AFishingLink : public ACharacter
@@ -36,17 +37,19 @@ protected:
 public:
 	UFishingLinkStatusComponent* GetStatusComponent() const;
 
-protected:
-	UAnimMontage* SlashMontage = nullptr;
-	UAnimMontage* ItemCarryMontage = nullptr;
-	UAnimMontage* ItemGetMontage = nullptr;
-
 public:
-	void PlayMontage(LINK_MONTAGE _InEnum, bool bIsLoop = false);
-	bool IsMontage(LINK_MONTAGE _InEnum);
-	bool IsPlayingMontage(LINK_MONTAGE _InEnum);
+	void PlayMontage(FISHINGLINK_MONTAGE  _InEnum, bool bIsLoop = false);
+	bool IsMontage(FISHINGLINK_MONTAGE  _InEnum);
+	bool IsPlayingMontage(FISHINGLINK_MONTAGE  _InEnum);
 
 protected:
 	UPROPERTY()
 	TArray<TObjectPtr<UMaterialInstanceDynamic>> MID_Array;
+
+protected:
+	TObjectPtr<AFishingLure> FishingLure;
+public:
+	AFishingLure* GetFishingLure() const { return FishingLure; }
+	void SetFishingLure(AFishingLure* _Lure) { FishingLure = _Lure; }
+	void ThrewLure();
 };

@@ -26,4 +26,9 @@ public:
 	UFUNCTION()
 	bool GetAnimStatus(uint8 InBit) const;
 
+protected:
+	bool bIsFishing = false;
+public:
+	void SetIsFishing(bool bFlag) { bIsFishing = bFlag; }
+	bool GetIsFishing() { return bIsFishing; }
 };

@@ -27,7 +27,7 @@ protected:
 
 protected:
 	void OnMove(const FInputActionValue& InputActionValue);
-	void OnPull(const FInputActionValue& InputActionValue);
+	void OnThrowOrPull(const FInputActionValue& InputActionValue);
 	void OnShake(const FInputActionValue& InputActionValue);
 
 protected:

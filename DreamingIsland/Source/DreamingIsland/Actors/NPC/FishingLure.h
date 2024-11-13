@@ -25,4 +25,10 @@ protected:
 
 public:
 	void Move(FVector vDir, float ScaleValue);
+
+protected:
+	TObjectPtr<AActor> FollowingActor;
+public:
+	void SetFollowingActor(AActor* FA) { FollowingActor = FA; }
+	AActor* GetFollowingActor() const { return FollowingActor; }
 };
