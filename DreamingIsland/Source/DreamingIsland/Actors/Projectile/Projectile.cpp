@@ -185,3 +185,9 @@ void AProjectile::Tick(float DeltaTime)
 
 }
 
+FVector AProjectile::GetVelocity()
+{
+	FVector Direction = ProjectileMovementComponent->Velocity;
+	return Direction;
+}
+

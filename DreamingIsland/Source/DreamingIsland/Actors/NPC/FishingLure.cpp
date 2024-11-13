@@ -92,3 +92,8 @@ void AFishingLure::SetFollowingActor(AActor* FA)
 		CollisionComponent->AddForce(FVector::ZeroVector, NAME_None, true);
 	}
 }
+
+void AFishingLure::AddForce(FVector Velocity)
+{
+	CollisionComponent->AddForce(Velocity);
+}

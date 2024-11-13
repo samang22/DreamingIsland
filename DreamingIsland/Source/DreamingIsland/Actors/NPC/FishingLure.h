@@ -36,4 +36,7 @@ public:
 
 protected:
 	TObjectPtr<UPhysicalMaterial> PhysicalMaterial = nullptr;
+
+public:
+	void AddForce(FVector Velocity);
 };

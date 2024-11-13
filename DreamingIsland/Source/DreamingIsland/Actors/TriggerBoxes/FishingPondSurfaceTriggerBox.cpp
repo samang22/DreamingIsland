@@ -7,6 +7,7 @@
 #include "Misc/Utils.h"
 #include "Actors/Link/FishingLink.h"
 #include "Actors/NPC/FishingLure.h"
+#include "Actors/Projectile/Projectile.h"
 #include "Kismet/GameplayStatics.h"
 
 AFishingPondSurfaceTriggerBox::AFishingPondSurfaceTriggerBox(const FObjectInitializer& ObjectInitializer)
@@ -37,7 +38,8 @@ void AFishingPondSurfaceTriggerBox::OnTrigger(UPrimitiveComponent* OverlappedCom
 {
 	AFishingLure* Lure = Cast<AFishingLure>(OtherActor);
 	if (!Lure) return;
-	AActor* Projectile = Lure->GetFollowingActor();
+	if (!Lure->GetFollowingActor()) return;
+	AActor* Projectile = Cast<AProjectile>(Lure->GetFollowingActor());
 	Lure->SetFollowingActor(nullptr);
-	//Projectile->Destroy();
+	Lure->AddForce(Projectile->GetVelocity() * 1000.f);
 }
