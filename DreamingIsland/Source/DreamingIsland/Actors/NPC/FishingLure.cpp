@@ -10,13 +10,14 @@
 #include "Actors/Link/FishingLink.h"
 #include "Kismet/GameplayStatics.h"
 
-#define FISHINGLURE_SPEED					30000.f
+#define FISHINGLURE_FORCE					30000.f
 
 #define FISHINGLURE_X_MAX					260.f
 #define FISHINGLURE_X_MIN					-1320.f
-#define FISHINGLURE_Z_MAX					800.f
+#define FISHINGLURE_Z_MAX					900.f
 #define FISHINGLURE_Z_MIN					80.f
 
+#define FISHINGLURE_FORCELIMIT_Z			800.f
 
 
 AFishingLure::AFishingLure()
@@ -56,17 +57,30 @@ void AFishingLure::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	const FVector CurrentLocation = GetActorLocation();
+	
+
+
 	if (FollowingActor)
 	{
 		SetActorLocation(FollowingActor->GetActorLocation());
 	}
 	else
 	{
-		FVector CurrentLocation = GetActorLocation();
-		CurrentLocation.X = FMath::Clamp(CurrentLocation.X, FISHINGLURE_X_MIN, FISHINGLURE_X_MAX);
-		CurrentLocation.Z = FMath::Clamp(CurrentLocation.Z, FISHINGLURE_Z_MIN, FISHINGLURE_Z_MAX);
-		SetActorLocation(CurrentLocation);
+		if (CurrentLocation.Z >= FISHINGLURE_FORCELIMIT_Z)
+		{
+			CollisionComponent->AddForce(FVector(0.0, 0.0, -1.0) * FISHINGLURE_FORCE);
+		}
+
+		FVector NewLocation = CurrentLocation;
+		NewLocation.X = FMath::Clamp(NewLocation.X, FISHINGLURE_X_MIN, FISHINGLURE_X_MAX);
+		NewLocation.Z = FMath::Clamp(NewLocation.Z, FISHINGLURE_Z_MIN, FISHINGLURE_Z_MAX);
+		SetActorLocation(NewLocation);
+
+		
 	}
+
+	PrevLocation = CurrentLocation;
 }
 
 void AFishingLure::BeginPlay()
@@ -81,7 +95,9 @@ void AFishingLure::BeginPlay()
 
 void AFishingLure::Move(FVector vDir, float ScaleValue)
 {
-	CollisionComponent->AddForce(vDir * ScaleValue * FISHINGLURE_SPEED);
+	FVector CurrentLocation = GetActorLocation();
+	if (CurrentLocation.Z >= FISHINGLURE_FORCELIMIT_Z) return;
+	CollisionComponent->AddForce(vDir * ScaleValue * FISHINGLURE_FORCE);
 }
 
 void AFishingLure::SetFollowingActor(AActor* FA)

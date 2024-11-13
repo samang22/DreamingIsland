@@ -39,4 +39,8 @@ protected:
 
 public:
 	void AddForce(FVector Velocity);
+
+protected:
+	FVector PrevLocation = FVector::ZeroVector;
+
 };
