@@ -26,6 +26,12 @@
 #define LINK_SPOTLIGHT_ANGLE							45.f
 #define LINK_SPOTLIGHT_INTENSITY						100000.f
 
+#define FISHINGPOND_ACTOR_Y								105.f
+
+#define FISH_AISENSECONFIG_SIGHT_SIGHTRADIUS										500.f
+#define FISH_AISENSECONFIG_SIGHT_LOSESIGHTRADIUS									500.f
+#define FISH_AISENSECONFIG_SIGHT_LOSESIGHTRADIUS_PERIPHERALVISIONANGLEDEGREES	120.f
+
 
 class FUtils
 {
@@ -143,8 +149,7 @@ namespace NPC_Name_Korean
 	static inline FName CuccoKeeper = TEXT("닭장 주인");
 	static inline FName Cucco = TEXT("닭");
 	static inline FName FisherMan = TEXT("낚시꾼");
-	static inline FName SmallFish = TEXT("작은 물고기");
-	static inline FName BigFish = TEXT("큰 물고기");
+	static inline FName Fish = TEXT("물고기");
 }
 
 
@@ -176,6 +181,13 @@ enum class FISHINGLINK_MONTAGE : uint8
 {
 	THROW_LURE = 0,
 	FISH_LOST,
+	END,
+};
+
+enum class FISH_MONTAGE : uint8
+{
+	POKE = 0,
+	TURN,
 	END,
 };
 
@@ -250,6 +262,11 @@ enum class LINK_MATERIAL : uint8
 #define NPC_BIT_RUN				0x00000008
 #define NPC_BIT_LIFTED			0x00000010
 #define NPC_BIT_THROWN			0x00000020
+
+#define FISH_BIT_WAIT			0x00000001
+#define FISH_BIT_POKEWAIT		0x00000002
+#define FISH_BIT_GET			0x00000004
+#define FISH_BIT_CATCHING		0x00000008
 
 
 #define CUCCO_AISENSECONFIG_SIGHT_SIGHTRADIUS										300.f

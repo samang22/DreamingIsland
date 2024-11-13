@@ -9,7 +9,8 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
-#include "GameFramework/Character.h"
+#include "Actors/NPC/FishingLure.h"
+
 
 void AFishAIController::BeginPlay()
 {
@@ -24,7 +25,7 @@ void AFishAIController::OnPossess(APawn* InPawn)
 void AFishAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	FindPlayerByPerception();
+	FindLureByPerception();
 }
 
 void AFishAIController::SetPatrolPath(TObjectPtr<USplineComponent> NewPatrolPath)
@@ -33,7 +34,6 @@ void AFishAIController::SetPatrolPath(TObjectPtr<USplineComponent> NewPatrolPath
 
 	if (!IsValid(PatrolPath))
 	{
-		//checkf(false, TEXT("PatrolPath not valid"));
 		return;
 	}
 
@@ -48,7 +48,7 @@ void AFishAIController::SetPatrolPath(TObjectPtr<USplineComponent> NewPatrolPath
 	Blackboard->SetValueAsObject(TEXT("SplineComponent"), PatrolPath);
 }
 
-void AFishAIController::FindPlayerByPerception()
+void AFishAIController::FindLureByPerception()
 {
 	APawn* OwningPawn = GetPawn();
 	if (UAIPerceptionComponent* AIPerceptionComponent = OwningPawn->GetComponentByClass<UAIPerceptionComponent>())
@@ -59,16 +59,16 @@ void AFishAIController::FindPlayerByPerception()
 		bool bFound = false;
 		for (AActor* It : OutActors)
 		{
-			if (ACharacter* DetectedPlayer = Cast<ACharacter>(It))
+			if (AFishingLure* DetectedPlayer = Cast<AFishingLure>(It))
 			{
 				bFound = true;
-				Blackboard->SetValueAsObject(TEXT("DetectedPlayer"), Cast<UObject>(DetectedPlayer));
+				Blackboard->SetValueAsObject(TEXT("DetectedLure"), Cast<UObject>(DetectedPlayer));
 				break;
 			}
 		}
-		if (!bFound)
+		if (!bFound && Blackboard)
 		{
-			Blackboard->ClearValue(TEXT("DetectedPlayer"));
+			Blackboard->ClearValue(TEXT("DetectedLure"));
 		}
 	}
 }
