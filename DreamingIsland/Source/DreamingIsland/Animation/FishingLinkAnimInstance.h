@@ -24,13 +24,16 @@ protected:
 
 protected:
 	UPROPERTY(BlueprintReadOnly)
-	bool bIsWait = true;
+	bool bIsWait = false;
+	UPROPERTY(BlueprintReadOnly)
+	bool bIsCastingReel = false;
 
 protected:
-	UAnimMontage* PullingMontage;
+	UAnimMontage* FishLostMontage;
+	UAnimMontage* ThrowLureMontage;
 
 public:
-	void PlayMontage(LINK_MONTAGE _InEnum, bool bIsLoop = false);
-	bool IsMontage(LINK_MONTAGE _InEnum);
-	bool IsPlayingMontage(LINK_MONTAGE _InEnum);
+	void PlayMontage(FISHINGLINK_MONTAGE _InEnum, bool bIsLoop = false);
+	bool IsMontage(FISHINGLINK_MONTAGE _InEnum);
+	bool IsPlayingMontage(FISHINGLINK_MONTAGE _InEnum);
 };

@@ -7,9 +7,6 @@
 #include "Misc/Utils.h"
 #include "FishingLink.generated.h"
 
-
-
-
 class UFishingLinkStatusComponent;
 UCLASS()
 class DREAMINGISLAND_API AFishingLink : public ACharacter
@@ -49,4 +46,7 @@ public:
 	bool IsMontage(LINK_MONTAGE _InEnum);
 	bool IsPlayingMontage(LINK_MONTAGE _InEnum);
 
+protected:
+	UPROPERTY()
+	TArray<TObjectPtr<UMaterialInstanceDynamic>> MID_Array;
 };

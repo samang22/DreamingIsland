@@ -11,5 +11,5 @@ UAnimNotify_SlashEffect::UAnimNotify_SlashEffect()
 void UAnimNotify_SlashEffect::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
 {
 	ALink* Link = Cast<ALink>(MeshComp->GetOwner());
-	Link->ActivateSlashEffect();
+	if (Link) Link->ActivateSlashEffect();
 }

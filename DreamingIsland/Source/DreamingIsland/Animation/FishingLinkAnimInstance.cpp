@@ -7,6 +7,10 @@
 
 UFishingLinkAnimInstance::UFishingLinkAnimInstance()
 {
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> MtgThrowLure(TEXT("/Script/Engine.AnimMontage'/Game/Assets/Link/Animation/MTG_Link_ThrowLure.MTG_Link_ThrowLure'"));
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> MtgFishLost(TEXT("/Script/Engine.AnimMontage'/Game/Assets/Link/Animation/MTG_Link_FishLost.MTG_Link_FishLost'"));
+	if (MtgThrowLure.Object) { ThrowLureMontage = MtgThrowLure.Object; }
+	if (MtgFishLost.Object) { FishLostMontage = MtgFishLost.Object; }
 }
 
 void UFishingLinkAnimInstance::NativeInitializeAnimation()
@@ -16,7 +20,7 @@ void UFishingLinkAnimInstance::NativeInitializeAnimation()
 	APawn* Pawn = TryGetPawnOwner();
 	if (GIsEditor && FApp::IsGame() && !Pawn)
 	{
-		checkf(false, TEXT("ULinkAnimInstance를 사용하려면 소유권자가 Pawn이여야 합니다."));
+		checkf(false, TEXT("UFishingLinkAnimInstance를 사용하려면 소유권자가 Pawn이여야 합니다."));
 		return;
 	}
 	else if (!Pawn) { return; }
@@ -35,12 +39,16 @@ void UFishingLinkAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	}
 }
 
-void UFishingLinkAnimInstance::PlayMontage(LINK_MONTAGE _InEnum, bool bIsLoop)
+void UFishingLinkAnimInstance::PlayMontage(FISHINGLINK_MONTAGE _InEnum, bool bIsLoop)
 {
 	UAnimMontage* tempMontage = nullptr;
 	switch (_InEnum)
 	{
-	case LINK_MONTAGE::DAMAGE:
+	case FISHINGLINK_MONTAGE::THROW_LURE:
+		tempMontage = ThrowLureMontage;
+		break;
+	case FISHINGLINK_MONTAGE::FISH_LOST:
+		tempMontage = FishLostMontage;
 		break;
 	default:
 		break;
@@ -59,23 +67,30 @@ void UFishingLinkAnimInstance::PlayMontage(LINK_MONTAGE _InEnum, bool bIsLoop)
 	}
 }
 
-bool UFishingLinkAnimInstance::IsMontage(LINK_MONTAGE _InEnum)
+bool UFishingLinkAnimInstance::IsMontage(FISHINGLINK_MONTAGE _InEnum)
 {
 	switch (_InEnum)
 	{
-	case LINK_MONTAGE::DAMAGE:
+	case FISHINGLINK_MONTAGE::THROW_LURE:
+		return ThrowLureMontage ? true : false;
+	case FISHINGLINK_MONTAGE::FISH_LOST:
+		return FishLostMontage ? true : false;
 	default:
 		return false;
 		break;
 	}
 }
 
-bool UFishingLinkAnimInstance::IsPlayingMontage(LINK_MONTAGE _InEnum)
+bool UFishingLinkAnimInstance::IsPlayingMontage(FISHINGLINK_MONTAGE _InEnum)
 {
 	UAnimMontage* tempMontage = nullptr;
 	switch (_InEnum)
 	{
-	case LINK_MONTAGE::DAMAGE:
+	case FISHINGLINK_MONTAGE::THROW_LURE:
+		tempMontage = ThrowLureMontage;
+		break;
+	case FISHINGLINK_MONTAGE::FISH_LOST:
+		tempMontage = FishLostMontage;
 		break;
 	default:
 		return false;

@@ -170,6 +170,36 @@ enum class LINK_MONTAGE : uint8
 	END,
 };
 
+enum class FISHINGLINK_MONTAGE : uint8
+{
+	THROW_LURE = 0,
+	FISH_LOST,
+	END,
+};
+
+enum class LINK_MATERIAL : uint8
+{
+	MAGICROD = 0,
+	OCARINA,
+	SHOVEL,
+	BODY,
+	BOOTS,
+	EAR,
+	EYE,
+	MOUTH,
+	FLIPPERS,
+	HAIR,
+	HOOKSHOT,
+	SHIELDA,
+	SHIELDB,
+	SHIELDB_MIRROR,
+	SWORDA,
+	SWORDA_BALL,
+	SWORDB,
+	SWORDB_BALL,
+	END
+};
+
 
 #define TRACE_CHANNEL_LINKCHANNEL						ECC_GameTraceChannel1
 #define TRACE_CHANNEL_MONSTERCHANNEL					ECC_GameTraceChannel2
