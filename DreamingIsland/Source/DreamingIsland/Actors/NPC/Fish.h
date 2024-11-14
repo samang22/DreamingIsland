@@ -45,7 +45,6 @@ protected:
 protected:
 	TObjectPtr<USkeletalMeshComponent> SkeletalMeshComponent;
 	TObjectPtr<USphereComponent> CollisionComponent;
-	TObjectPtr<USphereComponent> SenseLureCollisionComponent;
 
 protected:
 	UPROPERTY(VisibleAnywhere)
@@ -84,4 +83,5 @@ protected:
 	FVector DesiredDirection = FVector::ZeroVector;
 public:
 	void SetDesiredDirection(FVector _Dir) { DesiredDirection = _Dir; }
+	void SetPhysicsLinearVelocity(FVector _Velocity);
 };

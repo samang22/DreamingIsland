@@ -3,13 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Gameframework/Actor.h"
+#include "Gameframework/Pawn.h"
 #include "FishingLure.generated.h"
 
 class USphereComponent;
 class UStaticMeshComponent;
 UCLASS()
-class DREAMINGISLAND_API AFishingLure : public AActor
+class DREAMINGISLAND_API AFishingLure : public APawn
 {
 	GENERATED_BODY()
 public:

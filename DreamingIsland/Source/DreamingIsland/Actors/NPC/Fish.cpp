@@ -16,8 +16,11 @@
 #include "Actors/AI/PatrolPath.h"
 #include "Data/FishTableRow.h"
 
+#define FISH_Y_MAX			160.f	
+#define FISH_Y_MIN			-420.f
 
-
+#define FISH_X_MAX			350.f
+#define FISH_X_MIN			-1620.f
 
 AFish::AFish(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -34,11 +37,6 @@ AFish::AFish(const FObjectInitializer& ObjectInitializer)
 	CollisionComponent->SetCanEverAffectNavigation(false);
 	RootComponent = CollisionComponent;
 
-	SenseLureCollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("SenseLureCollisionComponent"));
-	SenseLureCollisionComponent->SetCollisionProfileName(CollisionProfileName::SenseInteractive);
-	SenseLureCollisionComponent->SetCanEverAffectNavigation(false);
-	SenseLureCollisionComponent->SetupAttachment(RootComponent);
-
 	SkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshComponent"));
 	SkeletalMeshComponent->SetupAttachment(RootComponent);
 	FRotator NewRotator = FRotator(0.0, 0.0, 0.0);
@@ -50,18 +48,18 @@ AFish::AFish(const FObjectInitializer& ObjectInitializer)
 	AISenseConfig_Sight->DetectionByAffiliation.bDetectNeutrals = true;
 	AISenseConfig_Sight->SightRadius = FISH_AISENSECONFIG_SIGHT_SIGHTRADIUS;
 	AISenseConfig_Sight->LoseSightRadius = FISH_AISENSECONFIG_SIGHT_LOSESIGHTRADIUS;
-	AISenseConfig_Sight->PeripheralVisionAngleDegrees = FISH_AISENSECONFIG_SIGHT_LOSESIGHTRADIUS_PERIPHERALVISIONANGLEDEGREES;
+	AISenseConfig_Sight->PeripheralVisionAngleDegrees = FISH_AISENSECONFIG_SIGHT_PERIPHERALVISIONANGLEDEGREES;
 	AIPerceptionComponent->ConfigureSense(*AISenseConfig_Sight);
 
 	StatusComponent = CreateDefaultSubobject<UFishStatusComponent>(TEXT("StatusComponent"));
 
-	static ConstructorHelpers::FObjectFinder<UPhysicalMaterial> PhysMaterial(TEXT("/Script/PhysicsCore.PhysicalMaterial'/Game/Blueprint/NPC/FishingLure/PM_FishingLure.PM_FishingLure'"));
+	static ConstructorHelpers::FObjectFinder<UPhysicalMaterial> PhysMaterial(TEXT("/Script/PhysicsCore.PhysicalMaterial'/Game/Blueprint/NPC/FishingLure/PM_Fish.PM_Fish'"));
 	PhysicalMaterial = PhysMaterial.Object;
 
 	CollisionComponent->SetPhysMaterialOverride(PhysicalMaterial);
 	CollisionComponent->SetEnableGravity(false);
 	CollisionComponent->SetSimulatePhysics(true);
-	CollisionComponent->SetLinearDamping(0.8f);
+	CollisionComponent->SetLinearDamping(10000.8f);
 }
 
 void AFish::SetData(const FDataTableRowHandle& InDataTableRowHandle)
@@ -81,15 +79,6 @@ void AFish::SetData(const FDataTableRowHandle& InDataTableRowHandle)
 		CollisionComponent->RegisterComponent();
 	}
 
-	if (IsValid(SenseLureCollisionComponent))
-	{
-		USphereComponent* SphereComponent = Cast<USphereComponent>(SenseLureCollisionComponent);
-		SphereComponent->SetSphereRadius(FishData->SenseLureCollisionSphereRadius);
-		SenseLureCollisionComponent->SetCollisionProfileName(CollisionProfileName::SenseInteractive);
-		SenseLureCollisionComponent->bHiddenInGame = COLLISION_HIDDEN_IN_GAME;
-		SenseLureCollisionComponent->RegisterComponent();
-	}
-
 	SkeletalMeshComponent->SetSkeletalMesh(FishData->SkeletalMesh);
 	SkeletalMeshComponent->SetAnimClass(FishData->AnimClass);
 	SkeletalMeshComponent->SetRelativeTransform(FishData->MeshTransform);
@@ -104,6 +93,11 @@ void AFish::Tick(float DeltaTime)
 
 	FVector GoalDirection = FMath::Lerp(GetActorForwardVector(), DesiredDirection, 0.2f);
 	SetActorRotation(GoalDirection.Rotation().Quaternion());
+
+	FVector GetCurrentLocation = GetActorLocation();
+	GetCurrentLocation.Y = FMath::Clamp(GetCurrentLocation.Y, FISH_Y_MIN, FISH_Y_MAX);
+	GetCurrentLocation.X = FMath::Clamp(GetCurrentLocation.X, FISH_X_MIN, FISH_X_MAX);
+	SetActorLocation(GetCurrentLocation);
 }
 
 void AFish::PostDuplicate(EDuplicateMode::Type DuplicateMode)
@@ -145,6 +139,7 @@ void AFish::PostInitializeComponents()
 void AFish::BeginPlay()
 {
 	Super::BeginPlay();
+	SetData(DataTableRowHandle);
 }
 
 void AFish::OnConstruction(const FTransform& Transform)
@@ -235,5 +230,13 @@ void AFish::AddForce(FVector Direction)
 	if (CollisionComponent)
 	{
 		CollisionComponent->AddForce(Direction);
+	}
+}
+
+void AFish::SetPhysicsLinearVelocity(FVector _Velocity)
+{
+	if (CollisionComponent)
+	{
+		CollisionComponent->SetPhysicsLinearVelocity(_Velocity);
 	}
 }
