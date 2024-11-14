@@ -40,8 +40,9 @@
 
 #define FISH_POKE_DISTANCE 100.f
 
-#define LURE_VELOCITY_LIMIT 200.f
+#define LURE_VELOCITY_LIMIT 150.f
 
+#define LURE_PULL_FORCE 2500.f
 
 class FUtils
 {

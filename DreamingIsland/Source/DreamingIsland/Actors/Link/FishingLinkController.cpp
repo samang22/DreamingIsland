@@ -47,7 +47,8 @@ void AFishingLinkController::SetupInputComponent()
 
 	if (const UInputAction* InputAction = FUtils::GetInputActionFromName(IMC_Default, TEXT("IA_Attack")))
 	{
-		EnhancedInputComponent->BindAction(InputAction, ETriggerEvent::Completed, this, &ThisClass::OnThrowOrPull);
+		EnhancedInputComponent->BindAction(InputAction, ETriggerEvent::Completed, this, &ThisClass::OnThrow);
+		EnhancedInputComponent->BindAction(InputAction, ETriggerEvent::Triggered, this, &ThisClass::OnPull);
 	}
 	else
 	{
@@ -97,16 +98,21 @@ void AFishingLinkController::OnMove(const FInputActionValue& InputActionValue)
 	}
 }
 
-void AFishingLinkController::OnThrowOrPull(const FInputActionValue& InputActionValue)
+void AFishingLinkController::OnThrow(const FInputActionValue& InputActionValue)
 {
 	AFishingLink* Link = Cast<AFishingLink>(GetPawn());
 	if (!StatusComponent->GetIsFishing())
 	{
 		Link->PlayMontage(FISHINGLINK_MONTAGE::THROW_LURE);
 	}
-	else
-	{
+}
 
+void AFishingLinkController::OnPull(const FInputActionValue& InputActionValue)
+{
+	AFishingLink* Link = Cast<AFishingLink>(GetPawn());
+	if (StatusComponent->GetIsFishing())
+	{
+		Link->GetFishingLure()->PullFish();
 	}
 }
 

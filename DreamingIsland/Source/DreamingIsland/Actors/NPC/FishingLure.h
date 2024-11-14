@@ -8,7 +8,9 @@
 
 class USphereComponent;
 class UStaticMeshComponent;
+class AFish;
 UCLASS()
+// to be sensed by AIPerception, FishingLure overrides Pawn, not Actor
 class DREAMINGISLAND_API AFishingLure : public APawn
 {
 	GENERATED_BODY()
@@ -24,6 +26,8 @@ protected:
 	TObjectPtr<UStaticMeshComponent> StaticMeshComponent;
 	UPROPERTY()
 	TObjectPtr<USphereComponent> CollisionComponent;
+	UPROPERTY()
+	TObjectPtr<USphereComponent> GetFishCollisionComponent;
 
 public:
 	void Move(FVector vDir, float ScaleValue);
@@ -43,4 +47,15 @@ public:
 protected:
 	FVector PrevLocation = FVector::ZeroVector;
 
+
+protected:
+	TObjectPtr<AFish> CurrentFish = nullptr;
+
+protected:
+	virtual void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	UFUNCTION()
+	virtual void OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+public:
+	void PullFish();
 };

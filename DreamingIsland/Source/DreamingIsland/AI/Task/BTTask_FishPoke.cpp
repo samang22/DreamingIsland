@@ -38,6 +38,23 @@ void UBTTask_FishPoke::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMe
 		return;
 	}
 
+	FVector Direction = (Lure->GetActorLocation() - Fish->GetActorLocation());
+	Direction.Normalize();
+	float Force = 0.f;
+	const FName FishName = Fish->GetFishName();
+	if (FishName == TEXT("SmallFish"))
+	{
+		Force = SMALLFISH_MOVE_FORCE;
+	}
+	else if (FishName == TEXT("BigFish"))
+	{
+		Force = BIGFISH_MOVE_FORCE;
+	}
+	Fish->AddForce(Direction * Force * 0.1f);
+	Direction.Z = 0;
+	Fish->SetDesiredDirection(Direction);
+
+
 	if (Lure->GetVelocity().Size() > LURE_VELOCITY_LIMIT)
 	{
 		FinishLatentTask(*BehaviorTreeComponent, EBTNodeResult::Failed);

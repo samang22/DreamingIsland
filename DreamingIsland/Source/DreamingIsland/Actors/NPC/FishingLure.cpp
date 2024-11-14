@@ -9,8 +9,9 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Actors/Link/FishingLink.h"
 #include "Kismet/GameplayStatics.h"
+#include "Actors/NPC/Fish.h"
 
-#define FISHINGLURE_FORCE					30000.f
+#define FISHINGLURE_FORCE					40000.f
 
 #define FISHINGLURE_X_MAX					260.f
 #define FISHINGLURE_X_MIN					-1320.f
@@ -32,6 +33,17 @@ AFishingLure::AFishingLure()
 	CollisionComponent->SetCollisionProfileName(CollisionProfileName::Lure);
 	CollisionComponent->bHiddenInGame = COLLISION_HIDDEN_IN_GAME;
 	RootComponent = CollisionComponent;
+
+
+
+	GetFishCollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("GetFishCollisionComponent"));
+	GetFishCollisionComponent->SetCollisionProfileName(CollisionProfileName::SenseInteractive);
+	GetFishCollisionComponent->bHiddenInGame = COLLISION_HIDDEN_IN_GAME;
+	GetFishCollisionComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	GetFishCollisionComponent->SetRelativeScale3D(FVector(2.0, 2.0, 2.0));
+	GetFishCollisionComponent->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::OnBeginOverlap);
+	GetFishCollisionComponent->OnComponentEndOverlap.AddDynamic(this, &ThisClass::OnEndOverlap);
+
 
 	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
 	StaticMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
@@ -89,7 +101,7 @@ void AFishingLure::BeginPlay()
 
 	ACharacter* Character = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
 	AFishingLink* Link = Cast<AFishingLink>(Character);
-	Link->SetFishingLure(this);
+	if (Link) Link->SetFishingLure(this);
 	SetFollowingActor(Link);
 }
 
@@ -113,3 +125,30 @@ void AFishingLure::AddForce(FVector Velocity)
 {
 	CollisionComponent->AddForce(Velocity);
 }
+
+void AFishingLure::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (AFish* Fish = Cast<AFish>(OtherActor))
+	{
+		CurrentFish = Fish;
+	}
+}
+
+void AFishingLure::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	if (AFish* Fish = Cast<AFish>(OtherActor))
+	{
+		CurrentFish = nullptr;
+	}
+}
+
+void AFishingLure::PullFish()
+{
+	if (!CurrentFish) return;
+
+	FVector Direction = GetActorLocation() - CurrentFish->GetActorLocation();
+	Direction.Normalize();
+
+	CurrentFish->AddForce(Direction * LURE_PULL_FORCE);
+}
+
