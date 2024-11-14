@@ -32,6 +32,11 @@
 #define FISH_AISENSECONFIG_SIGHT_LOSESIGHTRADIUS									500.f
 #define FISH_AISENSECONFIG_SIGHT_LOSESIGHTRADIUS_PERIPHERALVISIONANGLEDEGREES	120.f
 
+#define SMALLFISH_MOVE_FORCE			200.f
+#define BIGFISH_MOVE_FORCE				300.f
+
+#define SMALLFISH_PULL_FORCE 2000.f
+#define BIGFISH_PULL_FORCE 2000.f
 
 class FUtils
 {
@@ -85,6 +90,7 @@ namespace CollisionProfileName
 	static inline FName MyTrigger = TEXT("MyTrigger");
 	static inline FName Magnet = TEXT("Magnet");
 	static inline FName Lure = TEXT("Lure");
+	static inline FName Fish = TEXT("Fish");
 }
 
 namespace ProjectileName

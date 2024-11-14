@@ -11,8 +11,6 @@ void UFishAnimInstance::NativeInitializeAnimation()
 
 	APawn* Pawn = TryGetPawnOwner();
 	if (!Pawn) return;
-	MovementComponent = Pawn->GetMovementComponent();
-	check(MovementComponent);
 
 	AFish* Fish = Cast<AFish>(Pawn);
 	StatusComponent = Fish->GetStatusComponent();
@@ -20,4 +18,12 @@ void UFishAnimInstance::NativeInitializeAnimation()
 
 void UFishAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
+	Super::NativeUpdateAnimation(DeltaSeconds);
+	if (StatusComponent)
+	{
+		bIsWait = StatusComponent->GetAnimStatus(FISH_BIT_WAIT);
+		bIsPokeWaiting = StatusComponent->GetAnimStatus(FISH_BIT_POKEWAIT);
+		bIsCatch = StatusComponent->GetAnimStatus(FISH_BIT_CATCHING);
+		bIsGet = StatusComponent->GetAnimStatus(FISH_BIT_GET);
+	}
 }

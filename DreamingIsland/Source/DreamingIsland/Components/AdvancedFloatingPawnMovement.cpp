@@ -89,6 +89,9 @@ void UAdvancedFloatingPawnMovement::PhysicsRotation(float DeltaTime)
 
 bool UAdvancedFloatingPawnMovement::CheckFalling(float DeltaTime)
 {
+	if (!bIsGravity) return false;
+
+
 	APawn* OwningPawn = Cast<APawn>(GetOwner());
 
 	const FVector OldLocation = GetActorFeetLocation();

@@ -36,8 +36,8 @@ protected:
 protected:
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<APatrolPath> PatrolPathRef;
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UAdvancedFloatingPawnMovement> MovementComponent;
+	//UPROPERTY(VisibleAnywhere)
+	//TObjectPtr<UAdvancedFloatingPawnMovement> MovementComponent;
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UFishStatusComponent> StatusComponent;
 
@@ -54,20 +54,20 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UAISenseConfig_Sight> AISenseConfig_Sight;
 
-protected:
-	UPROPERTY(VisibleAnywhere)
-	FName FishName;
 public:
-	FName GetFishName() const { return FishName; }
+	FName GetFishName() const { return DataTableRowHandle.RowName; }
 
 public:
 	TObjectPtr<UFishStatusComponent> GetStatusComponent() { return StatusComponent; }
-	TObjectPtr<UAdvancedFloatingPawnMovement> GetMovementComponent();
+	//TObjectPtr<UAdvancedFloatingPawnMovement> GetMovementComponent();
 
 protected:
 	UPROPERTY(EditAnywhere)
 	FDataTableRowHandle DataTableRowHandle;
 	FFishTableRow* FishData;
+
+protected:
+	TObjectPtr<UPhysicalMaterial> PhysicalMaterial = nullptr;
 
 public:
 	void SetCollisionProfileName(FName CollisionProfile);
@@ -76,4 +76,12 @@ public:
 	void PlayMontage(FISH_MONTAGE _InEnum, bool bIsLoop = false);
 	bool IsMontage(FISH_MONTAGE _InEnum);
 	bool IsPlayingMontage(FISH_MONTAGE _InEnum);
+
+public:
+	void AddForce(FVector Direction);
+
+protected:
+	FVector DesiredDirection = FVector::ZeroVector;
+public:
+	void SetDesiredDirection(FVector _Dir) { DesiredDirection = _Dir; }
 };

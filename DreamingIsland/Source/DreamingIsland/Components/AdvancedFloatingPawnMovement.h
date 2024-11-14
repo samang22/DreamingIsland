@@ -64,4 +64,10 @@ protected:
 
 	bool bFalling = false;
 	float FallingDeltaTime = 0.f;
+
+protected:
+	bool bIsGravity = true;
+public:
+	void SetIsGravity(bool bFlag) { bIsGravity = bFlag; }
+
 };

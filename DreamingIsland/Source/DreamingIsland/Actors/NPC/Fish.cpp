@@ -16,18 +16,21 @@
 #include "Actors/AI/PatrolPath.h"
 #include "Data/FishTableRow.h"
 
+
+
+
 AFish::AFish(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
-	FishName = NPC_Name_Korean::Fish;
-
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 	PrimaryActorTick.bCanEverTick = true;
 
-	MovementComponent = CreateDefaultSubobject<UAdvancedFloatingPawnMovement>(TEXT("MovementComponent"));
+	//MovementComponent = CreateDefaultSubobject<UAdvancedFloatingPawnMovement>(TEXT("MovementComponent"));
+	//MovementComponent->SetIsGravity(false);
+
 
 	CollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("CollisionComponent"));
-	CollisionComponent->SetCollisionProfileName(CollisionProfileName::NPC);
+	CollisionComponent->SetCollisionProfileName(CollisionProfileName::Fish);
 	CollisionComponent->SetCanEverAffectNavigation(false);
 	RootComponent = CollisionComponent;
 
@@ -51,6 +54,14 @@ AFish::AFish(const FObjectInitializer& ObjectInitializer)
 	AIPerceptionComponent->ConfigureSense(*AISenseConfig_Sight);
 
 	StatusComponent = CreateDefaultSubobject<UFishStatusComponent>(TEXT("StatusComponent"));
+
+	static ConstructorHelpers::FObjectFinder<UPhysicalMaterial> PhysMaterial(TEXT("/Script/PhysicsCore.PhysicalMaterial'/Game/Blueprint/NPC/FishingLure/PM_FishingLure.PM_FishingLure'"));
+	PhysicalMaterial = PhysMaterial.Object;
+
+	CollisionComponent->SetPhysMaterialOverride(PhysicalMaterial);
+	CollisionComponent->SetEnableGravity(false);
+	CollisionComponent->SetSimulatePhysics(true);
+	CollisionComponent->SetLinearDamping(0.8f);
 }
 
 void AFish::SetData(const FDataTableRowHandle& InDataTableRowHandle)
@@ -82,7 +93,7 @@ void AFish::SetData(const FDataTableRowHandle& InDataTableRowHandle)
 	SkeletalMeshComponent->SetSkeletalMesh(FishData->SkeletalMesh);
 	SkeletalMeshComponent->SetAnimClass(FishData->AnimClass);
 	SkeletalMeshComponent->SetRelativeTransform(FishData->MeshTransform);
-	MovementComponent->MaxSpeed = FishData->MovementMaxSpeed;
+	//MovementComponent->MaxSpeed = FishData->MovementMaxSpeed;
 
 	AIControllerClass = FishData->AIControllerClass;
 }
@@ -90,6 +101,9 @@ void AFish::SetData(const FDataTableRowHandle& InDataTableRowHandle)
 void AFish::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	FVector GoalDirection = FMath::Lerp(GetActorForwardVector(), DesiredDirection, 0.2f);
+	SetActorRotation(GoalDirection.Rotation().Quaternion());
 }
 
 void AFish::PostDuplicate(EDuplicateMode::Type DuplicateMode)
@@ -140,10 +154,10 @@ void AFish::OnConstruction(const FTransform& Transform)
 	SetData(DataTableRowHandle);
 }
 
-TObjectPtr<UAdvancedFloatingPawnMovement> AFish::GetMovementComponent()
-{
-	return MovementComponent;
-}
+//TObjectPtr<UAdvancedFloatingPawnMovement> AFish::GetMovementComponent()
+//{
+//	return MovementComponent;
+//}
 
 void AFish::SetCollisionProfileName(FName CollisionProfile)
 {
@@ -213,5 +227,13 @@ bool AFish::IsPlayingMontage(FISH_MONTAGE _InEnum)
 		return AnimInstance->Montage_IsPlaying(FishData->TurnMontage);
 	default:
 		return false;
+	}
+}
+
+void AFish::AddForce(FVector Direction)
+{
+	if (CollisionComponent)
+	{
+		CollisionComponent->AddForce(Direction);
 	}
 }
