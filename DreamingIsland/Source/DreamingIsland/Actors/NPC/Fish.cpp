@@ -37,7 +37,15 @@ AFish::AFish(const FObjectInitializer& ObjectInitializer)
 	CollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("CollisionComponent"));
 	CollisionComponent->SetCollisionProfileName(CollisionProfileName::Fish);
 	CollisionComponent->SetCanEverAffectNavigation(false);
+	CollisionComponent->bHiddenInGame = COLLISION_HIDDEN_IN_GAME;
 	RootComponent = CollisionComponent;
+
+
+	CollisionComponent->SetPhysMaterialOverride(PhysicalMaterial);
+	CollisionComponent->SetEnableGravity(false);
+	CollisionComponent->SetSimulatePhysics(true);
+	CollisionComponent->SetLinearDamping(0.8f);
+
 
 	SkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshComponent"));
 	SkeletalMeshComponent->SetupAttachment(RootComponent);
@@ -58,10 +66,6 @@ AFish::AFish(const FObjectInitializer& ObjectInitializer)
 	static ConstructorHelpers::FObjectFinder<UPhysicalMaterial> PhysMaterial(TEXT("/Script/PhysicsCore.PhysicalMaterial'/Game/Blueprint/NPC/FishingLure/PM_Fish.PM_Fish'"));
 	PhysicalMaterial = PhysMaterial.Object;
 
-	CollisionComponent->SetPhysMaterialOverride(PhysicalMaterial);
-	CollisionComponent->SetEnableGravity(false);
-	CollisionComponent->SetSimulatePhysics(true);
-	CollisionComponent->SetLinearDamping(10000.8f);
 }
 
 void AFish::SetData(const FDataTableRowHandle& InDataTableRowHandle)
@@ -76,9 +80,7 @@ void AFish::SetData(const FDataTableRowHandle& InDataTableRowHandle)
 	{
 		USphereComponent* SphereComponent = Cast<USphereComponent>(CollisionComponent);
 		SphereComponent->SetSphereRadius(FishData->CollisionSphereRadius);
-		CollisionComponent->SetCollisionProfileName(CollisionProfileName::NPC);
-		CollisionComponent->bHiddenInGame = COLLISION_HIDDEN_IN_GAME;
-		CollisionComponent->RegisterComponent();
+		//CollisionComponent->RegisterComponent();
 	}
 
 	SkeletalMeshComponent->SetSkeletalMesh(FishData->SkeletalMesh);
@@ -162,6 +164,7 @@ void AFish::BeginPlay()
 {
 	Super::BeginPlay();
 	SetData(DataTableRowHandle);
+	CollisionComponent->SetCollisionProfileName(CollisionProfileName::Fish);
 }
 
 void AFish::OnConstruction(const FTransform& Transform)

@@ -10,9 +10,12 @@ UFishingLinkAnimInstance::UFishingLinkAnimInstance()
 	static ConstructorHelpers::FObjectFinder<UAnimMontage> MtgThrowLure(TEXT("/Script/Engine.AnimMontage'/Game/Assets/Link/Animation/MTG_Link_ThrowLure.MTG_Link_ThrowLure'"));
 	static ConstructorHelpers::FObjectFinder<UAnimMontage> MtgFishLost(TEXT("/Script/Engine.AnimMontage'/Game/Assets/Link/Animation/MTG_Link_FishLost.MTG_Link_FishLost'"));
 	static ConstructorHelpers::FObjectFinder<UAnimMontage> MtgFishGet(TEXT("/Script/Engine.AnimMontage'/Game/Assets/Link/Animation/MTG_Link_Item_Get.MTG_Link_Item_Get'"));
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> MtgFishHang(TEXT("/Script/Engine.AnimMontage'/Game/Assets/Link/Animation/MTG_FishingLink_FishHang.MTG_FishingLink_FishHang'"));
 	if (MtgThrowLure.Object) { ThrowLureMontage = MtgThrowLure.Object; }
 	if (MtgFishLost.Object) { FishLostMontage = MtgFishLost.Object; }
 	if (MtgFishGet.Object) { FishGetMontage = MtgFishGet.Object; }
+	if (MtgFishHang.Object) { FishHangMontage = MtgFishHang.Object; }
+	
 }
 
 void UFishingLinkAnimInstance::NativeInitializeAnimation()
@@ -57,6 +60,9 @@ void UFishingLinkAnimInstance::PlayMontage(FISHINGLINK_MONTAGE _InEnum, bool bIs
 	case FISHINGLINK_MONTAGE::FISH_GET:
 		tempMontage = FishGetMontage;
 		break;
+	case FISHINGLINK_MONTAGE::FISH_HANG:
+		tempMontage = FishHangMontage;
+		break;
 	default:
 		break;
 	}
@@ -84,6 +90,8 @@ bool UFishingLinkAnimInstance::IsMontage(FISHINGLINK_MONTAGE _InEnum)
 		return FishLostMontage ? true : false;
 	case FISHINGLINK_MONTAGE::FISH_GET:
 		return FishGetMontage ? true : false;
+	case FISHINGLINK_MONTAGE::FISH_HANG:
+		return FishHangMontage ? true : false;
 	default:
 		return false;
 		break;
@@ -104,6 +112,9 @@ bool UFishingLinkAnimInstance::IsPlayingMontage(FISHINGLINK_MONTAGE _InEnum)
 	case FISHINGLINK_MONTAGE::FISH_GET:
 		tempMontage = FishGetMontage;
 		break;
+	case FISHINGLINK_MONTAGE::FISH_HANG:
+		tempMontage = FishHangMontage;
+	break;
 	default:
 		return false;
 		break;

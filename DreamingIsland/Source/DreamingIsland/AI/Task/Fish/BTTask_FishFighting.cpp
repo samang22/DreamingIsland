@@ -36,6 +36,9 @@ EBTNodeResult::Type UBTTask_FishFighting::ExecuteTask(UBehaviorTreeComponent& Ow
 
 void UBTTask_FishFighting::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
+	UE_LOG(LogTemp, Warning, TEXT("FishFighting"));
+
+
 	AActor* Lure = Cast<AActor>(BlackboardComponent->GetValueAsObject(TEXT("DetectedLure")));
 	AFish* Fish = Cast<AFish>(AIOwner->GetPawn());
 	ACharacter* Character = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);

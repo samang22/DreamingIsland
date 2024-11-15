@@ -12,6 +12,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLinkFishGetEnd);
 
 class AFishingLure;
 class UFishingLinkStatusComponent;
+class AFishingRod;
+
 UCLASS()
 class DREAMINGISLAND_API AFishingLink : public ACharacter
 {
@@ -66,4 +68,11 @@ public:
 	FOnLinkFishGet OnLinkFishGet;
 	UPROPERTY(BlueprintAssignable)
 	FOnLinkFishGetEnd OnLinkFishGetEnd;
+
+protected:
+	TObjectPtr<AFishingRod> FishingRod = nullptr;
+	void KeepFishingRodInHand(float _DeltaTime);
+
+public:
+	void FromFishHangToFishGet();
 };

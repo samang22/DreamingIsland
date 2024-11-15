@@ -34,6 +34,8 @@ EBTNodeResult::Type UBTTask_FishRun::ExecuteTask(UBehaviorTreeComponent& OwnerCo
 
 void UBTTask_FishRun::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
+	UE_LOG(LogTemp, Warning, TEXT("FishRun"));
+
 	AActor* Lure = Cast<AActor>(BlackboardComponent->GetValueAsObject(TEXT("DetectedLure")));
 	AFish* Fish = Cast<AFish>(AIOwner->GetPawn());
 	if (!Lure || !Fish)

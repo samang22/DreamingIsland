@@ -4,11 +4,14 @@
 #include "Actors/Link/FishingLink.h"
 #include "Actors/NPC/FishingLure.h"
 #include "Actors/NPC/Fish.h"
+#include "Actors/Weapon/FishingRod.h"
 #include "Components/StatusComponent/FishingLinkStatusComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Animation/FishingLinkAnimInstance.h"
 #include "Gameframework/PawnMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Components/StatusComponent/FishingRodStatusComponent.h"
+#include "Components/StatusComponent/FishStatusComponent.h"
 
 AFishingLink::AFishingLink(const FObjectInitializer& ObjectInitializer)
 {
@@ -83,6 +86,9 @@ void AFishingLink::BeginPlay()
 			break;
 		}
 	}
+
+	FishingRod = GetWorld()->SpawnActorDeferred<AFishingRod>(AFishingRod::StaticClass(),
+		FTransform::Identity, this, this, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 }
 
 void AFishingLink::OnConstruction(const FTransform& Transform)
@@ -93,7 +99,7 @@ void AFishingLink::OnConstruction(const FTransform& Transform)
 void AFishingLink::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	KeepFishingRodInHand(DeltaTime);
 }
 
 // Called to bind functionality to input
@@ -129,11 +135,15 @@ bool AFishingLink::IsPlayingMontage(FISHINGLINK_MONTAGE  _InEnum)
 void AFishingLink::ThrewLure()
 {
 	StatusComponent->SetFishingLinkStatus(FISHINGLINK_STATUS::FISHING);
+	FishingRod->GetStatusComponent()->SetFishingRodStatus(FISHINGROD_STATUS::THROW_ST);
 }
 
 void AFishingLink::PullLure()
 {
 	if (!FishingLure) return;
+	StatusComponent->SetFishingLinkStatus(FISHINGLINK_STATUS::PULLING);
+	FishingRod->GetStatusComponent()->SetFishingRodStatus(FISHINGROD_STATUS::FIGHTING);
+	if (FishingLure->GetCurrentFish()) FishingLure->GetCurrentFish()->GetStatusComponent()->SetFishStatus(FISH_STATUS::FIGHTING);
 
 	FVector Direction = GetActorLocation() - FishingLure->GetActorLocation();
 	Direction.Normalize();
@@ -148,15 +158,18 @@ void AFishingLink::PullLure()
 
 		if (FishingLure->GetCurrentFish())
 		{
-			PlayMontage(FISHINGLINK_MONTAGE::FISH_GET);
+			PlayMontage(FISHINGLINK_MONTAGE::FISH_HANG);
+			FishingRod->GetStatusComponent()->SetFishingRodStatus(FISHINGROD_STATUS::IDLE);
+
 		}
 		else
 		{
 			PlayMontage(FISHINGLINK_MONTAGE::FISH_LOST);
+			FishingRod->GetStatusComponent()->SetFishingRodStatus(FISHINGROD_STATUS::FISH_LOST);
 		}
-		OnLinkFishGet.Broadcast(GetActorLocation(), GetActorForwardVector());
-		FishingLure->SetIsFollowingActorOffset(true);
-		UKismetSystemLibrary::K2_SetTimer(this, TEXT("CallOnLinkFishGetEnd"), 1.5f, false);
+		//OnLinkFishGet.Broadcast(GetActorLocation(), GetActorForwardVector());
+		//FishingLure->SetIsFollowingActorOffset(true);
+		//UKismetSystemLibrary::K2_SetTimer(this, TEXT("CallOnLinkFishGetEnd"), 1.5f, false);
 	}
 
 }
@@ -167,4 +180,23 @@ void AFishingLink::CallOnLinkFishGetEnd()
 	if (FishingLure->GetCurrentFish()) FishingLure->GetCurrentFish()->Destroy();
 	FishingLure->SetIsFollowingActorOffset(false);
 }
+
+void AFishingLink::KeepFishingRodInHand(float _DeltaTime)
+{
+	USkeletalMeshComponent* SkeletalMeshComponent = GetMesh();
+	FVector Location = SkeletalMeshComponent->GetSocketLocation(TEXT("ItemCarry"));
+	FRotator Rotator = SkeletalMeshComponent->GetSocketRotation(TEXT("ItemCarry"));
+
+	FishingRod->SetActorLocation(Location);
+	FishingRod->SetActorRotation(Rotator);
+}
+
+void AFishingLink::FromFishHangToFishGet()
+{
+	PlayMontage(FISHINGLINK_MONTAGE::FISH_GET);
+	OnLinkFishGet.Broadcast(GetActorLocation(), GetActorForwardVector());
+	FishingLure->SetIsFollowingActorOffset(true);
+	UKismetSystemLibrary::K2_SetTimer(this, TEXT("CallOnLinkFishGetEnd"), 1.5f, false);
+}
+
 
