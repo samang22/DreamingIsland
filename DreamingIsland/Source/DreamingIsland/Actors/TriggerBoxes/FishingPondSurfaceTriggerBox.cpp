@@ -39,7 +39,8 @@ void AFishingPondSurfaceTriggerBox::OnTrigger(UPrimitiveComponent* OverlappedCom
 	AFishingLure* Lure = Cast<AFishingLure>(OtherActor);
 	if (!Lure) return;
 	if (!Lure->GetFollowingActor()) return;
-	AActor* Projectile = Cast<AProjectile>(Lure->GetFollowingActor());
 	Lure->SetFollowingActor(nullptr);
-	Lure->AddForce(Projectile->GetVelocity() * 1000.f);
+
+	AActor* Projectile = Cast<AProjectile>(Lure->GetFollowingActor());
+	if (Projectile)	Lure->AddForce(Projectile->GetVelocity() * 1000.f);
 }

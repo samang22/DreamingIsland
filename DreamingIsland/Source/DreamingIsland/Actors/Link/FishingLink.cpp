@@ -16,7 +16,7 @@ AFishingLink::AFishingLink(const FObjectInitializer& ObjectInitializer)
 	UCapsuleComponent* tempCapsuleComponent = GetCapsuleComponent();
 	tempCapsuleComponent->SetCanEverAffectNavigation(false);
 	RootComponent = tempCapsuleComponent;
-	tempCapsuleComponent->SetCollisionProfileName(CollisionProfileName::Link);
+	tempCapsuleComponent->SetCollisionProfileName(CollisionProfileName::FishingLink);
 	tempCapsuleComponent->SetCapsuleHalfHeight(LINK_CAPSULE_HALF_HEIGHT);
 	tempCapsuleComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
@@ -27,6 +27,10 @@ AFishingLink::AFishingLink(const FObjectInitializer& ObjectInitializer)
 	SkeletalMeshComponent->SetupAttachment(RootComponent);
 
 	MID_Array.Reserve(static_cast<uint32>(LINK_MATERIAL::END));
+
+
+	UPawnMovementComponent* MovementComponent =GetMovementComponent();
+	MovementComponent->SetActive(false);
 }
 
 // Called when the game starts or when spawned
@@ -34,7 +38,7 @@ void AFishingLink::BeginPlay()
 {
 	Super::BeginPlay();
 	UCapsuleComponent* tempCapsuleComponent = GetCapsuleComponent();
-	tempCapsuleComponent->SetCollisionProfileName(CollisionProfileName::Link);
+	tempCapsuleComponent->SetCollisionProfileName(CollisionProfileName::FishingLink);
 	tempCapsuleComponent->bHiddenInGame = COLLISION_HIDDEN_IN_GAME;
 	tempCapsuleComponent->SetSimulatePhysics(false);
 

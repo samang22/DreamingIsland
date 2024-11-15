@@ -47,7 +47,6 @@ void AFishingLinkController::SetupInputComponent()
 
 	if (const UInputAction* InputAction = FUtils::GetInputActionFromName(IMC_Default, TEXT("IA_Attack")))
 	{
-		EnhancedInputComponent->BindAction(InputAction, ETriggerEvent::Completed, this, &ThisClass::OnThrow);
 		EnhancedInputComponent->BindAction(InputAction, ETriggerEvent::Triggered, this, &ThisClass::OnPull);
 	}
 	else
@@ -57,7 +56,8 @@ void AFishingLinkController::SetupInputComponent()
 
 	if (const UInputAction* InputAction = FUtils::GetInputActionFromName(IMC_Default, TEXT("IA_Interact")))
 	{
-		EnhancedInputComponent->BindAction(InputAction, ETriggerEvent::Started, this, &ThisClass::OnShake);
+		EnhancedInputComponent->BindAction(InputAction, ETriggerEvent::Completed, this, &ThisClass::OnThrow);
+		//EnhancedInputComponent->BindAction(InputAction, ETriggerEvent::Started, this, &ThisClass::OnShake);
 	}
 	else
 	{

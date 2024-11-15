@@ -21,7 +21,7 @@
 #define FISH_X_MIN			-1620.f
 #define FISH_Y_MAX			160.f	
 #define FISH_Y_MIN			-420.f
-#define FISH_Z_MAX			800.f
+#define FISH_Z_MAX			700.f
 #define FISH_Z_MIN			80.f
 
 AFish::AFish(const FObjectInitializer& ObjectInitializer)

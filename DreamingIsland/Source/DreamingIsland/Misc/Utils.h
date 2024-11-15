@@ -118,6 +118,7 @@ namespace CollisionProfileName
 	static inline FName Magnet = TEXT("Magnet");
 	static inline FName Lure = TEXT("Lure");
 	static inline FName Fish = TEXT("Fish");
+	static inline FName FishingLink = TEXT("FishingLink");
 }
 
 namespace ProjectileName
@@ -214,6 +215,7 @@ enum class FISHINGLINK_MONTAGE : uint8
 {
 	THROW_LURE = 0,
 	FISH_LOST,
+	FISH_GET,
 	END,
 };
 

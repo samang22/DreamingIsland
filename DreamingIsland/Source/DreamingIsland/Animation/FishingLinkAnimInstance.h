@@ -33,6 +33,7 @@ protected:
 protected:
 	UAnimMontage* FishLostMontage;
 	UAnimMontage* ThrowLureMontage;
+	UAnimMontage* FishGetMontage;
 
 public:
 	void PlayMontage(FISHINGLINK_MONTAGE _InEnum, bool bIsLoop = false);
