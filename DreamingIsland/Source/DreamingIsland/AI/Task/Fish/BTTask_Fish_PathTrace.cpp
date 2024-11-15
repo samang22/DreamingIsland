@@ -47,6 +47,9 @@ void UBTTask_Fish_PathTrace::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* 
 {
 	Super::TickTask(OwnerComp, NodeMemory, DeltaSeconds);
 
+	AFish* Fish = Cast<AFish>(AIOwner->GetPawn());
+	if (!Fish) FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
+
 	UObject* DetectedLure = BlackboardComponent->GetValueAsObject(TEXT("DetectedLure"));
 	if (IsValid(DetectedLure))
 	{
@@ -57,10 +60,13 @@ void UBTTask_Fish_PathTrace::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* 
 	const FVector TargetLocation = SplineComponent->GetLocationAtSplinePoint(CurrentPatrolIndex, ESplineCoordinateSpace::World);
 	const FVector ActorLocation = AIOwner->GetPawn()->GetActorLocation();
 
-	if (FVector::Dist(TargetLocation, ActorLocation) < 200.f)
+	if (FVector::Dist(TargetLocation, ActorLocation) < 10.f)
 	{
 		CurrentPatrolIndex = ++CurrentPatrolIndex % SplinePoints;
 		BlackboardComponent->SetValueAsInt(TEXT("PatrolIndex"), CurrentPatrolIndex);
+		FVector CurrentVelocity = Fish->GetVelocity();
+		CurrentVelocity.Normalize();
+		Fish->SetPhysicsLinearVelocity(CurrentVelocity);
 	}
 	else
 	{
