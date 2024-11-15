@@ -5,7 +5,8 @@
 #include "Components/StatusComponent/FishingLinkStatusComponent.h"
 #include "Animation/FishingLinkAnimInstance.h"
 #include "Components/CapsuleComponent.h"
-
+#include "Actors/NPC/FishingLure.h"
+#include "Gameframework/PawnMovementComponent.h"
 
 AFishingLink::AFishingLink(const FObjectInitializer& ObjectInitializer)
 {
@@ -17,6 +18,7 @@ AFishingLink::AFishingLink(const FObjectInitializer& ObjectInitializer)
 	RootComponent = tempCapsuleComponent;
 	tempCapsuleComponent->SetCollisionProfileName(CollisionProfileName::Link);
 	tempCapsuleComponent->SetCapsuleHalfHeight(LINK_CAPSULE_HALF_HEIGHT);
+	tempCapsuleComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	StatusComponent = CreateDefaultSubobject<UFishingLinkStatusComponent>(TEXT("StatusComponent"));
 
@@ -25,7 +27,6 @@ AFishingLink::AFishingLink(const FObjectInitializer& ObjectInitializer)
 	SkeletalMeshComponent->SetupAttachment(RootComponent);
 
 	MID_Array.Reserve(static_cast<uint32>(LINK_MATERIAL::END));
-
 }
 
 // Called when the game starts or when spawned
@@ -35,6 +36,7 @@ void AFishingLink::BeginPlay()
 	UCapsuleComponent* tempCapsuleComponent = GetCapsuleComponent();
 	tempCapsuleComponent->SetCollisionProfileName(CollisionProfileName::Link);
 	tempCapsuleComponent->bHiddenInGame = COLLISION_HIDDEN_IN_GAME;
+	tempCapsuleComponent->SetSimulatePhysics(false);
 
 	USkeletalMeshComponent* SkeletalMeshComponent = GetMesh();
 
@@ -120,8 +122,24 @@ bool AFishingLink::IsPlayingMontage(FISHINGLINK_MONTAGE  _InEnum)
 
 void AFishingLink::ThrewLure()
 {
-	StatusComponent->SetIsFishing(true);
-	StatusComponent->SetOnAnimationStatus(LINK_BIT_CASTING_IDLE);
-	StatusComponent->SetOffAnimationStatus(LINK_BIT_WAIT);
+	StatusComponent->SetFishingLinkStatus(FISHINGLINK_STATUS::FISHING);
+}
+
+void AFishingLink::PullLure()
+{
+	if (!FishingLure) return;
+
+	FVector Direction = GetActorLocation() - FishingLure->GetActorLocation();
+	Direction.Normalize();
+	
+	FishingLure->AddForce(Direction * FISHINGLINK_PULL_FORCE);
+
+	float Distance = FVector::Dist(GetActorLocation(), FishingLure->GetActorLocation());
+	if (Distance < LURE_BACK_TO_LINK_DISTANCE)
+	{
+		FishingLure->BackToLink();
+		StatusComponent->SetFishingLinkStatus(FISHINGLINK_STATUS::IDLE);
+	}
+
 }
 

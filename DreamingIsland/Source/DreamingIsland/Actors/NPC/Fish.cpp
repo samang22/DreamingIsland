@@ -15,12 +15,14 @@
 #include "Actors/AI/NPC/FishAIController.h"
 #include "Actors/AI/PatrolPath.h"
 #include "Data/FishTableRow.h"
+#include "GameFramework/Character.h"
 
+#define FISH_X_MAX			50.f
+#define FISH_X_MIN			-1620.f
 #define FISH_Y_MAX			160.f	
 #define FISH_Y_MIN			-420.f
-
-#define FISH_X_MAX			350.f
-#define FISH_X_MIN			-1620.f
+#define FISH_Z_MAX			800.f
+#define FISH_Z_MIN			80.f
 
 AFish::AFish(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -91,13 +93,33 @@ void AFish::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	FVector GoalDirection = FMath::Lerp(GetActorForwardVector(), DesiredDirection, 0.2f);
-	SetActorRotation(GoalDirection.Rotation().Quaternion());
+	const FISH_STATUS eFishStatus = StatusComponent->GetFishStatus();
+	if (FISH_STATUS::CATCHED != eFishStatus)
+	{
 
-	FVector GetCurrentLocation = GetActorLocation();
-	GetCurrentLocation.Y = FMath::Clamp(GetCurrentLocation.Y, FISH_Y_MIN, FISH_Y_MAX);
-	GetCurrentLocation.X = FMath::Clamp(GetCurrentLocation.X, FISH_X_MIN, FISH_X_MAX);
-	SetActorLocation(GetCurrentLocation);
+		if (FISH_STATUS::FIGHTING != eFishStatus)
+		{
+			FVector GetCurrentLocation = GetActorLocation();
+			GetCurrentLocation.X = FMath::Clamp(GetCurrentLocation.X, FISH_X_MIN, FISH_X_MAX);
+			GetCurrentLocation.Y = FMath::Clamp(GetCurrentLocation.Y, FISH_Y_MIN, FISH_Y_MAX);
+			GetCurrentLocation.Z = FMath::Clamp(GetCurrentLocation.Z, FISH_Z_MIN, FISH_Z_MAX);
+			SetActorLocation(GetCurrentLocation);
+		}
+		//else
+		//{
+		//	ACharacter* Character = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+		//	if (Character)
+		//	{
+		//		DesiredDirection = Character->GetActorLocation() - GetActorLocation();
+		//		DesiredDirection.Normalize();
+		//	}
+		//}
+		FVector GoalDirection = FMath::Lerp(GetActorForwardVector(), DesiredDirection, 0.2f);
+
+		SetActorRotation(GoalDirection.Rotation().Quaternion());
+	}
+
+
 }
 
 void AFish::PostDuplicate(EDuplicateMode::Type DuplicateMode)

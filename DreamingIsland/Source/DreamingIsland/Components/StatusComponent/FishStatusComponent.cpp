@@ -23,3 +23,40 @@ bool UFishStatusComponent::GetAnimStatus(uint8 InBit) const
 {
 	return FishAnimationStatus & InBit;
 }
+
+void UFishStatusComponent::SetFishStatus(FISH_STATUS eStatus)
+{
+	eFishStatus = eStatus;
+
+	switch (eFishStatus)
+	{
+	case FISH_STATUS::IDLE:
+		SetOnAnimationStatus(FISH_BIT_WAIT);
+		SetOffAnimationStatus(FISH_BIT_CATCHING);
+		SetOffAnimationStatus(FISH_BIT_GET);
+		SetOffAnimationStatus(FISH_BIT_POKEWAIT);
+		break;
+	case FISH_STATUS::POKE:
+		SetOnAnimationStatus(FISH_BIT_POKEWAIT);
+		SetOffAnimationStatus(FISH_BIT_WAIT);
+		SetOffAnimationStatus(FISH_BIT_CATCHING);
+		SetOffAnimationStatus(FISH_BIT_GET);
+		break;
+	case FISH_STATUS::FIGHTING:
+		SetOnAnimationStatus(FISH_BIT_WAIT);
+		SetOffAnimationStatus(FISH_BIT_CATCHING);
+		SetOffAnimationStatus(FISH_BIT_GET);
+		SetOffAnimationStatus(FISH_BIT_POKEWAIT);
+		break;
+	case FISH_STATUS::CATCHED:
+		SetOnAnimationStatus(FISH_BIT_GET);
+		SetOffAnimationStatus(FISH_BIT_WAIT);
+		SetOffAnimationStatus(FISH_BIT_CATCHING);
+		SetOffAnimationStatus(FISH_BIT_POKEWAIT);
+		break;
+	case FISH_STATUS::END:
+		break;
+	default:
+		break;
+	}
+}

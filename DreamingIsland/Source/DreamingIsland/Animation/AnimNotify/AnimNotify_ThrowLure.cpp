@@ -40,6 +40,6 @@ void UAnimNotify_ThrowLure::Notify(USkeletalMeshComponent* MeshComp, UAnimSequen
 	if (AFishingLure* Lure = Link->GetFishingLure())
 	{
 		Lure->SetFollowingActor(Projectile);
-		Link->GetStatusComponent()->SetIsFishing(true);
+		Link->GetStatusComponent()->SetFishingLinkStatus(FISHINGLINK_STATUS::FISHING);
 	}
 }

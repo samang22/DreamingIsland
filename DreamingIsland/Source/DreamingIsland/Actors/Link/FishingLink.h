@@ -52,4 +52,5 @@ public:
 	AFishingLure* GetFishingLure() const { return FishingLure; }
 	void SetFishingLure(AFishingLure* _Lure) { FishingLure = _Lure; }
 	void ThrewLure();
+	void PullLure();
 };

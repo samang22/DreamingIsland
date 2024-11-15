@@ -4,7 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "Components/StatusComponent/StatusComponent.h"
+#include "Misc/Utils.h"
 #include "FishingLinkStatusComponent.generated.h"
+
+
 
 UCLASS()
 class DREAMINGISLAND_API UFishingLinkStatusComponent : public UStatusComponent
@@ -27,8 +30,8 @@ public:
 	bool GetAnimStatus(uint8 InBit) const;
 
 protected:
-	bool bIsFishing = false;
+	FISHINGLINK_STATUS EFishingLinkStatus = FISHINGLINK_STATUS::IDLE;
 public:
-	void SetIsFishing(bool bFlag) { bIsFishing = bFlag; }
-	bool GetIsFishing() { return bIsFishing; }
+	void SetFishingLinkStatus(FISHINGLINK_STATUS eFlag);
+	FISHINGLINK_STATUS GetFishingLinkStatus() const { return EFishingLinkStatus; }
 };

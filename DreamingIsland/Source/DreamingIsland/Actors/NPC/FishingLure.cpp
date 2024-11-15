@@ -10,6 +10,7 @@
 #include "Actors/Link/FishingLink.h"
 #include "Kismet/GameplayStatics.h"
 #include "Actors/NPC/Fish.h"
+#include "Components/StatusComponent/FishStatusComponent.h"
 
 #define FISHINGLURE_FORCE					40000.f
 
@@ -40,7 +41,7 @@ AFishingLure::AFishingLure()
 	GetFishCollisionComponent->SetCollisionProfileName(CollisionProfileName::SenseInteractive);
 	GetFishCollisionComponent->bHiddenInGame = COLLISION_HIDDEN_IN_GAME;
 	GetFishCollisionComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
-	GetFishCollisionComponent->SetRelativeScale3D(FVector(2.0, 2.0, 2.0));
+	GetFishCollisionComponent->SetRelativeScale3D(FVector(4.0, 4.0, 4.0));
 	GetFishCollisionComponent->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::OnBeginOverlap);
 	GetFishCollisionComponent->OnComponentEndOverlap.AddDynamic(this, &ThisClass::OnEndOverlap);
 
@@ -75,7 +76,8 @@ void AFishingLure::Tick(float DeltaTime)
 
 	if (FollowingActor)
 	{
-		SetActorLocation(FollowingActor->GetActorLocation());
+		FVector DesiredLocation = FMath::Lerp(GetActorLocation(), FollowingActor->GetActorLocation(), 0.1f);
+		SetActorLocation(DesiredLocation);
 	}
 	else
 	{
@@ -92,7 +94,10 @@ void AFishingLure::Tick(float DeltaTime)
 		
 	}
 
-	PrevLocation = CurrentLocation;
+	if (CurrentFish && FISH_STATUS::CATCHED == CurrentFish->GetStatusComponent()->GetFishStatus())
+	{
+		CurrentFish->SetActorLocation(GetActorLocation());
+	}
 }
 
 void AFishingLure::BeginPlay()
@@ -131,6 +136,7 @@ void AFishingLure::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 	if (AFish* Fish = Cast<AFish>(OtherActor))
 	{
 		CurrentFish = Fish;
+		//CurrentFish->GetStatusComponent()->SetFishStatus(FISH_STATUS::);
 	}
 }
 
@@ -138,6 +144,7 @@ void AFishingLure::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor
 {
 	if (AFish* Fish = Cast<AFish>(OtherActor))
 	{
+		CurrentFish->GetStatusComponent()->SetFishStatus(FISH_STATUS::IDLE);
 		CurrentFish = nullptr;
 	}
 }
@@ -150,5 +157,19 @@ void AFishingLure::PullFish()
 	Direction.Normalize();
 
 	CurrentFish->AddForce(Direction * LURE_PULL_FORCE);
+	CurrentFish->GetStatusComponent()->SetFishStatus(FISH_STATUS::FIGHTING);
+}
+
+void AFishingLure::BackToLink()
+{
+	ACharacter* Character = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+	AFishingLink* Link = Cast<AFishingLink>(Character);
+	SetFollowingActor(Link);
+	if (CurrentFish)
+	{
+		CurrentFish->GetStatusComponent()->SetFishStatus(FISH_STATUS::CATCHED);
+		//CurrentFish->SetActorEnableCollision(false);
+	}
+
 }
 

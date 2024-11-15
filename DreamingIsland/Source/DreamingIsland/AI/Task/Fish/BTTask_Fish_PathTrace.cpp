@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "AI/Task/BTTask_Fish_PathTrace.h"
+#include "AI/Task/Fish/BTTask_Fish_PathTrace.h"
 #include "Components/SplineComponent.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h"
 #include "Blueprint/AIAsyncTaskBlueprintProxy.h"

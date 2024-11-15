@@ -84,4 +84,6 @@ protected:
 public:
 	void SetDesiredDirection(FVector _Dir) { DesiredDirection = _Dir; }
 	void SetPhysicsLinearVelocity(FVector _Velocity);
+
+
 };

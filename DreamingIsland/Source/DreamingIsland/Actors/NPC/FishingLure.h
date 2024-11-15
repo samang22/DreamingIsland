@@ -50,7 +50,6 @@ protected:
 
 protected:
 	TObjectPtr<AFish> CurrentFish = nullptr;
-
 protected:
 	UFUNCTION()
 	virtual void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
@@ -59,4 +58,11 @@ protected:
 
 public:
 	void PullFish();
+	void BackToLink();
+
+//protected:
+//	bool bIsInWater = false;
+//public:
+//	void SetIsInWater(bool bFlag) { bIsInWater = bFlag; }
+
 };

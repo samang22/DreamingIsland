@@ -1,19 +1,20 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "AI/Task/BTTask_FishRun.h"
+#include "AI/Task/Fish/BTTask_MoveToLure.h"
 #include "Actors/NPC/Fish.h"
 #include "Misc/Utils.h"
 
-UBTTask_FishRun::UBTTask_FishRun()
+
+UBTTask_MoveToLure::UBTTask_MoveToLure()
 {
-	NodeName = "FishRun";
+	NodeName = "MoveToLure";
 	bCreateNodeInstance = true;
 	bTickIntervals = true;
 	bNotifyTick = true;
 }
 
-EBTNodeResult::Type UBTTask_FishRun::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
+EBTNodeResult::Type UBTTask_MoveToLure::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	BehaviorTreeComponent = &OwnerComp;
 	BlackboardComponent = OwnerComp.GetBlackboardComponent();
@@ -21,37 +22,46 @@ EBTNodeResult::Type UBTTask_FishRun::ExecuteTask(UBehaviorTreeComponent& OwnerCo
 	return EBTNodeResult::InProgress;
 }
 
-void UBTTask_FishRun::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
+void UBTTask_MoveToLure::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
 	AActor* Lure = Cast<AActor>(BlackboardComponent->GetValueAsObject(TEXT("DetectedLure")));
 	AFish* Fish = Cast<AFish>(AIOwner->GetPawn());
+
 	if (!Lure || !Fish)
 	{
 		FinishLatentTask(*BehaviorTreeComponent, EBTNodeResult::Failed);
 		return;
 	}
 
-	FVector Direction = Fish->GetActorLocation() - Lure->GetActorLocation();
-	Direction.Normalize();
+	FVector Direction = FVector::ZeroVector;
+	if (Lure)
+	{
+		Direction = Lure->GetActorLocation() - AIOwner->GetPawn()->GetActorLocation();
+		Direction.Normalize();
+	}
 
-	const FName FishName = Fish->GetFishName();
+
+	if (FVector::Dist(Fish->GetActorLocation(), Lure->GetActorLocation()) < FISH_POKE_DISTANCE)
+	{
+		FinishLatentTask(*BehaviorTreeComponent, EBTNodeResult::Failed);
+		return;
+	}
 
 	float Force = 0.f;
+	const FName FishName = Fish->GetFishName();
 	if (FishName == TEXT("SmallFish"))
 	{
-		Force = SMALLFISH_PULL_FORCE;
+		Force = SMALLFISH_MOVE_FORCE;
 	}
 	else if (FishName == TEXT("BigFish"))
 	{
-		Force = BIGFISH_PULL_FORCE;
+		Force = BIGFISH_MOVE_FORCE;
 	}
-	Direction.Z = 0.0;
+	// to prevent fish rotate or vertial moveto far
 	Fish->AddForce(Direction * Force);
+	Direction.Z = 0;
 	Fish->SetDesiredDirection(Direction);
 
-	if (FVector::Dist(Lure->GetActorLocation(), Fish->GetActorLocation()) > FISH_AISENSECONFIG_SIGHT_LOSESIGHTRADIUS)
-	{
-		FinishLatentTask(*BehaviorTreeComponent, EBTNodeResult::Failed);
-	}
 	FinishLatentTask(*BehaviorTreeComponent, EBTNodeResult::InProgress);
 }
+

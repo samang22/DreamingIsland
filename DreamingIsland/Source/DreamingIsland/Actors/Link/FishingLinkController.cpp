@@ -84,7 +84,7 @@ void AFishingLinkController::Tick(float DeltaTime)
 
 void AFishingLinkController::OnMove(const FInputActionValue& InputActionValue)
 {
-	if (!StatusComponent->GetIsFishing()) return;
+	if (FISHINGLINK_STATUS::FISHING != StatusComponent->GetFishingLinkStatus()) return;
 
 	const FVector ForwardVector = FVector(0.0, 0.0, 1.0);
 	const FVector RightVector = FVector(1.0, 0.0, 0.0);
@@ -101,7 +101,7 @@ void AFishingLinkController::OnMove(const FInputActionValue& InputActionValue)
 void AFishingLinkController::OnThrow(const FInputActionValue& InputActionValue)
 {
 	AFishingLink* Link = Cast<AFishingLink>(GetPawn());
-	if (!StatusComponent->GetIsFishing())
+	if (FISHINGLINK_STATUS::IDLE == StatusComponent->GetFishingLinkStatus())
 	{
 		Link->PlayMontage(FISHINGLINK_MONTAGE::THROW_LURE);
 	}
@@ -110,9 +110,15 @@ void AFishingLinkController::OnThrow(const FInputActionValue& InputActionValue)
 void AFishingLinkController::OnPull(const FInputActionValue& InputActionValue)
 {
 	AFishingLink* Link = Cast<AFishingLink>(GetPawn());
-	if (StatusComponent->GetIsFishing())
+	if (FISHINGLINK_STATUS::FISHING == StatusComponent->GetFishingLinkStatus())
+	{
+		StatusComponent->SetFishingLinkStatus(FISHINGLINK_STATUS::PULLING);
+	}
+
+	if (FISHINGLINK_STATUS::PULLING == StatusComponent->GetFishingLinkStatus())
 	{
 		Link->GetFishingLure()->PullFish();
+		Link->PullLure();
 	}
 }
 
