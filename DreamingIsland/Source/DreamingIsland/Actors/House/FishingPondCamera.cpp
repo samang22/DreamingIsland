@@ -5,6 +5,8 @@
 #include "Actors/Link/FishingLinkController.h"
 #include "Kismet/GameplayStatics.h"
 #include "Camera/CameraComponent.h"
+#include "Misc/Utils.h"
+#include "Actors/Link/FishingLink.h"
 
 #define DEFAULT_FISHINGPOND_CAMERA_POSITION			FVector(-420.0, 2800.0, 550.0)
 #define DEFAULT_FISHINGPOND_CAMERA_ROTATION			FRotator(0., -89.99, 0)
@@ -40,6 +42,13 @@ void AFishingPondCamera::BeginPlay()
 		Camera->ProjectionMode = ECameraProjectionMode::Orthographic;
 		Camera->OrthoWidth = FISHINGPOND_CAMERA_ORTHO_WIDTH;  // 원하는 직교 투영의 크기로 설정
 	}
+
+	ACharacter* Character = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+	if (AFishingLink* Link = Cast<AFishingLink>(Character))
+	{
+		Link->OnLinkFishGet.AddDynamic(this, &ThisClass::OnLinkFishGet);
+		Link->OnLinkFishGetEnd.AddDynamic(this, &ThisClass::OnLinkFishGetEnd);
+	}
 }
 
 // Called every frame
@@ -56,7 +65,35 @@ void AFishingPondCamera::Tick(float DeltaTime)
 	SetActorRotation(CurrentRotator);
 }
 
-void AFishingPondCamera::OnLinkCatch(FVector LinkLocation)
+void AFishingPondCamera::OnLinkFishGet(FVector LinkLocation, FVector ForwardVector)
 {
+	if (Camera)
+	{
+		Camera->ProjectionMode = ECameraProjectionMode::Perspective;
+	}
+
+	FVector tempLocation = LinkLocation;
+	tempLocation += ForwardVector * LINK_ITEM_GET_FORWARD_OFFSET;
+	tempLocation += FVector(0., 0., 1.) * LINK_ITEM_GET_UP_OFFSET;
+
+	DesiredLocation = tempLocation;
+
+	FVector NewVector = LinkLocation - DesiredLocation;
+	NewVector.Normalize();
+
+	float Pitch = FMath::Asin(NewVector.Z) * (180.0f / PI);
+	float Yaw = FMath::Atan2(NewVector.Y, NewVector.X) * (180.0f / PI);
+	DesiredRotator = FRotator(Pitch, Yaw, 0.f);
 }
 
+void AFishingPondCamera::OnLinkFishGetEnd()
+{
+	if (Camera)
+	{
+		Camera->ProjectionMode = ECameraProjectionMode::Orthographic;
+		Camera->OrthoWidth = FISHINGPOND_CAMERA_ORTHO_WIDTH; 
+	}
+
+	DesiredLocation = DefaultLocation;
+	DesiredRotator = DefaultRotator;
+}

@@ -4,6 +4,7 @@
 #include "AI/Task/Fish/BTTask_FishPoke.h"
 #include "Misc/Utils.h"
 #include "Actors/NPC/Fish.h"
+#include "Components/StatusComponent/FishStatusComponent.h"
 
 UBTTask_FishPoke::UBTTask_FishPoke()
 {
@@ -19,9 +20,11 @@ EBTNodeResult::Type UBTTask_FishPoke::ExecuteTask(UBehaviorTreeComponent& OwnerC
 	BlackboardComponent = OwnerComp.GetBlackboardComponent();
 
 	AFish* Fish = Cast<AFish>(AIOwner->GetPawn());
-	if (!Fish) return EBTNodeResult::Failed; 
-	Fish->SetPhysicsLinearVelocity(FVector::ZeroVector);
 
+	if (!Fish) return EBTNodeResult::Failed; 
+	if (FISH_STATUS::FIGHTING == Fish->GetStatusComponent()->GetFishStatus()) return EBTNodeResult::Failed;
+
+	Fish->SetPhysicsLinearVelocity(FVector::ZeroVector);
 	Fish->PlayMontage(FISH_MONTAGE::POKE);
 
 	return EBTNodeResult::InProgress;

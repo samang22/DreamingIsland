@@ -2,11 +2,13 @@
 
 
 #include "Actors/Link/FishingLink.h"
-#include "Components/StatusComponent/FishingLinkStatusComponent.h"
-#include "Animation/FishingLinkAnimInstance.h"
-#include "Components/CapsuleComponent.h"
 #include "Actors/NPC/FishingLure.h"
+#include "Actors/NPC/Fish.h"
+#include "Components/StatusComponent/FishingLinkStatusComponent.h"
+#include "Components/CapsuleComponent.h"
+#include "Animation/FishingLinkAnimInstance.h"
 #include "Gameframework/PawnMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 AFishingLink::AFishingLink(const FObjectInitializer& ObjectInitializer)
 {
@@ -143,7 +145,26 @@ void AFishingLink::PullLure()
 	{
 		FishingLure->BackToLink();
 		StatusComponent->SetFishingLinkStatus(FISHINGLINK_STATUS::IDLE);
+
+		if (FishingLure->GetCurrentFish())
+		{
+			PlayMontage(FISHINGLINK_MONTAGE::FISH_GET);
+		}
+		else
+		{
+			PlayMontage(FISHINGLINK_MONTAGE::FISH_LOST);
+		}
+		OnLinkFishGet.Broadcast(GetActorLocation(), GetActorForwardVector());
+		FishingLure->SetIsFollowingActorOffset(true);
+		UKismetSystemLibrary::K2_SetTimer(this, TEXT("CallOnLinkFishGetEnd"), 1.5f, false);
 	}
 
+}
+
+void AFishingLink::CallOnLinkFishGetEnd()
+{
+	OnLinkFishGetEnd.Broadcast();
+	if (FishingLure->GetCurrentFish()) FishingLure->GetCurrentFish()->Destroy();
+	FishingLure->SetIsFollowingActorOffset(false);
 }
 

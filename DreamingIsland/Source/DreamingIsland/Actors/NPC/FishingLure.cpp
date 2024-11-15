@@ -76,7 +76,15 @@ void AFishingLure::Tick(float DeltaTime)
 
 	if (FollowingActor)
 	{
-		FVector DesiredLocation = FMath::Lerp(GetActorLocation(), FollowingActor->GetActorLocation(), 0.1f);
+		FVector FollowingActorLocation = FVector::ZeroVector;
+
+		FollowingActorLocation = FollowingActor->GetActorLocation();
+		if (bIsFollowingActorOffset)
+		{
+			FollowingActorLocation.Z += FISHINGLINK_FISH_GET_UP_OFFSET;
+		}
+
+		FVector DesiredLocation = FMath::Lerp(GetActorLocation(), FollowingActorLocation, 0.1f);
 		SetActorLocation(DesiredLocation);
 	}
 	else
@@ -144,8 +152,20 @@ void AFishingLure::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor
 {
 	if (AFish* Fish = Cast<AFish>(OtherActor))
 	{
+		if (FISH_STATUS::FIGHTING == Fish->GetStatusComponent()->GetFishStatus())
+		{
+			FVector Direction = CurrentFish->GetActorLocation() - GetActorLocation();
+			Direction.Normalize();
+
+			CurrentFish->AddForce(Direction * LURE_PULL_FORCE);
+			CurrentFish->SetDesiredDirection(Direction);
+
+		}
 		CurrentFish->GetStatusComponent()->SetFishStatus(FISH_STATUS::IDLE);
 		CurrentFish = nullptr;
+
+
+
 	}
 }
 

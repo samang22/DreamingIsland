@@ -40,6 +40,8 @@ protected:
 
 public:
 	UFUNCTION()
-	void OnLinkCatch(FVector LinkLocation);
+	void OnLinkFishGet(FVector LinkLocation, FVector ForwardVector);
+	UFUNCTION()
+	void OnLinkFishGetEnd();
 
 };

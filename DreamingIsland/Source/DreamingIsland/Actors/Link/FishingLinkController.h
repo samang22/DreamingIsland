@@ -8,9 +8,8 @@
 
 #include "FishingLinkController.generated.h"
 
-/**
- * 
- */
+
+
 UCLASS()
 class DREAMINGISLAND_API AFishingLinkController : public APlayerController
 {
@@ -29,7 +28,6 @@ protected:
 	void OnMove(const FInputActionValue& InputActionValue);
 	void OnThrow(const FInputActionValue& InputActionValue);
 	void OnPull(const FInputActionValue& InputActionValue);
-	void OnPullOff(const FInputActionValue& InputActionValue);
 	void OnShake(const FInputActionValue& InputActionValue);
 
 protected:
@@ -40,4 +38,6 @@ protected:
 	class UFishingLinkStatusComponent* StatusComponent;
 	UPROPERTY()
 	class UFishingLinkAnimInstance* AnimInstance;
+
+
 };

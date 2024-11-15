@@ -6,6 +6,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Actors/Link/LinkController.h"
 #include "Actors/NPC/ToolShopKeeper.h"
+#include "Misc/Utils.h"
 
 #define LINK_LEFT_OFFSET 200.f
 #define LINK_FORWARD_OFFSET -40.f
@@ -14,8 +15,7 @@
 #define TSK_FORWARD_OFFSET 130.f
 #define TSK_UP_OFFSET 50.f
 
-#define LINK_ITEM_GET_FORWARD_OFFSET 150.f
-#define LINK_ITEM_GET_UP_OFFSET 150.f
+
 
 #define DEFAULT_HOUSE_CAMERA_POSITION FVector(-140.0, 530.0, 810.0)
 #define DEFAULT_HOUSE_CAMERA_ROTATION FRotator(-50., -89.99, 0)

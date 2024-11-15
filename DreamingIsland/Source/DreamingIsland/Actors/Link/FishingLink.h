@@ -7,6 +7,9 @@
 #include "Misc/Utils.h"
 #include "FishingLink.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnLinkFishGet, FVector, LinkLocation, FVector, LinkForwardVector);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLinkFishGetEnd);
+
 class AFishingLure;
 class UFishingLinkStatusComponent;
 UCLASS()
@@ -53,4 +56,14 @@ public:
 	void SetFishingLure(AFishingLure* _Lure) { FishingLure = _Lure; }
 	void ThrewLure();
 	void PullLure();
+
+public:
+	UFUNCTION()
+	void CallOnLinkFishGetEnd();
+
+public:
+	UPROPERTY(BlueprintAssignable)
+	FOnLinkFishGet OnLinkFishGet;
+	UPROPERTY(BlueprintAssignable)
+	FOnLinkFishGetEnd OnLinkFishGetEnd;
 };
