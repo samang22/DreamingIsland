@@ -23,6 +23,7 @@ protected:
 	TObjectPtr<class UOpeningWidget> OpeningWidget;
 	TObjectPtr<class UTitleWidget> TitleWidget;
 	TObjectPtr<class UEndingWidget> EndingWidget;
+	TObjectPtr<class ULogoWidget> LogoWidget;
 
 protected:
 	TObjectPtr<UMediaPlayer> MediaPlayer = nullptr;
@@ -33,6 +34,9 @@ protected:
 	UPROPERTY()
 	UMediaTexture* MediaTexture;
 
+public:
+	virtual void Tick(float DeltaTime);
+
 protected:
 	bool bIsOpening = false;
 	bool bIsTitle = false;
@@ -41,4 +45,7 @@ public:
 	void SetIsOpening(bool bFlag) { bIsOpening = bFlag; }
 	void SetIsTitle(bool bFlag) { bIsTitle = bFlag; }
 	void SetIsEnding(bool bFlag) { bIsEnding = bFlag; }
+
+
+
 };

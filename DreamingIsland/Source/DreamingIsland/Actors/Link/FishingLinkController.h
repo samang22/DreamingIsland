@@ -29,6 +29,7 @@ protected:
 	void OnThrow(const FInputActionValue& InputActionValue);
 	void OnPull(const FInputActionValue& InputActionValue);
 	void OnShake(const FInputActionValue& InputActionValue);
+	void OnEnd(const FInputActionValue& InputActionValue);
 
 protected:
 	UPROPERTY()

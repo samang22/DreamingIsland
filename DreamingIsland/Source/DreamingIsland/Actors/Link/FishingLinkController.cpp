@@ -7,7 +7,7 @@
 #include "Animation/FishingLinkAnimInstance.h"
 #include "Actors/Link/FishingLink.h"
 #include "Actors/NPC/FishingLure.h"
-
+#include "Kismet/GameplayStatics.h"
 
 AFishingLinkController::AFishingLinkController()
 {
@@ -63,7 +63,18 @@ void AFishingLinkController::SetupInputComponent()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("IA_Interact is disabled"));
 	}
+
+	if (const UInputAction* InputAction = FUtils::GetInputActionFromName(IMC_Default, TEXT("IA_Throw")))
+	{
+		EnhancedInputComponent->BindAction(InputAction, ETriggerEvent::Completed, this, &ThisClass::OnEnd);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("IA_Interact is disabled"));
+	}
 }
+
+
 
 void AFishingLinkController::OnPossess(APawn* InPawn)
 {
@@ -124,5 +135,10 @@ void AFishingLinkController::OnPull(const FInputActionValue& InputActionValue)
 
 void AFishingLinkController::OnShake(const FInputActionValue& InputActionValue)
 {
+}
+
+void AFishingLinkController::OnEnd(const FInputActionValue& InputActionValue)
+{
+	UGameplayStatics::OpenLevel(GetWorld(), TEXT("Field"));
 }
 
