@@ -51,7 +51,7 @@ public:
 	UFUNCTION()
 	void OnLinkItemGet(FVector LinkLocation, FVector ForwardVector);
 	UFUNCTION()
-	void OnLinkItemGetEnded();
+	void OnLinkItemGetEnd();
 	UFUNCTION()
 	void OnMad(FVector TSKLocation, FVector ForwardVector);
 	UFUNCTION()

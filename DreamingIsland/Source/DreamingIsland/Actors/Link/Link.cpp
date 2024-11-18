@@ -3,6 +3,7 @@
 
 #include "Actors/Link/Link.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Kismet/GameplayStatics.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/SoftWheelSpringArmComponent.h"
@@ -199,7 +200,7 @@ void ALink::BeginPlay()
 		case LINK_MATERIAL::SWORDB_BALL:
 		case LINK_MATERIAL::SHOVEL:
 			bFlag = false;
-		break;
+			break;
 		default:
 			break;
 		}
@@ -208,7 +209,9 @@ void ALink::BeginPlay()
 
 	}
 
-}
+	LinkController->OnLinkItemGet.AddDynamic(this, &ThisClass::OnLinkItemGet);
+	LinkController->OnLinkItemGetEnd.AddDynamic(this, &ThisClass::OnLinkItemGetEnd);
+};
 
 void ALink::OnConstruction(const FTransform& Transform)
 {
@@ -219,6 +222,16 @@ void ALink::OnConstruction(const FTransform& Transform)
 void ALink::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (bCameraZoom)
+	{
+		FVector tempLocation = FMath::Lerp(Camera->GetComponentLocation(), DesiredCameraLocation, 0.1f);
+		FRotator tempRotator = FMath::Lerp(Camera->GetComponentRotation(), DesiredCameraRotator, 0.1f);
+		Camera->SetWorldLocationAndRotation(tempLocation, tempRotator);
+	}
+	else
+	{
+	}
 
 	LinkCatchedSequence(DeltaTime);
 }
@@ -273,6 +286,38 @@ void ALink::DeActiveSpringArm()
 {
 	SpringArm->bEnableCameraLag = false;
 	SpringArm->bUsePawnControlRotation = false;
+}
+
+void ALink::OnLinkItemGet(FVector LinkLocation, FVector ForwardVector)
+{
+	DefaultCameraLocation = Camera->GetComponentLocation();
+	DefaultCameraRotator = Camera->GetComponentRotation();
+
+	bCameraZoom = true;
+
+	FVector tempLocation = GetActorLocation();
+	tempLocation += FVector(0.0, 1.0, 0.0) * LINK_ITEM_GET_FORWARD_OFFSET;
+	tempLocation += FVector(0., 0., 1.) * LINK_ITEM_GET_UP_OFFSET;
+
+	DesiredCameraLocation = tempLocation;
+
+	FVector NewVector = GetActorLocation() - DesiredCameraLocation;
+	NewVector.Normalize();
+
+	float Pitch = FMath::Asin(NewVector.Z) * (180.0f / PI);
+	float Yaw = FMath::Atan2(NewVector.Y, NewVector.X) * (180.0f / PI);
+	DesiredCameraRotator = FRotator(Pitch, Yaw, 0.f);
+
+	FVector NewLinkLook = FVector(0.0, 1.0, 0.0);
+	Pitch = FMath::Asin(NewLinkLook.Z) * (180.0f / PI);
+	Yaw = FMath::Atan2(NewLinkLook.Y, NewLinkLook.X) * (180.0f / PI);
+	SetActorRotation(FRotator(Pitch, Yaw, 0.f));
+}
+
+void ALink::OnLinkItemGetEnd()
+{
+	bCameraZoom = false;
+	Camera->SetWorldLocationAndRotation(DefaultCameraLocation, DefaultCameraRotator);
 }
 
 void ALink::SetSpeedWalk()

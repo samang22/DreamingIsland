@@ -42,7 +42,7 @@ void AHouseCamera::BeginPlay()
 		LinkController->OnLinkTalk.AddDynamic(this, &ThisClass::OnLinkTalk);
 		LinkController->OnLinkTalkEnd.AddDynamic(this, &ThisClass::OnLinkTalkEnd);
 		LinkController->OnLinkItemGet.AddDynamic(this, &ThisClass::OnLinkItemGet);
-		LinkController->OnLinkItemGetEnd.AddDynamic(this, &ThisClass::OnLinkItemGetEnded);
+		LinkController->OnLinkItemGetEnd.AddDynamic(this, &ThisClass::OnLinkItemGetEnd);
 	}
 
 	DefaultLocation = GetActorLocation();
@@ -128,7 +128,7 @@ void AHouseCamera::OnLinkItemGet(FVector LinkLocation, FVector ForwardVector)
 	DesiredRotator = FRotator(Pitch, Yaw, 0.f);
 }
 
-void AHouseCamera::OnLinkItemGetEnded()
+void AHouseCamera::OnLinkItemGetEnd()
 {
 	DesiredLocation = DefaultLocation;
 	DesiredRotator = DefaultRotator;

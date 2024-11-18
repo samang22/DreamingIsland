@@ -74,6 +74,19 @@ public:
 	void DeActiveSpringArm();
 
 protected:
+	FVector DesiredCameraLocation;
+	FRotator DesiredCameraRotator;
+	FVector DefaultCameraLocation;
+	FRotator DefaultCameraRotator;
+	bool bCameraZoom = false;
+public:
+	UFUNCTION()
+	void OnLinkItemGet(FVector LinkLocation, FVector ForwardVector);
+protected:
+	UFUNCTION()
+	void OnLinkItemGetEnd();
+
+protected:
 	UPROPERTY(EditAnywhere, Category = "Projectile")
 	FDataTableRowHandle ProjectileTableRowHandle;
 
@@ -182,4 +195,6 @@ public:
 
 public:
 	void SetMaterialOpacity(LINK_MATERIAL eMaterial, float Opacity);
+
+
 };

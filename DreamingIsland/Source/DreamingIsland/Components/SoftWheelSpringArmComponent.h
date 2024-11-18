@@ -6,7 +6,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "SoftWheelSpringArmComponent.generated.h"
 
-#define MIN_TARGET_ARM_LENGTH		300.f
+#define MIN_TARGET_ARM_LENGTH		50.f
 #define MAX_TARGET_ARM_LENGTH		800.f
 /**
  * 
