@@ -56,13 +56,15 @@ AFishingLure::AFishingLure()
 	StaticMeshComponent->SetRelativeRotation(CurrentRotator);
 	StaticMeshComponent->SetRelativeLocation(FVector(0.0, 0.0, 24.0));
 
-	static ConstructorHelpers::FObjectFinder<UPhysicalMaterial> PhysMaterial(TEXT("/Script/PhysicsCore.PhysicalMaterial'/Game/Blueprint/NPC/FishingLure/PM_FishingLure.PM_FishingLure'"));
-	PhysicalMaterial = PhysMaterial.Object;
-
-	CollisionComponent->SetPhysMaterialOverride(PhysicalMaterial);
-	CollisionComponent->SetEnableGravity(false);
-	CollisionComponent->SetSimulatePhysics(true);
-	CollisionComponent->SetLinearDamping(0.8f);
+	if (!HasAnyFlags(RF_ClassDefaultObject))
+	{
+		static ConstructorHelpers::FObjectFinder<UPhysicalMaterial> PhysMaterial(TEXT("/Script/PhysicsCore.PhysicalMaterial'/Game/Blueprint/NPC/FishingLure/PM_FishingLure.PM_FishingLure'"));
+		PhysicalMaterial = PhysMaterial.Object;
+		CollisionComponent->SetPhysMaterialOverride(PhysicalMaterial);
+		CollisionComponent->SetEnableGravity(false);
+		CollisionComponent->SetSimulatePhysics(true);
+		CollisionComponent->SetLinearDamping(0.8f);
+	}
 
 }
 

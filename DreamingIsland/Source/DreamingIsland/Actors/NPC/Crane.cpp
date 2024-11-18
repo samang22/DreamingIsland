@@ -46,9 +46,11 @@ ACrane::ACrane(const FObjectInitializer& ObjectInitializer)
 	Magnet_StaticMeshComponent->SetCollisionProfileName(CollisionProfileName::BlockAll);
 	RootComponent = Magnet_StaticMeshComponent;
 
-	static ConstructorHelpers::FObjectFinder<UPhysicalMaterial> PhysMaterial(TEXT("/Script/PhysicsCore.PhysicalMaterial'/Game/Assets/Item/PM_Item.PM_Item'"));
-	PhysicalMaterial = PhysMaterial.Object;
-
+	if (!HasAnyFlags(RF_ClassDefaultObject))
+	{
+		static ConstructorHelpers::FObjectFinder<UPhysicalMaterial> PhysMaterial(TEXT("/Script/PhysicsCore.PhysicalMaterial'/Game/Assets/Item/PM_Item.PM_Item'"));
+		PhysicalMaterial = PhysMaterial.Object;
+	}
 	SkeletalMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	SkeletalMeshComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	

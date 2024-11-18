@@ -8,6 +8,7 @@
 #include "Actors/Monsters/Monster.h"
 #include "Components/StatusComponent/MonsterStatusComponent.h"
 #include "Components/StatusComponent/HinoxStatusComponent.h"
+#include "Misc/Utils.h"
 
 UBTTask_Catch::UBTTask_Catch()
 {
@@ -72,8 +73,6 @@ EBTNodeResult::Type UBTTask_Catch::ExecuteTask(UBehaviorTreeComponent& OwnerComp
 		BlackboardComponent->SetValueAsBool(TEXT("CatchTried"), false);
 		return EBTNodeResult::Failed;
 	}
-	
-	return EBTNodeResult::Failed;
 }
 
 void UBTTask_Catch::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)

@@ -20,9 +20,13 @@ AConveyorBelt::AConveyorBelt()
 	DefaultSceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("DefaultSceneRoot"));
 	RootComponent = DefaultSceneRoot;
 
-	static ConstructorHelpers::FObjectFinder<UPhysicalMaterial> PhysMaterial(TEXT("/Script/PhysicsCore.PhysicalMaterial'/Game/Blueprint/NPC/ConveyorBelt/PM_ConveyorBelt.PM_ConveyorBelt'"));
-	check(PhysMaterial.Object);
-	PhysicalMaterial = PhysMaterial.Object;
+	if (!HasAnyFlags(RF_ClassDefaultObject))
+	{
+		static ConstructorHelpers::FObjectFinder<UPhysicalMaterial> PhysMaterial(TEXT("/Script/PhysicsCore.PhysicalMaterial'/Game/Blueprint/NPC/ConveyorBelt/PM_ConveyorBelt.PM_ConveyorBelt'"));
+		check(PhysMaterial.Object);
+		PhysicalMaterial = PhysMaterial.Object;
+
+	}
 	// 
 
 	for (int i = 0; i < CONVEYORBELT_FLOOR_NUM; ++i)
@@ -31,7 +35,10 @@ AConveyorBelt::AConveyorBelt()
 		CollisionComponent_Array.Push(CreateDefaultSubobject<UBoxComponent>(*ComponentName));
 		CollisionComponent_Array[i]->SetBoxExtent(CONVEYORBELT_DEFAULT_BOX_EXTENT);
 		CollisionComponent_Array[i]->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
-		CollisionComponent_Array[i]->SetPhysMaterialOverride(PhysicalMaterial);
+		if (!HasAnyFlags(RF_ClassDefaultObject))
+		{
+			CollisionComponent_Array[i]->SetPhysMaterialOverride(PhysicalMaterial);
+		}
 		CollisionComponent_Array[i]->SetCollisionProfileName(CollisionProfileName::MapMesh);
 		fDistanceAlongSpline_Array.Push(0.f);
 	}

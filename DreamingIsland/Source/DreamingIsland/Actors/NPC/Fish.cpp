@@ -41,10 +41,13 @@ AFish::AFish(const FObjectInitializer& ObjectInitializer)
 	RootComponent = CollisionComponent;
 
 
-	CollisionComponent->SetPhysMaterialOverride(PhysicalMaterial);
-	CollisionComponent->SetEnableGravity(false);
-	CollisionComponent->SetSimulatePhysics(true);
-	CollisionComponent->SetLinearDamping(0.8f);
+	if (!HasAnyFlags(RF_ClassDefaultObject))
+	{
+		CollisionComponent->SetPhysMaterialOverride(PhysicalMaterial);
+		CollisionComponent->SetEnableGravity(false);
+		CollisionComponent->SetSimulatePhysics(true);
+		CollisionComponent->SetLinearDamping(0.8f);
+	}
 
 
 	SkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshComponent"));
@@ -60,11 +63,19 @@ AFish::AFish(const FObjectInitializer& ObjectInitializer)
 	AISenseConfig_Sight->LoseSightRadius = FISH_AISENSECONFIG_SIGHT_LOSESIGHTRADIUS;
 	AISenseConfig_Sight->PeripheralVisionAngleDegrees = FISH_AISENSECONFIG_SIGHT_PERIPHERALVISIONANGLEDEGREES;
 	AIPerceptionComponent->ConfigureSense(*AISenseConfig_Sight);
+	if (AFishAIController* FishAIController = Cast<AFishAIController>(Controller))
+	{
+		FishAIController->SetPerceptionComponent(*AIPerceptionComponent);
+	}
 
 	StatusComponent = CreateDefaultSubobject<UFishStatusComponent>(TEXT("StatusComponent"));
 
-	static ConstructorHelpers::FObjectFinder<UPhysicalMaterial> PhysMaterial(TEXT("/Script/PhysicsCore.PhysicalMaterial'/Game/Blueprint/NPC/FishingLure/PM_Fish.PM_Fish'"));
-	PhysicalMaterial = PhysMaterial.Object;
+	if (!HasAnyFlags(RF_ClassDefaultObject))
+	{
+		static ConstructorHelpers::FObjectFinder<UPhysicalMaterial> PhysMaterial(TEXT("/Script/PhysicsCore.PhysicalMaterial'/Game/Blueprint/NPC/FishingLure/PM_Fish.PM_Fish'"));
+		PhysicalMaterial = PhysMaterial.Object;
+	}
+
 
 }
 

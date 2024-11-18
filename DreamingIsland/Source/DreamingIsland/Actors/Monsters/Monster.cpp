@@ -307,8 +307,6 @@ bool AMonster::IsPlayingMontage(MONSTER_MONTAGE _InEnum)
 	default:
 		return AnimInstance->Montage_IsPlaying(nullptr);
 	}
-
-	return AnimInstance->Montage_IsPlaying(nullptr);
 }
 
 float AMonster::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)

@@ -266,7 +266,6 @@ bool ANPC::IsPlayingMontage(NPC_MONTAGE _InEnum)
 	default:
 		return AnimInstance->Montage_IsPlaying(nullptr);
 	}
-	return AnimInstance->Montage_IsPlaying(nullptr);
 }
 
 FVector ANPC::GetSocketLocation(FName SocketName)

@@ -21,9 +21,11 @@ AItem::AItem(const FObjectInitializer& ObjectInitializer)
 
 	DefaultSceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("DefaultSceneRoot"));
 	RootComponent = DefaultSceneRoot;
-	static ConstructorHelpers::FObjectFinder<UPhysicalMaterial> PhysMaterial(TEXT("/Script/PhysicsCore.PhysicalMaterial'/Game/Assets/Item/PM_Item.PM_Item'"));
-	PhysicalMaterial = PhysMaterial.Object;
-
+	if (!HasAnyFlags(RF_ClassDefaultObject))
+	{
+		static ConstructorHelpers::FObjectFinder<UPhysicalMaterial> PhysMaterial(TEXT("/Script/PhysicsCore.PhysicalMaterial'/Game/Assets/Item/PM_Item.PM_Item'"));
+		PhysicalMaterial = PhysMaterial.Object;
+	}
 	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
 }
 
@@ -45,9 +47,13 @@ void AItem::SetData(const FDataTableRowHandle& InDataTableRowHandle)
 		SetRootComponent(CollisionComponent);
 		DefaultSceneRoot->SetRelativeTransform(FTransform::Identity);
 		DefaultSceneRoot->AttachToComponent(CollisionComponent, FAttachmentTransformRules::KeepRelativeTransform);
-   		CollisionComponent->SetPhysMaterialOverride(PhysicalMaterial);
-		CollisionComponent->SetEnableGravity(true);
-		CollisionComponent->SetSimulatePhysics(true);
+
+		if (!HasAnyFlags(RF_ClassDefaultObject))
+		{
+			CollisionComponent->SetPhysMaterialOverride(PhysicalMaterial);
+			CollisionComponent->SetEnableGravity(true);
+			CollisionComponent->SetSimulatePhysics(true);
+		}
 		if (USphereComponent* SphereComponent = Cast<USphereComponent>(CollisionComponent))
 		{
 			SphereComponent->SetSphereRadius(ItemData->CollisionSphereRadius);
