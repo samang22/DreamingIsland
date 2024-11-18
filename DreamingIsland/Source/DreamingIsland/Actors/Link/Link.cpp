@@ -118,6 +118,10 @@ ALink::ALink(const FObjectInitializer& ObjectInitializer)
 	//RectLightComponent->SetRelativeLocation(FVector(0.0, 0.0, 300.0));
 	//RectLightComponent->Intensity = LINK_SPOTLIGHT_INTENSITY;
 	//RectLightComponent->SetActive(false);
+
+	MID_Array.Reserve(static_cast<uint32>(LINK_MATERIAL::END));
+
+
 }
 
 
@@ -167,6 +171,43 @@ void ALink::BeginPlay()
 	GetMesh()->BoundsScale = 10.f;
 
 	SetSpotLightActive(false);
+
+	USkeletalMeshComponent* SkeletalMeshComponent = GetMesh();
+	// CreateDynamicMaterialInstance func must called in BeginPlay not Constructor
+	for (uint8 i = 0; i < static_cast<uint8>(LINK_MATERIAL::END); ++i)
+	{
+		MID_Array.Push(SkeletalMeshComponent->CreateDynamicMaterialInstance(i));
+	}
+
+	for (uint8 i = 0; i < static_cast<uint8>(LINK_MATERIAL::END); ++i)
+	{
+		bool bFlag = false;
+		switch (static_cast<LINK_MATERIAL>(i))
+		{
+		case LINK_MATERIAL::FLIPPERS:
+		case LINK_MATERIAL::HOOKSHOT:
+		case LINK_MATERIAL::MAGICROD:
+		case LINK_MATERIAL::OCARINA:
+		case LINK_MATERIAL::SHIELDA:
+			bFlag = StatusComponent->GetToolEquipStatus(LINK_TOOL_BIT_SHIELD);
+		case LINK_MATERIAL::SHIELDB:
+		case LINK_MATERIAL::SHIELDB_MIRROR:
+		case LINK_MATERIAL::SWORDA:
+		case LINK_MATERIAL::SWORDA_BALL:
+			bFlag = StatusComponent->GetToolEquipStatus(LINK_TOOL_BIT_SWORD);
+		case LINK_MATERIAL::SWORDB:
+		case LINK_MATERIAL::SWORDB_BALL:
+		case LINK_MATERIAL::SHOVEL:
+			bFlag = false;
+		break;
+		default:
+			break;
+		}
+		FName Name_Opacity = FName(TEXT("Opacity"));
+		MID_Array[i]->SetScalarParameterValue(Name_Opacity, bFlag ? 1.f : 0.f);
+
+	}
+
 }
 
 void ALink::OnConstruction(const FTransform& Transform)
@@ -479,14 +520,7 @@ void ALink::ActivateSlashEffect()
 void ALink::SetSpotLightActive(bool bFlag)
 {
 	SpotLightComponent->SetVisibility(bFlag);
-	//if (bFlag)
-	//{
-	//	SpotLightComponent->SetLightBrightness(LINK_SPOTLIGHT_INTENSITY);
-	//}
-	//else
-	//{
-	//	SpotLightComponent->SetLightBrightness(0.f);
-	//}
+
 }
 
 void ALink::SetRectLightActive(bool bFlag)
@@ -494,9 +528,8 @@ void ALink::SetRectLightActive(bool bFlag)
 	RectLightComponent->SetVisibility(bFlag);
 }
 
-//void ALink::OnSlashEnd(UNiagaraComponent* _NiagaraComponent)
-//{
-//	NiagaraComponent01->Deactivate();
-//	NiagaraComponent02->Deactivate();
-//	NiagaraComponent03->Deactivate();
-//}
+void ALink::SetMaterialOpacity(LINK_MATERIAL eMaterial, float Opacity)
+{
+	FName Name_Opacity = FName(TEXT("Opacity"));
+	MID_Array[static_cast<int>(eMaterial)]->SetScalarParameterValue(Name_Opacity, Opacity);
+}

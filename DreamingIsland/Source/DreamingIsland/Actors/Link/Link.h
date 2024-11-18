@@ -65,6 +65,10 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USphereComponent> SenseInteractCollisionComponent;
 
+protected:
+	UPROPERTY()
+	TArray<TObjectPtr<UMaterialInstanceDynamic>> MID_Array;
+
 public:
 	void ActiveSpringArm();
 	void DeActiveSpringArm();
@@ -175,4 +179,7 @@ protected:
 	TObjectPtr<URectLightComponent> RectLightComponent = nullptr;
 public:
 	void SetRectLightActive(bool bFlag);
+
+public:
+	void SetMaterialOpacity(LINK_MATERIAL eMaterial, float Opacity);
 };

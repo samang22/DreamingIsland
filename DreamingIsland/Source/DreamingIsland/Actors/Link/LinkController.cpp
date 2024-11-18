@@ -226,6 +226,7 @@ void ALinkController::OnAttack(const FInputActionValue& InputActionValue)
 {
 	if (StatusComponent->GetIsConversation() || StatusComponent->GetCrane()) return;
 	ALink* Link = Cast<ALink>(GetPawn());
+	if (!StatusComponent->GetToolEquipStatus(LINK_TOOL_BIT_SWORD)) return;
 	Link->PlayMontage(LINK_MONTAGE::SLASH);
 }
 
@@ -384,10 +385,13 @@ void ALinkController::OnGet(const FInputActionValue& InputActionValue)
 		else if (Item_Name::Shield == ItemName)
 		{
 			StatusComponent->SetOnToolEquipStatus(LINK_TOOL_BIT_SHIELD);
+			Link->SetMaterialOpacity(LINK_MATERIAL::SHIELDA, 1.f);
 		}
 		else if (Item_Name::Sword == ItemName)
 		{
 			StatusComponent->SetOnToolEquipStatus(LINK_TOOL_BIT_SWORD);
+			Link->SetMaterialOpacity(LINK_MATERIAL::SWORDA, 1.f);
+			Link->SetMaterialOpacity(LINK_MATERIAL::SWORDA_BALL, 1.f);
 		}
 		else if (Item_Name::RupeeGreen == ItemName
 			|| Item_Name::RupeeBlue == ItemName

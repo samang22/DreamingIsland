@@ -8,9 +8,7 @@
 #include "Actors/NPC/ToolShopKeeper.h"
 #include "Misc/Utils.h"
 
-#define LINK_LEFT_OFFSET 200.f
-#define LINK_FORWARD_OFFSET -40.f
-#define LINK_UP_OFFSET 50.f
+
 
 #define TSK_FORWARD_OFFSET 130.f
 #define TSK_UP_OFFSET 50.f
@@ -70,9 +68,9 @@ void AHouseCamera::Tick(float DeltaTime)
 void AHouseCamera::OnLinkTalk(FVector LinkLocation, FVector LinkLeftVector, FVector LinkForwardVector)
 {
 	FVector TempLocation = LinkLocation;
-	TempLocation += LinkLeftVector * LINK_LEFT_OFFSET;
-	TempLocation += LinkForwardVector * LINK_FORWARD_OFFSET;
-	TempLocation += FVector(0., 0., 1.) * LINK_UP_OFFSET;
+	TempLocation += LinkLeftVector * LINK_ZOOM_CAMERA_LEFT_OFFSET;
+	TempLocation += LinkForwardVector * LINK_ZOOM_CAMERA_FORWARD_OFFSET;
+	TempLocation += FVector(0., 0., 1.) * LINK_ZOOM_CAMERA_UP_OFFSET;
 	DesiredLocation = TempLocation;
 
 	FVector LinkRightVector = LinkLeftVector * -1;
