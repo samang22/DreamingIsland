@@ -12,6 +12,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLinkCaughtEnd);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnMad, FVector, TSKLocation, FVector, ForwardVector);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnMadEnd);
 
+class UParticleSystemComponent;
 class USpotLightComponent;
 UCLASS()
 class DREAMINGISLAND_API AToolShopKeeper : public ANPC
@@ -78,4 +79,12 @@ public:
 	UFUNCTION()
 	void EndShootBeam();
 	bool GetIsShootBeam() { return bIsShootBeam; }
+
+
+protected:
+	UPROPERTY()
+	TObjectPtr<UParticleSystemComponent> BeamEffectComponent;
+
+public:
+	void ActivateEffect();
 };

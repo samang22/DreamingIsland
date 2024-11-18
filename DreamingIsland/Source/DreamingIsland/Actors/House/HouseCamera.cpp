@@ -47,7 +47,7 @@ void AHouseCamera::BeginPlay()
 		LinkController->OnLinkItemGetEnd.AddDynamic(this, &ThisClass::OnLinkItemGetEnded);
 	}
 
-	DefaultLocation = DEFAULT_HOUSE_CAMERA_POSITION;
+	DefaultLocation = GetActorLocation();
 	DefaultRotator = DEFAULT_HOUSE_CAMERA_ROTATION;
 	DesiredLocation = DefaultLocation;
 	DesiredRotator = DefaultRotator;

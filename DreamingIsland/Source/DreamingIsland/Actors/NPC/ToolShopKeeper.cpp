@@ -16,18 +16,21 @@
 #include "Data/NPCTableRow.h"
 #include "Actors/Link/Link.h"
 #include "GameInstance/DreamingIsland_GIS.h"
+#include "Particles/ParticleSystemComponent.h"
+#include "Particles/ParticleSystem.h"
 
 
 
 #define TOOLSHOPKEEPER_SPOTLIGHT_INTENSITY			12000.f
 #define TSK_SAFE_LENGTH								400.f
-#define TSK_LINK_RESET_POSITION						FVector(0.f, 0.f, 48.f)
-#define TSK_LINK_EXECUTION_POSITION					FVector(0.f, 280.f, 48.f)
-#define TSK_MAD_LOCATION FVector(0., -120., 96.)
-#define TSK_DEFAULT_LOCATION FVector(0., -270., 66.)
-#define TSK_TURN_SPEED 3.f
-#define TSK_SPOTLIGHT_ANGLE 10.f
+#define TSK_LINK_RESET_POSITION						FVector(0.0, 0.0, 48.0)
+#define TSK_LINK_EXECUTION_POSITION					FVector(0.0, 280.0, 48.0)
+#define TSK_MAD_LOCATION							FVector(0., -120., 96.)
+#define TSK_DEFAULT_LOCATION						FVector(0., -270., 66.)
+#define TSK_TURN_SPEED								3.f
+#define TSK_SPOTLIGHT_ANGLE							10.f
 
+#define TSK_BEAM_EFFECT_OFFSET						30.f
 
 AToolShopKeeper::AToolShopKeeper(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -43,6 +46,22 @@ AToolShopKeeper::AToolShopKeeper(const FObjectInitializer& ObjectInitializer)
 	ConversationComponent = CreateDefaultSubobject<UTSKConversationComponent>(TEXT("ConversationComponent"));
 
 	NPCName = NPC_Name_Korean::ToolShopKeeper;
+
+
+	static ConstructorHelpers::FObjectFinder<UParticleSystem> ParticleAsset(TEXT("/Script/Engine.ParticleSystem'/Game/Assets/FXVarietyPack/Particles/P_ky_thunderStorm.P_ky_thunderStorm'"));
+	BeamEffectComponent = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("BeamEffectComponent"));
+	BeamEffectComponent->SetupAttachment(RootComponent);
+	if (ParticleAsset.Object)
+	{
+		BeamEffectComponent->SetTemplate(ParticleAsset.Object);
+	}
+	FRotator CurrentRotation = BeamEffectComponent->GetRelativeRotation();
+	FRotator NewRotation = FRotator(CurrentRotation.Pitch + 270.0f, CurrentRotation.Yaw, CurrentRotation.Roll);
+	BeamEffectComponent->SetRelativeRotation(NewRotation);
+	BeamEffectComponent->SetRelativeLocation(GetActorForwardVector() * TSK_BEAM_EFFECT_OFFSET);
+	BeamEffectComponent->SetRelativeScale3D(FVector(0.2, 0.2, 1.0));
+	BeamEffectComponent->SetAutoActivate(false);
+	
 }
 
 void AToolShopKeeper::Tick(float DeltaTime)
@@ -94,6 +113,8 @@ void AToolShopKeeper::Tick_Watching(float DeltaTime)
 
 void AToolShopKeeper::Tick_Rotation(float DeltaTime)
 {
+	if (bIsShootBeam) return;
+
 	const FVector TSK_ForwardVector = GetActorForwardVector();
 	const float DeltaSpeed = DeltaTime * TSK_TURN_SPEED;
 
@@ -212,12 +233,18 @@ void AToolShopKeeper::CallOnMadEnd()
 {
 	OnMadEnd.Broadcast();
 	SetActorLocation(TSK_MAD_LOCATION);
-	FVector YVector(0., 1., 0.);
-	SetActorRotation(YVector.Rotation().Quaternion());
+	//FVector MyVector = FVector(TSK_MAD_LOCATION - TSK_LINK_EXECUTION_POSITION);
+	//MyVector.Z = 0.f;
+	//MyVector.Normalize();
+
+	FRotator MyRotator= FRotator(0.0, 105.9, 0.0);
+
+	SetActorRelativeRotation(MyRotator);
 	SkeletalMeshComponent->GetAnimInstance()->Montage_Play(NPCData->BeamStMontage);
 
 	SetIsShootBeam(true);
 	UKismetSystemLibrary::K2_SetTimer(this, TEXT("EndShootBeam"), 5.f, false);
+
 }
 
 void AToolShopKeeper::EndShootBeam()
@@ -228,4 +255,9 @@ void AToolShopKeeper::EndShootBeam()
 	Subsystem->SaveLinkData();
 
 	UGameplayStatics::OpenLevel(GetWorld(), TEXT("Field"));
+}
+
+void AToolShopKeeper::ActivateEffect()
+{
+	BeamEffectComponent->SetActive(true);
 }

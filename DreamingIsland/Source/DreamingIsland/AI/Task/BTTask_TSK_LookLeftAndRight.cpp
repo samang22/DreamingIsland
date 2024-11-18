@@ -26,6 +26,12 @@ EBTNodeResult::Type UBTTask_TSK_LookLeftAndRight::ExecuteTask(UBehaviorTreeCompo
 		return EBTNodeResult::Failed;
 	}
 
+	if (ToolShopKeeper->GetIsShootBeam())
+	{
+		return EBTNodeResult::Failed;
+	}
+
+
 	ToolShopKeeper->SetIsWatching(true);
 	return EBTNodeResult::Failed;
 }
