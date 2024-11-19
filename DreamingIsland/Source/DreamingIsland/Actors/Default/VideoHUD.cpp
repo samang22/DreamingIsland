@@ -13,12 +13,12 @@
 
 AVideoHUD::AVideoHUD()
 {
-	MediaPlayer = LoadObject<UMediaPlayer>(nullptr, TEXT("/Script/MediaAssets.MediaPlayer'/Game/Assets/Video/MediaPlayer_Opening.MediaPlayer_Opening'"));
+	MediaPlayer = LoadObject<UMediaPlayer>(nullptr, TEXT("/Script/MediaAssets.MediaPlayer'/Game/Movies/MediaPlayer_Opening.MediaPlayer_Opening'"));
 
 	// MediaSource 로드
-	OpeningMediaSource = LoadObject<UMediaSource>(nullptr, TEXT("/Script/MediaAssets.FileMediaSource'/Game/Assets/Video/opening.opening'"));
-	TitleMediaSource = LoadObject<UMediaSource>(nullptr, TEXT("/Script/MediaAssets.FileMediaSource'/Game/Assets/Video/title.title'"));
-	EndingMediaSource = LoadObject<UMediaSource>(nullptr, TEXT("/Script/MediaAssets.FileMediaSource'/Game/Assets/Video/ending.ending'"));
+	OpeningMediaSource = LoadObject<UMediaSource>(nullptr, TEXT("/Script/MediaAssets.FileMediaSource'/Game/Movies/opening.opening'"));
+	TitleMediaSource = LoadObject<UMediaSource>(nullptr, TEXT("/Script/MediaAssets.FileMediaSource'/Game/Movies/title.title'"));
+	EndingMediaSource = LoadObject<UMediaSource>(nullptr, TEXT("/Script/MediaAssets.FileMediaSource'/Game/Movies/ending.ending'"));
 }
 
 void AVideoHUD::BeginPlay()

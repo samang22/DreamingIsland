@@ -40,9 +40,9 @@ AProjectile::AProjectile()
 	StaticMeshComponent->AttachToComponent(CollisionComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
 
-	static ConstructorHelpers::FObjectFinder<UDataTable> Asset(TEXT("/Script/Engine.DataTable'/Game/Data/DT_Projectile.DT_Projectile'"));
+	/*static ConstructorHelpers::FObjectFinder<UDataTable> Asset(TEXT("/Script/Engine.DataTable'/Game/Data/DT_Projectile.DT_Projectile'"));
 	check(Asset.Object);
-	ProjectileDataTable = Asset.Object;
+	ProjectileDataTable = Asset.Object;*/
 
 
 
@@ -50,6 +50,11 @@ AProjectile::AProjectile()
 
 void AProjectile::SetData(const FName& ProjectileName, FName ProfileName)
 {
+	if (!ProjectileDataTable)
+	{
+		ProjectileDataTable = LoadObject<UDataTable>(nullptr, TEXT("/Script/Engine.DataTable'/Game/Data/DT_Projectile.DT_Projectile'"));
+		check(ProjectileDataTable);
+	}
 	if (!ProjectileDataTable->GetRowMap().Find(ProjectileName)) { ensure(false); return; }
 	DataTableRowHandle.DataTable = ProjectileDataTable;
 	DataTableRowHandle.RowName = ProjectileName;

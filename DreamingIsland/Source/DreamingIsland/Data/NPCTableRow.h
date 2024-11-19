@@ -62,15 +62,15 @@ public: // Movement
 
 public: // Animation
 	UPROPERTY(EditAnywhere, Category = "NPC|Animation")
-	UAnimMontage* BeamStMontage;
+	UAnimMontage* BeamStMontage = nullptr;
 	UPROPERTY(EditAnywhere, Category = "NPC|Animation")
-	UAnimMontage* BeamMontage;
+	UAnimMontage* BeamMontage = nullptr;
 	UPROPERTY(EditAnywhere, Category = "NPC|Animation")
-	UAnimMontage* RageMontage;
+	UAnimMontage* RageMontage = nullptr;
 	UPROPERTY(EditAnywhere, Category = "NPC|Animation")
-	UAnimMontage* Action01_Montage;
+	UAnimMontage* Action01_Montage = nullptr;
 	UPROPERTY(EditAnywhere, Category = "NPC|Animation")
-	UAnimMontage* Action02_Montage;
+	UAnimMontage* Action02_Montage = nullptr;
 
 
 

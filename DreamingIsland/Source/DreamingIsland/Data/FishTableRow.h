@@ -41,9 +41,9 @@ public: // Movement
 
 public: // Animation
 	UPROPERTY(EditAnywhere, Category = "Fish|Animation")
-	UAnimMontage* PokeMontage;
+	UAnimMontage* PokeMontage = nullptr;
 	UPROPERTY(EditAnywhere, Category = "Fish|Animation")
-	UAnimMontage* TurnMontage;
+	UAnimMontage* TurnMontage = nullptr;
 
 public: // AI
 	UPROPERTY(EditAnywhere, Category = "Fish|AI")

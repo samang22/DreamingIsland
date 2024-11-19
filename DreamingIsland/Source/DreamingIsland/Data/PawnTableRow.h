@@ -55,27 +55,27 @@ public: // Movement
 
 public: // Animation
 	UPROPERTY(EditAnywhere, Category = "Monster|Animation")
-	UAnimMontage* DamageMontage;
+	UAnimMontage* DamageMontage = nullptr;
 	UPROPERTY(EditAnywhere, Category = "Monster|Animation")
-	UAnimMontage* DeadMontage;
+	UAnimMontage* DeadMontage = nullptr;
 	UPROPERTY(EditAnywhere, Category = "Monster|Animation")
-	UAnimMontage* AttackMontage;
+	UAnimMontage* AttackMontage = nullptr;
 	UPROPERTY(EditAnywhere, Category = "Monster|Animation")
-	UAnimMontage* RushMontage;
+	UAnimMontage* RushMontage = nullptr;
 	UPROPERTY(EditAnywhere, Category = "Monster|Animation")
-	UAnimMontage* FindMontage;
+	UAnimMontage* FindMontage = nullptr;
 	UPROPERTY(EditAnywhere, Category = "Monster|Animation")
-	UAnimMontage* KyoroKyoroMontage;
+	UAnimMontage* KyoroKyoroMontage = nullptr;
 	UPROPERTY(EditAnywhere, Category = "Monster|Animation")
-	UAnimMontage* GuardMontage;
+	UAnimMontage* GuardMontage = nullptr;
 	UPROPERTY(EditAnywhere, Category = "Monster|Animation")
-	UAnimMontage* LaughMontage;
+	UAnimMontage* LaughMontage = nullptr;
 	//UPROPERTY(EditAnywhere, Category = "Monster|Animation")
 	//UAnimMontage* CatchMontage;
 	UPROPERTY(EditAnywhere, Category = "Monster|Animation")
-	UAnimMontage* CatchNoMontage;
+	UAnimMontage* CatchNoMontage = nullptr;
 	UPROPERTY(EditAnywhere, Category = "Monster|Animation")
-	UAnimMontage* ThrowMontage;
+	UAnimMontage* ThrowMontage = nullptr;
 
 
 

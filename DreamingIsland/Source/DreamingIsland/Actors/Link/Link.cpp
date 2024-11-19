@@ -185,17 +185,19 @@ void ALink::BeginPlay()
 		bool bFlag = false;
 		switch (static_cast<LINK_MATERIAL>(i))
 		{
+		case LINK_MATERIAL::SHIELDA:
+			bFlag = StatusComponent->GetToolEquipStatus(LINK_TOOL_BIT_SHIELD);
+			break;
+		case LINK_MATERIAL::SWORDA:
+		case LINK_MATERIAL::SWORDA_BALL:
+			bFlag = StatusComponent->GetToolEquipStatus(LINK_TOOL_BIT_SWORD);
+			break;
 		case LINK_MATERIAL::FLIPPERS:
 		case LINK_MATERIAL::HOOKSHOT:
 		case LINK_MATERIAL::MAGICROD:
 		case LINK_MATERIAL::OCARINA:
-		case LINK_MATERIAL::SHIELDA:
-			bFlag = StatusComponent->GetToolEquipStatus(LINK_TOOL_BIT_SHIELD);
 		case LINK_MATERIAL::SHIELDB:
 		case LINK_MATERIAL::SHIELDB_MIRROR:
-		case LINK_MATERIAL::SWORDA:
-		case LINK_MATERIAL::SWORDA_BALL:
-			bFlag = StatusComponent->GetToolEquipStatus(LINK_TOOL_BIT_SWORD);
 		case LINK_MATERIAL::SWORDB:
 		case LINK_MATERIAL::SWORDB_BALL:
 		case LINK_MATERIAL::SHOVEL:

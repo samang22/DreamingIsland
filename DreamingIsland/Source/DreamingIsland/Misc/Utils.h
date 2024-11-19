@@ -119,19 +119,17 @@ namespace NPC_SocketName
 
 namespace CollisionProfileName
 {
-	static inline FName BlockAllDynamic = TEXT("BlockAllDynamic");
 	static inline FName BlockAll = TEXT("BlockAll");
 	static inline FName Link = TEXT("Link");
 	static inline FName Monster = TEXT("Monster");
 	static inline FName LinkProjectile = TEXT("LinkProjectile");
 	static inline FName MonsterProjectile = TEXT("MonsterProjectile");
-	static inline FName MonsterBodyProjectile = TEXT("MonsterBodyProjectile");
 	static inline FName BombProjectile = TEXT("BombProjectile");
 	static inline FName MapMesh = TEXT("MapMesh");
 	static inline FName SenseLink = TEXT("SenseLink");
 	static inline FName NPC = TEXT("NPC");
-	static inline FName Item = TEXT("Item");
 	static inline FName SenseInteractive = TEXT("SenseInteractive");
+	static inline FName Item = TEXT("Item");
 	static inline FName MyTrigger = TEXT("MyTrigger");
 	static inline FName Magnet = TEXT("Magnet");
 	static inline FName Lure = TEXT("Lure");
@@ -270,20 +268,7 @@ enum class LINK_MATERIAL : uint8
 
 
 #define TRACE_CHANNEL_LINKCHANNEL						ECC_GameTraceChannel1
-#define TRACE_CHANNEL_MONSTERCHANNEL					ECC_GameTraceChannel2
-#define TRACE_CHANNEL_ITEM								ECC_GameTraceChannel3
-#define TRACE_CHANNEL_LINK								ECC_GameTraceChannel5
-#define TRACE_CHANNEL_MONSTER							ECC_GameTraceChannel6
-#define TRACE_CHANNEL_LINKPROJECTILE					ECC_GameTraceChannel7
-#define TRACE_CHANNEL_MONSTERPROJECTILE					ECC_GameTraceChannel8
-#define TRACE_CHANNEL_MONSTERBODYPROJECTILE				ECC_GameTraceChannel9
-#define TRACE_CHANNEL_BOMBPROJECTILE					ECC_GameTraceChannel10
-#define TRACE_CHANNEL_DECORATIONMAPMESH					ECC_GameTraceChannel12
-#define TRACE_CHANNEL_MAPMESH							ECC_GameTraceChannel13
-#define TRACE_CHANNEL_SENSELINK							ECC_GameTraceChannel14
-#define TRACE_CHANNEL_NPC								ECC_GameTraceChannel15
 #define TRACE_CHANNEL_INVISIBLECOLLIDER					ECC_GameTraceChannel16
-#define TRACE_CHANNEL_SENSEINTERACTIVE					ECC_GameTraceChannel18
 
 
 #define	LINK_BIT_WAIT			0x00000001

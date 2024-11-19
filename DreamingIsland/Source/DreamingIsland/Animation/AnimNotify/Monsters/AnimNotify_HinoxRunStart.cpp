@@ -14,5 +14,5 @@ void UAnimNotify_HinoxRunStart::Notify(USkeletalMeshComponent* MeshComp, UAnimSe
 	AMonster* Monster = Cast<AMonster>(MeshComp->GetOwner());
 	check(Monster);
 
-	Monster->SetCollisionProfileName(CollisionProfileName::MonsterBodyProjectile);
+	Monster->SetCollisionProfileName(CollisionProfileName::Monster);
 }
