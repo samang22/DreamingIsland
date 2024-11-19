@@ -2,13 +2,15 @@
 
 
 #include "Actors/TriggerBoxes/ToFieldTriggerBox.h"
-#include "Components/BoxComponent.h"
-#include "Actors/TriggerBoxes/TriggerInterface.h"
-#include "Misc/Utils.h"
 #include "Actors/Link/Link.h"
-#include "Kismet/GameplayStatics.h"
-#include "GameInstance/DreamingIsland_GIS.h"
+#include "Actors/TriggerBoxes/TriggerInterface.h"
+#include "Components/BoxComponent.h"
 #include "Components/StatusComponent/LinkStatusComponent.h"
+#include "Misc/Utils.h"
+#include "Kismet/GameplayStatics.h"
+#include "GameInstance/ASyncLoadingScreen_GIS.h"
+#include "GameInstance/DreamingIsland_GIS.h"
+#include "Blueprint/UserWidget.h"
 
 AToFieldTriggerBox::AToFieldTriggerBox(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -57,6 +59,10 @@ void AToFieldTriggerBox::OnTrigger(UPrimitiveComponent* OverlappedComponent, AAc
 	Link->SetMoveAuto(false);
 	UDreamingIsland_GIS* Subsystem = GetGameInstance()->GetSubsystem<UDreamingIsland_GIS>();
 	Subsystem->SaveLinkData();
+
+	UASyncLoadingScreen_GIS* LoadingScreenSubsystem = GetGameInstance()->GetSubsystem<UASyncLoadingScreen_GIS>();
+	UClass* WidgetClass = LoadClass<UUserWidget>(nullptr, TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/UI_Loading.UI_Loading_C'"));
+	LoadingScreenSubsystem->ShowLoadingScreen(WidgetClass);
 
 	UGameplayStatics::OpenLevel(GetWorld(), TEXT("Field"));
 }
