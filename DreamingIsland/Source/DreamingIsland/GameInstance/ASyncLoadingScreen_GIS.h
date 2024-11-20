@@ -15,5 +15,6 @@ public:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	UFUNCTION(BlueprintCallable)
 	void ShowLoadingScreen(TSubclassOf<UUserWidget> WidgetClass);
-
+	UFUNCTION(BlueprintCallable)
+	void OpenLevelWithLoadingScreen(TSubclassOf<UUserWidget> WidgetClass, const TSoftObjectPtr<UWorld> Level);
 };

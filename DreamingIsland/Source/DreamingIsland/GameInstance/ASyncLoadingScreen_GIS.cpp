@@ -27,3 +27,26 @@ void UASyncLoadingScreen_GIS::ShowLoadingScreen(TSubclassOf<UUserWidget> WidgetC
 		GetMoviePlayer()->SetupLoadingScreen(LoadingScreenAttributes);
 	}
 }
+void UASyncLoadingScreen_GIS::OpenLevelWithLoadingScreen(TSubclassOf<UUserWidget> WidgetClass, const TSoftObjectPtr<UWorld> Level)
+{
+	if (!WidgetClass)
+	{
+		ensureMsgf(false, TEXT("WidgetClass is nullptr"));
+		return;
+	}
+	UUserWidget* Widget = CreateWidget<UUserWidget>(GetWorld(), WidgetClass);
+
+	if (IsMoviePlayerEnabled())
+	{
+		FLoadingScreenAttributes LoadingScreenAttributes;
+		LoadingScreenAttributes.WidgetLoadingScreen = Widget->TakeWidget();
+		//LoadingScreenAttributes.WidgetLoadingScreen = FLoadingScreenAttributes::NewTestLoadingScreenWidget();
+		LoadingScreenAttributes.MinimumLoadingScreenDisplayTime = 3.f;
+		LoadingScreenAttributes.bAutoCompleteWhenLoadingCompletes = true;
+		LoadingScreenAttributes.bAllowEngineTick = true;
+
+		GetMoviePlayer()->SetupLoadingScreen(LoadingScreenAttributes);
+	}
+
+	UGameplayStatics::OpenLevelBySoftObjectPtr(this, Level);
+}
