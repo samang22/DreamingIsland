@@ -160,6 +160,19 @@ void ACrane::Tick(float DeltaTime)
 		}
 		SetActorLocation(CurrentLocation);
 	}
+
+	for (AActor* Iter : CatchingItem_Array)
+	{
+		if (AItem* Item = Cast<AItem>(Iter))
+		{
+			FVector MagnetLocation = GetActorLocation();
+			FVector ItemLocation = GetActorLocation();
+			FVector Direction = MagnetLocation - ItemLocation;
+			Direction.Normalize();
+			Item->AddForce(Direction, MAGNET_FORCE);
+		}
+	}
+
 }
 
 void ACrane::OnSenseItemBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -168,7 +181,7 @@ void ACrane::OnSenseItemBeginOverlap(UPrimitiveComponent* OverlappedComponent, A
 	{
 		if (AItem* Item = Cast<AItem>(OtherActor))
 		{
-			Item->SetMagnet(this);
+			CatchingItem_Array.Push(Item);
 		}
 	}
 }
@@ -177,7 +190,7 @@ void ACrane::OnSenseItemEndOverlap(UPrimitiveComponent* OverlappedComponent, AAc
 {
 	if (AItem* Item = Cast<AItem>(OtherActor))
 	{
-		Item->SetMagnet(nullptr);
+		CatchingItem_Array.Remove(Item);
 	}
 }
 

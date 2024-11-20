@@ -15,6 +15,7 @@
 #include "Actors/Link/Link.h"
 #include "Actors/Items/Item.h"
 #include "Actors/NPC/Cucco.h"
+#include "Actors/Projectile/Bomb.h"
 
 #include "Components/StatusComponent/HinoxStatusComponent.h"
 
@@ -165,17 +166,21 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, U
 			if (ACucco* Cucco = Cast<ACucco>(CatchingActor))
 			{
 				Cucco->ResumeMovement();
-				Cucco->ClearCatchingCuccoActor();
 				Cucco->SetIsCatched(false);
 				Cucco->Landed();
 			}
-			else if (AItem* Item = Cast<AItem>(CatchingActor))
+			//else if (AItem* Item = Cast<AItem>(CatchingActor))
+			//{
+			//	if (Item)
+			//	{
+			//		Item->SetItemCatched(false);
+			//		Item->SetCatchingItemActor(nullptr);
+			//	}
+			//}
+			else if (ABomb* Bomb = Cast<ABomb>(CatchingActor))
 			{
-				if (Item)
-				{
-					Item->SetItemCatched(false);
-					Item->SetCatchingItemActor(nullptr);
-				}
+				Bomb->Explosion();
+				CatchingActor = nullptr;
 			}
 		}
 	}
@@ -187,7 +192,10 @@ void AProjectile::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	CollisionComponent->GetCollisionObjectType();
-
+	if (CatchingActor)
+	{
+		CatchingActor->SetActorLocation(GetActorLocation());
+	}
 }
 
 FVector AProjectile::GetVelocity()

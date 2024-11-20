@@ -6,6 +6,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+
 #include "Components/SoftWheelSpringArmComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SoftWheelSpringArmComponent.h"
@@ -13,12 +14,15 @@
 #include "Components/SphereComponent.h"
 #include "Components/SpotLightComponent.h"
 #include "Components/RectLightComponent.h"
+
 #include "Actors/Projectile/ProjectileTableRow.h"
 #include "Actors/Monsters/Hinox.h"
 #include "Actors/NPC/NPC.h"
 #include "Actors/Items/Item.h"
 #include "Actors/Link/LinkController.h"
 #include "Actors/NPC/Cucco.h"
+#include "Actors/Projectile/Bomb.h"
+
 #include "Animation/LinkAnimInstance.h"
 #include "GameInstance/DreamingIsland_GIS.h"
 #include "NiagaraComponent.h"
@@ -231,9 +235,12 @@ void ALink::Tick(float DeltaTime)
 		FRotator tempRotator = FMath::Lerp(Camera->GetComponentRotation(), DesiredCameraRotator, 0.1f);
 		Camera->SetWorldLocationAndRotation(tempLocation, tempRotator);
 	}
-	else
+
+	if (CatchingActor)
 	{
+		CatchingActor->SetActorLocation(GetActorLocation() + FVector(0.0, 0.0, LINK_ITEM_GET_UP_OFFSET));
 	}
+
 
 	LinkCatchedSequence(DeltaTime);
 }
@@ -398,50 +405,46 @@ bool ALink::IsOverlappedItem()
 
 void ALink::CatchItem()
 {
-	if (!OverlappedItem) return;
-	AItem* Item = Cast<AItem>(OverlappedItem);
-	Item->SetItemCatched(true);
-	Item->SetCatchingItemActor(this);
-	CatchingItem = OverlappedItem;
-	OverlappedItem = nullptr;
-	StatusComponent->SetOnAnimationStatus(LINK_BIT_CARRY);
-}
-
-void ALink::LayItem()
-{
-	if (!CatchingItem) return;
-	AItem* Item = Cast<AItem>(CatchingItem);
-	if (Item)
+	if (!OverlappedItem || CatchingActor) return;
+	if (AItem* Item = Cast<AItem>(OverlappedItem))
 	{
-		Item->SetItemCatched(false);
-		Item->SetCatchingItemActor(nullptr);
+		CatchingActor = OverlappedItem;
+		OverlappedItem = nullptr;
+		StatusComponent->SetOnAnimationStatus(LINK_BIT_CARRY);
 	}
-	CatchingItem = nullptr;
+}
+
+void ALink::ActorThrown()
+{
+	if (!CatchingActor) return;
+	CatchingActor = nullptr;
 	StatusComponent->SetOffAnimationStatus(LINK_BIT_CARRY);
 }
 
-void ALink::ThrewItem()
+bool ALink::IsCatchingActor()
 {
-	if (!CatchingItem) return;
-	CatchingItem = nullptr;
-	StatusComponent->SetOffAnimationStatus(LINK_BIT_CARRY);
-}
-
-bool ALink::IsCatchingItem()
-{
-	if (CatchingItem)
+	if (CatchingActor)
 	{
 		return true;
 	}
 	return false;
 }
 
+void ALink::SetHoldingActor(AActor* Projectile)
+{
+	if (ABomb* Bomb = Cast<ABomb>(Projectile))
+	{
+		StatusComponent->SetOnAnimationStatus(LINK_BIT_CARRY);
+		CatchingActor = Projectile;
+	}
+}
+
 void ALink::DestoryCatchingItem()
 {
-	if (!CatchingItem) return;
+	if (!CatchingActor) return;
 	StatusComponent->SetOffAnimationStatus(LINK_BIT_CARRY);
-	CatchingItem->Destroy();
-	CatchingItem = nullptr;
+	CatchingActor->Destroy();
+	CatchingActor = nullptr;
 }
 
 void ALink::SetOffAnimStatus(uint8 Bit)
@@ -453,37 +456,12 @@ void ALink::CatchCucco()
 {
 	if (!OverlappedNPC) return;
 	
-	ACucco* Cucco = Cast<ACucco>(OverlappedNPC);
-	Cucco->SetCatchingCuccoActor(this);
-	Cucco->SetIsCatched(true);
-	CatchingCucco = OverlappedNPC;
-	OverlappedNPC = nullptr;
-	StatusComponent->SetOnAnimationStatus(LINK_BIT_CARRY);
-}
-
-void ALink::LayCucco()
-{
-	if (!CatchingCucco) return;
-	ACucco* Cucco = Cast<ACucco>(CatchingCucco);
-	if (Cucco)
+	if (ACucco* Cucco = Cast<ACucco>(OverlappedNPC))
 	{
-		Cucco->SetIsCatched(false);
-		Cucco->ClearCatchingCuccoActor();
+		CatchingActor = OverlappedNPC;
+		OverlappedNPC = nullptr;
+		StatusComponent->SetOnAnimationStatus(LINK_BIT_CARRY);
 	}
-	CatchingCucco = nullptr;
-	StatusComponent->SetOffAnimationStatus(LINK_BIT_CARRY);
-}
-
-void ALink::ThrewCucco()
-{
-	if (!CatchingCucco) return;
-	CatchingCucco = nullptr;
-	StatusComponent->SetOffAnimationStatus(LINK_BIT_CARRY);
-}
-
-bool ALink::IsCatchingCucco()
-{
-	return CatchingCucco ? true : false;
 }
 
 void ALink::SetDataFromGIS()

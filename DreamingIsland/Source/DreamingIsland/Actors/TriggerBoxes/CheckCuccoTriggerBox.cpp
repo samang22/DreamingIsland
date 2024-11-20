@@ -38,7 +38,6 @@ void ACheckCuccoTriggerBox::OnTrigger(UPrimitiveComponent* OverlappedComponent, 
 {
 	ACucco* Cucco = Cast<ACucco>(OtherActor);
 	if (!Cucco) return;
-	Cucco->SetCatchingCuccoActor(nullptr);
 	Cucco->SetIsCatched(false);
 
 	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);

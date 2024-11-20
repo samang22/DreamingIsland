@@ -23,18 +23,18 @@ protected:
 
 protected:
 	bool bIsCatched = false;
-	AActor* CatchingCuccoActor = nullptr;
+	//AActor* CatchingCuccoActor = nullptr;
 
 public:
-	void SetIsCatched(bool _bIsCatched) { bIsCatched = _bIsCatched; }
+	void SetIsCatched(bool _bIsCatched);
 	bool GetIsCatched() const { return bIsCatched; }
 	void StopMovement();
 	void ResumeMovement();
-	void SetCatchingCuccoActor(AActor* _CatchingCuccoActor) { CatchingCuccoActor = _CatchingCuccoActor; }
-	void ClearCatchingCuccoActor() { CatchingCuccoActor = nullptr; }
+	//void SetCatchingCuccoActor(AActor* _CatchingCuccoActor) { CatchingCuccoActor = _CatchingCuccoActor; }
+	//void ClearCatchingCuccoActor() { CatchingCuccoActor = nullptr; }
 
 protected:
-	void CuccoCatchedSequence(float DeltaTime);
+	//void CuccoCatchedSequence(float DeltaTime);
 
 protected:
 	bool bIsRun = false;

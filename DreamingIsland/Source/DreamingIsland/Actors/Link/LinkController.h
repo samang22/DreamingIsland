@@ -43,6 +43,7 @@ protected:
 	void OnGet(const FInputActionValue& InputActionValue);
 	void OnCraneDown(const FInputActionValue& InputActionValue);
 	void OnThrow(const FInputActionValue& InputActionValue);
+	void OnBomb(const FInputActionValue& InputActionValue);
 
 protected:
 	UFUNCTION()

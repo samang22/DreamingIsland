@@ -109,6 +109,7 @@ public:
 	bool GetIsCatched() const { return bIsCatched; }
 	void StopMovement();
 	void ResumeMovement();
+public:
 	void SetCatchingLinkActor(AActor* _CatchingLinkActor) { CatchingLinkActor = _CatchingLinkActor; }
 	void StopCatchingLink() { CatchingLinkActor = nullptr; }
 
@@ -120,26 +121,26 @@ public:
 
 
 protected:
-	AActor* OverlappedNPC = nullptr;
-	AActor* OverlappedItem = nullptr;
-	AActor* CatchingItem = nullptr;
-	AActor* CatchingCucco = nullptr;
+	TObjectPtr<AActor> OverlappedNPC = nullptr;
+	TObjectPtr<AActor> OverlappedItem = nullptr;
+	TObjectPtr<AActor> CatchingActor = nullptr;
 public:
 	bool IsOverlappedNPC();
 	bool IsOverlappedItem();
 	void CatchItem();
-	void LayItem();
-	void ThrewItem();
-	bool IsCatchingItem();
-	AActor* GetOverlappedNPC() { return OverlappedNPC; }
-	AActor* GetCatchingItem() { return CatchingItem; }
+	void ActorThrown();
+	bool IsCatchingActor();
+	AActor* GetOverlappedNPC() const { return OverlappedNPC; }
+	AActor* GetCatchingActor() const { return CatchingActor; }
+
+public:
+	void SetHoldingActor(AActor* Projectile);
+
+
 	void DestoryCatchingItem();
 	void SetOffAnimStatus(uint8 Bit);
 	void CatchCucco();
-	void LayCucco();
-	void ThrewCucco();
-	bool IsCatchingCucco();
-	AActor* GetCatchingCucco() { return CatchingCucco; }
+
 
 protected:
 	void SetDataFromGIS();

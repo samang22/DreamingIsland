@@ -162,11 +162,11 @@ void AToolShopKeeper::Tick_LineTrace(float DeltaTime)
 		if (ALink* Link = Cast<ALink>(HitActor))
 		{
 			TSK_Link = Link;
-			if (Link->IsCatchingItem())
+			if (Link->IsCatchingActor())
 			{
 				float Distance = FVector::Dist(Link->GetActorLocation(), GetActorLocation());
 				if (Distance > TSK_SAFE_LENGTH
-					&& !Cast<AItem>(Link->GetCatchingItem())->GetIsPurchased())
+					&& !Cast<AItem>(Link->GetCatchingActor())->GetIsPurchased())
 				{
 					APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 					ADefaultHUD* DefaultHUD = Cast<ADefaultHUD>(PlayerController->GetHUD());

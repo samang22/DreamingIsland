@@ -8,6 +8,7 @@
 #include "Actors/Link/Link.h"
 #include "Actors/NPC/Cucco.h"
 #include "Actors/Items/Item.h"
+#include "Actors/Projectile/Bomb.h"
 
 UAnimNotify_Throw::UAnimNotify_Throw()
 {
@@ -37,16 +38,18 @@ void UAnimNotify_Throw::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBa
 	NewTransform.SetRotation(Link->GetActorForwardVector().Rotation().Quaternion());
 	Projectile->FinishSpawning(NewTransform);
 
-	if (ACucco* Cucco = Cast<ACucco>(Link->GetCatchingCucco()))
+	if (ACucco* Cucco = Cast<ACucco>(Link->GetCatchingActor()))
 	{
-		Cucco->SetCatchingCuccoActor(Projectile);
 		Cucco->Thrown();
-		Link->ThrewCucco();
+		Link->ActorThrown();
 	}
-	else if (AItem* Item = Cast<AItem>(Link->GetCatchingItem()))
+	else if (AItem* Item = Cast<AItem>(Link->GetCatchingActor()))
 	{
-		Item->SetCatchingItemActor(Projectile);
-		Link->ThrewItem();
+		Link->ActorThrown();
+	}
+	else if (ABomb* Bomb = Cast<ABomb>(Link->GetCatchingActor()))
+	{
+		Link->ActorThrown();
 	}
 
 }

@@ -119,40 +119,42 @@ void AItem::BeginPlay()
 void AItem::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	ItemCatchedSequence(DeltaTime);
-	if (Magnet && Magnet->GetIsMagnetic())
-	{
-		FVector MagnetLocation = Magnet->GetActorLocation();
-		FVector ItemLocation = GetActorLocation();
-		FVector Direction = MagnetLocation - ItemLocation;
-		Direction.Normalize();
+	//ItemCatchedSequence(DeltaTime);
+	//if (Magnet && Magnet->GetIsMagnetic())
+	//{
 
-		CollisionComponent->AddForce(MAGNET_FORCE * Direction);
-	}
+
+	//	CollisionComponent->AddForce(MAGNET_FORCE * Direction);
+	//}
 }
 
-void AItem::ItemCatchedSequence(float DeltaTime)
+void AItem::AddForce(FVector _Direction, float Force)
 {
-	if (bIsItemCatched)
-	{
-		if (CatchingItemActor)
-		{
-			if (ALink* Link = Cast<ALink>(CatchingItemActor))
-			{
-				FVector LinkLocation = Link->GetActorLocation();
-				//UE_LOG(LogTemp, Warning, TEXT("Item Height : %f"), LinkLocation.Z);
-
-				LinkLocation.Z += LINK_LOCATION_OFFSET;
-
-				SetActorLocation(LinkLocation);
-				SetActorRotation(Link->GetActorRotation());
-			}
-		}
-	}
+	CollisionComponent->AddForce(Force * _Direction);
 }
 
-void AItem::SetItemCatched(bool _bIsItemCatched)
-{
-	bIsItemCatched = _bIsItemCatched;
-	CollisionComponent->SetSimulatePhysics(!bIsItemCatched);
-}
+//void AItem::ItemCatchedSequence(float DeltaTime)
+//{
+//	if (bIsItemCatched)
+//	{
+//		if (CatchingItemActor)
+//		{
+//			if (ALink* Link = Cast<ALink>(CatchingItemActor))
+//			{
+//				FVector LinkLocation = Link->GetActorLocation();
+//				//UE_LOG(LogTemp, Warning, TEXT("Item Height : %f"), LinkLocation.Z);
+//
+//				LinkLocation.Z += LINK_LOCATION_OFFSET;
+//
+//				SetActorLocation(LinkLocation);
+//				SetActorRotation(Link->GetActorRotation());
+//			}
+//		}
+//	}
+//}
+//
+//void AItem::SetItemCatched(bool _bIsItemCatched)
+//{
+//	bIsItemCatched = _bIsItemCatched;
+//	CollisionComponent->SetSimulatePhysics(!bIsItemCatched);
+//}

@@ -77,4 +77,7 @@ protected:
 public:
 	ACraneFence* GetCraneFence() { return CraneFence; }
 
+protected:
+	TArray<TObjectPtr<AActor>> CatchingItem_Array;
+
 };

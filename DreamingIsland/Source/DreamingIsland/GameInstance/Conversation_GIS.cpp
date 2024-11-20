@@ -35,9 +35,9 @@ void UConversation_GIS::Conversation(ALink* Link, ANPC* NPC, bool& InbIsBroadCas
 
 	if (NPC->GetNPCName() == NPC_Name_Korean::ToolShopKeeper)
 	{
-		if (Link->IsCatchingItem())
+		if (Link->IsCatchingActor())
 		{
-			const AItem* Item = Cast<AItem>(Link->GetCatchingItem());
+			const AItem* Item = Cast<AItem>(Link->GetCatchingActor());
 			FString ItemName = Item->GetItemName().ToString();
 			FString Script1 = NPC->GetScript(TSK_ConversationKey::Buy1); // 은
 			FString ItemValue = FString::FormatAsNumber(Item->GetItemValue());
@@ -49,7 +49,7 @@ void UConversation_GIS::Conversation(ALink* Link, ANPC* NPC, bool& InbIsBroadCas
 			DefaultHUD->OnShowRupeeWidget();
 			DefaultHUD->OnShowChooseWidget();
 		}
-		else if (!Link->IsCatchingItem())
+		else if (!Link->IsCatchingActor())
 		{
 			FString Script = NPC->GetScript(TSK_ConversationKey::Greeting);
 			DefaultHUD->OnSetStringToConversation(NPC->GetNPCName().ToString(), Script);
@@ -200,7 +200,7 @@ void UConversation_GIS::Purchase(ALink* Link, ANPC* NPC, bool& InbIsBroadCast)
 	ADefaultHUD* DefaultHUD = Cast<ADefaultHUD>(LinkController->GetHUD());
 	if (NPC_Name_Korean::ToolShopKeeper == NPC->GetNPCName())
 	{
-		AItem* Item = Cast<AItem>(Link->GetCatchingItem());
+		AItem* Item = Cast<AItem>(Link->GetCatchingActor());
 		if (!Item) return;
 		if (StatusComponent->GetRupee() >= Item->GetItemValue())
 		{

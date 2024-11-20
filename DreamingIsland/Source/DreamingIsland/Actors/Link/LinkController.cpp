@@ -241,7 +241,6 @@ void ALinkController::OnInteract(const FInputActionValue& InputActionValue)
 
 		if (ACucco* Cucco = Cast<ACucco>(NPC))
 		{
-			Cucco->SetCatchingCuccoActor(Link);
 			Link->CatchCucco();
 		}
 		else
@@ -257,7 +256,7 @@ void ALinkController::OnInteract(const FInputActionValue& InputActionValue)
 		}
 	}
 	else if (Link->IsOverlappedItem()
-		&& !Link->IsCatchingItem()
+		&& !Link->IsCatchingActor()
 		)
 	{
 		AnimInstance->PlayMontage(LINK_MONTAGE::ITEM_CARRY);
@@ -283,10 +282,10 @@ void ALinkController::OnLay(const FInputActionValue& InputActionValue)
 		return;
 	}
 
-	if (Link->IsCatchingItem()
+	if (Link->IsCatchingActor()
 	&& !Link->IsPlayingMontage(LINK_MONTAGE::END))
 	{
-		Link->LayItem();
+		Link->ActorThrown();
 	}
 
 
@@ -360,9 +359,9 @@ void ALinkController::OnCheck(const FInputActionValue& InputActionValue)
 void ALinkController::OnGet(const FInputActionValue& InputActionValue)
 {
 	ALink* Link = Cast<ALink>(GetPawn());
-	if (Link->IsCatchingItem())
+	if (Link->IsCatchingActor())
 	{
-		AItem* Item = Cast<AItem>(Link->GetCatchingItem());
+		AItem* Item = Cast<AItem>(Link->GetCatchingActor());
 		Link->SetIsThief(!Item->GetIsPurchased());
 		FName ItemName = Item->GetItemName();
 
@@ -422,10 +421,22 @@ void ALinkController::OnThrow(const FInputActionValue& InputActionValue)
 {
 	if (StatusComponent->GetIsConversation() || StatusComponent->GetCrane()) return;
 	ALink* Link = Cast<ALink>(GetPawn());
-	if (Link->IsCatchingItem() || Link->IsCatchingCucco())
+	if (Link->IsCatchingActor())
 	{
 		Cast<ALink>(GetPawn())->PlayMontage(LINK_MONTAGE::THROW);
 	}
+}
+
+void ALinkController::OnBomb(const FInputActionValue& InputActionValue)
+{
+	if (StatusComponent->GetIsConversation() || StatusComponent->GetCrane()) return;
+
+	if (StatusComponent->GetBomb() <= 0) return;
+	
+	ALink* Link = Cast<ALink>(GetPawn());
+	//Link->SetCatchingItem();
+	AnimInstance->PlayMontage(LINK_MONTAGE::ITEM_CARRY);
+	Link->CatchItem();
 }
 
 void ALinkController::OnSlashAttackMontageEnd(UAnimMontage* Montage, bool bInterrupted)
