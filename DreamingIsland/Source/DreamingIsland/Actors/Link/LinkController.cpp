@@ -172,6 +172,10 @@ void ALinkController::OnWalk(const FInputActionValue& InputActionValue)
 {
 	if (StatusComponent->GetIsConversation()) return;
 
+	ALink* Link = Cast<ALink>(GetPawn());
+	if (Link->IsPlayingMontage(LINK_MONTAGE::SLASH)) return;
+
+
 	const FVector ForwardVector = FVector(1.0, 0.0, 0.0);
 	const FVector RightVector = FVector(0.0, 1.0, 0.0);
 	const FVector2D ActionValue = InputActionValue.Get<FVector2D>();

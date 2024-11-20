@@ -153,8 +153,7 @@ void AItem::AddForce(FVector _Direction, float Force)
 //	}
 //}
 //
-//void AItem::SetItemCatched(bool _bIsItemCatched)
-//{
-//	bIsItemCatched = _bIsItemCatched;
-//	CollisionComponent->SetSimulatePhysics(!bIsItemCatched);
-//}
+void AItem::SetItemPhysics(bool bFlag)
+{
+	CollisionComponent->SetSimulatePhysics(bFlag);
+}

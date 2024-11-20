@@ -93,13 +93,15 @@ ALink::ALink(const FObjectInitializer& ObjectInitializer)
 	{
 		FString ComponentName = FString::Printf(TEXT("NiagaraComponent_%d"), i);
 		SlashEffectComponent_Array.Push(CreateDefaultSubobject<UNiagaraComponent>(*ComponentName));
-		SlashEffectComponent_Array[i]->SetupAttachment(RootComponent);
+		//SlashEffectComponent_Array[i]->SetupAttachment(RootComponent);
+		SlashEffectComponent_Array[i]->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 		if (NiagaraAsset.Object)
 		{
 			SlashEffectComponent_Array[i]->SetAsset(NiagaraAsset.Object);
 		}
 		FRotator CurrentRotation = SlashEffectComponent_Array[i]->GetRelativeRotation();
 		FRotator NewRotation = FRotator(CurrentRotation.Pitch + 90.0f, CurrentRotation.Yaw + 180.f, CurrentRotation.Roll);
+		//FRotator NewRotation = FRotator(CurrentRotation.Pitch, CurrentRotation.Yaw, CurrentRotation.Roll);
 		SlashEffectComponent_Array[i]->SetRelativeRotation(NewRotation);
 		SlashEffectComponent_Array[i]->SetRelativeLocation(GetActorForwardVector() * SLASH_EFFECT_OFFSET);
 		SlashEffectComponent_Array[i]->SetAutoActivate(false);
@@ -238,7 +240,8 @@ void ALink::Tick(float DeltaTime)
 
 	if (CatchingActor)
 	{
-		CatchingActor->SetActorLocation(GetActorLocation() + FVector(0.0, 0.0, LINK_ITEM_GET_UP_OFFSET));
+		CatchingActor->SetActorLocation(GetActorLocation() + FVector(0.0, 0.0, LINK_ITEM_OFFSET));
+		CatchingActor->SetActorRotation(GetActorRotation());
 	}
 
 
@@ -411,23 +414,24 @@ void ALink::CatchItem()
 		CatchingActor = OverlappedItem;
 		OverlappedItem = nullptr;
 		StatusComponent->SetOnAnimationStatus(LINK_BIT_CARRY);
+		Item->SetItemPhysics(false);
 	}
 }
 
 void ALink::ActorThrown()
 {
 	if (!CatchingActor) return;
+	if (AItem* Item = Cast<AItem>(CatchingActor))
+	{
+		Item->SetItemPhysics(true);
+	}
 	CatchingActor = nullptr;
 	StatusComponent->SetOffAnimationStatus(LINK_BIT_CARRY);
 }
 
 bool ALink::IsCatchingActor()
 {
-	if (CatchingActor)
-	{
-		return true;
-	}
-	return false;
+	return CatchingActor ? true : false;
 }
 
 void ALink::SetHoldingActor(AActor* Projectile)

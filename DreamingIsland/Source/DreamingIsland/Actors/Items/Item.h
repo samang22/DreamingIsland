@@ -57,13 +57,8 @@ public:
 	FName GetItemName() const { return DataTableRowHandle.RowName; }
 	int GetItemValue() const { return ItemValue; }
 
-//protected:
-//	void ItemCatchedSequence(float DeltaTime);
-//	bool bIsItemCatched = false;
-//	AActor* CatchingItemActor = nullptr;
-//public:
-//	void SetItemCatched(bool _bIsItemCatched);
-//	void SetCatchingItemActor(AActor* _CatchingItemActor) { CatchingItemActor = _CatchingItemActor;	}
+public:
+	void SetItemPhysics(bool bFlag);
 
 protected:
 	bool bIsPurchased;
@@ -73,9 +68,4 @@ public:
 
 public:
 	void AddForce(FVector _Direction, float Force);
-
-//protected:
-//	ACrane* Magnet = nullptr;
-//public:
-//	void SetMagnet(ACrane* _Magnet) { Magnet = _Magnet; }
 };

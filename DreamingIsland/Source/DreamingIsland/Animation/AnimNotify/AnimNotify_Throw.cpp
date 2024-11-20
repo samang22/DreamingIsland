@@ -33,7 +33,7 @@ void UAnimNotify_Throw::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBa
 	FTransform NewTransform;
 	Projectile->SetData(ProjectileName::Link_Throw, CollisionProfileName::BombProjectile);
 	FVector NewLocation = Link->GetActorLocation();
-	NewLocation.Z += LINK_LOCATION_OFFSET;
+	NewLocation.Z += LINK_ITEM_OFFSET;
 	NewTransform.SetLocation(NewLocation);
 	NewTransform.SetRotation(Link->GetActorForwardVector().Rotation().Quaternion());
 	Projectile->FinishSpawning(NewTransform);
