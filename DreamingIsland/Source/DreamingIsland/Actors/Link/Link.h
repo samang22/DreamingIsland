@@ -132,9 +132,7 @@ public:
 	bool IsCatchingActor();
 	AActor* GetOverlappedNPC() const { return OverlappedNPC; }
 	AActor* GetCatchingActor() const { return CatchingActor; }
-
-public:
-	void SetHoldingActor(AActor* Projectile);
+	void SetCatchingActor(AActor* Projectile);
 
 
 	void DestoryCatchingItem();

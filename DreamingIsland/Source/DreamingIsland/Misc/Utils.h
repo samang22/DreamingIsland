@@ -9,7 +9,7 @@
 #include "EnhancedInputComponent.h"
 
 
-#define COLLISION_HIDDEN_IN_GAME						true
+#define COLLISION_HIDDEN_IN_GAME						false
 #define CRANEGAME_COST									10
 #define MAGNET_FORCE									200000.f
 
@@ -361,3 +361,11 @@ inline float CalculateAngleBetweenVectors(const FVector& A, const FVector& B)
 	// 라디안을 각도로 변환
 	return FMath::RadiansToDegrees(AngleRadians);
 }
+
+inline FRotator MyGetRotator(FVector Direction)
+{
+	double Pitch = FMath::Asin(Direction.Z) * (180.0f / PI);
+	double Yaw = FMath::Atan2(Direction.Y, Direction.X) * (180.0f / PI);
+	return (FRotator(Pitch, Yaw, 0.0));
+}
+

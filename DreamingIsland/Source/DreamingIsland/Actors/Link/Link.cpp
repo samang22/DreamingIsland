@@ -434,12 +434,12 @@ bool ALink::IsCatchingActor()
 	return CatchingActor ? true : false;
 }
 
-void ALink::SetHoldingActor(AActor* Projectile)
+void ALink::SetCatchingActor(AActor* _Actor)
 {
-	if (ABomb* Bomb = Cast<ABomb>(Projectile))
+	if (ABomb* Bomb = Cast<ABomb>(_Actor))
 	{
 		StatusComponent->SetOnAnimationStatus(LINK_BIT_CARRY);
-		CatchingActor = Projectile;
+		CatchingActor = _Actor;
 	}
 }
 

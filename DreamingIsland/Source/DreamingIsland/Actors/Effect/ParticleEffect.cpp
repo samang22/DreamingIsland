@@ -25,6 +25,12 @@ void AParticleEffect::SetData(const FDataTableRowHandle& InDataTableRowHandle)
 	if (!Data) { return; }
 	ParticleEffectData = Data;
 	ParticleEffectComponent->SetTemplate(ParticleEffectData->EffectParticleSystem);
+	fLifeTime = ParticleEffectData->LifeTime;
+}
+
+void AParticleEffect::SetParticleSystem(UParticleSystem* ParticleSystem)
+{
+	ParticleEffectComponent->SetTemplate(ParticleSystem);
 }
 
 void AParticleEffect::PostDuplicate(EDuplicateMode::Type DuplicateMode)
@@ -72,13 +78,10 @@ void AParticleEffect::BeginPlay()
 void AParticleEffect::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if (ParticleEffectData->bIsLifeTime)
+	fCurrentLifeTime += DeltaTime;
+	if (fCurrentLifeTime > fLifeTime)
 	{
-		fLifeTime += DeltaTime;
-		if (fLifeTime > ParticleEffectData->LifeTime)
-		{
-			Destroy();
-		}
+		Destroy();
 	}
 }
 

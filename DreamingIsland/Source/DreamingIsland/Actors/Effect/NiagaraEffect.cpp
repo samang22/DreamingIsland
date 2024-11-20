@@ -25,6 +25,7 @@ void ANiagaraEffect::SetData(const FDataTableRowHandle& InDataTableRowHandle)
 	FNiagaraEffectTableRow* Data = DataTableRowHandle.GetRow<FNiagaraEffectTableRow>(DataTableRowHandle.RowName.ToString());
 	if (!Data) { return; }
 	NiagaraEffectData = Data;
+	fLifeTime = NiagaraEffectData->LifeTime;
 	NiagaraEffectComponent->SetAsset(NiagaraEffectData->EffectNiagaraSystem);
 }
 void ANiagaraEffect::BeginPlay()
@@ -37,14 +38,20 @@ void ANiagaraEffect::BeginPlay()
 void ANiagaraEffect::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if (NiagaraEffectData->bIsLifeTime)
+	fCurrentLifeTime += DeltaTime;
+	if (fCurrentLifeTime > fLifeTime)
 	{
-		fLifeTime += DeltaTime;
-		if (fLifeTime > NiagaraEffectData->LifeTime)
-		{
-			Destroy();
-		}
+		Destroy();
 	}
+}
+void ANiagaraEffect::SetNiagaraSystem(UNiagaraSystem* InAsset)
+{
+	NiagaraEffectComponent->SetAsset(NiagaraEffectData->EffectNiagaraSystem);
+}
+
+void ANiagaraEffect::SetLifeTime(float _LifeTime)
+{
+	fLifeTime = _LifeTime;
 }
 
 void ANiagaraEffect::PostDuplicate(EDuplicateMode::Type DuplicateMode)

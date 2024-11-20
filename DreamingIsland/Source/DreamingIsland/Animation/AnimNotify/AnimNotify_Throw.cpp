@@ -42,14 +42,17 @@ void UAnimNotify_Throw::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBa
 	{
 		Cucco->Thrown();
 		Link->ActorThrown();
+		Projectile->SetCatchingActor(Cucco);
 	}
 	else if (AItem* Item = Cast<AItem>(Link->GetCatchingActor()))
 	{
 		Link->ActorThrown();
+		Projectile->SetCatchingActor(Item);
 	}
 	else if (ABomb* Bomb = Cast<ABomb>(Link->GetCatchingActor()))
 	{
 		Link->ActorThrown();
+		Projectile->SetCatchingActor(Bomb);
 	}
 
 }

@@ -15,7 +15,7 @@ class DREAMINGISLAND_API AParticleEffect : public AActor
 public:	
 	AParticleEffect(const FObjectInitializer& ObjectInitializer);
 	virtual void SetData(const FDataTableRowHandle& InDataTableRowHandle);
-
+	void SetParticleSystem(UParticleSystem* ParticleSystem);
 protected:
 	virtual void PostDuplicate(EDuplicateMode::Type DuplicateMode) override;
 	virtual void PostLoad() override;
@@ -39,6 +39,10 @@ protected:
 	UPROPERTY()
 	TObjectPtr<UParticleSystemComponent> ParticleEffectComponent;
 
+public:
+	void SetLifeTime(float _LifeTime) { fLifeTime = _LifeTime; }
+
 protected:
+	float fCurrentLifeTime;
 	float fLifeTime;
 };

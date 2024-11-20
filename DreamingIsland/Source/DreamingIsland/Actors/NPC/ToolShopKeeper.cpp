@@ -165,20 +165,24 @@ void AToolShopKeeper::Tick_LineTrace(float DeltaTime)
 			if (Link->IsCatchingActor())
 			{
 				float Distance = FVector::Dist(Link->GetActorLocation(), GetActorLocation());
-				if (Distance > TSK_SAFE_LENGTH
-					&& !Cast<AItem>(Link->GetCatchingActor())->GetIsPurchased())
+				if (Distance > TSK_SAFE_LENGTH)
 				{
-					APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-					ADefaultHUD* DefaultHUD = Cast<ADefaultHUD>(PlayerController->GetHUD());
-					DefaultHUD->OnSetStringToConversation(GetNPCName().ToString(), ConversationComponent->GetScript(TSK_ConversationKey::Blame));
-					DefaultHUD->OnShowConversationWidget();
-					DefaultHUD->OnDelayHideConversationWidget(1.f);
-					UKismetSystemLibrary::K2_SetTimer(this, TEXT("SetLinkResetPosition"), 1.f, false);
-					UKismetSystemLibrary::K2_SetTimer(this, TEXT("CallOnLinkCaughtEnd"), 1.f, false);
+					if (AItem* Item = Cast<AItem>(Link->GetCatchingActor()))
+					{
+						if (!Item->GetIsPurchased())
+						{
+							APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+							ADefaultHUD* DefaultHUD = Cast<ADefaultHUD>(PlayerController->GetHUD());
+							DefaultHUD->OnSetStringToConversation(GetNPCName().ToString(), ConversationComponent->GetScript(TSK_ConversationKey::Blame));
+							DefaultHUD->OnShowConversationWidget();
+							DefaultHUD->OnDelayHideConversationWidget(1.f);
+							UKismetSystemLibrary::K2_SetTimer(this, TEXT("SetLinkResetPosition"), 1.f, false);
+							UKismetSystemLibrary::K2_SetTimer(this, TEXT("CallOnLinkCaughtEnd"), 1.f, false);
 
-					OnLinkCaught.Broadcast(GetActorLocation(), GetActorForwardVector());
-					bIsWatching = false;
-
+							OnLinkCaught.Broadcast(GetActorLocation(), GetActorForwardVector());
+							bIsWatching = false;
+						}
+					}
 				}
 			}
 			else
@@ -237,9 +241,10 @@ void AToolShopKeeper::CallOnMadEnd()
 	//MyVector.Z = 0.f;
 	//MyVector.Normalize();
 
-	FRotator MyRotator= FRotator(0.0, 105.9, 0.0);
+	//FRotator MyRotator = MyGetRotator(FVector(0.0, 1.0, 0.0));
+	FRotator MyRotator = FRotator(0.0, 110.0, 0.0);
 
-	SetActorRelativeRotation(MyRotator);
+	SetActorRotation(MyRotator);
 	SkeletalMeshComponent->GetAnimInstance()->Montage_Play(NPCData->BeamStMontage);
 
 	SetIsShootBeam(true);

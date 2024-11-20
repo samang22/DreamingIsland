@@ -16,6 +16,7 @@
 #include "Actors/NPC/Crane.h"
 #include "Actors/Items/Item.h"
 #include "Actors/Default/DefaultHUD.h"
+#include "Actors/Projectile/Bomb.h"
 #include "Animation/LinkAnimInstance.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameInstance/DreamingIsland_GIS.h"
@@ -114,6 +115,15 @@ void ALinkController::SetupInputComponent()
 	else
 	{
 		UE_LOG(LogTemp, Warning, TEXT("IA_Throw is disabled"));
+	}
+
+	if (const UInputAction* InputAction = FUtils::GetInputActionFromName(IMC_Default, TEXT("IA_Bomb")))
+	{
+		EnhancedInputComponent->BindAction(InputAction, ETriggerEvent::Completed, this, &ThisClass::OnBomb);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("IA_Bomb is disabled"));
 	}
 
 	if (bZoomWheel)
@@ -437,10 +447,22 @@ void ALinkController::OnBomb(const FInputActionValue& InputActionValue)
 
 	if (StatusComponent->GetBomb() <= 0) return;
 	
-	ALink* Link = Cast<ALink>(GetPawn());
-	//Link->SetCatchingItem();
-	AnimInstance->PlayMontage(LINK_MONTAGE::ITEM_CARRY);
-	Link->CatchItem();
+	StatusComponent->SetBomb(StatusComponent->GetBomb() - 1);
+	ADefaultHUD* DefaultHUD = Cast<ADefaultHUD>(GetHUD());
+	if (DefaultHUD)
+	{
+		DefaultHUD->OnSetBombNum(StatusComponent->GetBomb());
+	}
+	if (ALink* Link = Cast<ALink>(GetPawn()))
+	{
+		ABomb* Bomb = GetWorld()->SpawnActorDeferred<ABomb>(ABomb::StaticClass(),
+			FTransform::Identity, Link, Link, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
+		if (Bomb)
+		{
+			Link->SetCatchingActor(Bomb);
+			AnimInstance->PlayMontage(LINK_MONTAGE::ITEM_CARRY);
+		}
+	}
 }
 
 void ALinkController::OnSlashAttackMontageEnd(UAnimMontage* Montage, bool bInterrupted)

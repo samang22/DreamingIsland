@@ -7,6 +7,7 @@
 #include "NiagaraEffect.generated.h"
 
 class UNiagaraComponent;
+class UNiagaraSystem;
 struct FNiagaraEffectTableRow;
 UCLASS()
 class DREAMINGISLAND_API ANiagaraEffect : public AActor
@@ -40,6 +41,11 @@ protected:
 	UPROPERTY()
 	TObjectPtr<UNiagaraComponent> NiagaraEffectComponent;
 
+public:
+	void SetNiagaraSystem(UNiagaraSystem* InAsset);
+	void SetLifeTime(float _LifeTime);
+
 protected:
-	float fLifeTime = 0;
+	float fCurrentLifeTime = 0.f;
+	float fLifeTime = 0.f;
 };

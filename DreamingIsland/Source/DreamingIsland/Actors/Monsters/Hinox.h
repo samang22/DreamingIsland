@@ -6,9 +6,6 @@
 #include "Actors/Monsters/Monster.h"
 #include "Hinox.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class DREAMINGISLAND_API AHinox : public AMonster
 {
@@ -19,6 +16,4 @@ protected:
 	virtual void BeginPlay() override;
 protected:
 	virtual void OnDie();
-
-
 };

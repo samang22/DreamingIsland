@@ -22,9 +22,14 @@ protected:
 	TObjectPtr<UStaticMeshComponent> StaticMeshComponent;
 	TObjectPtr<USphereComponent> CollisionComponent;
 
+//protected:
+//	TObjectPtr<UPhysicalMaterial> PhysicalMaterial = nullptr;
+
 protected:
-	TObjectPtr<UPhysicalMaterial> PhysicalMaterial = nullptr;
+	UFUNCTION()
+	virtual void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 public:
 	void Explosion();
-};   
+	void SpawnProjectile();
+};

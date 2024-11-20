@@ -31,7 +31,7 @@ AProjectile::AProjectile()
 	ProjectileMovementComponent->InitialSpeed = 100.0;
 	ProjectileMovementComponent->MaxSpeed = 100.0;
 	ProjectileMovementComponent->ProjectileGravityScale = 0.0;
-	InitialLifeSpan = 5.f;
+	InitialLifeSpan = 1.f;
 
 	CollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("CollisionComponent"));
 	CollisionComponent->SetCanEverAffectNavigation(false);
@@ -180,6 +180,8 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, U
 			else if (ABomb* Bomb = Cast<ABomb>(CatchingActor))
 			{
 				Bomb->Explosion();
+				Bomb->SpawnProjectile();
+				Bomb->Destroy();
 				CatchingActor = nullptr;
 			}
 		}
