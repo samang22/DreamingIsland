@@ -13,6 +13,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLinkFishGetEnd);
 class AFishingLure;
 class UFishingLinkStatusComponent;
 class AFishingRod;
+class ULineBatchComponent;
 
 UCLASS()
 class DREAMINGISLAND_API AFishingLink : public ACharacter
@@ -75,4 +76,8 @@ protected:
 
 public:
 	void FromFishHangToFishGet();
+
+protected:
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<ULineBatchComponent> LineBatchComponent;
 };

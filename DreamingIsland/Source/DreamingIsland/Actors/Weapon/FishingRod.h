@@ -32,4 +32,7 @@ protected:
 
 public:
 	TObjectPtr<UFishingRodStatusComponent> GetStatusComponent() { return StatusComponent; }
+
+public:
+	FVector GetFishingRodEndLocation() const;
 };

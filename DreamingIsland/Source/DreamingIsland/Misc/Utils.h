@@ -48,7 +48,7 @@
 
 #define LURE_VELOCITY_LIMIT 150.f
 
-#define LURE_PULL_FORCE 360000.f
+#define LURE_PULL_FORCE 460000.f
 #define FISHINGLINK_PULL_FORCE 150000.f
 
 #define LURE_BACK_TO_LINK_DISTANCE 250.f
@@ -105,6 +105,7 @@ namespace Link_SocketName
 {
 	static inline FName SwordTop = TEXT("itemA_L_top");
 	static inline FName ItemCarry = TEXT("ItemCarry");
+	static inline FName FishingRodEnd = TEXT("FishingRodEnd");
 }
 
 namespace Monster_SocketName

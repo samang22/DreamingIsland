@@ -34,3 +34,8 @@ void AFishingRod::Tick(float DeltaTime)
 
 }
 
+FVector AFishingRod::GetFishingRodEndLocation() const
+{
+	return SkeletalMeshComponent->GetSocketLocation(Link_SocketName::FishingRodEnd);
+}
+

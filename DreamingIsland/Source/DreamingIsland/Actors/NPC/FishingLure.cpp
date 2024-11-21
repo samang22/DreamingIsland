@@ -156,14 +156,14 @@ void AFishingLure::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor
 	{
 		if (FISH_STATUS::FIGHTING == Fish->GetStatusComponent()->GetFishStatus())
 		{
-			FVector Direction = CurrentFish->GetActorLocation() - GetActorLocation();
+			FVector Direction = Fish->GetActorLocation() - GetActorLocation();
 			Direction.Normalize();
 
-			CurrentFish->AddForce(Direction * BIGFISH_PULL_FORCE);
-			CurrentFish->SetDesiredDirection(Direction);
+			Fish->AddForce(Direction * BIGFISH_PULL_FORCE);
+			Fish->SetDesiredDirection(Direction);
 
 		}
-		CurrentFish->GetStatusComponent()->SetFishStatus(FISH_STATUS::IDLE);
+		Fish->GetStatusComponent()->SetFishStatus(FISH_STATUS::IDLE);
 		CurrentFish = nullptr;
 
 

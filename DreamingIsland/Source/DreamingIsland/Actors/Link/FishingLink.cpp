@@ -7,11 +7,12 @@
 #include "Actors/Weapon/FishingRod.h"
 #include "Components/StatusComponent/FishingLinkStatusComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/StatusComponent/FishingRodStatusComponent.h"
+#include "Components/StatusComponent/FishStatusComponent.h"
+#include "Components/LineBatchComponent.h"
 #include "Animation/FishingLinkAnimInstance.h"
 #include "Gameframework/PawnMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "Components/StatusComponent/FishingRodStatusComponent.h"
-#include "Components/StatusComponent/FishStatusComponent.h"
 
 AFishingLink::AFishingLink(const FObjectInitializer& ObjectInitializer)
 {
@@ -36,6 +37,9 @@ AFishingLink::AFishingLink(const FObjectInitializer& ObjectInitializer)
 
 	UPawnMovementComponent* MovementComponent =GetMovementComponent();
 	MovementComponent->SetActive(false);
+
+	LineBatchComponent = CreateDefaultSubobject<ULineBatchComponent>(TEXT("LineBatchComponent"));
+
 }
 
 // Called when the game starts or when spawned
@@ -100,6 +104,27 @@ void AFishingLink::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	KeepFishingRodInHand(DeltaTime);
+	FVector Directions[3][3] = {
+		{FVector(-1.0f,  1.0f,  0.0f), FVector(0.0f,  1.0f,  0.0f), FVector(1.0f,  1.0f,  0.0f)}, // 위쪽 라인
+		{FVector(-1.0f,  0.0f,  0.0f), FVector(0.0f,  0.0f,  0.0f), FVector(1.0f,  0.0f,  0.0f)}, // 중간 라인
+		{FVector(-1.0f, -1.0f,  0.0f), FVector(0.0f, -1.0f,  0.0f), FVector(1.0f, -1.0f,  0.0f)}  // 아래쪽 라인
+	};
+	float AAKernel[3][3] =
+	{
+		{0.5f, 0.8f, 0.5f},
+		{0.8f, 1.0f, 0.8f},
+		{0.5f, 0.8f, 0.5f}
+	};
+
+	for (int i = 0; i < 3; ++i)
+	{
+		for (int j = 0; j < 3; ++j)
+		{
+			LineBatchComponent->DrawLine(FishingRod->GetFishingRodEndLocation() + Directions[i][j] * 2.f,
+				FishingLure->GetActorLocation() + FVector(0.0, 0.0, 25.0) + Directions[i][j] * 2.f,
+				FColor(255.f * AAKernel[i][j], 255.f * AAKernel[i][j], 20.f * AAKernel[i][j]), AAKernel[i][j], 1.5f, DeltaTime * 1.1f);
+		}
+	}
 }
 
 // Called to bind functionality to input
