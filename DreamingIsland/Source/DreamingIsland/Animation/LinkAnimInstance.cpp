@@ -53,6 +53,7 @@ void ULinkAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	bIsWalk = StatusComponent->GetAnimStatus(LINK_BIT_WALK);
 	bIsRun = StatusComponent->GetAnimStatus(LINK_BIT_RUN);
 	bIsCarry = StatusComponent->GetAnimStatus(LINK_BIT_CARRY);
+	bIsBataBata = StatusComponent->GetAnimStatus(LINK_BIT_BATABATA);
 }
 
 void ULinkAnimInstance::PlayMontage(LINK_MONTAGE _InEnum, bool bIsLoop)

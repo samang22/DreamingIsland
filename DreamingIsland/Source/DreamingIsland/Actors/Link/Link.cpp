@@ -353,12 +353,14 @@ void ALink::StopMovement()
 {
 	UCharacterMovementComponent* Movement = GetCharacterMovement();
 	Movement->MaxWalkSpeed = 0.f;
+	GetStatusComponent()->SetOnAnimationStatus(LINK_BIT_BATABATA);
 }
 
 void ALink::ResumeMovement()
 {
 	UCharacterMovementComponent* Movement = GetCharacterMovement();
 	Movement->MaxWalkSpeed = LINK_WALK_SPEED;
+	GetStatusComponent()->SetOffAnimationStatus(LINK_BIT_BATABATA);
 }
 
 void ALink::LinkCatchedSequence(float DeltaTime)

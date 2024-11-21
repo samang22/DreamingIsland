@@ -45,6 +45,8 @@ protected:
 	bool bIsRun = false;
 	UPROPERTY(BlueprintReadOnly)
 	bool bIsCarry = false;
+	UPROPERTY(BlueprintReadOnly)
+	bool bIsBataBata = false;
 
 protected:
 	UAnimMontage* SlashMontage;
