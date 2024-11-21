@@ -8,6 +8,8 @@
 #include "Actors/Link/Link.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameInstance/DreamingIsland_GIS.h"
+#include "GameInstance/ASyncLoadingScreen_GIS.h"
+#include "Blueprint/UserWidget.h"
 
 AToToolShopTriggerBox::AToToolShopTriggerBox(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -59,6 +61,11 @@ void AToToolShopTriggerBox::OnTrigger(UPrimitiveComponent* OverlappedComponent, 
 	FVector LinkLocation = Link->GetActorLocation();
 	LinkLocation.Y += 100.f;
 	Subsystem->SetLinkFieldLocation(LinkLocation);
+	Subsystem->SaveLinkData();
+
+	UASyncLoadingScreen_GIS* LoadingScreenSubsystem = GetGameInstance()->GetSubsystem<UASyncLoadingScreen_GIS>();
+	UClass* WidgetClass = LoadClass<UUserWidget>(nullptr, TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/UI_Loading.UI_Loading_C'"));
+	LoadingScreenSubsystem->ShowLoadingScreen(WidgetClass);
 
 	UGameplayStatics::OpenLevel(GetWorld(), TEXT("ToolShop"));
 }

@@ -44,4 +44,10 @@ public:
 	void SetCuccoRunEnd();
 	void Thrown();
 	void Landed();
+
+protected:
+	bool bIsInChickenFarm = false;
+public:
+	void SetIsInChickenFarm(bool bFlag) { bIsInChickenFarm = bFlag; }
+	bool GetIsInChickenFarm() const { return bIsInChickenFarm; }
 };

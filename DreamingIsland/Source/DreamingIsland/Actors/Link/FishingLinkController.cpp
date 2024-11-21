@@ -8,6 +8,8 @@
 #include "Actors/Link/FishingLink.h"
 #include "Actors/NPC/FishingLure.h"
 #include "Kismet/GameplayStatics.h"
+#include "GameInstance/ASyncLoadingScreen_GIS.h"
+#include "Blueprint/UserWidget.h"
 
 AFishingLinkController::AFishingLinkController()
 {
@@ -139,6 +141,10 @@ void AFishingLinkController::OnShake(const FInputActionValue& InputActionValue)
 
 void AFishingLinkController::OnEnd(const FInputActionValue& InputActionValue)
 {
+	UASyncLoadingScreen_GIS* LoadingScreenSubsystem = GetGameInstance()->GetSubsystem<UASyncLoadingScreen_GIS>();
+	UClass* WidgetClass = LoadClass<UUserWidget>(nullptr, TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/UI_Loading.UI_Loading_C'"));
+	LoadingScreenSubsystem->ShowLoadingScreen(WidgetClass);
+
 	UGameplayStatics::OpenLevel(GetWorld(), TEXT("Field"));
 }
 

@@ -31,7 +31,7 @@ AProjectile::AProjectile()
 	ProjectileMovementComponent->InitialSpeed = 100.0;
 	ProjectileMovementComponent->MaxSpeed = 100.0;
 	ProjectileMovementComponent->ProjectileGravityScale = 0.0;
-	InitialLifeSpan = 1.f;
+	InitialLifeSpan = 3.f;
 
 	CollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("CollisionComponent"));
 	CollisionComponent->SetCanEverAffectNavigation(false);
@@ -91,7 +91,6 @@ void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
 	CollisionComponent->bHiddenInGame = COLLISION_HIDDEN_IN_GAME;
-
 }
 
 void AProjectile::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -128,9 +127,9 @@ void AProjectile::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 
 void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	if (ProjectileTableRow->bUseMonster)
+	if (DataTableRowHandle.RowName == ProjectileName::Hinox_Bomb)
 	{
-		if (DataTableRowHandle.RowName == ProjectileName::Hinox_Bomb)
+		if (ProjectileTableRow->bUseMonster)
 		{
 			UWorld* World = GetWorld();
 
@@ -144,19 +143,15 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, U
 			Monster->FinishSpawning(NewTransform);
 		}
 	}
-	if (DataTableRowHandle.RowName == ProjectileName::Hinox_Link)
+	else if (DataTableRowHandle.RowName == ProjectileName::Hinox_Link)
 	{
-		AHinox* Hinox = Cast<AHinox>(Owner);
-		if (Hinox)
+		ACharacter* Character = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+		ALink* Link = Cast<ALink>(Character);
+		if (Link)
 		{
-			ACharacter* Character = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
-			ALink* Link = Cast<ALink>(Character);
-			if (Link)
-			{
-				Link->ResumeMovement();
-				Link->SetCatchingLinkActor(nullptr);
-				Link->SetIsCatched(false);
-			}
+			Link->ResumeMovement();
+			Link->SetCatchingLinkActor(nullptr);
+			Link->SetIsCatched(false);
 		}
 	}
 	else if (DataTableRowHandle.RowName == ProjectileName::Link_Throw)
@@ -193,7 +188,6 @@ void AProjectile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	CollisionComponent->GetCollisionObjectType();
 	if (CatchingActor)
 	{
 		CatchingActor->SetActorLocation(GetActorLocation());

@@ -14,7 +14,7 @@
 #define CRANE_SPEED							3.f
 #define CRANE_DELTA_SPEED					80.f
 #define CRANE_SPOTLIGHT_ANGLE				10.f
-#define CRANE_SPOTLIGHT_INTENSITY			2000.f
+#define CRANE_SPOTLIGHT_INTENSITY			20000.f
 #define CRANE_DEFAULT_LOCATION				FVector(-480.000000, -140.000000, 340.000000)
 
 #define CRANE_Y_MAX							-140.f
@@ -161,15 +161,18 @@ void ACrane::Tick(float DeltaTime)
 		SetActorLocation(CurrentLocation);
 	}
 
-	for (AActor* Iter : CatchingItem_Array)
+	if (bIsMagnetic)
 	{
-		if (AItem* Item = Cast<AItem>(Iter))
+		for (AActor* Iter : CatchingItem_Array)
 		{
-			FVector MagnetLocation = GetActorLocation();
-			FVector ItemLocation = GetActorLocation();
-			FVector Direction = MagnetLocation - ItemLocation;
-			Direction.Normalize();
-			Item->AddForce(Direction, MAGNET_FORCE);
+			if (AItem* Item = Cast<AItem>(Iter))
+			{
+				FVector MagnetLocation = GetActorLocation();
+				FVector ItemLocation = Item->GetActorLocation();
+				FVector Direction = MagnetLocation - ItemLocation;
+				Direction.Normalize();
+				Item->AddForce(Direction, MAGNET_FORCE);
+			}
 		}
 	}
 

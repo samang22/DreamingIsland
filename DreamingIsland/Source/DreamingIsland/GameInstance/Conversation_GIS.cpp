@@ -12,9 +12,11 @@
 #include "Actors/NPC/CraneButton.h"
 #include "Actors/NPC/CraneFence.h"
 #include "GameInstance/DreamingIsland_GIS.h"
+#include "GameInstance/ASyncLoadingScreen_GIS.h"
 #include "Components/StatusComponent/LinkStatusComponent.h"
 #include "Components/ConversationComponent/CKConversationComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Blueprint/UserWidget.h"
 
 void UConversation_GIS::Initialize(FSubsystemCollectionBase& Collection)
 {
@@ -77,7 +79,7 @@ void UConversation_GIS::Conversation(ALink* Link, ANPC* NPC, bool& InbIsBroadCas
 	else if (NPC->GetNPCName() == NPC_Name_Korean::FisherMan)
 	{
 		FString Script = NPC->GetScript(FM_ConversationKey::Try);
-		DefaultHUD->OnSetStringToConversation(NPC_Name_Korean::GameShopOwner.ToString(), Script);
+		DefaultHUD->OnSetStringToConversation(NPC_Name_Korean::FisherMan.ToString(), Script);
 		DefaultHUD->OnShowConversationWidget();
 		DefaultHUD->OnShowChooseWidget();
 		InbIsBroadCast = false;
@@ -159,6 +161,11 @@ void UConversation_GIS::Check(ALink* Link, ANPC* NPC, bool& InbIsEndTalk, bool b
 			DreamingIsland_GIS->SaveLinkData();
 			FVector LinkLocation = Link->GetActorLocation();
 			DreamingIsland_GIS->SetLinkFieldLocation(LinkLocation);
+
+			UASyncLoadingScreen_GIS* LoadingScreenSubsystem = GetGameInstance()->GetSubsystem<UASyncLoadingScreen_GIS>();
+			UClass* WidgetClass = LoadClass<UUserWidget>(nullptr, TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/UI_Loading.UI_Loading_C'"));
+			LoadingScreenSubsystem->ShowLoadingScreen(WidgetClass);
+
 			UGameplayStatics::OpenLevel(GetWorld(), TEXT("FishingPond"));
 		}
 		else

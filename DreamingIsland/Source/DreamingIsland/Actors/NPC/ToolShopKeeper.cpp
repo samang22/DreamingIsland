@@ -16,8 +16,10 @@
 #include "Data/NPCTableRow.h"
 #include "Actors/Link/Link.h"
 #include "GameInstance/DreamingIsland_GIS.h"
+#include "GameInstance/ASyncLoadingScreen_GIS.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "Particles/ParticleSystem.h"
+#include "Blueprint/UserWidget.h"
 
 
 
@@ -258,6 +260,10 @@ void AToolShopKeeper::EndShootBeam()
 
 	UDreamingIsland_GIS* Subsystem = GetGameInstance()->GetSubsystem<UDreamingIsland_GIS>();
 	Subsystem->SaveLinkData();
+
+	UASyncLoadingScreen_GIS* LoadingScreenSubsystem = GetGameInstance()->GetSubsystem<UASyncLoadingScreen_GIS>();
+	UClass* WidgetClass = LoadClass<UUserWidget>(nullptr, TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/UI_Loading.UI_Loading_C'"));
+	LoadingScreenSubsystem->ShowLoadingScreen(WidgetClass);
 
 	UGameplayStatics::OpenLevel(GetWorld(), TEXT("Field"));
 }

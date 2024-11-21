@@ -9,7 +9,7 @@
 #include "EnhancedInputComponent.h"
 
 
-#define COLLISION_HIDDEN_IN_GAME						false
+#define COLLISION_HIDDEN_IN_GAME						true
 #define CRANEGAME_COST									10
 #define MAGNET_FORCE									200000.f
 
