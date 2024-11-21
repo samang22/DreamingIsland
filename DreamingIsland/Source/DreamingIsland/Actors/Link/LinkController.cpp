@@ -375,50 +375,52 @@ void ALinkController::OnGet(const FInputActionValue& InputActionValue)
 	ALink* Link = Cast<ALink>(GetPawn());
 	if (Link->IsCatchingActor())
 	{
-		AItem* Item = Cast<AItem>(Link->GetCatchingActor());
-		Link->SetIsThief(!Item->GetIsPurchased());
-		FName ItemName = Item->GetItemName();
+		if (AItem* Item = Cast<AItem>(Link->GetCatchingActor()))
+		{
+			Link->SetIsThief(!Item->GetIsPurchased());
+			FName ItemName = Item->GetItemName();
 
-		if (Item_Name::Bomb == ItemName)
-		{
-			StatusComponent->AddBomb(5);
-			ADefaultHUD* DefaultHUD = Cast<ADefaultHUD>(GetHUD());
-			DefaultHUD->OnSetBombNum(StatusComponent->GetBomb());
-		}
-		else if (Item_Name::Arrow == ItemName)
-		{
-			StatusComponent->AddArrow(5);
-			ADefaultHUD* DefaultHUD = Cast<ADefaultHUD>(GetHUD());
-			DefaultHUD->OnSetArrowNum(StatusComponent->GetArrow());
-		}
-		else if (Item_Name::Bow == ItemName)
-		{
-			StatusComponent->SetOnToolEquipStatus(LINK_TOOL_BIT_BOW);
-		}
-		else if (Item_Name::Shield == ItemName)
-		{
-			StatusComponent->SetOnToolEquipStatus(LINK_TOOL_BIT_SHIELD);
-			Link->SetMaterialOpacity(LINK_MATERIAL::SHIELDA, 1.f);
-		}
-		else if (Item_Name::Sword == ItemName)
-		{
-			StatusComponent->SetOnToolEquipStatus(LINK_TOOL_BIT_SWORD);
-			Link->SetMaterialOpacity(LINK_MATERIAL::SWORDA, 1.f);
-			Link->SetMaterialOpacity(LINK_MATERIAL::SWORDA_BALL, 1.f);
-		}
-		else if (Item_Name::RupeeGreen == ItemName
-			|| Item_Name::RupeeBlue == ItemName
-			|| Item_Name::RupeeGold == ItemName)
-		{
-			StatusComponent->AddRupee(Item->GetItemValue());
-			ADefaultHUD* DefaultHUD = Cast<ADefaultHUD>(GetHUD());
-			DefaultHUD->OnSetArrowNum(StatusComponent->GetRupee());
-		}
+			if (Item_Name::Bomb == ItemName)
+			{
+				StatusComponent->AddBomb(5);
+				ADefaultHUD* DefaultHUD = Cast<ADefaultHUD>(GetHUD());
+				DefaultHUD->OnSetBombNum(StatusComponent->GetBomb());
+			}
+			else if (Item_Name::Arrow == ItemName)
+			{
+				StatusComponent->AddArrow(5);
+				ADefaultHUD* DefaultHUD = Cast<ADefaultHUD>(GetHUD());
+				DefaultHUD->OnSetArrowNum(StatusComponent->GetArrow());
+			}
+			else if (Item_Name::Bow == ItemName)
+			{
+				StatusComponent->SetOnToolEquipStatus(LINK_TOOL_BIT_BOW);
+			}
+			else if (Item_Name::Shield == ItemName)
+			{
+				StatusComponent->SetOnToolEquipStatus(LINK_TOOL_BIT_SHIELD);
+				Link->SetMaterialOpacity(LINK_MATERIAL::SHIELDA, 1.f);
+			}
+			else if (Item_Name::Sword == ItemName)
+			{
+				StatusComponent->SetOnToolEquipStatus(LINK_TOOL_BIT_SWORD);
+				Link->SetMaterialOpacity(LINK_MATERIAL::SWORDA, 1.f);
+				Link->SetMaterialOpacity(LINK_MATERIAL::SWORDA_BALL, 1.f);
+			}
+			else if (Item_Name::RupeeGreen == ItemName
+				|| Item_Name::RupeeBlue == ItemName
+				|| Item_Name::RupeeGold == ItemName)
+			{
+				StatusComponent->AddRupee(Item->GetItemValue());
+				ADefaultHUD* DefaultHUD = Cast<ADefaultHUD>(GetHUD());
+				DefaultHUD->OnSetArrowNum(StatusComponent->GetRupee());
+			}
 
-		Link->PlayMontage(LINK_MONTAGE::ITEM_GET);
-		Link->SetOffAnimStatus(LINK_BIT_CARRY);
-		OnLinkItemGet.Broadcast(Link->GetActorLocation(), Link->GetActorForwardVector());
-		UKismetSystemLibrary::K2_SetTimer(this, TEXT("CallOnLinkItemGetEnd"), 1.f, false);
+			Link->PlayMontage(LINK_MONTAGE::ITEM_GET);
+			Link->SetOffAnimStatus(LINK_BIT_CARRY);
+			OnLinkItemGet.Broadcast(Link->GetActorLocation(), Link->GetActorForwardVector());
+			UKismetSystemLibrary::K2_SetTimer(this, TEXT("CallOnLinkItemGetEnd"), 1.f, false);
+		}
 	}
 }
 
