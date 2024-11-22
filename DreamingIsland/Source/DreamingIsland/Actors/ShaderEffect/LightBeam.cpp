@@ -3,8 +3,8 @@
 
 #include "Actors/ShaderEffect/LightBeam.h"
 
-#define LIGHTBEAM_OPACITY_MAX 0.05
-#define LIGHTBEAM_OPACITY_MIN 0.01
+#define LIGHTBEAM_OPACITY_MAX 0.2
+#define LIGHTBEAM_OPACITY_MIN 0.05
 
 float InterpolateValue(float input)
 {
